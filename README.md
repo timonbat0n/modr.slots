@@ -1,72 +1,38 @@
-<!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Полная база Клуба Романтики</title>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h2 { color: #2c3e50; text-align: center; margin: 20px 0; }
-        .table-container {
-            width: 100%;
-            max-width: 1000px;
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-        th, td {
-            padding: 10px 5px;
-            text-align: center;
-            border-bottom: 1px solid #edf0f2;
-            word-wrap: break-word;
-            font-size: 0.85em;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        h2 { color: #2c3e50; text-align: center; margin: 15px 0; }
+        .search-container { width: 100%; max-width: 1000px; margin-bottom: 15px; }
+        #searchInput { width: 100%; padding: 12px; border: 2px solid #34495e; border-radius: 8px; font-size: 16px; box-sizing: border-box; outline: none; }
+        .table-container { width: 100%; max-width: 1000px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th, td { padding: 10px 5px; text-align: center; border-bottom: 1px solid #edf0f2; word-wrap: break-word; font-size: 0.85em; }
         thead { background-color: #34495e; color: #ffffff; }
-        .story-header {
-            background-color: #e8ecef;
-            font-weight: bold;
-            color: #2980b9;
-            text-transform: uppercase;
-            font-size: 0.8em;
-        }
-        .code-cell {
-            font-family: monospace;
-            color: #e67e22;
-            font-size: 0.75em;
-            word-break: break-all;
-        }
+        .story-header { background-color: #e8ecef; font-weight: bold; color: #2980b9; text-transform: uppercase; font-size: 0.8em; }
+        .code-cell { font-family: monospace; color: #e67e22; font-size: 0.75em; word-break: break-all; }
         .info-cell { font-size: 0.8em; color: #7f8c8d; }
-        
-        @media screen and (max-width: 480px) {
-            th, td { padding: 6px 2px; font-size: 0.75em; }
-            .code-cell { font-size: 0.65em; }
-        }
+        @media screen and (max-width: 480px) { th, td { padding: 6px 2px; font-size: 0.75em; } .code-cell { font-size: 0.65em; } }
     </style>
 </head>
 <body>
 
-<h2>Все слоты фаворитов</h2>
+<h2>База слотов фаворитов</h2>
+
+<div class="search-container">
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по имени или истории...">
+</div>
 
 <div class="table-container">
-    <table>
+    <table id="slotsTable">
         <thead>
             <tr>
                 <th style="width: 25%;">Фаворит</th>
-                <th style="width: 45%;">Слот (код)</th>
+                <th style="width: 45%;">Код</th>
                 <th style="width: 30%;">Инфо</th>
             </tr>
         </thead>
@@ -244,6 +210,46 @@
         </tbody>
     </table>
 </div>
+
+<script>
+function searchTable() {
+    var input, filter, table, tr, td, i, j, txtValue, match;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("slotsTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 1; i < tr.length; i++) {
+        if (tr[i].classList.contains('story-header')) {
+            // При пустом поиске показываем все заголовки
+            if (filter === "") { tr[i].style.display = ""; continue; }
+            // Иначе временно скрываем (они покажутся ниже, если есть совпадения в блоке)
+            tr[i].style.display = "none";
+            continue;
+        }
+        
+        match = false;
+        td = tr[i].getElementsByTagName("td");
+        for (j = 0; j < td.length; j++) {
+            if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    match = true;
+                    break;
+                }
+            }
+        }
+        tr[i].style.display = match ? "" : "none";
+        
+        // Логика отображения заголовка, если хоть один элемент истории подошел
+        if (match) {
+            let prev = tr[i].previousElementSibling;
+            while (prev && !prev.classList.contains('story-header')) { prev = prev.previousElementSibling; }
+            if (prev) prev.style.display = "";
+        }
+    }
+}
+</script>
 
 </body>
 </html>
