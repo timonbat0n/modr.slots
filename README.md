@@ -306,11 +306,7 @@
             <tr><td>Адам</td><td><span class="code-text">bf5acee0a34afd508f6f10d96904bcd5</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">упрямство</td></tr>
             <tr><td>Леонард</td><td><span class="code-text">8dd4fbc94766a9ef4314e2f960388e6f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">расчет</td></tr>
 
-            <tr class="story-row"><td colspan="3">Финал базы</td></tr>
-            <tr><td>Архив 1</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">статус</td></tr>
-            <tr><td>Архив 2</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">логика</td></tr>
-            <tr><td>Слот Конца</td><td><span class="code-text">4f03e11a86304a1fd884dfb12c7d827d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">финал</td></tr>
-
+          
         </tbody>
     </table>
 </div>
