@@ -1,5 +1,3 @@
-# modr.slots
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
