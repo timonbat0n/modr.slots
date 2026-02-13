@@ -92,7 +92,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
+                        <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
             <tr><td>Оникс</td><td><span class="code-text">024d696ab878ff9cd37faa17ec1694b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, статус</td></tr>
             <tr><td>Шен</td><td><span class="code-text">eb50c06aca17d42410b89351df99c25b</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, статус, финал</td></tr>
             <tr><td>Льюсен</td><td><span class="code-text">91a15cc20674e465f65b0d2b8171c129</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, статус, финал</td></tr>
@@ -188,20 +188,20 @@
             <tr><td>Люцифер (СН1)</td><td><span class="code-text">5691325191392ca26f8098be0819b783</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ангел/демон</td></tr>
             <tr><td>Дино (СН1)</td><td><span class="code-text">d41a63c32d7f28afda433d45cff32ea9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ангел</td></tr>
             <tr><td>Мими (СН1)</td><td><span class="code-text">9e61e9fd7a31c6a938a427b0c934f926</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">демон</td></tr>
-            <tr><td>Энди (СН1)</td><td><span class="code-text">ea9c827a062eb5c3bb6fff106c738d85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">путь связи</td></tr>
-            <tr><td>Лой (СН1)</td><td><span class="code-text">1a5d43b5329e3d65a596c04f241bcbd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дракон</td></tr>
+            <tr><td>Энди</td><td><span class="code-text">ea9c827a062eb5c3bb6fff106c738d85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">путь связи</td></tr>
+            <tr><td>Лой</td><td><span class="code-text">1a5d43b5329e3d65a596c04f241bcbd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дракон</td></tr>
             <tr><td></td><td></td><td></td></tr>
 
             <tr class="story-row"><td colspan="3">Секрет Небес 2 & Реквием</td></tr>
             <tr><td>Голод</td><td><span class="code-text">b1af411532cdba680e5a35e18a39a4d7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровие</td></tr>
             <tr><td>Мальбонте</td><td><span class="code-text">bf5acee0a34afd508f6f10d96904bcd5</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровие</td></tr>
+            <tr><td>Астарот</td><td><span class="code-text">8dd4fbc94766a9ef4314e2f960388e6f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровие</td></tr>
+            <tr><td>Война</td><td><span class="code-text">13acbd2204cd1817204797033fca7e01</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровие</td></tr>
             <tr><td>Каин (СНР)</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие</td></tr>
             <tr><td>Дмитрий (СНР)</td><td><span class="code-text">27c666a4a26617b105b29ca465522beb</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие</td></tr>
             <tr><td>Ян (СНР)</td><td><span class="code-text">fbc509aa35f9955b1939e8f398b7d37e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">адаптация</td></tr>
             <tr><td>Анна (СНР)</td><td><span class="code-text">5b2ae942e42b7f7e3dfa307a92da6412</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие</td></tr>
             <tr><td>Грег (СНР)</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">адаптация</td></tr>
-            <tr><td>Астарот</td><td><span class="code-text">8dd4fbc94766a9ef4314e2f960388e6f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровие</td></tr>
-            <tr><td>Война</td><td><span class="code-text">13acbd2204cd1817204797033fca7e01</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровие</td></tr>
             <tr><td></td><td></td><td></td></tr>
 
             <tr class="story-row"><td colspan="3">Пси Ψ</td></tr>
@@ -269,26 +269,54 @@
             <tr><td></td><td></td><td></td></tr>
 
             <tr class="story-row"><td colspan="3">Покоряя Версаль</td></tr>
-            <tr><td>Александр</td><td><span class="code-text">2cdd74cc1251b961aba59029430d775c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">альтруизм</td></tr>
+            <tr><td>Александр (ПВ)</td><td><span class="code-text">2cdd74cc1251b961aba59029430d775c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">альтруизм</td></tr>
             <tr><td>Филипп</td><td><span class="code-text">461e14bc97ecaca8f773b2113157c10</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">гедонизм</td></tr>
             <tr><td>Людовик</td><td><span class="code-text">8aa3af17bddb8304f8d06365fb038698</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">расчетливость</td></tr>
-            <tr><td>Мария</td><td><span class="code-text">5b2ae942e42b7f7e3dfa307a92da6412</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">альтруизм</td></tr>
+            <tr><td>Мария Терезия</td><td><span class="code-text">5b2ae942e42b7f7e3dfa307a92da6412</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">альтруизм</td></tr>
             <tr><td>Бонна</td><td><span class="code-text">ea0602a00c8bedc52bb5aaaa54c4435f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">гедонизм</td></tr>
             <tr><td></td><td></td><td></td></tr>
 
-            <tr class="story-row"><td colspan="3">Архив классики (РЛ, ВРС, СТ, МГИ, ПВ)</td></tr>
-            <tr><td>Виктор (РЛ)</td><td><span class="code-text">d41a63c32d7f28afda433d45cff32ea1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дар луны</td></tr>
-            <tr><td>Макс (РЛ)</td><td><span class="code-text">8871a06e74362c9da48a0724eb5eb037</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дар крови</td></tr>
-            <tr><td>Брэндон (ВРС)</td><td><span class="code-text">13acbd2204cd1817204797033fca7e01</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мастерство</td></tr>
-            <tr><td>Клэр (ВРС)</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мастерство</td></tr>
-            <tr><td>Майкл (СТ)</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">смелость</td></tr>
-            <tr><td>Локи (ПВ)</td><td><span class="code-text">8871a06e74362c9da48a0724eb5eb037</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">перемены</td></tr>
-            <tr><td>Улль (ПВ)</td><td><span class="code-text">27c1f8a44d8b928f615e42c492114ad1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">перемены</td></tr>
-            <tr><td>Сагр (ПВ)</td><td><span class="code-text">d41a63c32d7f28afda433d45cff32ea1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">порядок</td></tr>
-            <tr><td>Лиод (ПВ)</td><td><span class="code-text">c1a5d43b5329e3d65a596c04f241bcbd</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">порядок</td></tr>
-            <tr><td>Ванадис (ПВ)</td><td><span class="code-text">ea9c827a062eb5c3bb6fff106c738d85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">перемены</td></tr>
-            <tr><td>Андвари (ПВ)</td><td><span class="code-text">9e61e9fd7a31c6a938a427b0c934f926</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">порядок</td></tr>
+            <tr class="story-row"><td colspan="3">Рожденная Луной</td></tr>
+            <tr><td>Виктор</td><td><span class="code-text">d41a63c32d7f28afda433d45cff32ea1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дар луны</td></tr>
+            <tr><td>Макс</td><td><span class="code-text">8871a06e74362c9da48a0724eb5eb037</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дар крови</td></tr>
+            <tr><td>Бенни Барт</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дар луны</td></tr>
+            <tr><td>Саймон (РЛ)</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дар крови</td></tr>
+            <tr><td>Триша</td><td><span class="code-text">1a5d43b5329e3d65a596c04f241bcbd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дар луны</td></tr>
             <tr><td></td><td></td><td></td></tr>
+
+            <tr class="story-row"><td colspan="3">В ритме страсти</td></tr>
+            <tr><td>Брэндон</td><td><span class="code-text">13acbd2204cd1817204797033fca7e01</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мастерство</td></tr>
+            <tr><td>Клэр</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мастерство</td></tr>
+            <tr><td>Хиро</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">страсть</td></tr>
+            <tr><td>Орландо</td><td><span class="code-text">d41a63c32d7f28afda433d45cff32ea1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мастерство</td></tr>
+            <tr><td>Чарльз</td><td><span class="code-text">8871a06e74362c9da48a0724eb5eb037</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">страсть</td></tr>
+            <tr><td></td><td></td><td></td></tr>
+
+            <tr class="story-row"><td colspan="3">Тени Сентфора</td></tr>
+            <tr><td>Майкл (СТ)</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">смелость</td></tr>
+            <tr><td>Люк</td><td><span class="code-text">1a5d43b5329e3d65a596c04f241bcbd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">осторожность</td></tr>
+            <tr><td>Стефани</td><td><span class="code-text">4f03e11a86304a1fd884dfb12c7d827d</span><button class="copy-btn" onclick="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">смелость</td></tr>
+            <tr><td>Дерек</td><td><span class="code-text">9e61e9fd7a31c6a938a427b0c934f926</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">осторожность</td></tr>
+            <tr><td>Кэнди</td><td><span class="code-text">13acbd2204cd1817204797033fca7e01</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">смелость</td></tr>
+            <tr><td></td><td></td><td></td></tr>
+
+            <tr class="story-row"><td colspan="3">Моя голливудская история</td></tr>
+            <tr><td>Джефф</td><td><span class="code-text">2c783eaf342ad2d4991746bb5041d2ed</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">драма</td></tr>
+            <tr><td>Рэй</td><td><span class="code-text">ea9c827a062eb5c3bb6fff106c738d85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">комедия</td></tr>
+            <tr><td>Эллен</td><td><span class="code-text">1a5d43b5329e3d65a596c04f241bcbd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">приключения</td></tr>
+            <tr><td>Тарино</td><td><span class="code-text">9e61e9fd7a31c6a938a427b0c934f926</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">драма</td></tr>
+            <tr><td>Дэвид</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">комедия</td></tr>
+            <tr><td></td><td></td><td></td></tr>
+
+            <tr class="story-row"><td colspan="3">Путь Валькирии</td></tr>
+            <tr><td>Локи</td><td><span class="code-text">8871a06e74362c9da48a0724eb5eb037</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">перемены</td></tr>
+            <tr><td>Улль</td><td><span class="code-text">27c1f8a44d8b928f615e42c492114ad1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">перемены</td></tr>
+            <tr><td>Сагр</td><td><span class="code-text">d41a63c32d7f28afda433d45cff32ea1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">порядок</td></tr>
+            <tr><td>Лиод</td><td><span class="code-text">c1a5d43b5329e3d65a596c04f241bcbd</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">порядок</td></tr>
+            <tr><td>Ванаadis</td><td><span class="code-text">ea9c827a062eb5c3bb6fff106c738d85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">перемены</td></tr>
+            <tr><td>Андвари</td><td><span class="code-text">9e61e9fd7a31c6a938a427b0c934f926</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">порядок</td></tr>
+            <tr><td></td><td></td><td></td></tr>
+
 
 
         </tbody>
