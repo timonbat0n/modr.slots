@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -138,7 +138,7 @@
 
             <tr class="story-header"><td colspan="3">Легенда Ивы</td></tr>
             <tr><td>Кадзу</td><td class="code-cell">28e44c2908ee68750cd821defe92a75d</td><td></td></tr>
-            <tr><td>Самурай</td><td class="code-cell">79f6f2d0d81fbf0da59819523d393e85</td><td class="info-cell">развилка имп.</td></tr>
+            <tr><td>Масамунэ</td><td class="code-cell">79f6f2d0d81fbf0da59819523d393e85</td><td class="info-cell">развилка имп.</td></tr>
 
             <tr class="story-header"><td colspan="3">Песнь о Красном Ниле</td></tr>
             <tr><td>Ливий</td><td class="code-cell">d13d0007af972568f876507cf9af10a2</td><td></td></tr>
@@ -158,7 +158,7 @@
             <tr><td>Зейн</td><td class="code-cell">a6799ef899b53f7b0961b48c70ef2878</td><td class="info-cell">догман, напор</td></tr>
             <tr><td>Макс</td><td class="code-cell">0dbbd6e90b90faf6c13220cf9b7c7cf5</td><td class="info-cell">отречение, напор</td></tr>
             <tr><td>Ксандр</td><td class="code-cell">420d05f34ce854f98ed46ee525e2a526</td><td></td></tr>
-            <tr><td>Октавиус</td><td class="code-cell">a6be010fa0116965bbf359def68699f8</td><td class="info-cell">коварство</td></tr>
+            <tr><td>Октавиан</td><td class="code-cell">a6be010fa0116965bbf359def68699f8</td><td class="info-cell">коварство</td></tr>
 
             <tr class="story-header"><td colspan="3">Пропавшие</td></tr>
             <tr><td>Мадс</td><td class="code-cell">2c783eaf342ad2d4991746bb5041d2ed</td><td class="info-cell">рассуждение</td></tr>
