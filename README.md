@@ -195,22 +195,23 @@
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
     
 /* Алфавитная панель */
+/* Узкая алфавитная панель */
 .side-nav {
     position: fixed;
-    right: 15px;
+    right: 5px; /* Прижали ближе к краю */
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px; /* Уменьшили расстояние между буквами */
     z-index: 1000;
     background: rgba(2, 136, 209, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 12px 8px;
-    border-radius: 15px;
-    max-height: 85vh;
+    backdrop-filter: blur(8px);
+    padding: 6px 3px; /* МИНИМАЛЬНАЯ ширина контейнера */
+    border-radius: 10px;
+    max-height: 90vh;
     overflow-y: auto;
-    border: 1px solid rgba(2, 136, 209, 0.3);
+    border: 1px solid rgba(2, 136, 209, 0.2);
     transition: opacity 0.3s;
 }
 
@@ -218,17 +219,29 @@
     text-decoration: none;
     color: #0288d1;
     font-weight: 900;
-    font-size: 18px;
-    width: 42px;
-    height: 42px;
+    font-size: 16px; /* Чуть уменьшили шрифт для компактности */
+    width: 32px;      /* СУЗИЛИ кнопку (было 42) */
+    height: 36px;     /* Сделали чуть вытянутой */
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.7);
+    transition: all 0.2s ease;
 }
+
+/* Эффект при наведении теперь не такой агрессивный */
+.side-nav a:hover {
+    background: #ff4081;
+    color: white !important;
+    transform: scale(1.1) translateX(-3px); /* Сдвигается чуть влево при наведении */
+}
+
+/* Скрываем полосу прокрутки внутри панели, если букв слишком много */
+.side-nav::-webkit-scrollbar {
+    width: 0px;
+}
+
 
 .side-nav a:hover {
     background: #ff4081;
