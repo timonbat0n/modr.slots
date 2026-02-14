@@ -83,50 +83,46 @@
 </div>
 
 <style>
-    .tg-container {
+    .tg-wrapper {
         text-align: center;
-        margin: 20px 0;
+        margin: 25px 0;
     }
 
-    .tg-link-btn {
+    .tg-minimal-btn {
         display: inline-block;
-        padding: 12px 35px;
-        background-color: #2481cc; /* Цвет Telegram */
-        color: #ffffff !important;
+        padding: 10px 40px;
+        /* Фон как у таблицы/страницы, текст черный */
+        background-color: #f9f9f9; 
+        color: #000000 !important;
+        
         text-decoration: none !important;
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        font-weight: bold;
+        font-family: sans-serif;
+        font-weight: 600;
         font-size: 14px;
-        letter-spacing: 1px;
-        border-radius: 6px;
+        letter-spacing: 0.5px;
+        border-radius: 4px;
         
-        /* Та самая обводка */
-        border: 2px solid #ffffff; 
+        /* Черная обводка */
+        border: 2px solid #000000;
         
-        /* Тень и плавность */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
+        transition: all 0.2s ease-in-out;
         cursor: pointer;
     }
 
-    .tg-link-btn:hover {
-        background-color: #ffffff;
-        color: #2481cc !important;
-        border-color: #2481cc;
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .tg-link-btn:active {
-        transform: translateY(-1px);
+    /* Эффект при наведении: инверсия в черный */
+    .tg-minimal-btn:hover {
+        background-color: #000000;
+        color: #ffffff !important;
+        transform: translateY(-2px);
     }
 </style>
 
-<div class="tg-container">
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-link-btn">
-        Отправить слоты для добавления💎
+<div class="tg-wrapper">
+    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">
+        Отправить слоты 💎
     </a>
 </div>
+
 
 
 <div class="table-container">
