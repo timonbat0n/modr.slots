@@ -456,7 +456,7 @@ function filterData() {
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     
     // ПРОВЕРКА ПАСХАЛКИ (Активируется при вводе "modr")
-    if (filter === "Ирина" or "Тимон") {
+    if (filter === "modr") {
         document.body.classList.add('gold-mode');
         inputField.classList.add('shake');
         setTimeout(() => {
@@ -563,6 +563,7 @@ function topFunction() {
 // 6. ПАСХАЛКА ДЛЯ ВКЛАДКИ
 window.onblur = () => document.title = "Жду тебя! 💎";
 window.onfocus = () => document.title = "RC Slots - База";
+
 
 
 
