@@ -462,7 +462,7 @@ function filterData() {
     let storyVisible = false;
 
     // --- ПАСХАЛКА "MODR" ---
-    if (filter === 'modr') {
+    if (filter === 'тимон') {
         document.body.classList.add('easter-egg');
         inputField.classList.add('shake');
         setTimeout(() => {
