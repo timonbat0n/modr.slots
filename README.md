@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Full Database</title>
 <style>
+    /* ПЕРЕМЕННЫЕ И ТЕМЫ */
     :root {
         /* Светлая тема */
         --bg-page: #e3f2fd;
@@ -13,9 +14,7 @@
         --accent-blue: #0288d1;
         --story-header: #bbdefb;
         --btn-copy: #03a9f4;
-        --btn-hover: #0277bd;
-        --shadow: rgba(2, 136, 209, 0.15);
-        --border-table: #e3f2fd;
+        --border-table: #e1f5fe;
         --code-bg: #f5faff;
         --highlight: #ffeb3b;
         --footer-color: #94a3b8;
@@ -31,8 +30,6 @@
         --accent-blue: #38bdf8;
         --story-header: #334155;
         --btn-copy: #0ea5e9;
-        --btn-hover: #0288d1;
-        --shadow: rgba(0, 0, 0, 0.4);
         --border-table: #334155;
         --code-bg: #0f172a;
         --highlight: #facc15;
@@ -40,113 +37,133 @@
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
+    /* БАЗОВЫЕ НАСТРОЙКИ */
     body { 
-        font-family: 'Segoe UI', Roboto, sans-serif; 
+        font-family: 'Segoe UI', system-ui, sans-serif; 
         background-color: var(--bg-page);
         color: var(--text-main);
         margin: 0; padding: 15px 10px;
         display: flex; flex-direction: column; align-items: center;
-        transition: background-color 0.3s, color 0.3s;
+        transition: background-color 0.3s;
+        overflow-x: hidden;
     }
 
-    /* ДИЗАЙН ПОИСКА — ВЕРНУЛ ВСЁ */
+    /* ПОИСК (ДИЗАЙН) */
     .search-wrapper { 
         width: 100%; max-width: 500px; 
         margin-bottom: 20px; position: relative; 
     }
     
     #searchInput { 
-        width: 100%; padding: 12px 12px 12px 42px; 
-        border: 2px solid transparent; border-radius: 12px; 
+        width: 100%; padding: 14px 14px 14px 46px; 
+        border: 2px solid transparent; border-radius: 14px; 
         font-size: 16px; 
         background-color: var(--table-bg); 
         color: var(--text-main);
-        box-shadow: 0 4px 15px var(--shadow);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         outline: none; box-sizing: border-box; 
-        transition: 0.3s;
+        transition: all 0.3s;
     }
     
     #searchInput:focus { 
-        border-color: var(--accent-blue); 
+        border-color: var(--accent-blue);
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
     }
 
     .search-wrapper::before {
-        content: ""; position: absolute; left: 14px; top: 50%;
-        transform: translateY(-50%); width: 20px; height: 20px;
+        content: ""; position: absolute; left: 16px; top: 50%;
+        transform: translateY(-50%); width: 22px; height: 22px;
         background: var(--search-icon) no-repeat center;
         background-size: contain;
-        z-index: 1; pointer-events: none;
+        z-index: 2; pointer-events: none;
     }
 
-    /* ШАПКА И КНОПКИ */
-    .header-box { text-align: center; margin-bottom: 15px; }
-    .header-box h2 { color: var(--text-main); text-transform: uppercase; font-size: 1.2em; font-weight: 800; margin: 0; }
-
+    /* КНОПКА ТЕМЫ */
     .theme-toggle {
         position: fixed; top: 15px; right: 15px;
         background: var(--table-bg); border: 2px solid var(--accent-blue);
         color: var(--accent-blue); border-radius: 50%;
-        width: 38px; height: 38px; cursor: pointer; z-index: 1000;
-        display: flex; align-items: center; justify-content: center; font-size: 18px;
+        width: 42px; height: 42px; cursor: pointer; z-index: 1000;
+        display: flex; align-items: center; justify-content: center; font-size: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .tg-wrapper { margin-bottom: 20px; }
-    .tg-minimal-btn {
-        display: inline-block; padding: 10px 25px; background: var(--table-bg);
-        color: var(--text-main) !important; text-decoration: none; font-weight: 600;
-        border-radius: 10px; border: 2px solid var(--accent-blue); font-size: 14px;
-        box-shadow: 0 4px 10px var(--shadow);
-    }
-
-    /* ТАБЛИЦА */
+    /* ТАБЛИЦА (ФИКСИРОВАННАЯ ШИРИНА И ЦВЕТ) */
     .table-container { 
         width: 100%; max-width: 500px; 
-        background-color: var(--table-bg); border-radius: 15px; 
-        overflow: hidden; box-shadow: 0 8px 30px var(--shadow);
+        background-color: var(--table-bg) !important; 
+        border-radius: 16px; overflow: hidden; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         border: 1px solid var(--border-table);
     }
 
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; background-color: transparent; }
 
-    td { 
-        padding: 10px 5px; border-bottom: 1px solid var(--border-table); 
-        vertical-align: middle; text-align: center; color: var(--text-main);
+    th { 
+        background-color: var(--code-bg); color: var(--accent-blue); 
+        padding: 12px 5px; font-size: 0.8em; text-transform: uppercase;
+        border-bottom: 2px solid var(--border-table);
     }
 
+    td { 
+        padding: 12px 6px; 
+        border-bottom: 1px solid var(--border-table); 
+        color: var(--text-main) !important;
+        background-color: var(--table-bg) !important;
+        text-align: center; vertical-align: middle;
+    }
+
+    /* Пропорции колонок 25% | 50% | 25% */
     th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; font-size: 0.85em; }
     th:nth-child(2), td:nth-child(2) { width: 50%; }
     th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 0.75em; color: var(--text-info); }
 
+    /* ЗАГОЛОВКИ ИСТОРИЙ */
     .story-row, .story-row td { 
         background-color: var(--story-header) !important; 
         color: var(--text-main) !important; font-weight: 800; text-align: left !important;
-        padding: 10px 15px !important;
+        padding: 12px 16px !important; border-bottom: none;
     }
 
+    /* ТЕКСТ КОДА */
     .code-text { 
-        font-family: monospace; color: var(--accent-blue); 
-        background-color: var(--code-bg); padding: 5px; border-radius: 5px; 
+        font-family: 'Courier New', monospace; color: var(--accent-blue); 
+        background-color: var(--code-bg); padding: 6px; border-radius: 6px; 
         border: 1px solid var(--border-table); font-size: 0.75em;
-        word-break: break-all; display: block; margin-bottom: 5px;
+        word-break: break-all; display: block; margin-bottom: 6px;
     }
     
+    /* КНОПКА КОПИРОВАНИЯ */
     .copy-btn {
         background-color: var(--btn-copy); color: white; border: none; 
-        padding: 6px 0; border-radius: 6px; cursor: pointer; 
-        font-size: 11px; font-weight: 600; width: 100%;
+        padding: 8px 0; border-radius: 8px; cursor: pointer; 
+        font-size: 11px; font-weight: 600; width: 100%; transition: 0.2s;
+    }
+    .copy-btn.copied { background-color: #10b981; }
+
+    /* ПОДСВЕТКА ПОИСКА */
+    mark { background-color: var(--highlight); color: #000; border-radius: 3px; }
+
+    /* КНОПКА ОТПРАВИТЬ */
+    .tg-minimal-btn {
+        display: inline-block; padding: 12px 28px; background: var(--table-bg);
+        color: var(--text-main) !important; text-decoration: none; font-weight: 700;
+        border-radius: 12px; border: 2px solid var(--accent-blue); font-size: 14px;
+        margin-bottom: 20px;
     }
 
-    mark { background-color: var(--highlight); color: #000; border-radius: 2px; }
-
+    /* КНОПКА НАВЕРХ */
     #backToTop {
-        display: none; position: fixed; bottom: 20px; right: 20px;
+        display: none; position: fixed; bottom: 25px; right: 25px;
         background: var(--accent-blue); color: white; border: none;
-        width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 99;
-        font-size: 20px;
+        width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 99;
+        font-size: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    .footer-text { margin-top: 30px; margin-bottom: 20px; font-size: 0.75rem; color: var(--footer-color); }
+    /* ФУТЕР */
+    .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 0.8rem; color: var(--footer-color); font-weight: 500; }
 </style>
+
 
 
 </head>
