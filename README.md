@@ -49,9 +49,38 @@
     }
 
     /* ПОИСК (ДИЗАЙН) */
-    .search-wrapper { 
-        width: 100%; max-width: 500px; 
-        margin-bottom: 20px; position: relative; 
+       /* Контейнер для позиционирования крестика */
+    .search-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 20px;
+    }
+
+    /* Кнопка очистки */
+    #clearSearch {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 22px;
+        color: var(--text-info);
+        display: none; /* Скрыт по умолчанию */
+        user-select: none;
+        transition: color 0.2s;
+        z-index: 5;
+    }
+
+    #clearSearch:hover {
+        color: var(--accent-blue);
+    }
+
+    /* Когда в инпуте что-то есть, показываем крестик */
+    #searchInput:not(:placeholder-shown) + #clearSearch {
+        display: block;
+    }
+
     }
     
     #searchInput { 
@@ -177,8 +206,10 @@
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="searchInput" oninput="filterData()" placeholder="Поиск персонажа или истории...">
+    <input type="text" id="searchInput" oninput="filterData()" placeholder="Поиск героя или истории...">
+    <div id="clearSearch" onclick="clearInput()">×</div>
 </div>
+
 
 <div class="tg-wrapper">
     <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 🩵</a>
@@ -480,7 +511,17 @@ window.onscroll = function() {
     }
 };
 function topFunction() { window.scrollTo({top: 0, behavior: 'smooth'}); }
+
+function clearInput() {
+    const input = document.getElementById("searchInput");
+    input.value = ""; // Очищаем поле
+    filterData();     // Сбрасываем фильтр таблицы
+    input.focus();    // Возвращаем фокус на поле ввода
+}
+
 </script>
+
+<div class="footer-text">modr. x timon.</div>
 
 </body>
 </html>
