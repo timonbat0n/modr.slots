@@ -3,6 +3,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+
+
 <div id="sideNav" class="side-nav hidden">
     <div id="navToggle" class="nav-toggle" onclick="toggleNav(event)">‹</div>
     </div>
@@ -10,8 +13,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RC Slots Full Database</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+    <title>modr.slots</title>
+
 
 <style>
     /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
@@ -55,6 +58,14 @@
         transition: background-color 0.3s;
         overflow-x: hidden;
     }
+table {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
     /* 3. ДИЗАЙН ПОИСКА (ФИНАЛ) */
     .search-wrapper { 
