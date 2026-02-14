@@ -13,9 +13,9 @@
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
-
-<link rel="apple-touch-icon" href="favicon.ico?v=2">
+<link rel="shortcut icon" href="favicon.ico?v=3" type="image/x-icon">
+<link rel="icon" href="favicon.ico?v=3" type="image/x-icon">
+<link rel="apple-touch-icon" href="favicon.ico?v=3">
 
     <title>modr.slots</title>
 
