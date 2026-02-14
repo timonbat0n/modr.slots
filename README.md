@@ -3,6 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Full Database</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+
 <style>
     /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
     :root {
@@ -410,59 +412,31 @@
 
 
 </div>
-
-
 <script>
-// ПОИСК С ПОДСВЕТКОЙ
+
+// 1. Поиск и подсветка
 function filterData() {
-    const input = document.getElementById("searchInput");
-    const filter = input.value.toLowerCase();
-    const table = document.getElementById("mainTable");
-    const tr = table.getElementsByTagName("tr");
+    const filter = document.getElementById("searchInput").value.toLowerCase();
+    const tr = document.getElementById("mainTable").getElementsByTagName("tr");
+    let storyVisible = false;
 
-    let storyVisibleByTitle = false; // Флаг: совпало ли название истории
-
-    // Начинаем с 1, чтобы пропустить шапку (thead)
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
-
         if (row.classList.contains('story-row')) {
-            // Это строка с названием истории
-            const storyName = row.innerText.toLowerCase();
-            storyVisibleByTitle = storyName.includes(filter);
-            
-            // Показываем заголовок истории, если совпало название ИЛИ если впереди будут совпадения у героев
-            // (Логика ниже доработает видимость заголовка)
-            row.style.display = storyVisibleByTitle ? "" : "none";
+            storyVisible = row.innerText.toLowerCase().includes(filter);
+            row.style.display = storyVisible ? "" : "none";
         } else {
-            // Это строка с персонажем
             const nameCell = row.cells[0];
-            const originalText = nameCell.getAttribute("data-original") || nameCell.innerText;
-            if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", originalText);
+            const original = nameCell.getAttribute("data-original") || nameCell.innerText;
+            if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
 
-            const nameMatches = originalText.toLowerCase().includes(filter);
-
-            // Показываем строку, если совпало имя героя ИЛИ если мы ввели название всей истории
-            if (nameMatches || storyVisibleByTitle) {
+            const match = original.toLowerCase().includes(filter);
+            if (match || storyVisible) {
                 row.style.display = "";
-                
-                // Подсвечиваем имя только если совпало именно оно
-                if (nameMatches && filter !== "") {
-                    const regex = new RegExp(`(${filter})`, "gi");
-                    nameCell.innerHTML = originalText.replace(regex, "<mark>$1</mark>");
-                } else {
-                    nameCell.innerHTML = originalText;
-                }
-
-                // Если герой нашелся, нужно убедиться, что его заголовок (история) тоже виден
-                let prev = row.previousElementSibling;
-                while (prev) {
-                    if (prev.classList.contains('story-row')) {
-                        prev.style.display = "";
-                        break;
-                    }
-                    prev = prev.previousElementSibling;
-                }
+                nameCell.innerHTML = (match && filter) ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") : original;
+                let p = row.previousElementSibling;
+                while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
+                if(p) p.style.display = "";
             } else {
                 row.style.display = "none";
             }
@@ -470,21 +444,26 @@ function filterData() {
     }
 }
 
+// 2. Очистка поиска
+function clearInput() {
+    const input = document.getElementById("searchInput");
+    input.value = "";
+    filterData();
+    input.focus();
+}
 
-// КОПИРОВАНИЕ
+// 3. Копирование + Вибрация
 function copy(btn) {
     const text = btn.parentElement.querySelector('.code-text').innerText;
     navigator.clipboard.writeText(text).then(() => {
+        if (window.navigator.vibrate) window.navigator.vibrate(25); // Микровибрация
         const old = btn.innerText;
-        btn.innerText = "ГОТОВО ✓";
-        btn.classList.add('copied');
+        btn.innerText = "ГОТОВО ✓"; btn.classList.add('copied');
         setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1000);
     });
-    if (window.navigator.vibrate) window.navigator.vibrate(20);
-
 }
 
-// ТЕМЫ
+// 4. Темы
 function toggleTheme() {
     document.body.classList.toggle("dark-mode");
     const isDark = document.body.classList.contains("dark-mode");
@@ -496,44 +475,21 @@ if (localStorage.getItem("theme") === "dark") {
     document.getElementById("themeBtn").innerText = "☀️";
 }
 
-// НАВЕРХ
-let topBtn = document.getElementById("backToTop");
+// 5. Кнопка Наверх + Скрытие клавиатуры
 window.onscroll = function() {
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        topBtn.style.display = "block";
-    } else {
-        topBtn.style.display = "none";
-    }
+    // Показываем кнопку "Наверх"
+    document.getElementById("backToTop").style.display = (window.scrollY > 300) ? "block" : "none";
+    
+    // Прячем клавиатуру при скролле (удобно для мобилок)
+    if(document.activeElement.tagName === 'INPUT') document.activeElement.blur();
 };
 function topFunction() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 
-function clearInput() {
-    const input = document.getElementById("searchInput");
-    input.value = "";
-    // Вызываем фильтрацию, чтобы показать все строки
-    filterData(); 
-    input.focus();
-}
-
-    if (match && filter !== "") {
-        const regex = new RegExp(`(${filter})`, "gi");
-        // Оборачиваем только совпадение, не добавляя лишних пробелов
-        nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
-    } else {
-        // Возвращаем чистый текст без тегов
-        nameCell.innerHTML = original;
-    }
-window.onload = () => document.getElementById('searchInput').focus();
-
-window.onblur = () => document.title = "Жду тебя)";
+// 6. Динамический заголовок вкладки
+window.onblur = () => document.title = "Жду тебя! 💎";
 window.onfocus = () => document.title = "modr.slots";
 
-window.addEventListener('scroll', () => {
-    if(document.activeElement.tagName === 'INPUT') document.activeElement.blur();
-}, {passive: true});
-
 </script>
-
 <div class="footer-text">modr. x timon.</div>
 
 </body>
