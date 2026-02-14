@@ -103,7 +103,7 @@
         border-radius: 4px;
         
         /* Черная обводка */
-        border: 2px solid #000000;
+        border: 2px solid #ADD8E6;
         
         transition: all 0.2s ease-in-out;
         cursor: pointer;
