@@ -194,63 +194,65 @@
 
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
     
-    .side-nav {
+    ..side-nav {
     position: fixed;
-    right: 8px;
+    right: 15px; /* Чуть дальше от края */
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px; /* Расстояние между буквами больше */
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    padding: 8px 4px;
-    border-radius: 12px;
-    max-height: 80vh;
-    overflow-y: auto; /* На случай, если букв будет слишком много */
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(2, 136, 209, 0.15); /* Цветной оттенок фона */
+    backdrop-filter: blur(10px);
+    padding: 12px 8px;
+    border-radius: 15px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 2px solid rgba(2, 136, 209, 0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
 
 .side-nav a {
     text-decoration: none;
     color: var(--accent-blue, #0288d1);
-    font-weight: 800;
-    font-size: 12px;
-    width: 26px;
-    height: 26px;
+    font-weight: 900; /* Максимальная жирность */
+    font-size: 18px;  /* Крупный шрифт */
+    width: 40px;      /* Крупная кнопка */
+    height: 40px;     /* Крупная кнопка */
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    transition: all 0.2s ease;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5); /* Светлая подложка под букву */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .side-nav a:hover {
-    background: var(--accent-blue, #0288d1);
+    background: #ff4081; /* Розовый акцент при наведении (под конфетти) */
     color: white !important;
-    transform: scale(1.2);
+    transform: scale(1.3) rotate(5deg); /* Эффектный зум с поворотом */
 }
 
-/* Стиль для темной темы */
-body.dark-mode .side-nav {
-    background: rgba(0, 0, 0, 0.3);
+/* В темной теме буквы будут ярче */
+body.dark-mode .side-nav a {
+    background: rgba(255, 255, 255, 0.1);
+    color: #4fc3f7;
 }
 
-/* Прячем на узких экранах, если мешает */
-@media (max-width: 480px) {
+/* На мобилках делаем чуть компактнее, чтобы не перекрывать таблицу */
+@media (max-width: 600px) {
     .side-nav {
-        right: 4px;
-        padding: 4px 2px;
+        right: 5px;
+        padding: 8px 4px;
     }
     .side-nav a {
-        width: 22px;
-        height: 22px;
-        font-size: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
     }
 }
 
-      
 </style>
 
 </head>
@@ -637,15 +639,26 @@ function generateAlphabet() {
             link.href = "javascript:void(0)";
             link.innerText = firstLetter;
             link.onclick = () => {
-                story.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // Легкая подсветка цели
-                story.style.background = "var(--highlight)";
-                setTimeout(() => story.style.background = "", 1000);
-            };
-            sideNav.appendChild(link);
-        }
+                // Найди в коде генерации букв строку с scrollIntoView и замени на эту:
+link.onclick = () => {
+    // Вычисляем позицию с небольшим отступом сверху (например, 20px)
+    const offset = 20;
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = story.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
     });
-}
+
+    // Красивая подсветка
+    story.style.transition = "background 0.5s";
+    story.style.background = "rgba(255, 64, 129, 0.2)"; // Нежно-розовый под цвет конфетти
+    setTimeout(() => story.style.background = "", 1500);
+};
+
 
 // Запускаем генерацию после загрузки страницы
 window.addEventListener('DOMContentLoaded', generateAlphabet);
