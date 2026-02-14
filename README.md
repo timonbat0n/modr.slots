@@ -1,80 +1,100 @@
-<!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RC Slots Full Database - Sky Blue</title>
-    <style>
-        :root {
-            --bg-page: #e3f2fd;
-            --table-bg: #ffffff;
-            --text-main: #0d47a1;
-            --text-info: #546e7a;
-            --accent-blue: #0288d1;
-            --story-header: #bbdefb;
-            --btn-copy: #03a9f4;
-            --btn-hover: #0277bd;
-        }
+     <style>
+    :root {
+        --bg-page: #e3f2fd;
+        --table-bg: #ffffff;
+        --text-main: #0d47a1;
+        --text-info: #546e7a;
+        --accent-blue: #0288d1;
+        --story-header: #bbdefb;
+        --btn-copy: #03a9f4;
+        --btn-hover: #0277bd;
+    }
 
-        body { 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            background-color: var(--bg-page);
-            color: #2c3e50;
-            margin: 0; padding: 20px 10px;
-            display: flex; flex-direction: column; align-items: center;
-        }
+    body { 
+        font-family: 'Segoe UI', Roboto, sans-serif; 
+        background-color: var(--bg-page);
+        margin: 0; padding: 20px 10px;
+        display: flex; flex-direction: column; align-items: center;
+    }
 
-        .header-box { text-align: center; margin-bottom: 25px; }
-        .header-box h2 { color: #01579b; margin: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+    .table-container { 
+        width: 100%; max-width: 900px; 
+        background: var(--table-bg); border-radius: 15px; overflow: hidden; 
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
 
-        .search-wrapper { width: 100%; max-width: 900px; margin-bottom: 20px; }
-        #searchInput { 
-            width: 100%; padding: 15px; border: 2px solid #b3e5fc; border-radius: 12px; 
-            font-size: 16px; outline: none; transition: 0.3s; box-sizing: border-box;
-        }
+    /* ГЛАВНЫЙ СЕКРЕТ НЕПОДВИЖНОСТИ: */
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
+        table-layout: fixed; /* Обязательно! */
+    }
 
-        .table-container { 
-            width: 100%; max-width: 900px; 
-            background: var(--table-bg); border-radius: 15px; overflow: hidden; 
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        }
+    th, td { 
+        padding: 12px 8px; 
+        text-align: center; 
+        border-bottom: 1px solid #e3f2fd;
+        overflow: hidden; /* Чтобы текст не вылезал за границы */
+    }
 
-        /* ФИКСАЦИЯ ШИРИНЫ, ЧТОБЫ НЕ ПРЫГАЛО */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { background: #f0f7ff; padding: 15px; font-size: 0.85em; text-transform: uppercase; color: #0277bd; border-bottom: 2px solid #e1f5fe; }
-        td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #e3f2fd; font-size: 0.95em; word-wrap: break-word; }
+    /* Жесткая ширина столбцов */
+    th:nth-child(1), td:nth-child(1) { 
+        width: 100px; /* Фиксируем имя в пикселях, чтобы оно не дергалось */
+        font-weight: 700; 
+        color: var(--text-main);
+        white-space: nowrap; /* Имя в одну строку */
+        text-overflow: ellipsis;
+    }
 
-        /* РАСПРЕДЕЛЕНИЕ ШИРИНЫ: 20% - 60% - 20% */
-        th:nth-child(1), td:nth-child(1) { width: 20%; font-weight: 700; color: var(--text-main); }
-        th:nth-child(2), td:nth-child(2) { width: 60%; }
-        th:nth-child(3), td:nth-child(3) { width: 20%; }
+    th:nth-child(2), td:nth-child(2) { 
+        width: auto; /* Весь остальной простор отдаем коду */
+    }
 
-        .story-row { background: var(--story-header); }
-        .story-row td { text-align: left !important; padding: 12px 20px; color: #01579b; font-weight: 800; font-size: 1.05em; border-bottom: 2px solid #90caf9; }
+    th:nth-child(3), td:nth-child(3) { 
+        width: 120px; /* Фиксируем инфо-столбец */
+    }
 
-        .code-text { 
-            font-family: 'Consolas', monospace; color: #1a237e; word-break: break-all; 
-            font-weight: 600; display: block; margin-bottom: 8px; 
-            background: #f5faff; padding: 6px; border-radius: 4px; border: 1px solid #e1f5fe;
-        }
-        
-        .copy-btn {
-            background: var(--btn-copy); color: white; border: none; padding: 7px 15px; 
-            border-radius: 6px; cursor: pointer; font-size: 0.8em; font-weight: 600; transition: 0.2s;
-        }
-        .copy-btn:hover { background: var(--btn-hover); }
-        .copy-btn.copied { background: #4caf50; }
+    /* Стили для кода, чтобы он ломался внутри ячейки, а не распирал её */
+    .code-text { 
+        font-family: 'Consolas', monospace; 
+        font-size: 11px;
+        color: #1a237e; 
+        word-break: break-all; /* Разрывать код в любом месте */
+        display: block; 
+        background: #f5faff; 
+        padding: 4px; 
+        border: 1px solid #e1f5fe;
+        border-radius: 4px;
+        margin-bottom: 5px;
+    }
 
-        .info-txt { font-size: 0.85em; color: var(--text-info); font-style: italic; }
+    .story-row { background: var(--story-header); }
+    .story-row td { 
+        text-align: left !important; 
+        padding: 12px 20px; 
+        font-weight: 800; 
+        width: 100% !important; /* Заголовок на всю ширину */
+    }
 
-        .tg-wrapper { text-align: center; margin: 25px 0; }
-        .tg-minimal-btn {
-            display: inline-block; padding: 10px 40px; background-color: #f9f9f9; 
-            color: #1a1a1b !important; text-decoration: none; font-weight: 600;
-            border-radius: 4px; border: 2px solid #ADD8E6; transition: 0.2s;
-        }
-        .tg-minimal-btn:hover { background-color: #1a1a1b; color: #fff !important; }
-    </style>
+    .copy-btn {
+        width: 100%; /* Кнопка на всю ширину ячейки кода */
+        background: var(--btn-copy); color: white; border: none; 
+        padding: 5px; border-radius: 4px; cursor: pointer; font-size: 10px;
+    }
+
+    .info-txt { font-size: 11px; color: var(--text-info); }
+
+    /* Поиск без скачков */
+    tr { height: 60px; } /* Задаем фиксированную высоту строки */
+    tr.story-row { height: 45px; }
+</style>
+
 </head>
 <body>
 
