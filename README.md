@@ -4,123 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RC Slots Full Database - Sky Blue</title>
-      <style>
-        /* 1. ПЕРЕМЕННЫЕ (ROOT) */
+       <style>
         :root {
-            --bg-page: #f8fafc;
+            --bg-page: #e3f2fd;
             --table-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --accent: #0070f3;
-            --border-color: #e2e8f0;
-            --story-bg: #f1f5f9;
-            --font-main: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-            --font-mono: "SF Mono", "Monaco", "Consolas", monospace;
+            --text-main: #0d47a1;
+            --text-info: #546e7a;
+            --accent-blue: #0288d1;
+            --story-header: #bbdefb;
+            --btn-copy: #03a9f4;
+            --btn-hover: #0277bd;
+            --shadow: rgba(2, 136, 209, 0.15);
         }
 
-        /* 2. ОСНОВНОЙ СТИЛЬ (BODY) */
         body { 
-            font-family: var(--font-main); 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
             background-color: var(--bg-page);
-            color: var(--text-main);
-            margin: 0; padding: 20px 10px;
+            margin: 0; padding: 15px 10px;
             display: flex; flex-direction: column; align-items: center;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* ЗАГОЛОВОК */
-        .header-box { text-align: center; margin-bottom: 30px; }
+        .header-box { text-align: center; margin-bottom: 20px; }
         .header-box h2 { 
-            font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; 
-            margin: 0; color: var(--text-main);
+            color: #01579b; margin: 0; text-transform: uppercase; 
+            letter-spacing: 1.5px; font-weight: 800; font-size: 1.3em;
         }
 
-        /* ПОИСК */
+        /* ПОИСК КАК ТЫ ХОТЕЛ (КРАСИВЫЙ) */
         .search-wrapper { 
-            width: 100%; max-width: 800px; 
-            margin-bottom: 24px; position: relative; 
+            width: 100%; max-width: 900px; 
+            margin-bottom: 20px; position: relative; 
         }
 
         #searchInput { 
-            width: 100%; padding: 12px 16px 12px 44px; 
-            border: 1px solid var(--border-color); border-radius: 10px; 
-            font-size: 15px; background: #fff; outline: none;
-            transition: all 0.2s ease; box-sizing: border-box;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            width: 100%; padding: 14px 20px 14px 50px; 
+            border: 2px solid transparent; border-radius: 12px; 
+            font-size: 16px; background: #fff; color: #0d47a1;
+            box-shadow: 0 4px 15px var(--shadow);
+            outline: none; transition: 0.3s; box-sizing: border-box;
         }
 
         #searchInput:focus { 
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+            border-color: var(--accent-blue); 
+            box-shadow: 0 6px 20px rgba(2, 136, 209, 0.2);
         }
 
         .search-wrapper::before {
-            content: ""; position: absolute; left: 14px; top: 50%;
-            transform: translateY(-50%); width: 18px; height: 18px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
+            content: ""; position: absolute; left: 18px; top: 50%;
+            transform: translateY(-50%); width: 20px; height: 20px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
             z-index: 1; pointer-events: none;
         }
 
-        /* ТАБЛИЦА */
+        /* КНОПКА ОТПРАВИТЬ (ВЕРНУЛ) */
+        .tg-wrapper { text-align: center; margin-bottom: 20px; }
+        .tg-minimal-btn {
+            display: inline-block; padding: 10px 30px; background-color: #fff; 
+            color: #1a1a1b !important; text-decoration: none; font-weight: 600;
+            border-radius: 8px; border: 2px solid #ADD8E6; transition: 0.2s;
+        }
+        .tg-minimal-btn:hover { background-color: #1a1a1b; color: #fff !important; }
+
+        /* ТАБЛИЦА (ВЕРНУЛ СТИЛЬ) */
         .table-container { 
-            width: 100%; max-width: 800px; 
-            background: var(--table-bg); border-radius: 12px; 
-            border: 1px solid var(--border-color);
-            overflow: hidden; 
+            width: 100%; max-width: 900px; 
+            background: var(--table-bg); border-radius: 15px; overflow: hidden; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         }
 
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        table { 
+            width: 100%; border-collapse: collapse; 
+            table-layout: fixed; /* Чтобы не скакала ширина */
+        }
 
         th { 
-            background: #fafafa; padding: 12px; font-size: 11px; 
-            text-transform: uppercase; color: var(--text-muted); 
-            letter-spacing: 0.05em; border-bottom: 1px solid var(--border-color);
-            text-align: center;
+            background: #f0f7ff; padding: 12px; font-size: 0.8em; 
+            text-transform: uppercase; color: #0277bd; border-bottom: 2px solid #e1f5fe; 
         }
 
         td { 
-            padding: 12px 8px; text-align: center; 
-            border-bottom: 1px solid #f1f5f9; font-size: 14px; 
+            padding: 10px 8px; text-align: center; 
+            border-bottom: 1px solid #e3f2fd; font-size: 0.9em; 
             word-wrap: break-word; vertical-align: middle;
         }
 
-        /* Ширина колонок */
-        th:nth-child(1), td:nth-child(1) { width: 22%; font-weight: 600; }
+        /* Фикс ширины, чтобы не скакало */
+        th:nth-child(1), td:nth-child(1) { width: 22%; font-weight: 700; color: var(--text-main); }
         th:nth-child(2), td:nth-child(2) { width: 50%; }
         th:nth-child(3), td:nth-child(3) { width: 28%; }
 
-        /* Категория (История) */
-        .story-row { background: var(--story-bg); }
+        .story-row { background: var(--story-header); }
         .story-row td { 
-            text-align: left !important; padding: 8px 16px; 
-            color: var(--text-main); font-weight: 700; font-size: 13px; 
+            text-align: left !important; padding: 12px 20px; 
+            color: #01579b; font-weight: 800; font-size: 1em; 
         }
 
-        /* Ячейка кода */
         .code-text { 
-            font-family: var(--font-mono); color: #e11d48; 
-            background: #fff1f2; padding: 4px 6px; 
-            border-radius: 4px; font-size: 12px; 
-            display: block; margin-bottom: 6px;
-            border: 1px solid #ffe4e6;
+            font-family: 'Consolas', monospace; color: #1a237e; word-break: break-all; 
+            font-weight: 600; display: block; margin-bottom: 8px; 
+            background: #f5faff; padding: 6px; border-radius: 5px; border: 1px solid #e1f5fe;
+            font-size: 0.85em;
         }
         
         .copy-btn {
-            background: var(--text-main); color: white; border: none; 
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; 
-            font-size: 11px; font-weight: 500; transition: 0.2s;
-            width: 100%; max-width: 110px;
+            background: var(--btn-copy); color: white; border: none; padding: 7px 15px; 
+            border-radius: 6px; cursor: pointer; font-size: 0.75em; font-weight: 600; 
+            transition: 0.2s; width: 100%; max-width: 140px;
         }
+        .copy-btn:hover { background: var(--btn-hover); }
+        .copy-btn.copied { background: #4caf50; }
 
-        .copy-btn:active { transform: scale(0.96); }
+        .info-txt { font-size: 0.8em; color: var(--text-info); font-style: italic; }
 
-        .info-txt { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
-
+        /* Чтобы не нужно было уменьшать масштаб */
         @media (max-width: 600px) {
-            th:nth-child(1), td:nth-child(1) { width: 28%; }
-            th:nth-child(2), td:nth-child(2) { width: 44%; }
-            th:nth-child(3), td:nth-child(3) { width: 28%; }
-            td { font-size: 13px; }
+            td, th { font-size: 0.8em; padding: 8px 4px; }
+            .header-box h2 { font-size: 1.1em; }
+            .code-text { font-size: 0.75em; }
         }
     </style>
 
