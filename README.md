@@ -4,125 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RC Slots Full Database - Sky Blue</title>
-       <style>
-        :root {
-            --bg-page: #e3f2fd;
-            --table-bg: #ffffff;
-            --text-main: #0d47a1;
-            --text-info: #546e7a;
-            --accent-blue: #0288d1;
-            --story-header: #bbdefb;
-            --btn-copy: #03a9f4;
-            --btn-hover: #0277bd;
-            --shadow: rgba(2, 136, 209, 0.15);
-        }
+      <style>
+    :root {
+        --bg-page: #e3f2fd;
+        --table-bg: #ffffff;
+        --text-main: #0d47a1;
+        --text-info: #546e7a;
+        --accent-blue: #0288d1;
+        --story-header: #bbdefb;
+        --btn-copy: #03a9f4;
+        --btn-hover: #0277bd;
+        --shadow: rgba(2, 136, 209, 0.15);
+    }
 
-        body { 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            background-color: var(--bg-page);
-            margin: 0; padding: 15px 10px;
-            display: flex; flex-direction: column; align-items: center;
-        }
+    /* Базовые настройки страницы */
+    body { 
+        font-family: 'Segoe UI', Roboto, sans-serif; 
+        background-color: var(--bg-page);
+        margin: 0; padding: 15px 10px;
+        display: flex; flex-direction: column; align-items: center;
+        overflow-x: hidden; /* Чтобы страница не качалась влево-вправо */
+    }
 
-        .header-box { text-align: center; margin-bottom: 20px; }
-        .header-box h2 { 
-            color: #01579b; margin: 0; text-transform: uppercase; 
-            letter-spacing: 1.5px; font-weight: 800; font-size: 1.3em;
-        }
+    /* Заголовок */
+    .header-box { text-align: center; margin-bottom: 20px; }
+    .header-box h2 { 
+        color: #01579b; margin: 0; text-transform: uppercase; 
+        font-size: 1.2rem; font-weight: 800; letter-spacing: 1px;
+    }
 
-        /* ПОИСК КАК ТЫ ХОТЕЛ (КРАСИВЫЙ) */
-        .search-wrapper { 
-            width: 100%; max-width: 900px; 
-            margin-bottom: 20px; position: relative; 
-        }
+    /* Поле поиска */
+    .search-wrapper { 
+        width: 100%; max-width: 500px; 
+        margin-bottom: 20px; position: relative; 
+    }
+    #searchInput { 
+        width: 100%; padding: 12px 12px 12px 42px; 
+        border: 2px solid transparent; border-radius: 12px; 
+        font-size: 16px; background: #fff; color: var(--text-main);
+        box-shadow: 0 4px 15px var(--shadow);
+        outline: none; box-sizing: border-box; transition: 0.3s;
+    }
+    #searchInput:focus { border-color: var(--accent-blue); }
 
-        #searchInput { 
-            width: 100%; padding: 14px 20px 14px 50px; 
-            border: 2px solid transparent; border-radius: 12px; 
-            font-size: 16px; background: #fff; color: #0d47a1;
-            box-shadow: 0 4px 15px var(--shadow);
-            outline: none; transition: 0.3s; box-sizing: border-box;
-        }
+    .search-wrapper::before {
+        content: ""; position: absolute; left: 15px; top: 50%;
+        transform: translateY(-50%); width: 20px; height: 20px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
+        z-index: 1; pointer-events: none;
+    }
 
-        #searchInput:focus { 
-            border-color: var(--accent-blue); 
-            box-shadow: 0 6px 20px rgba(2, 136, 209, 0.2);
-        }
+    /* Кнопка ТГ */
+    .tg-wrapper { margin-bottom: 20px; }
+    .tg-minimal-btn {
+        display: inline-block; padding: 10px 25px; background: #fff;
+        color: #1a1a1b !important; text-decoration: none; font-weight: 600;
+        border-radius: 10px; border: 2px solid #ADD8E6; font-size: 14px;
+        box-shadow: 0 3px 10px var(--shadow);
+    }
 
-        .search-wrapper::before {
-            content: ""; position: absolute; left: 18px; top: 50%;
-            transform: translateY(-50%); width: 20px; height: 20px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
-            z-index: 1; pointer-events: none;
-        }
+    /* ТАБЛИЦА — ЖЕСТКИЙ МОНОЛИТ */
+    .table-container { 
+        width: 100%; max-width: 500px; 
+        background: var(--table-bg); border-radius: 15px; 
+        overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
 
-        /* КНОПКА ОТПРАВИТЬ (ВЕРНУЛ) */
-        .tg-wrapper { text-align: center; margin-bottom: 20px; }
-        .tg-minimal-btn {
-            display: inline-block; padding: 10px 30px; background-color: #fff; 
-            color: #1a1a1b !important; text-decoration: none; font-weight: 600;
-            border-radius: 8px; border: 2px solid #ADD8E6; transition: 0.2s;
-        }
-        .tg-minimal-btn:hover { background-color: #1a1a1b; color: #fff !important; }
+    table { 
+        width: 100%; border-collapse: collapse; 
+        table-layout: fixed; /* ГАРАНТИЯ: колонки не двигаются */
+    }
 
-        /* ТАБЛИЦА (ВЕРНУЛ СТИЛЬ) */
-        .table-container { 
-            width: 100%; max-width: 900px; 
-            background: var(--table-bg); border-radius: 15px; overflow: hidden; 
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        }
+    th, td { 
+        padding: 10px 5px; border-bottom: 1px solid #e3f2fd; 
+        vertical-align: middle; text-align: center;
+    }
 
-        table { 
-            width: 100%; border-collapse: collapse; 
-            table-layout: fixed; /* Чтобы не скакала ширина */
-        }
+    /* Распределение ширины: 25% | 50% | 25% */
+    th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; color: var(--text-main); font-size: 0.85rem; }
+    th:nth-child(2), td:nth-child(2) { width: 50%; }
+    th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 0.75rem; color: var(--text-info); }
 
-        th { 
-            background: #f0f7ff; padding: 12px; font-size: 0.8em; 
-            text-transform: uppercase; color: #0277bd; border-bottom: 2px solid #e1f5fe; 
-        }
+    /* Заголовки историй */
+    .story-row { background: var(--story-header); }
+    .story-row td { 
+        text-align: left !important; padding: 10px 15px; 
+        color: #01579b; font-weight: 800; font-size: 0.95rem;
+    }
 
-        td { 
-            padding: 10px 8px; text-align: center; 
-            border-bottom: 1px solid #e3f2fd; font-size: 0.9em; 
-            word-wrap: break-word; vertical-align: middle;
-        }
+    /* Код и Кнопка */
+    .code-text { 
+        font-family: monospace; color: #1a237e; 
+        word-break: break-all; /* Чтобы длинный код не растягивал таблицу */
+        font-weight: 600; display: block; margin-bottom: 6px; 
+        background: #f5faff; padding: 5px; border-radius: 5px; 
+        border: 1px solid #e1f5fe; font-size: 0.75rem;
+    }
+    
+    .copy-btn {
+        background: var(--btn-copy); color: white; border: none; 
+        padding: 6px 0; border-radius: 6px; cursor: pointer; 
+        font-size: 11px; font-weight: 600; width: 100%;
+        transition: 0.2s;
+    }
+    .copy-btn.copied { background: #4caf50; }
 
-        /* Фикс ширины, чтобы не скакало */
-        th:nth-child(1), td:nth-child(1) { width: 22%; font-weight: 700; color: var(--text-main); }
-        th:nth-child(2), td:nth-child(2) { width: 50%; }
-        th:nth-child(3), td:nth-child(3) { width: 28%; }
+    /* Адаптив для маленьких экранов */
+    @media (max-width: 400px) {
+        td, th { font-size: 0.75rem; padding: 8px 3px; }
+        .code-text { font-size: 0.7rem; }
+    }
+</style>
 
-        .story-row { background: var(--story-header); }
-        .story-row td { 
-            text-align: left !important; padding: 12px 20px; 
-            color: #01579b; font-weight: 800; font-size: 1em; 
-        }
-
-        .code-text { 
-            font-family: 'Consolas', monospace; color: #1a237e; word-break: break-all; 
-            font-weight: 600; display: block; margin-bottom: 8px; 
-            background: #f5faff; padding: 6px; border-radius: 5px; border: 1px solid #e1f5fe;
-            font-size: 0.85em;
-        }
-        
-        .copy-btn {
-            background: var(--btn-copy); color: white; border: none; padding: 7px 15px; 
-            border-radius: 6px; cursor: pointer; font-size: 0.75em; font-weight: 600; 
-            transition: 0.2s; width: 100%; max-width: 140px;
-        }
-        .copy-btn:hover { background: var(--btn-hover); }
-        .copy-btn.copied { background: #4caf50; }
-
-        .info-txt { font-size: 0.8em; color: var(--text-info); font-style: italic; }
-
-        /* Чтобы не нужно было уменьшать масштаб */
-        @media (max-width: 600px) {
-            td, th { font-size: 0.8em; padding: 8px 4px; }
-            .header-box h2 { font-size: 1.1em; }
-            .code-text { font-size: 0.75em; }
-        }
-    </style>
 
 
 </head>
