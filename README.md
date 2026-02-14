@@ -82,11 +82,52 @@
     <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск по персонажу 💙">
 </div>
 
-<div style="text-align: center; margin: 20px 0;">
+<style>
+    .tg-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .tg-link-btn {
+        display: inline-block;
+        padding: 12px 35px;
+        background-color: #2481cc; /* Цвет Telegram */
+        color: #ffffff !important;
+        text-decoration: none !important;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        font-size: 14px;
+        letter-spacing: 1px;
+        border-radius: 6px;
+        
+        /* Та самая обводка */
+        border: 2px solid #ffffff; 
+        
+        /* Тень и плавность */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .tg-link-btn:hover {
+        background-color: #ffffff;
+        color: #2481cc !important;
+        border-color: #2481cc;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .tg-link-btn:active {
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="tg-container">
     <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-link-btn">
-        TELEGRAM - отправить слоты
+        Отправить слоты для добавления💎
     </a>
 </div>
+
 
 <div class="table-container">
     <table id="mainTable">
