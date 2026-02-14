@@ -112,7 +112,6 @@
             <tr><td>Грант</td><td><span class="code-text">2437db5000468bea11082a9c22c91297</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм</td></tr>
             <tr><td>Саймон</td><td><span class="code-text">31b9101b1eda80857c3e10d178cdce09</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм</td></tr>
             <tr><td>Джаспер</td><td><span class="code-text">a51a6814eecd12487a2b65bb67563914</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм</td></tr>
-            <tr><td>Аш</td><td><span class="code-text">365a71d10df45dbc2368135630db129c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">аномалия</td></tr>
             <tr><td>Тристиан</td><td><span class="code-text">708d74362c9da48a0724eb5eb037b12a</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм</td></tr>
             <tr><td></td><td></td><td></td></tr>
 
@@ -169,6 +168,7 @@
             <tr class="story-row"><td colspan="3">Песнь о Красном Ниле</td></tr>
             <tr><td>Ливий</td><td><span class="code-text">d13d0007af972568f876507cf9af10a2</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">честность, некро</td></tr>
             <tr><td>Сет</td><td><span class="code-text">a0b719bc394314786f64253a8539cb30</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хитрость, некро</td></tr>
+             <tr><td>Аш</td><td><span class="code-text">365a71d10df45dbc2368135630db129c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt"></td></tr>
             <tr><td>Амен</td><td><span class="code-text">6cd61d7df682189d9911cadaf85c5482</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">честность, эпистат</td></tr>
             <tr><td>Анубис</td><td><span class="code-text">07642c99bee9f281d329174668b6fcf3</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">онейро</td></tr>
             <tr><td>Агния</td><td><span class="code-text">1a5d43b5329e3d65a596c04f241bcbd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хитрость</td></tr>
