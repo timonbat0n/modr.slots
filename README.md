@@ -188,6 +188,46 @@
     }
 
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
+    
+    
+        /* ЭФФЕКТЫ ПАСХАЛКИ */
+    body.easter-egg {
+        background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) !important;
+        background-size: 400% 400% !important;
+        animation: goldGradient 5s ease infinite !important;
+    }
+
+    body.easter-egg .table-container {
+        border: 3px solid #ffd700 !important;
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.6) !important;
+        transform: scale(1.02);
+        transition: all 0.5s;
+    }
+
+    body.easter-egg .copy-btn {
+        background: linear-gradient(to right, #bf953f, #aa771c) !important;
+        color: #000 !important;
+        font-weight: 900 !important;
+    }
+
+    @keyframes goldGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Анимация тряски для поиска при активации */
+    .shake {
+        animation: shakeAnim 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shakeAnim {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
 </style>
 
 </head>
@@ -414,26 +454,50 @@
 </div>
 <script>
 
-// 1. Поиск и подсветка
+// 1. ОСНОВНАЯ ФУНКЦИЯ: ПОИСК + ПОДСВЕТКА + ПАСХАЛКА
 function filterData() {
-    const filter = document.getElementById("searchInput").value.toLowerCase();
+    const inputField = document.getElementById("searchInput");
+    const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     let storyVisible = false;
 
+    // --- ПАСХАЛКА "MODR" ---
+    if (filter === 'modr') {
+        document.body.classList.add('easter-egg');
+        inputField.classList.add('shake');
+        setTimeout(() => {
+            document.body.classList.remove('easter-egg');
+            inputField.classList.remove('shake');
+        }, 5000);
+    }
+
+    // --- ЛОГИКА ФИЛЬТРАЦИИ ---
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
+        
         if (row.classList.contains('story-row')) {
+            // Проверяем, совпадает ли название истории
             storyVisible = row.innerText.toLowerCase().includes(filter);
             row.style.display = storyVisible ? "" : "none";
         } else {
             const nameCell = row.cells[0];
+            // Сохраняем оригинал имени, чтобы не плодить теги <mark>
             const original = nameCell.getAttribute("data-original") || nameCell.innerText;
             if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
 
             const match = original.toLowerCase().includes(filter);
+
             if (match || storyVisible) {
                 row.style.display = "";
-                nameCell.innerHTML = (match && filter) ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") : original;
+                // Подсветка текста без изменения размеров ячейки
+                if (match && filter !== "") {
+                    const regex = new RegExp(`(${filter})`, "gi");
+                    nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
+                } else {
+                    nameCell.innerHTML = original;
+                }
+                
+                // Всегда показываем заголовок истории, если найден герой внутри неё
                 let p = row.previousElementSibling;
                 while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
                 if(p) p.style.display = "";
@@ -444,50 +508,83 @@ function filterData() {
     }
 }
 
-// 2. Очистка поиска
+// 2. ОЧИСТКА ПОИСКА
 function clearInput() {
     const input = document.getElementById("searchInput");
     input.value = "";
-    filterData();
-    input.focus();
+    filterData(); // Сбросить таблицу
+    input.focus(); // Вернуть фокус
 }
 
-// 3. Копирование + Вибрация
+// 3. КОПИРОВАНИЕ + ВИБРООТКЛИК
 function copy(btn) {
     const text = btn.parentElement.querySelector('.code-text').innerText;
+    
     navigator.clipboard.writeText(text).then(() => {
-        if (window.navigator.vibrate) window.navigator.vibrate(25); // Микровибрация
-        const old = btn.innerText;
-        btn.innerText = "ГОТОВО ✓"; btn.classList.add('copied');
-        setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1000);
+        // Легкая вибрация (25мс)
+        if (window.navigator && window.navigator.vibrate) {
+            window.navigator.vibrate(25);
+        }
+
+        // Визуальная индикация на кнопке
+        const oldText = btn.innerText;
+        btn.innerText = "ГОТОВО ✓";
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+            btn.innerText = oldText;
+            btn.classList.remove('copied');
+        }, 1200);
+    }).catch(err => {
+        console.error('Ошибка копирования: ', err);
     });
 }
 
-// 4. Темы
+// 4. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
 function toggleTheme() {
     document.body.classList.toggle("dark-mode");
     const isDark = document.body.classList.contains("dark-mode");
     document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
     localStorage.setItem("theme", isDark ? "dark" : "light");
 }
+
+// Проверка сохраненной темы при загрузке
 if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark-mode");
-    document.getElementById("themeBtn").innerText = "☀️";
+    const btn = document.getElementById("themeBtn");
+    if(btn) btn.innerText = "☀️";
 }
 
-// 5. Кнопка Наверх + Скрытие клавиатуры
+// 5. СКРОЛЛ: КНОПКА "НАВЕРХ" И СКРЫТИЕ КЛАВИАТУРЫ
 window.onscroll = function() {
-    // Показываем кнопку "Наверх"
-    document.getElementById("backToTop").style.display = (window.scrollY > 300) ? "block" : "none";
+    const topBtn = document.getElementById("backToTop");
+    if (topBtn) {
+        topBtn.style.display = (window.scrollY > 300) ? "block" : "none";
+    }
     
-    // Прячем клавиатуру при скролле (удобно для мобилок)
-    if(document.activeElement.tagName === 'INPUT') document.activeElement.blur();
+    // Скрываем клавиатуру при скролле, чтобы не мешала обзору
+    if(document.activeElement.tagName === 'INPUT') {
+        document.activeElement.blur();
+    }
 };
-function topFunction() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 
-// 6. Динамический заголовок вкладки
+function topFunction() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 6. ДИНАМИЧЕСКИЙ ЗАГОЛОВОК (ВКЛАДКА)
 window.onblur = () => document.title = "Жду тебя! 💎";
-window.onfocus = () => document.title = "modr.slots";
+window.onfocus = () => document.title = "RC Slots - База";
+
+// 7. АВТОФОКУС ПРИ ЗАГРУЗКЕ (ДЛЯ ДЕСКТОПА)
+window.addEventListener('DOMContentLoaded', () => {
+    // Небольшая задержка для плавности
+    setTimeout(() => {
+        const input = document.getElementById('searchInput');
+        if (input && window.innerWidth > 768) input.focus();
+    }, 500);
+});
+
 
 </script>
 <div class="footer-text">modr. x timon.</div>
