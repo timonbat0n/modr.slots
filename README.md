@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RC Slots Full Database - Sky Blue</title>
       <style>
-    :root {
+       :root {
+        /* Светлая тема (стандарт) */
         --bg-page: #e3f2fd;
         --table-bg: #ffffff;
         --text-main: #0d47a1;
@@ -15,7 +16,56 @@
         --btn-copy: #03a9f4;
         --btn-hover: #0277bd;
         --shadow: rgba(2, 136, 209, 0.15);
+        --border-table: #e3f2fd;
+        --code-bg: #f5faff;
+         --highlight: #ffeb3b; /* Яркий желтый для светлой темы */
+        --highlight-text: #000000;
     }
+
+    /* Цвета для тёмной темы */
+    body.dark-mode {
+        --bg-page: #0f172a; /* Глубокий полночный синий */
+        --table-bg: #1e293b; /* Графитовый */
+        --text-main: #f1f5f9; /* Почти белый */
+        --text-info: #94a3b8;
+        --accent-blue: #38bdf8;
+        --story-header: #334155; /* Тёмно-серый заголовок */
+        --btn-copy: #0ea5e9;
+        --btn-hover: #0288d1;
+        --shadow: rgba(0, 0, 0, 0.4);
+        --border-table: #334155;
+        --code-bg: #0f172a;
+     --highlight: #facc15; /* Золотистый для темной темы */
+        --highlight-text: #000000;
+
+  mark {
+        background-color: var(--highlight);
+        color: var(--highlight-text);
+        border-radius: 2px;
+        padding: 0 2px;
+    }
+
+    /* Кнопка переключения темы */
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--table-bg);
+        border: 2px solid var(--accent-blue);
+        color: var(--accent-blue);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 10px var(--shadow);
+        z-index: 1000;
+        transition: 0.3s;
+    }
+
 
     /* Базовые настройки страницы */
     body { 
@@ -114,12 +164,61 @@
         td, th { font-size: 0.75rem; padding: 8px 3px; }
         .code-text { font-size: 0.7rem; }
     }
+
+    /* Кнопка "Наверх" */
+    #backToTop {
+        display: none; /* По умолчанию скрыта */
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: var(--accent-blue);
+        color: white;
+        cursor: pointer;
+        padding: 12px;
+        border-radius: 50%; /* Круглая кнопка */
+        width: 45px;
+        height: 45px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+
+    #backToTop:hover {
+        background-color: var(--btn-hover);
+        transform: scale(1.1);
+    }
+
+    /* Иконка стрелочки внутри кнопки */
+    #backToTop::after {
+        content: "↑";
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .footer-text {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        font-size: 0.75rem;
+        color: #94a3b8; /* Мягкий серый цвет */
+        text-align: center;
+        letter-spacing: 1px;
+        text-transform: lowercase;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+
 </style>
 
 
 
 </head>
 <body>
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+
+
+<button onclick="topFunction()" id="backToTop" title="Наверх"></button>
 
 <div class="header-box">
     <h2>ПОЛНАЯ БАЗА СЛОТОВ MODR.💎</h2>
@@ -340,48 +439,60 @@
 
 <script>
 function filterData() {
-    // 1. Берем фразу из поиска
     const input = document.getElementById("searchInput");
     const filter = input.value.toLowerCase();
-    
-    // 2. Находим таблицу и все её строки
-    // Используем селектор tr, чтобы захватить и заголовки, и фаворитов
-    const rows = document.querySelectorAll("table tr");
+    const rows = document.getElementById("mainTable").querySelectorAll("tr:not(.story-row):not(thead tr)");
+    const headers = document.getElementById("mainTable").querySelectorAll(".story-row");
 
-    let lastStoryRow = null; // Здесь храним текущую синюю строку истории
-    let storyMatch = false;  // Флаг: подходит ли название истории под поиск
+    // Сначала обрабатываем обычные строки
+    rows.forEach(row => {
+        const nameCell = row.cells[0]; // Ячейка с именем героя
+        const originalText = nameCell.getAttribute("data-original") || nameCell.innerText;
+        
+        // Сохраняем оригинал, чтобы не портить текст при удалении символов из поиска
+        if (!nameCell.hasAttribute("data-original")) {
+            nameCell.setAttribute("data-original", originalText);
+        }
 
-    // Проходим по всем строкам, пропуская первую (шапку Фаворит/Код/Инфо)
-    for (let i = 1; i < rows.length; i++) {
-        const row = rows[i];
+        if (filter === "") {
+            nameCell.innerHTML = originalText;
+            row.style.display = "";
+        } else if (originalText.toLowerCase().includes(filter)) {
+            // Создаем подсветку через регулярное выражение (регистронезависимо)
+            const regex = new RegExp(`(${filter})`, "gi");
+            nameCell.innerHTML = originalText.replace(regex, "<mark>$1</mark>");
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
 
-        // ПРОВЕРКА: Это строка с названием истории? (у тебя это класс .story-row)
+    // Логика отображения заголовков историй
+    let lastHeader = null;
+    let hasVisibleRows = false;
+    const allRows = document.getElementById("mainTable").querySelectorAll("tr");
+
+    for (let i = 1; i < allRows.length; i++) {
+        const row = allRows[i];
         if (row.classList.contains('story-row')) {
-            lastStoryRow = row;
-            // Проверяем, совпадает ли название истории с поиском
-            storyMatch = row.innerText.toLowerCase().includes(filter);
-            
-            // По умолчанию скрываем, покажем позже если внутри есть фаворит или само название совпало
-            row.style.display = storyMatch ? "" : "none";
-        } 
-        else {
-            // Это обычная строка с фаворитом
-            const textContent = row.innerText.toLowerCase();
-            const rowMatches = textContent.includes(filter);
-
-            // Показываем, если совпало имя/инфо ИЛИ если совпало название всей истории
-            if (rowMatches || storyMatch) {
+            if (lastHeader && !hasVisibleRows) lastHeader.style.display = "none";
+            lastHeader = row;
+            hasVisibleRows = false;
+            // Если само название истории совпадает с фильтром - показываем всё в ней
+            if (row.innerText.toLowerCase().includes(filter)) {
                 row.style.display = "";
-                // Если нашелся фаворит, показываем заголовок его истории (синюю строку)
-                if (lastStoryRow) {
-                    lastStoryRow.style.display = "";
-                }
-            } else {
-                row.style.display = "none";
+                hasVisibleRows = true; 
+            }
+        } else {
+            if (row.style.display === "") {
+                hasVisibleRows = true;
+                if (lastHeader) lastHeader.style.display = "";
             }
         }
     }
+    if (lastHeader && !hasVisibleRows) lastHeader.style.display = "none";
 }
+
 
 // 2. Функция КОПИРОВАНИЯ (исправленная)
 function copy(btn) {
@@ -405,9 +516,53 @@ function copy(btn) {
         alert('Не удалось скопировать. Попробуй еще раз.');
     });
 }
-</script>
+// Получаем кнопку
+let mybutton = document.getElementById("backToTop");
+
+// Когда пользователь скроллит вниз на 300px, показываем кнопку
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+}
+
+// Когда пользователь нажимает, плавно летим наверх
+function topFunction() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+
+function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById("themeBtn");
+    
+    body.classList.toggle("dark-mode");
+    
+    if (body.classList.contains("dark-mode")) {
+        btn.innerText = "☀️"; // Меняем на солнце, когда темно
+        localStorage.setItem("theme", "dark");
+    } else {
+        btn.innerText = "🌙"; // Меняем на луну, когда светло
+        localStorage.setItem("theme", "light");
+    }
+}
+
+// Сохраняем выбор пользователя после перезагрузки
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    document.getElementById("themeBtn").innerText = "☀️";
+}
+
 </script>
 
+<div class="footer-text">modr. x timon.</div>
 
 </body>
 </html>
