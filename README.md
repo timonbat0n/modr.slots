@@ -54,15 +54,23 @@
     }
 
     /* 2. БАЗОВЫЕ НАСТРОЙКИ */
-    body { 
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
-        background-color: var(--bg-page);
-        color: var(--text-main);
-        margin: 0; padding: 15px 10px;
-        display: flex; flex-direction: column; align-items: center;
-        transition: background-color 0.3s;
-        overflow-x: hidden;
-    }
+    body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #0f172a; /* Глубокий темный */
+    /* Мягкий узор из точек */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 25px 25px;
+    background-attachment: fixed;
+    
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
 table {
     animation: fadeIn 0.8s ease-in-out;
 }
