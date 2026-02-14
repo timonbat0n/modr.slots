@@ -456,7 +456,7 @@ function filterData() {
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     
     // ПРОВЕРКА ПАСХАЛКИ (Активируется при вводе "modr")
-    if (filter === "Ира") {
+    if (filter === "Ирина" or "Тимон") {
         document.body.classList.add('gold-mode');
         inputField.classList.add('shake');
         setTimeout(() => {
