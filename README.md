@@ -325,42 +325,68 @@
 
 
 <script>
-    function copy(btn) {
-        const text = btn.previousElementSibling.innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            const originalText = btn.innerText;
-            btn.innerText = "Скопировано!";
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.classList.remove('copied');
-            }, 1200);
-        });
-    }
 
-    function filterData() {
-        const input = document.getElementById("searchInput").value.toLowerCase();
-        const rows = document.getElementById("mainTable").getElementsByTagName("tr");
-        let lastStoryRow = null;
-        let storyHasMatch = false;
+function smartSearch() {
+    // 1. Получаем фразу из твоего поля поиска
+    const input = document.getElementById("searchInput");
+    const filter = input.value.toLowerCase();
+    
+    // 2. Получаем таблицу и все её строки
+    const table = document.getElementById("mainTable");
+    const tr = table.getElementsByTagName("tr");
 
-        for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
-            if (row.classList.contains('story-row')) {
-                if (lastStoryRow) lastStoryRow.style.display = storyHasMatch ? "" : "none";
-                lastStoryRow = row; storyHasMatch = false;
+    let lastHeader = null; // Здесь будем хранить последний встреченный заголовок истории
+    let headerMatches = false; // Флаг: подходит ли название истории под поиск
+
+    // Цикл по всем строкам (пропускаем i=0, так как там шапка Фаворит/Код/Инфо)
+    for (let i = 1; i < tr.length; i++) {
+        const row = tr[i];
+
+        // Проверяем, заголовок ли это истории (твой класс story-header)
+        if (row.classList.contains('story-header')) {
+            lastHeader = row;
+            // Проверяем, есть ли поисковый запрос в названии истории
+            headerMatches = row.innerText.toLowerCase().includes(filter);
+            
+            // Сначала скрываем заголовок (покажем позже, если нужно)
+            row.style.display = headerMatches ? "" : "none";
+        } 
+        else {
+            // Это обычная строка с фаворитом
+            const rowText = row.innerText.toLowerCase();
+            const rowMatches = rowText.includes(filter);
+
+            // ЛОГИКА: Показываем строку, если:
+            // - Совпало название истории (headerMatches)
+            // - ИЛИ совпало имя фаворита/информация (rowMatches)
+            if (rowMatches || headerMatches) {
+                row.style.display = "";
+                // Если нашелся фаворит, принудительно показываем заголовок его истории
+                if (lastHeader) {
+                    lastHeader.style.display = "";
+                }
+            } else {
                 row.style.display = "none";
-                continue;
             }
-            const text = row.innerText.toLowerCase();
-            if (text.includes(input)) {
-                row.style.display = ""; storyHasMatch = true;
-                if (lastStoryRow) lastStoryRow.style.display = "";
-            } else { row.style.display = "none"; }
         }
-        if (lastStoryRow) lastStoryRow.style.display = storyHasMatch ? "" : "none";
     }
+}
+
+// На всякий случай обновленная функция копирования под твой дизайн
+function copy(btn) {
+    const code = btn.previousElementSibling.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = "OK!";
+        btn.style.color = "#27ae60"; // Зеленый текст при успехе
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.color = "";
+        }, 1000);
+    });
+}
 </script>
+
 
 </body>
 </html>
