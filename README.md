@@ -412,22 +412,29 @@ function filterData() {
     }
 }
 
-// Функция копирования (под твой стиль)
-function copyCode(btn) {
-    const codeSpan = btn.parentElement.querySelector('.code-text');
-    const code = codeSpan.innerText;
+// 2. Функция КОПИРОВАНИЯ (исправленная)
+function copy(btn) {
+    // Ищем элемент с классом .code-text внутри той же ячейки, где кнопка
+    const codeElement = btn.parentElement.querySelector('.code-text');
+    const textToCopy = codeElement.innerText;
 
-    navigator.clipboard.writeText(code).then(() => {
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        // Эффект на кнопке
         const originalText = btn.innerText;
-        btn.innerText = "СКОПИРОВАНО!";
+        btn.innerText = "ГОТОВО ✓";
         btn.classList.add('copied');
         
+        // Возвращаем всё назад через секунду
         setTimeout(() => {
             btn.innerText = originalText;
             btn.classList.remove('copied');
-        }, 1200);
+        }, 1000);
+    }).catch(err => {
+        console.error('Ошибка копирования: ', err);
+        alert('Не удалось скопировать. Попробуй еще раз.');
     });
 }
+</script>
 </script>
 
 
