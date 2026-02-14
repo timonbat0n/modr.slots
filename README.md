@@ -79,7 +79,7 @@
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск по персонажу 💙">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск по персонажу или истоии💎...">
 </div>
 
 <style>
