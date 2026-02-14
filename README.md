@@ -480,6 +480,8 @@ function copy(btn) {
         btn.classList.add('copied');
         setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1000);
     });
+    if (window.navigator.vibrate) window.navigator.vibrate(20);
+
 }
 
 // ТЕМЫ
@@ -521,6 +523,14 @@ function clearInput() {
         // Возвращаем чистый текст без тегов
         nameCell.innerHTML = original;
     }
+window.onload = () => document.getElementById('searchInput').focus();
+
+window.onblur = () => document.title = "Жду тебя)";
+window.onfocus = () => document.title = "modr.slots";
+
+window.addEventListener('scroll', () => {
+    if(document.activeElement.tagName === 'INPUT') document.activeElement.blur();
+}, {passive: true});
 
 </script>
 
