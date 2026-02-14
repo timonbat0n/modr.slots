@@ -3,7 +3,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<div id="sideNav" class="side-nav"></div>
+<div id="sideNav" class="side-nav hidden">
+    <div id="navToggle" class="nav-toggle" onclick="toggleNav(event)">‹</div>
+    </div>
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -194,80 +197,71 @@
 
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
     
-/* Алфавитная панель */
-/* Узкая алфавитная панель */
+/* Основной контейнер панели */
 .side-nav {
     position: fixed;
-    right: 5px; /* Прижали ближе к краю */
+    right: 0; /* Прижата к самому краю */
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 4px; /* Уменьшили расстояние между буквами */
+    gap: 4px;
     z-index: 1000;
-    background: rgba(2, 136, 209, 0.1);
-    backdrop-filter: blur(8px);
-    padding: 6px 3px; /* МИНИМАЛЬНАЯ ширина контейнера */
-    border-radius: 10px;
-    max-height: 90vh;
-    overflow-y: auto;
+    background: rgba(2, 136, 209, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 15px 5px;
+    border-radius: 15px 0 0 15px; /* Скругление только слева */
     border: 1px solid rgba(2, 136, 209, 0.2);
-    transition: opacity 0.3s;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Плавный выезд */
 }
 
+/* Состояние "Спрятана" */
+.side-nav.hidden {
+    transform: translateY(-50%) translateX(100%); /* Уезжает вправо */
+}
+
+/* Стрелка-язычок */
+.nav-toggle {
+    position: absolute;
+    left: -30px; /* Выступает за пределы панели */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 60px;
+    background: rgba(2, 136, 209, 0.8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 15px 0 0 15px;
+    font-size: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.side-nav.hidden .nav-toggle {
+    left: -35px; /* Чуть сильнее выпирает, когда скрыта */
+}
+
+/* Меняем направление стрелки */
+.nav-toggle::after { content: '›'; }
+.side-nav.hidden .nav-toggle::after { content: '‹'; }
+
+/* Буквы внутри */
 .side-nav a {
     text-decoration: none;
     color: #0288d1;
     font-weight: 900;
-    font-size: 16px; /* Чуть уменьшили шрифт для компактности */
-    width: 32px;      /* СУЗИЛИ кнопку (было 42) */
-    height: 36px;     /* Сделали чуть вытянутой */
+    font-size: 16px;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.7);
-    transition: all 0.2s ease;
-}
-
-/* Эффект при наведении теперь не такой агрессивный */
-.side-nav a:hover {
-    background: #ff4081;
-    color: white !important;
-    transform: scale(1.1) translateX(-3px); /* Сдвигается чуть влево при наведении */
-}
-
-/* Скрываем полосу прокрутки внутри панели, если букв слишком много */
-.side-nav::-webkit-scrollbar {
-    width: 0px;
-}
-
-
-.side-nav a:hover {
-    background: #ff4081;
-    color: white !important;
-    transform: scale(1.2);
-}
-
-body.dark-mode .side-nav a {
-    background: rgba(255, 255, 255, 0.1);
-    color: #4fc3f7;
-}
-
-/* Эффект тряски */
-.shake { animation: shake 0.5s; }
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-/* Липкие заголовки */
-.story-row {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    background: var(--accent-blue);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2px;
 }
 
 
@@ -662,6 +656,54 @@ window.addEventListener('DOMContentLoaded', () => {
     // Динамический заголовок вкладки
     window.onblur = () => document.title = "Жду тебя! 💎";
     window.onfocus = () => document.title = "RC Slots - База";
+
+// Функция открытия/закрытия панели
+function toggleNav(event) {
+    if (event) event.stopPropagation(); // Чтобы клик по стрелке не считался кликом по экрану
+    const nav = document.getElementById('sideNav');
+    nav.classList.toggle('hidden');
+}
+
+// Закрытие при клике в любое место экрана
+document.addEventListener('click', (event) => {
+    const nav = document.getElementById('sideNav');
+    const isClickInside = nav.contains(event.target);
+
+    // Если панель открыта и клик был НЕ по ней — закрываем
+    if (!isClickInside && !nav.classList.contains('hidden')) {
+        nav.classList.add('hidden');
+    }
+});
+
+// Обнови функцию генерации алфавита (добавь stopPropagation)
+function generateAlphabet() {
+    const sideNav = document.getElementById('sideNav');
+    if (!sideNav) return;
+    
+    const stories = document.querySelectorAll('.story-row');
+    const letters = new Set();
+    
+    // Очищаем всё, кроме кнопки-стрелки
+    const toggleBtn = document.getElementById('navToggle');
+    sideNav.innerHTML = '';
+    if (toggleBtn) sideNav.appendChild(toggleBtn);
+
+    stories.forEach(story => {
+        const firstLetter = story.innerText.trim()[0].toUpperCase();
+        if (firstLetter && !letters.has(firstLetter)) {
+            letters.add(firstLetter);
+            const link = document.createElement('a');
+            link.href = "javascript:void(0)";
+            link.innerText = firstLetter;
+            link.onclick = (e) => {
+                e.stopPropagation(); // Предотвращаем закрытие при выборе буквы
+                story.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+            sideNav.appendChild(link);
+        }
+    });
+}
+
 });
 
 
