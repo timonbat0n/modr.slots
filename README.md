@@ -492,14 +492,39 @@
 
 </div>
 <script>
-// 1. ГЕНЕРАЦИЯ АЛФАВИТА (Создает кнопки справа)
+// === 1. ГЕНЕРАЦИЯ АЛФАВИТА И УПРАВЛЕНИЕ ПАНЕЛЬЮ ===
+
+// Открытие/закрытие панели по клику на стрелку
+function toggleNav(event) {
+    if (event) event.stopPropagation(); 
+    const nav = document.getElementById('sideNav');
+    nav.classList.toggle('hidden');
+}
+
+// Закрытие панели при клике в любое место экрана
+document.addEventListener('click', (event) => {
+    const nav = document.getElementById('sideNav');
+    if (nav && !nav.contains(event.target) && !nav.classList.contains('hidden')) {
+        nav.classList.add('hidden');
+    }
+});
+
+// Автоматическое создание букв на основе заголовков историй
 function generateAlphabet() {
-    const sideNav = document.getElementById('sideNav');
-    if (!sideNav) return;
+    const nav = document.getElementById('sideNav');
+    if (!nav) return;
+
+    // Находим или создаем контейнер для букв (чтобы не удалить стрелку)
+    let container = document.getElementById('lettersContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'lettersContainer';
+        nav.appendChild(container);
+    }
     
     const stories = document.querySelectorAll('.story-row');
     const letters = new Set();
-    sideNav.innerHTML = ''; 
+    container.innerHTML = ''; 
 
     stories.forEach(story => {
         const firstLetter = story.innerText.trim()[0].toUpperCase();
@@ -508,44 +533,44 @@ function generateAlphabet() {
             const link = document.createElement('a');
             link.href = "javascript:void(0)";
             link.innerText = firstLetter;
-            link.onclick = () => {
-                const offset = 20; // Отступ сверху
+            link.onclick = (e) => {
+                e.stopPropagation(); // Чтобы панель не закрылась мгновенно
+                const offset = 20;
                 const elementPosition = story.getBoundingClientRect().top + window.pageYOffset;
                 window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
                 
-                // Эффект вспышки при переходе
+                // Эффект выделения истории
                 story.style.transition = "background 0.5s";
                 story.style.background = "rgba(255, 64, 129, 0.3)";
                 setTimeout(() => story.style.background = "", 1000);
             };
-            sideNav.appendChild(link);
+            container.appendChild(link);
         }
     });
 }
 
-// 2. ОСНОВНОЙ ПОИСК + ПАСХАЛКА
+// === 2. ПОИСК И ПАСХАЛКИ ===
+
 function filterData() {
     const inputField = document.getElementById("searchInput");
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
-    const sideNav = document.getElementById('sideNav');
+    const nav = document.getElementById('sideNav');
 
-    // Прячем алфавит, когда человек начинает писать в поиске
-    if (sideNav) {
-        sideNav.style.opacity = filter ? "0" : "1";
-        sideNav.style.pointerEvents = filter ? "none" : "auto";
+    // Скрываем всю панель, если начат поиск
+    if (nav) {
+        nav.style.opacity = filter ? "0" : "1";
+        nav.style.pointerEvents = filter ? "none" : "auto";
     }
 
     // ЛОГИКА ПАСХАЛКИ
     const triggerWords = ["modr", "ирина"];
     if (triggerWords.includes(filter)) {
-        // Запуск конфетти (если библиотека подключена в head)
         if (typeof confetti === 'function') {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4081', '#ffffff', '#0288d1'] });
         }
-        
         inputField.classList.add('shake');
-        
+
         for (let i = 1; i < tr.length; i++) {
             tr[i].style.display = ""; 
             if (!tr[i].classList.contains('story-row')) {
@@ -555,10 +580,9 @@ function filterData() {
                 }
                 nameCell.innerHTML = "Люблю вас! ❤️";
                 nameCell.style.color = "#ff4081";
+                nameCell.style.fontWeight = "bold";
             }
         }
-        
-        // Через 4 секунды возвращаем всё как было
         setTimeout(() => {
             inputField.classList.remove('shake');
             clearInput(); 
@@ -566,7 +590,7 @@ function filterData() {
         return;
     }
 
-    // ОБЫЧНАЯ ФИЛЬТРАЦИЯ ТАБЛИЦЫ
+    // ОБЫЧНЫЙ ПОИСК
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
@@ -581,12 +605,10 @@ function filterData() {
             const match = original.toLowerCase().includes(filter);
             if (match || storyVisible) {
                 row.style.display = "";
-                // Подсветка совпадений
                 nameCell.innerHTML = (match && filter !== "") 
                     ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") 
                     : original;
                 
-                // Показываем заголовок истории для этого героя
                 let p = row.previousElementSibling;
                 while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
                 if(p) p.style.display = "";
@@ -597,27 +619,25 @@ function filterData() {
     }
 }
 
-// 3. ОЧИСТКА ПОИСКА
+// === 3. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
+
 function clearInput() {
     const input = document.getElementById("searchInput");
     if (input) {
         input.value = "";
-        
-        // Восстанавливаем оригинальные имена в таблице
         const cells = document.querySelectorAll('td');
         cells.forEach(cell => {
             if (cell.hasAttribute("data-original")) {
                 cell.innerHTML = cell.getAttribute("data-original");
                 cell.style.color = "";
+                cell.style.fontWeight = "";
             }
         });
-        
-        filterData(); // Сбрасываем фильтры
+        filterData();
         input.focus();
     }
 }
 
-// 4. КОПИРОВАНИЕ
 function copy(btn) {
     const text = btn.parentElement.querySelector('.code-text').innerText;
     navigator.clipboard.writeText(text).then(() => {
@@ -632,7 +652,6 @@ function copy(btn) {
     });
 }
 
-// 5. ТЕМНАЯ ТЕМА
 function toggleTheme() {
     document.body.classList.toggle("dark-mode");
     const isDark = document.body.classList.contains("dark-mode");
@@ -641,71 +660,22 @@ function toggleTheme() {
     if (btn) btn.innerText = isDark ? "☀️" : "🌙";
 }
 
-// 6. ЗАПУСК ВСЕГО ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+// === 4. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ===
+
 window.addEventListener('DOMContentLoaded', () => {
-    // Генерируем буквы
     generateAlphabet();
     
-    // Проверяем сохраненную тему
+    // Загрузка темы
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
         const btn = document.getElementById("themeBtn");
         if (btn) btn.innerText = "☀️";
     }
     
-    // Динамический заголовок вкладки
+    // Заголовки вкладки
     window.onblur = () => document.title = "Жду тебя! 💎";
     window.onfocus = () => document.title = "RC Slots - База";
-
-// Функция открытия/закрытия панели
-function toggleNav(event) {
-    if (event) event.stopPropagation(); // Чтобы клик по стрелке не считался кликом по экрану
-    const nav = document.getElementById('sideNav');
-    nav.classList.toggle('hidden');
-}
-
-// Закрытие при клике в любое место экрана
-document.addEventListener('click', (event) => {
-    const nav = document.getElementById('sideNav');
-    const isClickInside = nav.contains(event.target);
-
-    // Если панель открыта и клик был НЕ по ней — закрываем
-    if (!isClickInside && !nav.classList.contains('hidden')) {
-        nav.classList.add('hidden');
-    }
 });
-
-// Обнови функцию генерации алфавита (добавь stopPropagation)
-function generateAlphabet() {
-    const sideNav = document.getElementById('sideNav');
-    if (!sideNav) return;
-    
-    const stories = document.querySelectorAll('.story-row');
-    const letters = new Set();
-    
-    // Очищаем всё, кроме кнопки-стрелки
-    const toggleBtn = document.getElementById('navToggle');
-    sideNav.innerHTML = '';
-    if (toggleBtn) sideNav.appendChild(toggleBtn);
-
-    stories.forEach(story => {
-        const firstLetter = story.innerText.trim()[0].toUpperCase();
-        if (firstLetter && !letters.has(firstLetter)) {
-            letters.add(firstLetter);
-            const link = document.createElement('a');
-            link.href = "javascript:void(0)";
-            link.innerText = firstLetter;
-            link.onclick = (e) => {
-                e.stopPropagation(); // Предотвращаем закрытие при выборе буквы
-                story.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            };
-            sideNav.appendChild(link);
-        }
-    });
-}
-
-});
-
 
 </script>
 <div class="footer-text">modr. x timon.</div>
