@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -31,7 +32,6 @@
             width: 100%; padding: 15px; border: 2px solid #b3e5fc; border-radius: 12px; 
             font-size: 16px; outline: none; transition: 0.3s; box-sizing: border-box;
         }
-        #searchInput:focus { border-color: var(--accent-blue); box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2); }
 
         .table-container { 
             width: 100%; max-width: 900px; 
@@ -39,24 +39,23 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         }
 
-        /* ИСПРАВЛЕНИЕ: Фиксированная раскладка, чтобы не скакало */
+        /* ФИКСАЦИЯ ШИРИНЫ, ЧТОБЫ НЕ ПРЫГАЛО */
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         th { background: #f0f7ff; padding: 15px; font-size: 0.85em; text-transform: uppercase; color: #0277bd; border-bottom: 2px solid #e1f5fe; }
         td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #e3f2fd; font-size: 0.95em; word-wrap: break-word; }
 
-        /* ИСПРАВЛЕНИЕ: Настройка ширины (Средний — самый широкий) */
+        /* РАСПРЕДЕЛЕНИЕ ШИРИНЫ: 20% - 60% - 20% */
         th:nth-child(1), td:nth-child(1) { width: 20%; font-weight: 700; color: var(--text-main); }
         th:nth-child(2), td:nth-child(2) { width: 60%; }
         th:nth-child(3), td:nth-child(3) { width: 20%; }
 
         .story-row { background: var(--story-header); }
-        .story-row td { text-align: left; padding: 12px 20px; color: #01579b; font-weight: 800; font-size: 1.05em; border-bottom: 2px solid #90caf9; width: 100% !important; }
+        .story-row td { text-align: left !important; padding: 12px 20px; color: #01579b; font-weight: 800; font-size: 1.05em; border-bottom: 2px solid #90caf9; }
 
         .code-text { 
             font-family: 'Consolas', monospace; color: #1a237e; word-break: break-all; 
             font-weight: 600; display: block; margin-bottom: 8px; 
             background: #f5faff; padding: 6px; border-radius: 4px; border: 1px solid #e1f5fe;
-            font-size: 0.85em;
         }
         
         .copy-btn {
@@ -66,14 +65,15 @@
         .copy-btn:hover { background: var(--btn-hover); }
         .copy-btn.copied { background: #4caf50; }
 
-        .info-txt { font-size: 0.8em; color: var(--text-info); font-style: italic; }
+        .info-txt { font-size: 0.85em; color: var(--text-info); font-style: italic; }
 
-        @media (max-width: 600px) {
-            th:nth-child(1), td:nth-child(1) { width: 25%; }
-            th:nth-child(2), td:nth-child(2) { width: 50%; }
-            th:nth-child(3), td:nth-child(3) { width: 25%; }
-            td, th { font-size: 0.75em; padding: 8px 4px; }
+        .tg-wrapper { text-align: center; margin: 25px 0; }
+        .tg-minimal-btn {
+            display: inline-block; padding: 10px 40px; background-color: #f9f9f9; 
+            color: #1a1a1b !important; text-decoration: none; font-weight: 600;
+            border-radius: 4px; border: 2px solid #ADD8E6; transition: 0.2s;
         }
+        .tg-minimal-btn:hover { background-color: #1a1a1b; color: #fff !important; }
     </style>
 </head>
 <body>
@@ -83,22 +83,34 @@
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск по персонажу или истории💎...">
+    <input type="text" id="searchInput" oninput="filterData()" placeholder="Поиск по персонажу или истории💎...">
 </div>
 
-<style>
-    .tg-wrapper { text-align: center; margin: 25px 0; }
-    .tg-minimal-btn {
-        display: inline-block; padding: 10px 40px; background-color: #f9f9f9; 
-        color: #1a1a1b !important; text-decoration: none !important;
-        
+<div class="tg-wrapper">
+    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 💎</a>
+</div>
+
+<div class="table-container">
+    <table id="mainTable">
+        <thead>
+            <tr>
+                <th>Персонаж</th>
+                <th>Код Слота</th>
+                <th>Инфо</th>
+            </tr>
+        </thead>
         <tbody>
-                        <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
-<tr><td>Оникс</td><td><span class="code-text">024d696ab878ff9cd37faa17ec1694b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
-<tr><td>Шен</td><td><span class="code-text">eb50c06aca17d42410b89351df99c25b</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
-<tr><td>Льюсен</td><td><span class="code-text">91a15cc20674e465f65b0d2b8171c129</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
-<tr><td>Ренато</td><td><span class="code-text">e66581e63fde0a21d95f75ecc213a107</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
-<tr><td>Веспер</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, без финала</td></tr>
+                    <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
+<tr>
+<td>Оникс</td><td><span class="code-text">024d696ab878ff9cd37faa17ec1694b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
+<tr>
+<td>Шен</td><td><span class="code-text">eb50c06aca17d42410b89351df99c25b</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
+<tr>
+<td>Льюсен</td><td><span class="code-text">91a15cc20674e465f65b0d2b8171c129</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
+<tr>
+<td>Ренато</td><td><span class="code-text">e66581e63fde0a21d95f75ecc213a107</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
+<tr>
+<td>Веспер</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, без финала</td></tr>
 
 <tr class="story-row"><td colspan="3">Te amo 1 том</td></tr>
 <tr><td>Майкл</td><td><span class="code-text">d82650d204cd6817204797033fca7e00</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">восприятие, с финалом</td></tr>
