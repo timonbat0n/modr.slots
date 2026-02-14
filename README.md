@@ -1,233 +1,148 @@
-
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RC Slots Full Database - Sky Blue</title>
-      <style>
-       :root {
-        /* Светлая тема (стандарт) */
-        --bg-page: #e3f2fd;
-        --table-bg: #ffffff;
-        --text-main: #0d47a1;
-        --text-info: #546e7a;
-        --accent-blue: #0288d1;
-        --story-header: #bbdefb;
-        --btn-copy: #03a9f4;
-        --btn-hover: #0277bd;
-        --shadow: rgba(2, 136, 209, 0.15);
-        --border-table: #e3f2fd;
-        --code-bg: #f5faff;
-         --highlight: #ffeb3b; /* Яркий желтый для светлой темы */
-        --highlight-text: #000000;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RC Slots Full Database</title>
+    <style>
+        /* 1. ПЕРЕМЕННЫЕ (ROOT) */
+        :root {
+            --bg-page: #e3f2fd;
+            --table-bg: #ffffff;
+            --text-main: #0d47a1;
+            --text-info: #546e7a;
+            --accent-blue: #0288d1;
+            --story-header: #bbdefb;
+            --btn-copy: #03a9f4;
+            --btn-hover: #0277bd;
+            --shadow: rgba(2, 136, 209, 0.15);
+            --border-table: #e3f2fd;
+            --code-bg: #f5faff;
+            --highlight: #ffeb3b;
+            --footer-color: #94a3b8;
+        }
 
-    /* Цвета для тёмной темы */
-    body.dark-mode {
-        --bg-page: #0f172a; /* Глубокий полночный синий */
-        --table-bg: #1e293b; /* Графитовый */
-        --text-main: #f1f5f9; /* Почти белый */
-        --text-info: #94a3b8;
-        --accent-blue: #38bdf8;
-        --story-header: #334155; /* Тёмно-серый заголовок */
-        --btn-copy: #0ea5e9;
-        --btn-hover: #0288d1;
-        --shadow: rgba(0, 0, 0, 0.4);
-        --border-table: #334155;
-        --code-bg: #0f172a;
-     --highlight: #facc15; /* Золотистый для темной темы */
-        --highlight-text: #000000;
+        body.dark-mode {
+            --bg-page: #0f172a;
+            --table-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-info: #94a3b8;
+            --accent-blue: #38bdf8;
+            --story-header: #334155;
+            --btn-copy: #0ea5e9;
+            --btn-hover: #0288d1;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --border-table: #334155;
+            --code-bg: #0f172a;
+            --highlight: #facc15;
+            --footer-color: #64748b;
+        }
 
-  mark {
-        background-color: var(--highlight);
-        color: var(--highlight-text);
-        border-radius: 2px;
-        padding: 0 2px;
-    }
+        /* 2. ОБЩИЕ СТИЛИ */
+        body { 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0; padding: 15px 10px;
+            display: flex; flex-direction: column; align-items: center;
+            transition: background-color 0.3s;
+        }
 
-    /* Кнопка переключения темы */
-    .theme-toggle {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: var(--table-bg);
-        border: 2px solid var(--accent-blue);
-        color: var(--accent-blue);
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        box-shadow: 0 4px 10px var(--shadow);
-        z-index: 1000;
-        transition: 0.3s;
-    }
+        .header-box { text-align: center; margin-bottom: 20px; }
+        .header-box h2 { color: var(--text-main); margin: 0; text-transform: uppercase; font-size: 1.2em; font-weight: 800; }
 
+        /* ПОИСК */
+        .search-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; position: relative; }
+        #searchInput { 
+            width: 100%; padding: 12px 12px 12px 42px; 
+            border: 2px solid transparent; border-radius: 12px; 
+            font-size: 16px; background: var(--table-bg); color: var(--text-main);
+            box-shadow: 0 4px 15px var(--shadow);
+            outline: none; box-sizing: border-box;
+        }
+        #searchInput:focus { border-color: var(--accent-blue); }
 
-    /* Базовые настройки страницы */
-    body { 
-        font-family: 'Segoe UI', Roboto, sans-serif; 
-        background-color: var(--bg-page);
-        margin: 0; padding: 15px 10px;
-        display: flex; flex-direction: column; align-items: center;
-        overflow-x: hidden; /* Чтобы страница не качалась влево-вправо */
-    }
+        .search-wrapper::before {
+            content: ""; position: absolute; left: 15px; top: 50%;
+            transform: translateY(-50%); width: 20px; height: 20px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
+            z-index: 1;
+        }
 
-    /* Заголовок */
-    .header-box { text-align: center; margin-bottom: 20px; }
-    .header-box h2 { 
-        color: #01579b; margin: 0; text-transform: uppercase; 
-        font-size: 1.2rem; font-weight: 800; letter-spacing: 1px;
-    }
+        /* КНОПКИ УПРАВЛЕНИЯ */
+        .theme-toggle {
+            position: fixed; top: 15px; right: 15px;
+            background: var(--table-bg); border: 2px solid var(--accent-blue);
+            color: var(--accent-blue); border-radius: 50%;
+            width: 38px; height: 38px; cursor: pointer; font-size: 18px;
+            display: flex; align-items: center; justify-content: center; z-index: 1000;
+        }
 
-    /* Поле поиска */
-    .search-wrapper { 
-        width: 100%; max-width: 500px; 
-        margin-bottom: 20px; position: relative; 
-    }
-    #searchInput { 
-        width: 100%; padding: 12px 12px 12px 42px; 
-        border: 2px solid transparent; border-radius: 12px; 
-        font-size: 16px; background: #fff; color: var(--text-main);
-        box-shadow: 0 4px 15px var(--shadow);
-        outline: none; box-sizing: border-box; transition: 0.3s;
-    }
-    #searchInput:focus { border-color: var(--accent-blue); }
+        .tg-wrapper { margin-bottom: 20px; }
+        .tg-minimal-btn {
+            display: inline-block; padding: 10px 25px; background: var(--table-bg);
+            color: var(--text-main) !important; text-decoration: none; font-weight: 600;
+            border-radius: 10px; border: 2px solid var(--accent-blue); font-size: 14px;
+        }
 
-    .search-wrapper::before {
-        content: ""; position: absolute; left: 15px; top: 50%;
-        transform: translateY(-50%); width: 20px; height: 20px;
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
-        z-index: 1; pointer-events: none;
-    }
+        /* ТАБЛИЦА */
+        .table-container { 
+            width: 100%; max-width: 500px; 
+            background: var(--table-bg); border-radius: 15px; 
+            overflow: hidden; box-shadow: 0 8px 30px var(--shadow);
+        }
 
-    /* Кнопка ТГ */
-    .tg-wrapper { margin-bottom: 20px; }
-    .tg-minimal-btn {
-        display: inline-block; padding: 10px 25px; background: #fff;
-        color: #1a1a1b !important; text-decoration: none; font-weight: 600;
-        border-radius: 10px; border: 2px solid #ADD8E6; font-size: 14px;
-        box-shadow: 0 3px 10px var(--shadow);
-    }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
-    /* ТАБЛИЦА — ЖЕСТКИЙ МОНОЛИТ */
-    .table-container { 
-        width: 100%; max-width: 500px; 
-        background: var(--table-bg); border-radius: 15px; 
-        overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-    }
+        th, td { 
+            padding: 10px 5px; border-bottom: 1px solid var(--border-table); 
+            vertical-align: middle; text-align: center; word-wrap: break-word;
+        }
 
-    table { 
-        width: 100%; border-collapse: collapse; 
-        table-layout: fixed; /* ГАРАНТИЯ: колонки не двигаются */
-    }
+        th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; font-size: 0.85em; }
+        th:nth-child(2), td:nth-child(2) { width: 50%; }
+        th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 0.75em; color: var(--text-info); }
 
-    th, td { 
-        padding: 10px 5px; border-bottom: 1px solid #e3f2fd; 
-        vertical-align: middle; text-align: center;
-    }
+        .story-row { background: var(--story-header); }
+        .story-row td { text-align: left !important; padding: 10px 15px; font-weight: 800; color: var(--text-main); width: 100% !important;}
 
-    /* Распределение ширины: 25% | 50% | 25% */
-    th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; color: var(--text-main); font-size: 0.85rem; }
-    th:nth-child(2), td:nth-child(2) { width: 50%; }
-    th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 0.75rem; color: var(--text-info); }
+        .code-text { 
+            font-family: monospace; color: var(--accent-blue); 
+            background: var(--code-bg); padding: 5px; border-radius: 5px; 
+            border: 1px solid var(--border-table); font-size: 0.75em;
+            word-break: break-all; display: block; margin-bottom: 5px;
+        }
+        
+        .copy-btn {
+            background: var(--btn-copy); color: white; border: none; 
+            padding: 6px 0; border-radius: 6px; cursor: pointer; 
+            font-size: 11px; font-weight: 600; width: 100%;
+        }
+        .copy-btn.copied { background: #4caf50; }
 
-    /* Заголовки историй */
-    .story-row { background: var(--story-header); }
-    .story-row td { 
-        text-align: left !important; padding: 10px 15px; 
-        color: #01579b; font-weight: 800; font-size: 0.95rem;
-    }
+        mark { background-color: var(--highlight); color: #000; border-radius: 2px; }
 
-    /* Код и Кнопка */
-    .code-text { 
-        font-family: monospace; color: #1a237e; 
-        word-break: break-all; /* Чтобы длинный код не растягивал таблицу */
-        font-weight: 600; display: block; margin-bottom: 6px; 
-        background: #f5faff; padding: 5px; border-radius: 5px; 
-        border: 1px solid #e1f5fe; font-size: 0.75rem;
-    }
-    
-    .copy-btn {
-        background: var(--btn-copy); color: white; border: none; 
-        padding: 6px 0; border-radius: 6px; cursor: pointer; 
-        font-size: 11px; font-weight: 600; width: 100%;
-        transition: 0.2s;
-    }
-    .copy-btn.copied { background: #4caf50; }
+        /* КНОПКА НАВЕРХ */
+        #backToTop {
+            display: none; position: fixed; bottom: 20px; right: 20px;
+            background: var(--accent-blue); color: white; border: none;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 99;
+        }
 
-    /* Адаптив для маленьких экранов */
-    @media (max-width: 400px) {
-        td, th { font-size: 0.75rem; padding: 8px 3px; }
-        .code-text { font-size: 0.7rem; }
-    }
-
-    /* Кнопка "Наверх" */
-    #backToTop {
-        display: none; /* По умолчанию скрыта */
-        position: fixed;
-        bottom: 25px;
-        right: 25px;
-        z-index: 99;
-        border: none;
-        outline: none;
-        background-color: var(--accent-blue);
-        color: white;
-        cursor: pointer;
-        padding: 12px;
-        border-radius: 50%; /* Круглая кнопка */
-        width: 45px;
-        height: 45px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        transition: 0.3s;
-    }
-
-    #backToTop:hover {
-        background-color: var(--btn-hover);
-        transform: scale(1.1);
-    }
-
-    /* Иконка стрелочки внутри кнопки */
-    #backToTop::after {
-        content: "↑";
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .footer-text {
-        margin-top: 30px;
-        margin-bottom: 20px;
-        font-size: 0.75rem;
-        color: #94a3b8; /* Мягкий серый цвет */
-        text-align: center;
-        letter-spacing: 1px;
-        text-transform: lowercase;
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-
-</style>
-
-
-
+        .footer-text { margin-top: 30px; margin-bottom: 20px; font-size: 0.75rem; color: var(--footer-color); text-align: center; }
+    </style>
 </head>
-<body>
+<body id="body">
+
 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
-
-
-<button onclick="topFunction()" id="backToTop" title="Наверх"></button>
+<button onclick="topFunction()" id="backToTop">↑</button>
 
 <div class="header-box">
     <h2>ПОЛНАЯ БАЗА СЛОТОВ MODR.💎</h2>
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="searchInput" oninput="filterData()" placeholder="Начни вводить название истории или имя...">
+    <input type="text" id="searchInput" oninput="filterData()" placeholder="Поиск персонажа или истории...">
 </div>
-
 
 <div class="tg-wrapper">
     <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 🩵</a>
@@ -438,131 +353,78 @@
 
 
 <script>
+// ПОИСК С ПОДСВЕТКОЙ
 function filterData() {
     const input = document.getElementById("searchInput");
     const filter = input.value.toLowerCase();
-    const rows = document.getElementById("mainTable").querySelectorAll("tr:not(.story-row):not(thead tr)");
-    const headers = document.getElementById("mainTable").querySelectorAll(".story-row");
-
-    // Сначала обрабатываем обычные строки
+    const rows = document.querySelectorAll("#mainTable tr:not(.story-row):not(thead tr)");
+    
     rows.forEach(row => {
-        const nameCell = row.cells[0]; // Ячейка с именем героя
+        const nameCell = row.cells[0];
         const originalText = nameCell.getAttribute("data-original") || nameCell.innerText;
-        
-        // Сохраняем оригинал, чтобы не портить текст при удалении символов из поиска
-        if (!nameCell.hasAttribute("data-original")) {
-            nameCell.setAttribute("data-original", originalText);
-        }
+        if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", originalText);
 
-        if (filter === "") {
-            nameCell.innerHTML = originalText;
-            row.style.display = "";
-        } else if (originalText.toLowerCase().includes(filter)) {
-            // Создаем подсветку через регулярное выражение (регистронезависимо)
+        if (originalText.toLowerCase().includes(filter)) {
             const regex = new RegExp(`(${filter})`, "gi");
-            nameCell.innerHTML = originalText.replace(regex, "<mark>$1</mark>");
+            nameCell.innerHTML = filter ? originalText.replace(regex, "<mark>$1</mark>") : originalText;
             row.style.display = "";
         } else {
             row.style.display = "none";
         }
     });
 
-    // Логика отображения заголовков историй
+    // Показ заголовков историй
+    const allRows = document.querySelectorAll("#mainTable tr");
     let lastHeader = null;
     let hasVisibleRows = false;
-    const allRows = document.getElementById("mainTable").querySelectorAll("tr");
-
-    for (let i = 1; i < allRows.length; i++) {
-        const row = allRows[i];
+    allRows.forEach(row => {
         if (row.classList.contains('story-row')) {
             if (lastHeader && !hasVisibleRows) lastHeader.style.display = "none";
             lastHeader = row;
-            hasVisibleRows = false;
-            // Если само название истории совпадает с фильтром - показываем всё в ней
-            if (row.innerText.toLowerCase().includes(filter)) {
-                row.style.display = "";
-                hasVisibleRows = true; 
-            }
-        } else {
-            if (row.style.display === "") {
-                hasVisibleRows = true;
-                if (lastHeader) lastHeader.style.display = "";
-            }
+            hasVisibleRows = row.innerText.toLowerCase().includes(filter);
+            row.style.display = hasVisibleRows ? "" : "none";
+        } else if (row.style.display === "" && !row.closest('thead')) {
+            hasVisibleRows = true;
+            if (lastHeader) lastHeader.style.display = "";
         }
-    }
+    });
     if (lastHeader && !hasVisibleRows) lastHeader.style.display = "none";
 }
 
-
-// 2. Функция КОПИРОВАНИЯ (исправленная)
+// КОПИРОВАНИЕ
 function copy(btn) {
-    // Ищем элемент с классом .code-text внутри той же ячейки, где кнопка
-    const codeElement = btn.parentElement.querySelector('.code-text');
-    const textToCopy = codeElement.innerText;
-
-    navigator.clipboard.writeText(textToCopy).then(() => {
-        // Эффект на кнопке
-        const originalText = btn.innerText;
+    const text = btn.parentElement.querySelector('.code-text').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const old = btn.innerText;
         btn.innerText = "ГОТОВО ✓";
         btn.classList.add('copied');
-        
-        // Возвращаем всё назад через секунду
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.classList.remove('copied');
-        }, 1000);
-    }).catch(err => {
-        console.error('Ошибка копирования: ', err);
-        alert('Не удалось скопировать. Попробуй еще раз.');
-    });
-}
-// Получаем кнопку
-let mybutton = document.getElementById("backToTop");
-
-// Когда пользователь скроллит вниз на 300px, показываем кнопку
-window.onscroll = function() {scrollFunction()};
-
-function scrollFunction() {
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        mybutton.style.display = "block";
-    } else {
-        mybutton.style.display = "none";
-    }
-}
-
-// Когда пользователь нажимает, плавно летим наверх
-function topFunction() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+        setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1000);
     });
 }
 
-
+// ТЕМЫ
 function toggleTheme() {
-    const body = document.body;
-    const btn = document.getElementById("themeBtn");
-    
-    body.classList.toggle("dark-mode");
-    
-    if (body.classList.contains("dark-mode")) {
-        btn.innerText = "☀️"; // Меняем на солнце, когда темно
-        localStorage.setItem("theme", "dark");
-    } else {
-        btn.innerText = "🌙"; // Меняем на луну, когда светло
-        localStorage.setItem("theme", "light");
-    }
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+    document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
 }
-
-// Сохраняем выбор пользователя после перезагрузки
 if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark-mode");
     document.getElementById("themeBtn").innerText = "☀️";
 }
 
+// НАВЕРХ
+let topBtn = document.getElementById("backToTop");
+window.onscroll = function() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        topBtn.style.display = "block";
+    } else {
+        topBtn.style.display = "none";
+    }
+};
+function topFunction() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 </script>
-
-<div class="footer-text">modr. x timon.</div>
 
 </body>
 </html>
