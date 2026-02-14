@@ -208,6 +208,47 @@ table {
 
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
     
+    .scroll-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: var(--accent-blue, #0288d1);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1002; /* Выше всех, чтобы всегда можно было нажать */
+    opacity: 0; /* По умолчанию скрыта */
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.scroll-btn.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-btn:hover {
+    transform: scale(1.1);
+    background: #ff4081; /* Розовый акцент при наведении */
+}
+
+/* Если на мобилке мешает буквам, можно чуть сместить */
+@media (max-width: 600px) {
+    .scroll-btn {
+        bottom: 15px;
+        right: 60px; /* Сдвигаем левее, чтобы не перекрывать стрелку алфавита */
+    }
+}
+
+    
 /* Основной контейнер панели */
 .side-nav {
     position: fixed;
@@ -505,6 +546,22 @@ table {
 <script>
 // === 1. ГЕНЕРАЦИЯ АЛФАВИТА И УПРАВЛЕНИЕ ПАНЕЛЬЮ ===
 
+// Функция прокрутки вверх
+function goToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Следим за скроллом: показываем кнопку, когда пролистали 300px
+window.addEventListener('scroll', () => {
+    const scrollBtn = document.getElementById('scrollToTop');
+    if (window.scrollY > 300) {
+        scrollBtn.classList.add('show');
+    } else {
+        scrollBtn.classList.remove('show');
+    }
+});
+
+
 // Открытие/закрытие панели по клику на стрелку
 function toggleNav(event) {
     if (event) event.stopPropagation(); 
@@ -689,6 +746,9 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+<div id="scrollToTop" class="scroll-btn" onclick="goToTop()">↑</div>
+
 <div class="footer-text">modr. x timon.</div>
 
 </body>
