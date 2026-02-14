@@ -325,45 +325,42 @@
 
 
 <script>
-
-function smartSearch() {
-    // 1. Получаем фразу из твоего поля поиска
+function filterData() {
+    // 1. Берем фразу из поиска
     const input = document.getElementById("searchInput");
     const filter = input.value.toLowerCase();
     
-    // 2. Получаем таблицу и все её строки
-    const table = document.getElementById("mainTable");
-    const tr = table.getElementsByTagName("tr");
+    // 2. Находим таблицу и все её строки
+    // Используем селектор tr, чтобы захватить и заголовки, и фаворитов
+    const rows = document.querySelectorAll("table tr");
 
-    let lastHeader = null; // Здесь будем хранить последний встреченный заголовок истории
-    let headerMatches = false; // Флаг: подходит ли название истории под поиск
+    let lastStoryRow = null; // Здесь храним текущую синюю строку истории
+    let storyMatch = false;  // Флаг: подходит ли название истории под поиск
 
-    // Цикл по всем строкам (пропускаем i=0, так как там шапка Фаворит/Код/Инфо)
-    for (let i = 1; i < tr.length; i++) {
-        const row = tr[i];
+    // Проходим по всем строкам, пропуская первую (шапку Фаворит/Код/Инфо)
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
 
-        // Проверяем, заголовок ли это истории (твой класс story-header)
-        if (row.classList.contains('story-header')) {
-            lastHeader = row;
-            // Проверяем, есть ли поисковый запрос в названии истории
-            headerMatches = row.innerText.toLowerCase().includes(filter);
+        // ПРОВЕРКА: Это строка с названием истории? (у тебя это класс .story-row)
+        if (row.classList.contains('story-row')) {
+            lastStoryRow = row;
+            // Проверяем, совпадает ли название истории с поиском
+            storyMatch = row.innerText.toLowerCase().includes(filter);
             
-            // Сначала скрываем заголовок (покажем позже, если нужно)
-            row.style.display = headerMatches ? "" : "none";
+            // По умолчанию скрываем, покажем позже если внутри есть фаворит или само название совпало
+            row.style.display = storyMatch ? "" : "none";
         } 
         else {
             // Это обычная строка с фаворитом
-            const rowText = row.innerText.toLowerCase();
-            const rowMatches = rowText.includes(filter);
+            const textContent = row.innerText.toLowerCase();
+            const rowMatches = textContent.includes(filter);
 
-            // ЛОГИКА: Показываем строку, если:
-            // - Совпало название истории (headerMatches)
-            // - ИЛИ совпало имя фаворита/информация (rowMatches)
-            if (rowMatches || headerMatches) {
+            // Показываем, если совпало имя/инфо ИЛИ если совпало название всей истории
+            if (rowMatches || storyMatch) {
                 row.style.display = "";
-                // Если нашелся фаворит, принудительно показываем заголовок его истории
-                if (lastHeader) {
-                    lastHeader.style.display = "";
+                // Если нашелся фаворит, показываем заголовок его истории (синюю строку)
+                if (lastStoryRow) {
+                    lastStoryRow.style.display = "";
                 }
             } else {
                 row.style.display = "none";
@@ -372,17 +369,20 @@ function smartSearch() {
     }
 }
 
-// На всякий случай обновленная функция копирования под твой дизайн
-function copy(btn) {
-    const code = btn.previousElementSibling.innerText;
+// Функция копирования (под твой стиль)
+function copyCode(btn) {
+    const codeSpan = btn.parentElement.querySelector('.code-text');
+    const code = codeSpan.innerText;
+
     navigator.clipboard.writeText(code).then(() => {
         const originalText = btn.innerText;
-        btn.innerText = "OK!";
-        btn.style.color = "#27ae60"; // Зеленый текст при успехе
+        btn.innerText = "СКОПИРОВАНО!";
+        btn.classList.add('copied');
+        
         setTimeout(() => {
             btn.innerText = originalText;
-            btn.style.color = "";
-        }, 1000);
+            btn.classList.remove('copied');
+        }, 1200);
     });
 }
 </script>
