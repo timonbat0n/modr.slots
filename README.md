@@ -191,23 +191,19 @@
     
     
         /* ЭФФЕКТЫ ПАСХАЛКИ */
+        /* ЗОЛОТАЯ ПАСХАЛКА */
     body.easter-egg {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab) !important; /* Яркий градиент для теста */
+        background-size: 400% 400% !important;
+        animation: goldGradient 3s ease infinite !important;
+        min-height: 100vh;
+    }
+
+    /* Если хочешь именно золото, используй этот фон: */
+    body.gold-mode {
         background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) !important;
         background-size: 400% 400% !important;
-        animation: goldGradient 5s ease infinite !important;
-    }
-
-    body.easter-egg .table-container {
-        border: 3px solid #ffd700 !important;
-        box-shadow: 0 0 30px rgba(255, 215, 0, 0.6) !important;
-        transform: scale(1.02);
-        transition: all 0.5s;
-    }
-
-    body.easter-egg .copy-btn {
-        background: linear-gradient(to right, #bf953f, #aa771c) !important;
-        color: #000 !important;
-        font-weight: 900 !important;
+        animation: goldGradient 3s ease infinite !important;
     }
 
     @keyframes goldGradient {
@@ -216,17 +212,13 @@
         100% { background-position: 0% 50%; }
     }
 
-    /* Анимация тряски для поиска при активации */
-    .shake {
-        animation: shakeAnim 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    .shake { animation: shake 0.5s; }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
     }
 
-    @keyframes shakeAnim {
-        10%, 90% { transform: translate3d(-1px, 0, 0); }
-        20%, 80% { transform: translate3d(2px, 0, 0); }
-        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-        40%, 60% { transform: translate3d(4px, 0, 0); }
-    }
 
 </style>
 
@@ -459,45 +451,36 @@ function filterData() {
     const inputField = document.getElementById("searchInput");
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
-    let storyVisible = false;
-
-    // --- ПАСХАЛКА "MODR" ---
-    if (filter === 'тимон') {
-        document.body.classList.add('easter-egg');
+    
+    // ПРОВЕРКА ПАСХАЛКИ (Улучшенная)
+    if (filter === "тимон") {
+        console.log("Пасхалка активирована!"); // Проверка в консоли
+        document.body.classList.add('gold-mode');
         inputField.classList.add('shake');
+        
         setTimeout(() => {
-            document.body.classList.remove('easter-egg');
+            document.body.classList.remove('gold-mode');
             inputField.classList.remove('shake');
         }, 5000);
     }
 
-    // --- ЛОГИКА ФИЛЬТРАЦИИ ---
+    // ЛОГИКА ТАБЛИЦЫ
+    let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
-        
         if (row.classList.contains('story-row')) {
-            // Проверяем, совпадает ли название истории
             storyVisible = row.innerText.toLowerCase().includes(filter);
             row.style.display = storyVisible ? "" : "none";
         } else {
             const nameCell = row.cells[0];
-            // Сохраняем оригинал имени, чтобы не плодить теги <mark>
             const original = nameCell.getAttribute("data-original") || nameCell.innerText;
             if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
 
             const match = original.toLowerCase().includes(filter);
-
             if (match || storyVisible) {
                 row.style.display = "";
-                // Подсветка текста без изменения размеров ячейки
-                if (match && filter !== "") {
-                    const regex = new RegExp(`(${filter})`, "gi");
-                    nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
-                } else {
-                    nameCell.innerHTML = original;
-                }
+                nameCell.innerHTML = (match && filter !== "") ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") : original;
                 
-                // Всегда показываем заголовок истории, если найден герой внутри неё
                 let p = row.previousElementSibling;
                 while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
                 if(p) p.style.display = "";
@@ -507,6 +490,7 @@ function filterData() {
         }
     }
 }
+
 
 // 2. ОЧИСТКА ПОИСКА
 function clearInput() {
