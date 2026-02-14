@@ -4,9 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Full Database</title>
 <style>
-    /* ПЕРЕМЕННЫЕ И ТЕМЫ */
+    /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
     :root {
-        /* Светлая тема */
         --bg-page: #e3f2fd;
         --table-bg: #ffffff;
         --text-main: #0d47a1;
@@ -22,7 +21,6 @@
     }
 
     body.dark-mode {
-        /* Темная тема */
         --bg-page: #0f172a;
         --table-bg: #1e293b;
         --text-main: #f1f5f9;
@@ -37,9 +35,9 @@
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    /* БАЗОВЫЕ НАСТРОЙКИ */
+    /* 2. БАЗОВЫЕ НАСТРОЙКИ */
     body { 
-        font-family: 'Segoe UI', system-ui, sans-serif; 
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
         background-color: var(--bg-page);
         color: var(--text-main);
         margin: 0; padding: 15px 10px;
@@ -48,49 +46,27 @@
         overflow-x: hidden;
     }
 
-    /* ПОИСК (ДИЗАЙН) */
-       /* Контейнер для позиционирования крестика */
-    .search-wrapper {
-        position: relative;
-        width: 100%;
-        max-width: 500px;
-        margin-bottom: 20px;
-    }
-
-    /* Кнопка очистки */
-    #clearSearch {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        font-size: 22px;
-        color: var(--text-info);
-        display: none; /* Скрыт по умолчанию */
-        user-select: none;
-        transition: color 0.2s;
-        z-index: 5;
-    }
-
-    #clearSearch:hover {
-        color: var(--accent-blue);
-    }
-
-    /* Когда в инпуте что-то есть, показываем крестик */
-    #searchInput:not(:placeholder-shown) + #clearSearch {
-        display: block;
-    }
-
+    /* 3. ДИЗАЙН ПОИСКА (ФИНАЛ) */
+    .search-wrapper { 
+        width: 100%; 
+        max-width: 500px; 
+        margin: 0 auto 20px; 
+        position: relative; 
+        display: flex;
+        align-items: center;
     }
     
     #searchInput { 
-        width: 100%; padding: 14px 14px 14px 46px; 
-        border: 2px solid transparent; border-radius: 14px; 
+        width: 100%; 
+        padding: 14px 45px 14px 46px; 
+        border: 2px solid transparent; 
+        border-radius: 14px; 
         font-size: 16px; 
         background-color: var(--table-bg); 
         color: var(--text-main);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        outline: none; box-sizing: border-box; 
+        outline: none; 
+        box-sizing: border-box; 
         transition: all 0.3s;
     }
     
@@ -107,17 +83,19 @@
         z-index: 2; pointer-events: none;
     }
 
-    /* КНОПКА ТЕМЫ */
-    .theme-toggle {
-        position: fixed; top: 15px; right: 15px;
-        background: var(--table-bg); border: 2px solid var(--accent-blue);
-        color: var(--accent-blue); border-radius: 50%;
-        width: 42px; height: 42px; cursor: pointer; z-index: 1000;
-        display: flex; align-items: center; justify-content: center; font-size: 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    #clearSearch {
+        position: absolute; right: 14px; top: 50%;
+        transform: translateY(-50%); cursor: pointer;
+        font-size: 22px; color: var(--text-info);
+        display: none; z-index: 3; padding: 5px;
+        line-height: 1; user-select: none; transition: color 0.2s;
     }
 
-    /* ТАБЛИЦА (ФИКСИРОВАННАЯ ШИРИНА И ЦВЕТ) */
+    #clearSearch:hover { color: var(--accent-blue); }
+
+    #searchInput:not(:placeholder-shown) + #clearSearch { display: block; }
+
+    /* 4. ТАБЛИЦА (ФИКСИРОВАННАЯ ГЕОМЕТРИЯ) */
     .table-container { 
         width: 100%; max-width: 500px; 
         background-color: var(--table-bg) !important; 
@@ -135,53 +113,71 @@
     }
 
     td { 
-        padding: 12px 6px; 
+        padding: 10px 5px !important; 
         border-bottom: 1px solid var(--border-table); 
         color: var(--text-main) !important;
         background-color: var(--table-bg) !important;
         text-align: center; vertical-align: middle;
+        /* Фикс высоты, чтобы таблица не прыгала */
+        height: 75px !important; 
+        line-height: 1.2 !important;
+        font-size: 14px !important;
+        box-sizing: border-box !important;
     }
 
-    /* Пропорции колонок 25% | 50% | 25% */
-    th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; font-size: 0.85em; }
+    th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; }
     th:nth-child(2), td:nth-child(2) { width: 50%; }
-    th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 0.75em; color: var(--text-info); }
+    th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 11px; color: var(--text-info); }
 
-    /* ЗАГОЛОВКИ ИСТОРИЙ */
+    /* 5. ПОДСВЕТКА (БЕЗ РАСШИРЕНИЯ ТЕКСТА) */
+    mark { 
+        background-color: var(--highlight); 
+        color: #000; 
+        border-radius: 2px;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-weight: inherit !important;
+        font-size: inherit !important;
+    }
+
+    /* 6. ЭЛЕМЕНТЫ СТРОК */
     .story-row, .story-row td { 
         background-color: var(--story-header) !important; 
         color: var(--text-main) !important; font-weight: 800; text-align: left !important;
-        padding: 12px 16px !important; border-bottom: none;
+        padding: 12px 16px !important; border-bottom: none; height: 45px !important;
     }
 
-    /* ТЕКСТ КОДА */
     .code-text { 
         font-family: 'Courier New', monospace; color: var(--accent-blue); 
-        background-color: var(--code-bg); padding: 6px; border-radius: 6px; 
-        border: 1px solid var(--border-table); font-size: 0.75em;
-        word-break: break-all; display: block; margin-bottom: 6px;
+        background-color: var(--code-bg); padding: 5px; border-radius: 6px; 
+        border: 1px solid var(--border-table); font-size: 11px;
+        word-break: break-all; display: block; margin-bottom: 4px;
+        line-height: 1.1;
     }
     
-    /* КНОПКА КОПИРОВАНИЯ */
     .copy-btn {
         background-color: var(--btn-copy); color: white; border: none; 
-        padding: 8px 0; border-radius: 8px; cursor: pointer; 
-        font-size: 11px; font-weight: 600; width: 100%; transition: 0.2s;
+        padding: 6px 0; border-radius: 8px; cursor: pointer; 
+        font-size: 10px; font-weight: 600; width: 100%; transition: 0.2s;
     }
     .copy-btn.copied { background-color: #10b981; }
 
-    /* ПОДСВЕТКА ПОИСКА */
-    mark { background-color: var(--highlight); color: #000; border-radius: 3px; }
+    /* 7. КНОПКИ УПРАВЛЕНИЯ */
+    .theme-toggle {
+        position: fixed; top: 15px; right: 15px;
+        background: var(--table-bg); border: 2px solid var(--accent-blue);
+        color: var(--accent-blue); border-radius: 50%;
+        width: 42px; height: 42px; cursor: pointer; z-index: 1000;
+        display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
 
-    /* КНОПКА ОТПРАВИТЬ */
     .tg-minimal-btn {
         display: inline-block; padding: 12px 28px; background: var(--table-bg);
         color: var(--text-main) !important; text-decoration: none; font-weight: 700;
         border-radius: 12px; border: 2px solid var(--accent-blue); font-size: 14px;
-        margin-bottom: 20px;
+        margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    /* КНОПКА НАВЕРХ */
     #backToTop {
         display: none; position: fixed; bottom: 25px; right: 25px;
         background: var(--accent-blue); color: white; border: none;
@@ -189,11 +185,8 @@
         font-size: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    /* ФУТЕР */
-    .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 0.8rem; color: var(--footer-color); font-weight: 500; }
+    .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
 </style>
-
-
 
 </head>
 <body id="body">
@@ -514,10 +507,20 @@ function topFunction() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 
 function clearInput() {
     const input = document.getElementById("searchInput");
-    input.value = ""; // Очищаем поле
-    filterData();     // Сбрасываем фильтр таблицы
-    input.focus();    // Возвращаем фокус на поле ввода
+    input.value = "";
+    // Вызываем фильтрацию, чтобы показать все строки
+    filterData(); 
+    input.focus();
 }
+
+    if (match && filter !== "") {
+        const regex = new RegExp(`(${filter})`, "gi");
+        // Оборачиваем только совпадение, не добавляя лишних пробелов
+        nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
+    } else {
+        // Возвращаем чистый текст без тегов
+        nameCell.innerHTML = original;
+    }
 
 </script>
 
