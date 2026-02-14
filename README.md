@@ -194,64 +194,69 @@
 
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
     
-    ..side-nav {
+/* Алфавитная панель */
+.side-nav {
     position: fixed;
-    right: 15px; /* Чуть дальше от края */
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Расстояние между буквами больше */
+    gap: 8px;
     z-index: 1000;
-    background: rgba(2, 136, 209, 0.15); /* Цветной оттенок фона */
+    background: rgba(2, 136, 209, 0.1);
     backdrop-filter: blur(10px);
     padding: 12px 8px;
     border-radius: 15px;
     max-height: 85vh;
     overflow-y: auto;
-    border: 2px solid rgba(2, 136, 209, 0.3);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 1px solid rgba(2, 136, 209, 0.3);
+    transition: opacity 0.3s;
 }
 
 .side-nav a {
     text-decoration: none;
-    color: var(--accent-blue, #0288d1);
-    font-weight: 900; /* Максимальная жирность */
-    font-size: 18px;  /* Крупный шрифт */
-    width: 40px;      /* Крупная кнопка */
-    height: 40px;     /* Крупная кнопка */
+    color: #0288d1;
+    font-weight: 900;
+    font-size: 18px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.5); /* Светлая подложка под букву */
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .side-nav a:hover {
-    background: #ff4081; /* Розовый акцент при наведении (под конфетти) */
+    background: #ff4081;
     color: white !important;
-    transform: scale(1.3) rotate(5deg); /* Эффектный зум с поворотом */
+    transform: scale(1.2);
 }
 
-/* В темной теме буквы будут ярче */
 body.dark-mode .side-nav a {
     background: rgba(255, 255, 255, 0.1);
     color: #4fc3f7;
 }
 
-/* На мобилках делаем чуть компактнее, чтобы не перекрывать таблицу */
-@media (max-width: 600px) {
-    .side-nav {
-        right: 5px;
-        padding: 8px 4px;
-    }
-    .side-nav a {
-        width: 35px;
-        height: 35px;
-        font-size: 16px;
-    }
+/* Эффект тряски */
+.shake { animation: shake 0.5s; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
+
+/* Липкие заголовки */
+.story-row {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--accent-blue);
+}
+
 
 </style>
 
@@ -480,61 +485,81 @@ body.dark-mode .side-nav a {
 
 </div>
 <script>
+// 1. ГЕНЕРАЦИЯ АЛФАВИТА (Создает кнопки справа)
+function generateAlphabet() {
+    const sideNav = document.getElementById('sideNav');
+    if (!sideNav) return;
+    
+    const stories = document.querySelectorAll('.story-row');
+    const letters = new Set();
+    sideNav.innerHTML = ''; 
+
+    stories.forEach(story => {
+        const firstLetter = story.innerText.trim()[0].toUpperCase();
+        if (firstLetter && !letters.has(firstLetter)) {
+            letters.add(firstLetter);
+            const link = document.createElement('a');
+            link.href = "javascript:void(0)";
+            link.innerText = firstLetter;
+            link.onclick = () => {
+                const offset = 20; // Отступ сверху
+                const elementPosition = story.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+                
+                // Эффект вспышки при переходе
+                story.style.transition = "background 0.5s";
+                story.style.background = "rgba(255, 64, 129, 0.3)";
+                setTimeout(() => story.style.background = "", 1000);
+            };
+            sideNav.appendChild(link);
+        }
+    });
+}
+
+// 2. ОСНОВНОЙ ПОИСК + ПАСХАЛКА
 function filterData() {
     const inputField = document.getElementById("searchInput");
-    if (!inputField) return;
-
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
-    
-    // ПРОВЕРКА ПАСХАЛКИ (modr или ирина)
+    const sideNav = document.getElementById('sideNav');
+
+    // Прячем алфавит, когда человек начинает писать в поиске
+    if (sideNav) {
+        sideNav.style.opacity = filter ? "0" : "1";
+        sideNav.style.pointerEvents = filter ? "none" : "auto";
+    }
+
+    // ЛОГИКА ПАСХАЛКИ
     const triggerWords = ["modr", "ирина"];
-    
     if (triggerWords.includes(filter)) {
-        // 1. ЗАПУСК КОНФЕТТИ 🎉
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#0288d1', '#ff4081', '#ffffff', '#ffeb3b']
-        });
-
-        // 2. ЭФФЕКТ ТРЯСКИ И ТЕКСТА
+        // Запуск конфетти (если библиотека подключена в head)
+        if (typeof confetti === 'function') {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+        
         inputField.classList.add('shake');
-
+        
         for (let i = 1; i < tr.length; i++) {
-            const row = tr[i];
-            row.style.display = ""; 
-            
-            if (!row.classList.contains('story-row')) {
-                const nameCell = row.cells[0];
+            tr[i].style.display = ""; 
+            if (!tr[i].classList.contains('story-row')) {
+                const nameCell = tr[i].cells[0];
                 if (!nameCell.hasAttribute("data-original")) {
                     nameCell.setAttribute("data-original", nameCell.innerText);
                 }
                 nameCell.innerHTML = "Люблю вас! ❤️";
-                nameCell.style.color = "#ff4081"; // Розовый цвет для любви
-                nameCell.style.fontWeight = "bold";
+                nameCell.style.color = "#ff4081";
             }
         }
-
-        // Возврат в норму через 4 секунды
+        
+        // Через 4 секунды возвращаем всё как было
         setTimeout(() => {
             inputField.classList.remove('shake');
-            for (let i = 1; i < tr.length; i++) {
-                const nameCell = tr[i].cells[0];
-                if (nameCell && nameCell.hasAttribute("data-original")) {
-                    nameCell.innerHTML = nameCell.getAttribute("data-original");
-                    nameCell.style.color = ""; 
-                    nameCell.style.fontWeight = "";
-                }
-            }
             clearInput(); 
         }, 4000);
-        
-        return; 
+        return;
     }
 
-    // ОБЫЧНЫЙ ПОИСК (оставляем как был)
+    // ОБЫЧНАЯ ФИЛЬТРАЦИЯ ТАБЛИЦЫ
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
@@ -549,7 +574,12 @@ function filterData() {
             const match = original.toLowerCase().includes(filter);
             if (match || storyVisible) {
                 row.style.display = "";
-                nameCell.innerHTML = (match && filter !== "") ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") : original;
+                // Подсветка совпадений
+                nameCell.innerHTML = (match && filter !== "") 
+                    ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") 
+                    : original;
+                
+                // Показываем заголовок истории для этого героя
                 let p = row.previousElementSibling;
                 while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
                 if(p) p.style.display = "";
@@ -560,118 +590,66 @@ function filterData() {
     }
 }
 
-// Очистка (чтобы крестик работал)
+// 3. ОЧИСТКА ПОИСКА
 function clearInput() {
     const input = document.getElementById("searchInput");
     if (input) {
         input.value = "";
-        filterData();
+        
+        // Восстанавливаем оригинальные имена в таблице
+        const cells = document.querySelectorAll('td');
+        cells.forEach(cell => {
+            if (cell.hasAttribute("data-original")) {
+                cell.innerHTML = cell.getAttribute("data-original");
+                cell.style.color = "";
+            }
+        });
+        
+        filterData(); // Сбрасываем фильтры
         input.focus();
     }
 }
 
-
-// 3. КОПИРОВАНИЕ + ВИБРООТКЛИК
+// 4. КОПИРОВАНИЕ
 function copy(btn) {
     const text = btn.parentElement.querySelector('.code-text').innerText;
     navigator.clipboard.writeText(text).then(() => {
-        if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(25);
-        const old = btn.innerText;
+        if (window.navigator.vibrate) window.navigator.vibrate(25);
+        const oldText = btn.innerText;
         btn.innerText = "ГОТОВО ✓";
-        btn.classList.add('copied');
+        btn.style.background = "#4caf50";
         setTimeout(() => {
-            btn.innerText = old;
-            btn.classList.remove('copied');
+            btn.innerText = oldText;
+            btn.style.background = "";
         }, 1000);
     });
 }
 
-// 4. ТЕМЫ
+// 5. ТЕМНАЯ ТЕМА
 function toggleTheme() {
     document.body.classList.toggle("dark-mode");
     const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
     const btn = document.getElementById("themeBtn");
     if (btn) btn.innerText = isDark ? "☀️" : "🌙";
-    localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
-// Загрузка сохраненной темы
+// 6. ЗАПУСК ВСЕГО ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
 window.addEventListener('DOMContentLoaded', () => {
+    // Генерируем буквы
+    generateAlphabet();
+    
+    // Проверяем сохраненную тему
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
         const btn = document.getElementById("themeBtn");
         if (btn) btn.innerText = "☀️";
     }
+    
+    // Динамический заголовок вкладки
+    window.onblur = () => document.title = "Жду тебя! 💎";
+    window.onfocus = () => document.title = "RC Slots - База";
 });
-
-// 5. КНОПКА НАВЕРХ И СКРЫТИЕ КЛАВИАТУРЫ ПРИ СКРОЛЛЕ
-window.onscroll = function() {
-    const upBtn = document.getElementById("backToTop");
-    if (upBtn) upBtn.style.display = (window.scrollY > 300) ? "block" : "none";
-    
-    // Если пользователь начал скроллить таблицу, убираем фокус с поиска (прячет клаву)
-    if (window.scrollY > 50 && document.activeElement.tagName === 'INPUT') {
-        document.activeElement.blur();
-    }
-};
-
-function topFunction() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// 6. ПАСХАЛКА ДЛЯ ВКЛАДКИ
-window.onblur = () => document.title = "Жду тебя! 💎";
-window.onfocus = () => document.title = "RC Slots - База";
-
-function generateAlphabet() {
-    const sideNav = document.getElementById('sideNav');
-    const stories = document.querySelectorAll('.story-row');
-    const letters = new Set(); // Используем Set, чтобы буквы не дублировались
-    
-    sideNav.innerHTML = ''; // Очищаем
-
-    stories.forEach(story => {
-        const firstLetter = story.innerText.trim()[0].toUpperCase();
-        if (firstLetter && !letters.has(firstLetter)) {
-            letters.add(firstLetter);
-            
-            const link = document.createElement('a');
-            link.href = "javascript:void(0)";
-            link.innerText = firstLetter;
-            link.onclick = () => {
-                // Найди в коде генерации букв строку с scrollIntoView и замени на эту:
-link.onclick = () => {
-    // Вычисляем позицию с небольшим отступом сверху (например, 20px)
-    const offset = 20;
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = story.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-    });
-
-    // Красивая подсветка
-    story.style.transition = "background 0.5s";
-    story.style.background = "rgba(255, 64, 129, 0.2)"; // Нежно-розовый под цвет конфетти
-    setTimeout(() => story.style.background = "", 1500);
-};
-
-
-// Запускаем генерацию после загрузки страницы
-window.addEventListener('DOMContentLoaded', generateAlphabet);
-
-// Если ты используешь поиск, панель лучше скрыть, чтобы не мешалась
-const originalFilterData = filterData;
-filterData = function() {
-    originalFilterData(); // Вызываем основной поиск
-    const filter = document.getElementById("searchInput").value;
-    document.getElementById('sideNav').style.opacity = filter ? "0" : "1";
-    document.getElementById('sideNav').style.pointerEvents = filter ? "none" : "auto";
-};
-
 
 
 </script>
