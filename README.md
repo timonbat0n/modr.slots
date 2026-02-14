@@ -238,6 +238,8 @@
 </div>
 
 
+
+
 <div class="tg-wrapper">
     <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 🩵</a>
 </div>
@@ -445,19 +447,18 @@
 
 </div>
 <script>
-
-// 1. ОСНОВНАЯ ФУНКЦИЯ: ПОИСК + ПОДСВЕТКА + ПАСХАЛКА
+// 1. ЕДИНАЯ ФУНКЦИЯ ПОИСКА, ПОДСВЕТКИ И ПАСХАЛКИ
 function filterData() {
     const inputField = document.getElementById("searchInput");
+    if (!inputField) return;
+
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     
-    // ПРОВЕРКА ПАСХАЛКИ (Улучшенная)
-    if (filter === "тимон") {
-        console.log("Пасхалка активирована!"); // Проверка в консоли
+    // ПРОВЕРКА ПАСХАЛКИ (Активируется при вводе "modr")
+    if (filter === "modr") {
         document.body.classList.add('gold-mode');
         inputField.classList.add('shake');
-        
         setTimeout(() => {
             document.body.classList.remove('gold-mode');
             inputField.classList.remove('shake');
@@ -468,7 +469,9 @@ function filterData() {
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
+        
         if (row.classList.contains('story-row')) {
+            // Проверяем название истории
             storyVisible = row.innerText.toLowerCase().includes(filter);
             row.style.display = storyVisible ? "" : "none";
         } else {
@@ -477,10 +480,18 @@ function filterData() {
             if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
 
             const match = original.toLowerCase().includes(filter);
+
             if (match || storyVisible) {
                 row.style.display = "";
-                nameCell.innerHTML = (match && filter !== "") ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") : original;
+                // Подсветка совпадений
+                if (match && filter !== "") {
+                    const regex = new RegExp(`(${filter})`, "gi");
+                    nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
+                } else {
+                    nameCell.innerHTML = original;
+                }
                 
+                // Показываем заголовок истории для найденного героя
                 let p = row.previousElementSibling;
                 while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
                 if(p) p.style.display = "";
@@ -491,78 +502,68 @@ function filterData() {
     }
 }
 
-
-// 2. ОЧИСТКА ПОИСКА
+// 2. ФУНКЦИЯ ОЧИСТКИ (ДЛЯ КРЕСТИКА)
 function clearInput() {
     const input = document.getElementById("searchInput");
-    input.value = "";
-    filterData(); // Сбросить таблицу
-    input.focus(); // Вернуть фокус
+    if (input) {
+        input.value = "";
+        filterData(); // Вызываем фильтр, чтобы вернуть все строки
+        input.focus(); // Возвращаем курсор в поле
+    }
 }
 
 // 3. КОПИРОВАНИЕ + ВИБРООТКЛИК
 function copy(btn) {
     const text = btn.parentElement.querySelector('.code-text').innerText;
-    
     navigator.clipboard.writeText(text).then(() => {
-        // Легкая вибрация (25мс)
-        if (window.navigator && window.navigator.vibrate) {
-            window.navigator.vibrate(25);
-        }
-
-        // Визуальная индикация на кнопке
-        const oldText = btn.innerText;
+        if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(25);
+        const old = btn.innerText;
         btn.innerText = "ГОТОВО ✓";
         btn.classList.add('copied');
-        
         setTimeout(() => {
-            btn.innerText = oldText;
+            btn.innerText = old;
             btn.classList.remove('copied');
-        }, 1200);
-    }).catch(err => {
-        console.error('Ошибка копирования: ', err);
+        }, 1000);
     });
 }
 
-// 4. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
+// 4. ТЕМЫ
 function toggleTheme() {
     document.body.classList.toggle("dark-mode");
     const isDark = document.body.classList.contains("dark-mode");
-    document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
+    const btn = document.getElementById("themeBtn");
+    if (btn) btn.innerText = isDark ? "☀️" : "🌙";
     localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
-// Проверка сохраненной темы при загрузке
-if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
-    const btn = document.getElementById("themeBtn");
-    if(btn) btn.innerText = "☀️";
-}
-
-// 5. СКРОЛЛ: КНОПКА "НАВЕРХ" И СКРЫТИЕ КЛАВИАТУРЫ
-window.onscroll = function() {
-    const topBtn = document.getElementById("backToTop");
-    if (topBtn) {
-        topBtn.style.display = (window.scrollY > 300) ? "block" : "none";
+// Загрузка сохраненной темы
+window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+        const btn = document.getElementById("themeBtn");
+        if (btn) btn.innerText = "☀️";
     }
+});
+
+// 5. КНОПКА НАВЕРХ И СКРЫТИЕ КЛАВИАТУРЫ ПРИ СКРОЛЛЕ
+window.onscroll = function() {
+    const upBtn = document.getElementById("backToTop");
+    if (upBtn) upBtn.style.display = (window.scrollY > 300) ? "block" : "none";
     
-    
+    // Если пользователь начал скроллить таблицу, убираем фокус с поиска (прячет клаву)
+    if (window.scrollY > 50 && document.activeElement.tagName === 'INPUT') {
+        document.activeElement.blur();
+    }
+};
+
 function topFunction() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 6. ДИНАМИЧЕСКИЙ ЗАГОЛОВОК (ВКЛАДКА)
+// 6. ПАСХАЛКА ДЛЯ ВКЛАДКИ
 window.onblur = () => document.title = "Жду тебя! 💎";
 window.onfocus = () => document.title = "RC Slots - База";
 
-// 7. АВТОФОКУС ПРИ ЗАГРУЗКЕ (ДЛЯ ДЕСКТОПА)
-window.addEventListener('DOMContentLoaded', () => {
-    // Небольшая задержка для плавности
-    setTimeout(() => {
-        const input = document.getElementById('searchInput');
-        if (input && window.innerWidth > 768) input.focus();
-    }, 500);
-});
 
 
 </script>
