@@ -376,39 +376,59 @@
 function filterData() {
     const input = document.getElementById("searchInput");
     const filter = input.value.toLowerCase();
-    const rows = document.querySelectorAll("#mainTable tr:not(.story-row):not(thead tr)");
-    
-    rows.forEach(row => {
-        const nameCell = row.cells[0];
-        const originalText = nameCell.getAttribute("data-original") || nameCell.innerText;
-        if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", originalText);
+    const table = document.getElementById("mainTable");
+    const tr = table.getElementsByTagName("tr");
 
-        if (originalText.toLowerCase().includes(filter)) {
-            const regex = new RegExp(`(${filter})`, "gi");
-            nameCell.innerHTML = filter ? originalText.replace(regex, "<mark>$1</mark>") : originalText;
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
-        }
-    });
+    let storyVisibleByTitle = false; // Флаг: совпало ли название истории
 
-    // Показ заголовков историй
-    const allRows = document.querySelectorAll("#mainTable tr");
-    let lastHeader = null;
-    let hasVisibleRows = false;
-    allRows.forEach(row => {
+    // Начинаем с 1, чтобы пропустить шапку (thead)
+    for (let i = 1; i < tr.length; i++) {
+        const row = tr[i];
+
         if (row.classList.contains('story-row')) {
-            if (lastHeader && !hasVisibleRows) lastHeader.style.display = "none";
-            lastHeader = row;
-            hasVisibleRows = row.innerText.toLowerCase().includes(filter);
-            row.style.display = hasVisibleRows ? "" : "none";
-        } else if (row.style.display === "" && !row.closest('thead')) {
-            hasVisibleRows = true;
-            if (lastHeader) lastHeader.style.display = "";
+            // Это строка с названием истории
+            const storyName = row.innerText.toLowerCase();
+            storyVisibleByTitle = storyName.includes(filter);
+            
+            // Показываем заголовок истории, если совпало название ИЛИ если впереди будут совпадения у героев
+            // (Логика ниже доработает видимость заголовка)
+            row.style.display = storyVisibleByTitle ? "" : "none";
+        } else {
+            // Это строка с персонажем
+            const nameCell = row.cells[0];
+            const originalText = nameCell.getAttribute("data-original") || nameCell.innerText;
+            if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", originalText);
+
+            const nameMatches = originalText.toLowerCase().includes(filter);
+
+            // Показываем строку, если совпало имя героя ИЛИ если мы ввели название всей истории
+            if (nameMatches || storyVisibleByTitle) {
+                row.style.display = "";
+                
+                // Подсвечиваем имя только если совпало именно оно
+                if (nameMatches && filter !== "") {
+                    const regex = new RegExp(`(${filter})`, "gi");
+                    nameCell.innerHTML = originalText.replace(regex, "<mark>$1</mark>");
+                } else {
+                    nameCell.innerHTML = originalText;
+                }
+
+                // Если герой нашелся, нужно убедиться, что его заголовок (история) тоже виден
+                let prev = row.previousElementSibling;
+                while (prev) {
+                    if (prev.classList.contains('story-row')) {
+                        prev.style.display = "";
+                        break;
+                    }
+                    prev = prev.previousElementSibling;
+                }
+            } else {
+                row.style.display = "none";
+            }
         }
-    });
-    if (lastHeader && !hasVisibleRows) lastHeader.style.display = "none";
+    }
 }
+
 
 // КОПИРОВАНИЕ
 function copy(btn) {
