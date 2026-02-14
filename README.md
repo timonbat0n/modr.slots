@@ -93,7 +93,7 @@
         padding: 10px 40px;
         /* Фон как у таблицы/страницы, текст черный */
         background-color: #f9f9f9; 
-        color: #000000 !important;
+        color: #1a1a1b !important;
         
         text-decoration: none !important;
         font-family: sans-serif;
@@ -111,7 +111,7 @@
 
     /* Эффект при наведении: инверсия в черный */
     .tg-minimal-btn:hover {
-        background-color: #000000;
+        background-color: #1a1a1b;
         color: #ffffff !important;
         transform: translateY(-2px);
     }
