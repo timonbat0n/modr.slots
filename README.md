@@ -3,6 +3,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+<div id="sideNav" class="side-nav"></div>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Full Database</title>
@@ -192,7 +194,62 @@
 
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
     
-    
+    .side-nav {
+    position: fixed;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    padding: 8px 4px;
+    border-radius: 12px;
+    max-height: 80vh;
+    overflow-y: auto; /* На случай, если букв будет слишком много */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.side-nav a {
+    text-decoration: none;
+    color: var(--accent-blue, #0288d1);
+    font-weight: 800;
+    font-size: 12px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.side-nav a:hover {
+    background: var(--accent-blue, #0288d1);
+    color: white !important;
+    transform: scale(1.2);
+}
+
+/* Стиль для темной темы */
+body.dark-mode .side-nav {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Прячем на узких экранах, если мешает */
+@media (max-width: 480px) {
+    .side-nav {
+        right: 4px;
+        padding: 4px 2px;
+    }
+    .side-nav a {
+        width: 22px;
+        height: 22px;
+        font-size: 10px;
+    }
+}
+
       
 </style>
 
@@ -564,6 +621,43 @@ function topFunction() {
 window.onblur = () => document.title = "Жду тебя! 💎";
 window.onfocus = () => document.title = "RC Slots - База";
 
+function generateAlphabet() {
+    const sideNav = document.getElementById('sideNav');
+    const stories = document.querySelectorAll('.story-row');
+    const letters = new Set(); // Используем Set, чтобы буквы не дублировались
+    
+    sideNav.innerHTML = ''; // Очищаем
+
+    stories.forEach(story => {
+        const firstLetter = story.innerText.trim()[0].toUpperCase();
+        if (firstLetter && !letters.has(firstLetter)) {
+            letters.add(firstLetter);
+            
+            const link = document.createElement('a');
+            link.href = "javascript:void(0)";
+            link.innerText = firstLetter;
+            link.onclick = () => {
+                story.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Легкая подсветка цели
+                story.style.background = "var(--highlight)";
+                setTimeout(() => story.style.background = "", 1000);
+            };
+            sideNav.appendChild(link);
+        }
+    });
+}
+
+// Запускаем генерацию после загрузки страницы
+window.addEventListener('DOMContentLoaded', generateAlphabet);
+
+// Если ты используешь поиск, панель лучше скрыть, чтобы не мешалась
+const originalFilterData = filterData;
+filterData = function() {
+    originalFilterData(); // Вызываем основной поиск
+    const filter = document.getElementById("searchInput").value;
+    document.getElementById('sideNav').style.opacity = filter ? "0" : "1";
+    document.getElementById('sideNav').style.pointerEvents = filter ? "none" : "auto";
+};
 
 
 
