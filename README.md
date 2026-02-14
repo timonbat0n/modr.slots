@@ -3,133 +3,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Full Database</title>
-    <style>
-        /* 1. ПЕРЕМЕННЫЕ (ROOT) */
-        :root {
-            --bg-page: #e3f2fd;
-            --table-bg: #ffffff;
-            --text-main: #0d47a1;
-            --text-info: #546e7a;
-            --accent-blue: #0288d1;
-            --story-header: #bbdefb;
-            --btn-copy: #03a9f4;
-            --btn-hover: #0277bd;
-            --shadow: rgba(2, 136, 209, 0.15);
-            --border-table: #e3f2fd;
-            --code-bg: #f5faff;
-            --highlight: #ffeb3b;
-            --footer-color: #94a3b8;
-        }
+<style>
+    :root {
+        /* Светлая тема */
+        --bg-page: #e3f2fd;
+        --table-bg: #ffffff;
+        --text-main: #0d47a1;
+        --text-info: #546e7a;
+        --accent-blue: #0288d1;
+        --story-header: #bbdefb;
+        --btn-copy: #03a9f4;
+        --btn-hover: #0277bd;
+        --shadow: rgba(2, 136, 209, 0.15);
+        --border-table: #e3f2fd;
+        --code-bg: #f5faff;
+        --highlight: #ffeb3b;
+        --footer-color: #94a3b8;
+    }
 
-        body.dark-mode {
-            --bg-page: #0f172a;
-            --table-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --text-info: #94a3b8;
-            --accent-blue: #38bdf8;
-            --story-header: #334155;
-            --btn-copy: #0ea5e9;
-            --btn-hover: #0288d1;
-            --shadow: rgba(0, 0, 0, 0.4);
-            --border-table: #334155;
-            --code-bg: #0f172a;
-            --highlight: #facc15;
-            --footer-color: #64748b;
-        }
+    body.dark-mode {
+        /* Темная тема - исправленная */
+        --bg-page: #0f172a;       /* Очень темный фон */
+        --table-bg: #1e293b;      /* Фон самой таблицы (светлее фона страницы) */
+        --text-main: #f1f5f9;      /* Белый текст */
+        --text-info: #94a3b8;      /* Серый текст */
+        --accent-blue: #38bdf8;    /* Голубой акцент */
+        --story-header: #334155;   /* Цвет строки истории */
+        --btn-copy: #0ea5e9;
+        --btn-hover: #0288d1;
+        --shadow: rgba(0, 0, 0, 0.4);
+        --border-table: #334155;   /* Границы ячеек в темной теме */
+        --code-bg: #0f172a;        /* Фон под кодом */
+        --highlight: #facc15;
+        --footer-color: #64748b;
+    }
 
-        /* 2. ОБЩИЕ СТИЛИ */
-        body { 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            background-color: var(--bg-page);
-            color: var(--text-main);
-            margin: 0; padding: 15px 10px;
-            display: flex; flex-direction: column; align-items: center;
-            transition: background-color 0.3s;
-        }
+    body { 
+        font-family: 'Segoe UI', Roboto, sans-serif; 
+        background-color: var(--bg-page);
+        color: var(--text-main);
+        margin: 0; padding: 15px 10px;
+        display: flex; flex-direction: column; align-items: center;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
-        .header-box { text-align: center; margin-bottom: 20px; }
-        .header-box h2 { color: var(--text-main); margin: 0; text-transform: uppercase; font-size: 1.2em; font-weight: 800; }
+    /* Исправление отображения таблицы */
+    .table-container { 
+        width: 100%; max-width: 500px; 
+        background-color: var(--table-bg); 
+        border-radius: 15px; 
+        overflow: hidden; 
+        box-shadow: 0 8px 30px var(--shadow);
+        border: 1px solid var(--border-table);
+    }
 
-        /* ПОИСК */
-        .search-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; position: relative; }
-        #searchInput { 
-            width: 100%; padding: 12px 12px 12px 42px; 
-            border: 2px solid transparent; border-radius: 12px; 
-            font-size: 16px; background: var(--table-bg); color: var(--text-main);
-            box-shadow: 0 4px 15px var(--shadow);
-            outline: none; box-sizing: border-box;
-        }
-        #searchInput:focus { border-color: var(--accent-blue); }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; background-color: transparent; }
 
-        .search-wrapper::before {
-            content: ""; position: absolute; left: 15px; top: 50%;
-            transform: translateY(-50%); width: 20px; height: 20px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
-            z-index: 1;
-        }
+    th { 
+        background-color: var(--code-bg); 
+        color: var(--accent-blue); 
+        padding: 12px 5px; 
+        font-size: 0.75rem; 
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--border-table);
+    }
 
-        /* КНОПКИ УПРАВЛЕНИЯ */
-        .theme-toggle {
-            position: fixed; top: 15px; right: 15px;
-            background: var(--table-bg); border: 2px solid var(--accent-blue);
-            color: var(--accent-blue); border-radius: 50%;
-            width: 38px; height: 38px; cursor: pointer; font-size: 18px;
-            display: flex; align-items: center; justify-content: center; z-index: 1000;
-        }
+    td { 
+        padding: 10px 5px; 
+        border-bottom: 1px solid var(--border-table); 
+        vertical-align: middle; 
+        text-align: center;
+        background-color: var(--table-bg); /* Принудительный фон ячейки */
+        color: var(--text-main);
+    }
 
-        .tg-wrapper { margin-bottom: 20px; }
-        .tg-minimal-btn {
-            display: inline-block; padding: 10px 25px; background: var(--table-bg);
-            color: var(--text-main) !important; text-decoration: none; font-weight: 600;
-            border-radius: 10px; border: 2px solid var(--accent-blue); font-size: 14px;
-        }
+    /* Колонки */
+    th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; }
+    th:nth-child(2), td:nth-child(2) { width: 50%; }
+    th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 0.75em; color: var(--text-info); }
 
-        /* ТАБЛИЦА */
-        .table-container { 
-            width: 100%; max-width: 500px; 
-            background: var(--table-bg); border-radius: 15px; 
-            overflow: hidden; box-shadow: 0 8px 30px var(--shadow);
-        }
+    /* Строка истории */
+    .story-row, .story-row td { 
+        background-color: var(--story-header) !important; 
+        color: var(--text-main) !important;
+        text-align: left !important; 
+        padding: 10px 15px !important; 
+        font-weight: 800;
+    }
 
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .code-text { 
+        font-family: monospace; 
+        color: var(--accent-blue); 
+        background-color: var(--code-bg); 
+        padding: 6px; 
+        border-radius: 5px; 
+        border: 1px solid var(--border-table); 
+        font-size: 0.75em;
+        word-break: break-all; 
+        display: block; 
+        margin-bottom: 5px;
+    }
+    
+    /* Кнопки и прочее */
+    .copy-btn {
+        background-color: var(--btn-copy); 
+        color: white; 
+        border: none; 
+        padding: 6px 0; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        font-size: 11px; 
+        font-weight: 600; 
+        width: 100%;
+    }
+    .copy-btn.copied { background-color: #10b981; }
 
-        th, td { 
-            padding: 10px 5px; border-bottom: 1px solid var(--border-table); 
-            vertical-align: middle; text-align: center; word-wrap: break-word;
-        }
+    .theme-toggle {
+        position: fixed; top: 15px; right: 15px;
+        background: var(--table-bg); border: 2px solid var(--accent-blue);
+        color: var(--accent-blue); border-radius: 50%;
+        width: 38px; height: 38px; cursor: pointer; z-index: 1000;
+    }
 
-        th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; font-size: 0.85em; }
-        th:nth-child(2), td:nth-child(2) { width: 50%; }
-        th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 0.75em; color: var(--text-info); }
+    mark { background-color: var(--highlight); color: #000; border-radius: 2px; }
 
-        .story-row { background: var(--story-header); }
-        .story-row td { text-align: left !important; padding: 10px 15px; font-weight: 800; color: var(--text-main); width: 100% !important;}
+    #backToTop {
+        display: none; position: fixed; bottom: 20px; right: 20px;
+        background: var(--accent-blue); color: white; border: none;
+        width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 99;
+    }
 
-        .code-text { 
-            font-family: monospace; color: var(--accent-blue); 
-            background: var(--code-bg); padding: 5px; border-radius: 5px; 
-            border: 1px solid var(--border-table); font-size: 0.75em;
-            word-break: break-all; display: block; margin-bottom: 5px;
-        }
-        
-        .copy-btn {
-            background: var(--btn-copy); color: white; border: none; 
-            padding: 6px 0; border-radius: 6px; cursor: pointer; 
-            font-size: 11px; font-weight: 600; width: 100%;
-        }
-        .copy-btn.copied { background: #4caf50; }
+    .footer-text { margin-top: 30px; margin-bottom: 20px; font-size: 0.75rem; color: var(--footer-color); }
+</style>
 
-        mark { background-color: var(--highlight); color: #000; border-radius: 2px; }
-
-        /* КНОПКА НАВЕРХ */
-        #backToTop {
-            display: none; position: fixed; bottom: 20px; right: 20px;
-            background: var(--accent-blue); color: white; border: none;
-            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 99;
-        }
-
-        .footer-text { margin-top: 30px; margin-bottom: 20px; font-size: 0.75rem; color: var(--footer-color); text-align: center; }
-    </style>
 </head>
 <body id="body">
 
