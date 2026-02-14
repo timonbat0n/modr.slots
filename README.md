@@ -562,12 +562,7 @@ window.onscroll = function() {
         topBtn.style.display = (window.scrollY > 300) ? "block" : "none";
     }
     
-    // Скрываем клавиатуру при скролле, чтобы не мешала обзору
-    if(document.activeElement.tagName === 'INPUT') {
-        document.activeElement.blur();
-    }
-};
-
+    
 function topFunction() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
