@@ -447,7 +447,6 @@
 
 </div>
 <script>
-// 1. ЕДИНАЯ ФУНКЦИЯ ПОИСКА, ПОДСВЕТКИ И ПАСХАЛКИ
 function filterData() {
     const inputField = document.getElementById("searchInput");
     if (!inputField) return;
@@ -455,23 +454,47 @@ function filterData() {
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     
-    // ПРОВЕРКА ПАСХАЛКИ (Активируется при вводе "modr")
-    if (filter === "modr") {
+    // ПАСХАЛКА (modr или ирина)
+    const triggerWords = ["modr", "Ирина"];
+    
+    if (triggerWords.includes(filter)) {
         document.body.classList.add('gold-mode');
         inputField.classList.add('shake');
+
+        // Меняем текст во всех именах героев на "Люблю вас!"
+        for (let i = 1; i < tr.length; i++) {
+            if (!tr[i].classList.contains('story-row')) {
+                const nameCell = tr[i].cells[0];
+                if (!nameCell.hasAttribute("data-original")) {
+                    nameCell.setAttribute("data-original", nameCell.innerText);
+                }
+                nameCell.innerHTML = "Люблю вас! ❤️";
+                tr[i].style.display = ""; // Показываем все строки при пасхалке
+            }
+        }
+
+        // Возврат в норму через 5 секунд
         setTimeout(() => {
             document.body.classList.remove('gold-mode');
             inputField.classList.remove('shake');
+            // Возвращаем оригинальные имена
+            for (let i = 1; i < tr.length; i++) {
+                if (!tr[i].classList.contains('story-row')) {
+                    const nameCell = tr[i].cells[0];
+                    nameCell.innerHTML = nameCell.getAttribute("data-original");
+                }
+            }
+            clearInput(); // Очищаем поиск, чтобы таблица вернулась в обычный вид
         }, 5000);
+        
+        return; // Выходим из функции, чтобы обычный поиск не мешал пасхалке
     }
 
-    // ЛОГИКА ТАБЛИЦЫ
+    // ОБЫЧНЫЙ ПОИСК
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
-        
         if (row.classList.contains('story-row')) {
-            // Проверяем название истории
             storyVisible = row.innerText.toLowerCase().includes(filter);
             row.style.display = storyVisible ? "" : "none";
         } else {
@@ -480,18 +503,10 @@ function filterData() {
             if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
 
             const match = original.toLowerCase().includes(filter);
-
             if (match || storyVisible) {
                 row.style.display = "";
-                // Подсветка совпадений
-                if (match && filter !== "") {
-                    const regex = new RegExp(`(${filter})`, "gi");
-                    nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
-                } else {
-                    nameCell.innerHTML = original;
-                }
+                nameCell.innerHTML = (match && filter !== "") ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") : original;
                 
-                // Показываем заголовок истории для найденного героя
                 let p = row.previousElementSibling;
                 while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
                 if(p) p.style.display = "";
@@ -502,15 +517,16 @@ function filterData() {
     }
 }
 
-// 2. ФУНКЦИЯ ОЧИСТКИ (ДЛЯ КРЕСТИКА)
+// Очистка (чтобы крестик работал)
 function clearInput() {
     const input = document.getElementById("searchInput");
     if (input) {
         input.value = "";
-        filterData(); // Вызываем фильтр, чтобы вернуть все строки
-        input.focus(); // Возвращаем курсор в поле
+        filterData();
+        input.focus();
     }
 }
+
 
 // 3. КОПИРОВАНИЕ + ВИБРООТКЛИК
 function copy(btn) {
