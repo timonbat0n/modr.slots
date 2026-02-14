@@ -4,147 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RC Slots Full Database - Sky Blue</title>
-   <style>
-    :root {
-        --bg-page: #e3f2fd;
-        --table-bg: #ffffff;
-        --text-main: #0d47a1;
-        --text-info: #546e7a;
-        --accent-blue: #0288d1;
-        --story-header: #bbdefb;
-        --btn-copy: #03a9f4;
-        --btn-hover: #0277bd;
-        --shadow: rgba(2, 136, 209, 0.15);
-    }
+      <style>
+        /* 1. ПЕРЕМЕННЫЕ (ROOT) */
+        :root {
+            --bg-page: #f8fafc;
+            --table-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #0070f3;
+            --border-color: #e2e8f0;
+            --story-bg: #f1f5f9;
+            --font-main: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+            --font-mono: "SF Mono", "Monaco", "Consolas", monospace;
+        }
 
-    /* 1. Основа страницы */
-    body { 
-        font-family: 'Segoe UI', Roboto, sans-serif; 
-        background-color: var(--bg-page);
-        margin: 0; padding: 20px 10px;
-        display: flex; flex-direction: column; align-items: center;
-    }
+        /* 2. ОСНОВНОЙ СТИЛЬ (BODY) */
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0; padding: 20px 10px;
+            display: flex; flex-direction: column; align-items: center;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    .header-box { text-align: center; margin-bottom: 25px; }
-    .header-box h2 { color: #01579b; margin: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+        /* ЗАГОЛОВОК */
+        .header-box { text-align: center; margin-bottom: 30px; }
+        .header-box h2 { 
+            font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; 
+            margin: 0; color: var(--text-main);
+        }
 
-    /* 2. Красивый поиск */
-    .search-wrapper { 
-        width: 100%; 
-        max-width: 900px; 
-        margin-bottom: 30px; 
-        position: relative; 
-    }
+        /* ПОИСК */
+        .search-wrapper { 
+            width: 100%; max-width: 800px; 
+            margin-bottom: 24px; position: relative; 
+        }
 
-    #searchInput { 
-        width: 100%; 
-        padding: 16px 20px 16px 52px; 
-        border: 2px solid transparent; 
-        border-radius: 15px; 
-        font-size: 16px; 
-        font-weight: 500;
-        background: #fff;
-        color: #0d47a1;
-        box-shadow: 0 4px 15px var(--shadow);
-        outline: none; 
-        transition: all 0.3s ease;
-        box-sizing: border-box;
-    }
+        #searchInput { 
+            width: 100%; padding: 12px 16px 12px 44px; 
+            border: 1px solid var(--border-color); border-radius: 10px; 
+            font-size: 15px; background: #fff; outline: none;
+            transition: all 0.2s ease; box-sizing: border-box;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
 
-    #searchInput:focus { 
-        border-color: var(--accent-blue); 
-        box-shadow: 0 6px 25px rgba(2, 136, 209, 0.25);
-        transform: translateY(-2px);
-    }
+        #searchInput:focus { 
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+        }
 
-    .search-wrapper::before {
-        content: "";
-        position: absolute;
-        left: 18px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 22px;
-        height: 22px;
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
-        z-index: 1;
-        pointer-events: none;
-    }
+        .search-wrapper::before {
+            content: ""; position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%); width: 18px; height: 18px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
+            z-index: 1; pointer-events: none;
+        }
 
-    /* 3. Контейнер таблицы */
-    .table-container { 
-        width: 100%; max-width: 900px; 
-        background: var(--table-bg); border-radius: 18px; overflow: hidden; 
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    }
+        /* ТАБЛИЦА */
+        .table-container { 
+            width: 100%; max-width: 800px; 
+            background: var(--table-bg); border-radius: 12px; 
+            border: 1px solid var(--border-color);
+            overflow: hidden; 
+        }
 
-    /* 4. Жесткая структура таблицы (АНТИ-СКАЧОК) */
-    table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        table-layout: fixed; /* Фиксирует ширину */
-    }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
-    th { 
-        background: #f0f7ff; padding: 15px; font-size: 0.85em; 
-        text-transform: uppercase; color: #0277bd; border-bottom: 2px solid #e1f5fe; 
-    }
+        th { 
+            background: #fafafa; padding: 12px; font-size: 11px; 
+            text-transform: uppercase; color: var(--text-muted); 
+            letter-spacing: 0.05em; border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
 
-    td { 
-        padding: 15px 10px; text-align: center; 
-        border-bottom: 1px solid #e3f2fd; font-size: 0.95em; 
-        word-wrap: break-word;
-    }
+        td { 
+            padding: 12px 8px; text-align: center; 
+            border-bottom: 1px solid #f1f5f9; font-size: 14px; 
+            word-wrap: break-word; vertical-align: middle;
+        }
 
-    /* Распределение ширины: Имя(20%) | Код(55%) | Инфо(25%) */
-    th:nth-child(1), td:nth-child(1) { width: 20%; font-weight: 700; color: var(--text-main); }
-    th:nth-child(2), td:nth-child(2) { width: 55%; }
-    th:nth-child(3), td:nth-child(3) { width: 25%; }
-
-    /* Заголовки историй */
-    .story-row { background: var(--story-header); }
-    .story-row td { 
-        text-align: left !important; padding: 14px 22px; 
-        color: #01579b; font-weight: 800; font-size: 1.05em; 
-    }
-
-    /* Оформление кода и кнопок */
-    .code-text { 
-        font-family: 'Consolas', monospace; color: #1a237e; word-break: break-all; 
-        font-weight: 600; display: block; margin-bottom: 10px; 
-        background: #f8fbff; padding: 8px; border-radius: 6px; border: 1px solid #e1f5fe;
-    }
-    
-    .copy-btn {
-        background: var(--btn-copy); color: white; border: none; padding: 8px 18px; 
-        border-radius: 8px; cursor: pointer; font-size: 0.8em; font-weight: 600; 
-        transition: 0.2s; width: 100%; max-width: 160px;
-    }
-    .copy-btn:hover { background: var(--btn-hover); transform: scale(1.02); }
-    .copy-btn.copied { background: #4caf50; }
-
-    .info-txt { font-size: 0.85em; color: var(--text-info); font-style: italic; line-height: 1.4; }
-
-    /* Кнопка Телеграм */
-    .tg-wrapper { text-align: center; margin: 25px 0; }
-    .tg-minimal-btn {
-        display: inline-block; padding: 12px 35px; background-color: #fff; 
-        color: #0d47a1 !important; text-decoration: none; font-weight: 700;
-        border-radius: 12px; border: 2px solid #bbdefb; transition: 0.3s;
-        box-shadow: 0 4px 10px var(--shadow);
-    }
-    .tg-minimal-btn:hover { background-color: #0d47a1; color: #fff !important; transform: translateY(-2px); }
-
-    /* Плавность поиска */
-    tr { transition: opacity 0.2s ease; }
-
-    @media (max-width: 600px) {
-        td, th { font-size: 0.8em; padding: 10px 5px; }
-        .code-text { font-size: 0.75em; }
-        th:nth-child(1), td:nth-child(1) { width: 25%; }
+        /* Ширина колонок */
+        th:nth-child(1), td:nth-child(1) { width: 22%; font-weight: 600; }
         th:nth-child(2), td:nth-child(2) { width: 50%; }
-        th:nth-child(3), td:nth-child(3) { width: 25%; }
-    }
-</style>
+        th:nth-child(3), td:nth-child(3) { width: 28%; }
+
+        /* Категория (История) */
+        .story-row { background: var(--story-bg); }
+        .story-row td { 
+            text-align: left !important; padding: 8px 16px; 
+            color: var(--text-main); font-weight: 700; font-size: 13px; 
+        }
+
+        /* Ячейка кода */
+        .code-text { 
+            font-family: var(--font-mono); color: #e11d48; 
+            background: #fff1f2; padding: 4px 6px; 
+            border-radius: 4px; font-size: 12px; 
+            display: block; margin-bottom: 6px;
+            border: 1px solid #ffe4e6;
+        }
+        
+        .copy-btn {
+            background: var(--text-main); color: white; border: none; 
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; 
+            font-size: 11px; font-weight: 500; transition: 0.2s;
+            width: 100%; max-width: 110px;
+        }
+
+        .copy-btn:active { transform: scale(0.96); }
+
+        .info-txt { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+        @media (max-width: 600px) {
+            th:nth-child(1), td:nth-child(1) { width: 28%; }
+            th:nth-child(2), td:nth-child(2) { width: 44%; }
+            th:nth-child(3), td:nth-child(3) { width: 28%; }
+            td { font-size: 13px; }
+        }
+    </style>
 
 
 </head>
