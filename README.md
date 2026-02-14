@@ -275,6 +275,13 @@
 
         </tbody>
     </table>
+
+<div style="text-align: center; margin: 20px 0;">
+    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-link-btn">
+        TELEGRAM
+    </a>
+</div>
+
 </div>
 
 <script>
