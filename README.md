@@ -10,11 +10,10 @@
 
 
     <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💎%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7wAAAO8Be8pS9AAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGXSURBVFiF7ZaxS8NQFMV/96UJpSIdHBycnYpLR9dBpIuDky6uLTo6OghS6uAsOOvg7OToon/AyTo46uAgiIOTo6NUKYIhkYshvS8O8ZAmTdrSIn3ghYf77v247717L0gpiaIsz6FpGvX6B6ZpAtBut7AsC8uySJKERCKBlHLon5SSTCYBsG2ber2O9/8AtNttDMNASolhGLTbbQA8z0NKicfztX86ncYwDHzfZzgcYpompmnSaDRkjYIgkGUnkwm2bVMoFDAMg8lkAsBut8PzPLrdLoPBAMuy8DyPbDb7pX0URfT7ffL5PJVKhaIokmUnkwn9fh/XdbEsC8uyCIIAsIDJZMJwOMS2bVzXJZvNkkwmAQiCAIAnBovFAoDtdkvXdYVCo8uyLADm8zndblcoNLosy6JQKOD7PrlcDk3TxKOfz8O2bXG6LC8KIdA0Dcuy8H2fSqUiwA9/mOfA8zwkO7pWq8nv95OsqGVZwvO8mKIsz3F1dcl6vU7XNfL5fFwf/uWvIIRgu93S7XZpNpuiXv/4BReYqX6R9YFrAAAAAElFTkSuQmCC">
 
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230288d1'/%3E%3Ctext y='.85em' x='5' font-size='80'%3E💎%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pUZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAJFSURBVHic7du9SxpRFMfx996NoCiIdHBycnYpLh1dB5EuDk66uLbo6OggSKmDs+Csg7OTo4v+Ayfr4KiDgyAOTo6OEqUICpGLIe/+8ZAmTZpSIn3ghYe7X8677z0H7kkpSStFWZ5D0zTq9Q9M0wSg3W5hWRaWZWFaFrZtI6XEU74tC4BlWVRXFf8XgHa7jWEYSCmJRqOIokhOisI0TarVKpZlMR6PcRyHZrOZZCeTScbjMZPJBMuyODw8FNPpVM7m8zm+72NZFvP5XIDZbIbneaTT6Yjs9Hptp9MphmEwn88EWC6XeJ5HtVr90X9eXtM0icfjv/6el5e0Uv6R9YHxeEyxWMTzPK6urtA0jXg8ju/7VCoVAGzbplKpAOD7Pp7nIeUfWR9Yv7xms0mj0cC2barVKoVCAdM08X2fSqUCwGQywXVdisUiALlc7kf9ebndbguApmmYpolt23Q6HQCapmEYBrZtc3V1BcDz8/Ov/vPy8rIsXF090m63abXqNBoXf3m73S6Xl9mKsiwvI6XEMH6YlGUmkwmSshynZZnJZIKkLGNWlsPDw6Isx+lGSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSur9/AI8P676vT6l1QAAAABJRU5ErkJggg==">
 
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
