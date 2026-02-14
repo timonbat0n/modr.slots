@@ -454,43 +454,47 @@ function filterData() {
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     
-    // ПАСХАЛКА (modr или ирина)
-    const triggerWords = ["modr", "Ирина"];
+    // ПРОВЕРКА ПАСХАЛКИ
+    const triggerWords = ["modr", "ирина"];
     
     if (triggerWords.includes(filter)) {
         document.body.classList.add('gold-mode');
         inputField.classList.add('shake');
 
-        // Меняем текст во всех именах героев на "Люблю вас!"
         for (let i = 1; i < tr.length; i++) {
-            if (!tr[i].classList.contains('story-row')) {
-                const nameCell = tr[i].cells[0];
+            const row = tr[i];
+            // Показываем все строки принудительно
+            row.style.display = ""; 
+            
+            if (!row.classList.contains('story-row')) {
+                const nameCell = row.cells[0];
+                // Сохраняем оригинал, если еще не сохранили
                 if (!nameCell.hasAttribute("data-original")) {
                     nameCell.setAttribute("data-original", nameCell.innerText);
                 }
                 nameCell.innerHTML = "Люблю вас! ❤️";
-                tr[i].style.display = ""; // Показываем все строки при пасхалке
             }
         }
 
-        // Возврат в норму через 5 секунд
+        // Выход из режима через 5 секунд
         setTimeout(() => {
             document.body.classList.remove('gold-mode');
             inputField.classList.remove('shake');
-            // Возвращаем оригинальные имена
+            
             for (let i = 1; i < tr.length; i++) {
-                if (!tr[i].classList.contains('story-row')) {
-                    const nameCell = tr[i].cells[0];
+                const nameCell = tr[i].cells[0];
+                if (nameCell && nameCell.hasAttribute("data-original")) {
                     nameCell.innerHTML = nameCell.getAttribute("data-original");
                 }
             }
-            clearInput(); // Очищаем поиск, чтобы таблица вернулась в обычный вид
+            // Полная очистка, чтобы вернуть таблицу в обычный вид
+            clearInput(); 
         }, 5000);
         
-        return; // Выходим из функции, чтобы обычный поиск не мешал пасхалке
+        return; // Прекращаем выполнение функции, чтобы обычный поиск не мешал
     }
 
-    // ОБЫЧНЫЙ ПОИСК
+    // ОБЫЧНЫЙ ПОИСК (если пасхалка не введена)
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
@@ -516,6 +520,7 @@ function filterData() {
         }
     }
 }
+
 
 // Очистка (чтобы крестик работал)
 function clearInput() {
