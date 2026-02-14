@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RC Slots Full Database - Sky Blue</title>
-     <style>
+   <style>
     :root {
         --bg-page: #e3f2fd;
         --table-bg: #ffffff;
@@ -14,8 +14,10 @@
         --story-header: #bbdefb;
         --btn-copy: #03a9f4;
         --btn-hover: #0277bd;
+        --shadow: rgba(2, 136, 209, 0.15);
     }
 
+    /* 1. Основа страницы */
     body { 
         font-family: 'Segoe UI', Roboto, sans-serif; 
         background-color: var(--bg-page);
@@ -23,77 +25,127 @@
         display: flex; flex-direction: column; align-items: center;
     }
 
-    .table-container { 
-        width: 100%; max-width: 900px; 
-        background: var(--table-bg); border-radius: 15px; overflow: hidden; 
-        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    .header-box { text-align: center; margin-bottom: 25px; }
+    .header-box h2 { color: #01579b; margin: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+
+    /* 2. Красивый поиск */
+    .search-wrapper { 
+        width: 100%; 
+        max-width: 900px; 
+        margin-bottom: 30px; 
+        position: relative; 
     }
 
-    /* ГЛАВНЫЙ СЕКРЕТ НЕПОДВИЖНОСТИ: */
+    #searchInput { 
+        width: 100%; 
+        padding: 16px 20px 16px 52px; 
+        border: 2px solid transparent; 
+        border-radius: 15px; 
+        font-size: 16px; 
+        font-weight: 500;
+        background: #fff;
+        color: #0d47a1;
+        box-shadow: 0 4px 15px var(--shadow);
+        outline: none; 
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    #searchInput:focus { 
+        border-color: var(--accent-blue); 
+        box-shadow: 0 6px 25px rgba(2, 136, 209, 0.25);
+        transform: translateY(-2px);
+    }
+
+    .search-wrapper::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 22px;
+        height: 22px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E") no-repeat center;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    /* 3. Контейнер таблицы */
+    .table-container { 
+        width: 100%; max-width: 900px; 
+        background: var(--table-bg); border-radius: 18px; overflow: hidden; 
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    /* 4. Жесткая структура таблицы (АНТИ-СКАЧОК) */
     table { 
         width: 100%; 
         border-collapse: collapse; 
-        table-layout: fixed; /* Обязательно! */
+        table-layout: fixed; /* Фиксирует ширину */
     }
 
-    th, td { 
-        padding: 12px 8px; 
-        text-align: center; 
-        border-bottom: 1px solid #e3f2fd;
-        overflow: hidden; /* Чтобы текст не вылезал за границы */
+    th { 
+        background: #f0f7ff; padding: 15px; font-size: 0.85em; 
+        text-transform: uppercase; color: #0277bd; border-bottom: 2px solid #e1f5fe; 
     }
 
-    /* Жесткая ширина столбцов */
-    th:nth-child(1), td:nth-child(1) { 
-        width: 100px; /* Фиксируем имя в пикселях, чтобы оно не дергалось */
-        font-weight: 700; 
-        color: var(--text-main);
-        white-space: nowrap; /* Имя в одну строку */
-        text-overflow: ellipsis;
+    td { 
+        padding: 15px 10px; text-align: center; 
+        border-bottom: 1px solid #e3f2fd; font-size: 0.95em; 
+        word-wrap: break-word;
     }
 
-    th:nth-child(2), td:nth-child(2) { 
-        width: auto; /* Весь остальной простор отдаем коду */
-    }
+    /* Распределение ширины: Имя(20%) | Код(55%) | Инфо(25%) */
+    th:nth-child(1), td:nth-child(1) { width: 20%; font-weight: 700; color: var(--text-main); }
+    th:nth-child(2), td:nth-child(2) { width: 55%; }
+    th:nth-child(3), td:nth-child(3) { width: 25%; }
 
-    th:nth-child(3), td:nth-child(3) { 
-        width: 120px; /* Фиксируем инфо-столбец */
-    }
-
-    /* Стили для кода, чтобы он ломался внутри ячейки, а не распирал её */
-    .code-text { 
-        font-family: 'Consolas', monospace; 
-        font-size: 11px;
-        color: #1a237e; 
-        word-break: break-all; /* Разрывать код в любом месте */
-        display: block; 
-        background: #f5faff; 
-        padding: 4px; 
-        border: 1px solid #e1f5fe;
-        border-radius: 4px;
-        margin-bottom: 5px;
-    }
-
+    /* Заголовки историй */
     .story-row { background: var(--story-header); }
     .story-row td { 
-        text-align: left !important; 
-        padding: 12px 20px; 
-        font-weight: 800; 
-        width: 100% !important; /* Заголовок на всю ширину */
+        text-align: left !important; padding: 14px 22px; 
+        color: #01579b; font-weight: 800; font-size: 1.05em; 
     }
 
+    /* Оформление кода и кнопок */
+    .code-text { 
+        font-family: 'Consolas', monospace; color: #1a237e; word-break: break-all; 
+        font-weight: 600; display: block; margin-bottom: 10px; 
+        background: #f8fbff; padding: 8px; border-radius: 6px; border: 1px solid #e1f5fe;
+    }
+    
     .copy-btn {
-        width: 100%; /* Кнопка на всю ширину ячейки кода */
-        background: var(--btn-copy); color: white; border: none; 
-        padding: 5px; border-radius: 4px; cursor: pointer; font-size: 10px;
+        background: var(--btn-copy); color: white; border: none; padding: 8px 18px; 
+        border-radius: 8px; cursor: pointer; font-size: 0.8em; font-weight: 600; 
+        transition: 0.2s; width: 100%; max-width: 160px;
     }
+    .copy-btn:hover { background: var(--btn-hover); transform: scale(1.02); }
+    .copy-btn.copied { background: #4caf50; }
 
-    .info-txt { font-size: 11px; color: var(--text-info); }
+    .info-txt { font-size: 0.85em; color: var(--text-info); font-style: italic; line-height: 1.4; }
 
-    /* Поиск без скачков */
-    tr { height: 60px; } /* Задаем фиксированную высоту строки */
-    tr.story-row { height: 45px; }
+    /* Кнопка Телеграм */
+    .tg-wrapper { text-align: center; margin: 25px 0; }
+    .tg-minimal-btn {
+        display: inline-block; padding: 12px 35px; background-color: #fff; 
+        color: #0d47a1 !important; text-decoration: none; font-weight: 700;
+        border-radius: 12px; border: 2px solid #bbdefb; transition: 0.3s;
+        box-shadow: 0 4px 10px var(--shadow);
+    }
+    .tg-minimal-btn:hover { background-color: #0d47a1; color: #fff !important; transform: translateY(-2px); }
+
+    /* Плавность поиска */
+    tr { transition: opacity 0.2s ease; }
+
+    @media (max-width: 600px) {
+        td, th { font-size: 0.8em; padding: 10px 5px; }
+        .code-text { font-size: 0.75em; }
+        th:nth-child(1), td:nth-child(1) { width: 25%; }
+        th:nth-child(2), td:nth-child(2) { width: 50%; }
+        th:nth-child(3), td:nth-child(3) { width: 25%; }
+    }
 </style>
+
 
 </head>
 <body>
@@ -103,11 +155,12 @@
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="searchInput" oninput="filterData()" placeholder="Поиск по персонажу или истории💎...">
+    <input type="text" id="searchInput" oninput="filterData()" placeholder="Начни вводить название истории или имя...">
 </div>
 
+
 <div class="tg-wrapper">
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 💎</a>
+    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 🩵</a>
 </div>
 
 <div class="table-container">
