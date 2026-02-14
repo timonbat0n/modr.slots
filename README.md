@@ -1,4 +1,3 @@
-
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -40,21 +39,24 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         }
 
+        /* ИСПРАВЛЕНИЕ: Фиксированная раскладка, чтобы не скакало */
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         th { background: #f0f7ff; padding: 15px; font-size: 0.85em; text-transform: uppercase; color: #0277bd; border-bottom: 2px solid #e1f5fe; }
-        td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #e3f2fd; font-size: 0.95em; }
+        td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #e3f2fd; font-size: 0.95em; word-wrap: break-word; }
 
-        th:nth-child(1), td:nth-child(1) { width: 22%; font-weight: 700; color: var(--text-main); }
-        th:nth-child(2), td:nth-child(2) { width: 52%; }
-        th:nth-child(3), td:nth-child(3) { width: 26%; }
+        /* ИСПРАВЛЕНИЕ: Настройка ширины (Средний — самый широкий) */
+        th:nth-child(1), td:nth-child(1) { width: 20%; font-weight: 700; color: var(--text-main); }
+        th:nth-child(2), td:nth-child(2) { width: 60%; }
+        th:nth-child(3), td:nth-child(3) { width: 20%; }
 
         .story-row { background: var(--story-header); }
-        .story-row td { text-align: left; padding: 12px 20px; color: #01579b; font-weight: 800; font-size: 1.05em; border-bottom: 2px solid #90caf9; }
+        .story-row td { text-align: left; padding: 12px 20px; color: #01579b; font-weight: 800; font-size: 1.05em; border-bottom: 2px solid #90caf9; width: 100% !important; }
 
         .code-text { 
             font-family: 'Consolas', monospace; color: #1a237e; word-break: break-all; 
             font-weight: 600; display: block; margin-bottom: 8px; 
             background: #f5faff; padding: 6px; border-radius: 4px; border: 1px solid #e1f5fe;
+            font-size: 0.85em;
         }
         
         .copy-btn {
@@ -64,11 +66,13 @@
         .copy-btn:hover { background: var(--btn-hover); }
         .copy-btn.copied { background: #4caf50; }
 
-        .info-txt { font-size: 0.85em; color: var(--text-info); font-style: italic; }
+        .info-txt { font-size: 0.8em; color: var(--text-info); font-style: italic; }
 
         @media (max-width: 600px) {
-            td, th { font-size: 0.8em; padding: 8px 5px; }
-            .copy-btn { width: 100%; padding: 8px 2px; }
+            th:nth-child(1), td:nth-child(1) { width: 25%; }
+            th:nth-child(2), td:nth-child(2) { width: 50%; }
+            th:nth-child(3), td:nth-child(3) { width: 25%; }
+            td, th { font-size: 0.75em; padding: 8px 4px; }
         }
     </style>
 </head>
@@ -79,61 +83,15 @@
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск по персонажу или истоии💎...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск по персонажу или истории💎...">
 </div>
 
 <style>
-    .tg-wrapper {
-        text-align: center;
-        margin: 25px 0;
-    }
-
+    .tg-wrapper { text-align: center; margin: 25px 0; }
     .tg-minimal-btn {
-        display: inline-block;
-        padding: 10px 40px;
-        /* Фон как у таблицы/страницы, текст черный */
-        background-color: #f9f9f9; 
-        color: #1a1a1b !important;
+        display: inline-block; padding: 10px 40px; background-color: #f9f9f9; 
+        color: #1a1a1b !important; text-decoration: none !important;
         
-        text-decoration: none !important;
-        font-family: sans-serif;
-        font-weight: 600;
-        font-size: 14px;
-        letter-spacing: 0.5px;
-        border-radius: 4px;
-        
-        /* Черная обводка */
-        border: 2px solid #ADD8E6;
-        
-        transition: all 0.2s ease-in-out;
-        cursor: pointer;
-    }
-
-    /* Эффект при наведении: инверсия в черный */
-    .tg-minimal-btn:hover {
-        background-color: #1a1a1b;
-        color: #ffffff !important;
-        transform: translateY(-2px);
-    }
-</style>
-
-<div class="tg-wrapper">
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">
-        Отправить слоты 💎
-    </a>
-</div>
-
-
-
-<div class="table-container">
-    <table id="mainTable">
-        <thead>
-            <tr>
-                <th>Персонаж</th>
-                <th>Код Слота</th>
-                <th>Инфо</th>
-            </tr>
-        </thead>
         <tbody>
                         <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
 <tr><td>Оникс</td><td><span class="code-text">024d696ab878ff9cd37faa17ec1694b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
@@ -156,7 +114,7 @@
 <tr><td>Джаспер</td><td><span class="code-text">a51a6814eecd12487a2b65bb67563914</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм, милашка</td></tr>
 <tr><td>Тристан</td><td><span class="code-text">2c52220dd1a790c67fe7a3e1cb0a6035</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">антикапитализм</td></tr>
 <tr class="story-row"><td colspan="3">Авверис</td></tr>
-<tr><td>Аш</td><td><span class="code-text">365a71d10df45dbc2368135630db129c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">аномалия, система</td></tr>
+<tr><td>Аши</td><td><span class="code-text">365a71d10df45dbc2368135630db129c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">аномалия, система</td></tr>
 
 <tr class="story-row"><td colspan="3">Арканум</td></tr>
 <tr><td>Лиам</td><td><span class="code-text">c050f3a89e9130f3b7eeb90a8f63c8aa</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">2 сезон 7 серия, жрица, искупление</td></tr>
