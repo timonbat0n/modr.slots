@@ -1,5 +1,8 @@
 <html lang="ru">
 <head>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Full Database</title>
@@ -190,36 +193,7 @@
     .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
     
     
-        /* ЭФФЕКТЫ ПАСХАЛКИ */
-        /* ЗОЛОТАЯ ПАСХАЛКА */
-    body.easter-egg {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab) !important; /* Яркий градиент для теста */
-        background-size: 400% 400% !important;
-        animation: goldGradient 3s ease infinite !important;
-        min-height: 100vh;
-    }
-
-    /* Если хочешь именно золото, используй этот фон: */
-    body.gold-mode {
-        background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) !important;
-        background-size: 400% 400% !important;
-        animation: goldGradient 3s ease infinite !important;
-    }
-
-    @keyframes goldGradient {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    .shake { animation: shake 0.5s; }
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
-    }
-
-
+      
 </style>
 
 </head>
@@ -454,47 +428,54 @@ function filterData() {
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     
-    // ПРОВЕРКА ПАСХАЛКИ
+    // ПРОВЕРКА ПАСХАЛКИ (modr или ирина)
     const triggerWords = ["modr", "ирина"];
     
     if (triggerWords.includes(filter)) {
-        document.body.classList.add('gold-mode');
+        // 1. ЗАПУСК КОНФЕТТИ 🎉
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#0288d1', '#ff4081', '#ffffff', '#ffeb3b']
+        });
+
+        // 2. ЭФФЕКТ ТРЯСКИ И ТЕКСТА
         inputField.classList.add('shake');
 
         for (let i = 1; i < tr.length; i++) {
             const row = tr[i];
-            // Показываем все строки принудительно
             row.style.display = ""; 
             
             if (!row.classList.contains('story-row')) {
                 const nameCell = row.cells[0];
-                // Сохраняем оригинал, если еще не сохранили
                 if (!nameCell.hasAttribute("data-original")) {
                     nameCell.setAttribute("data-original", nameCell.innerText);
                 }
                 nameCell.innerHTML = "Люблю вас! ❤️";
+                nameCell.style.color = "#ff4081"; // Розовый цвет для любви
+                nameCell.style.fontWeight = "bold";
             }
         }
 
-        // Выход из режима через 5 секунд
+        // Возврат в норму через 4 секунды
         setTimeout(() => {
-            document.body.classList.remove('gold-mode');
             inputField.classList.remove('shake');
-            
             for (let i = 1; i < tr.length; i++) {
                 const nameCell = tr[i].cells[0];
                 if (nameCell && nameCell.hasAttribute("data-original")) {
                     nameCell.innerHTML = nameCell.getAttribute("data-original");
+                    nameCell.style.color = ""; 
+                    nameCell.style.fontWeight = "";
                 }
             }
-            // Полная очистка, чтобы вернуть таблицу в обычный вид
             clearInput(); 
-        }, 5000);
+        }, 4000);
         
-        return; // Прекращаем выполнение функции, чтобы обычный поиск не мешал
+        return; 
     }
 
-    // ОБЫЧНЫЙ ПОИСК (если пасхалка не введена)
+    // ОБЫЧНЫЙ ПОИСК (оставляем как был)
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
@@ -510,7 +491,6 @@ function filterData() {
             if (match || storyVisible) {
                 row.style.display = "";
                 nameCell.innerHTML = (match && filter !== "") ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") : original;
-                
                 let p = row.previousElementSibling;
                 while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
                 if(p) p.style.display = "";
@@ -520,7 +500,6 @@ function filterData() {
         }
     }
 }
-
 
 // Очистка (чтобы крестик работал)
 function clearInput() {
