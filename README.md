@@ -168,6 +168,18 @@
         justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; color: #fff;
     }
     #backToTop.show { opacity: 1; pointer-events: auto; }
+
+        .particle {
+    position: fixed;
+    pointer-events: none;
+    width: 6px;
+    height: 6px;
+    background: #00f2ff; /* Цвет искр под неон */
+    box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
+    border-radius: 50%;
+    z-index: 9999;
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
 </style>
 
 <body>
@@ -516,6 +528,39 @@ window.addEventListener('DOMContentLoaded', createStars);
                 document.getElementById('themeBtn').innerText = '☀️';
             }
         };
+
+        document.addEventListener('click', function(e) {
+        for (let i = 0; i < 8; i++) {
+            createParticle(e.clientX, e.clientY);
+        }
+    });
+
+    function createParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        document.body.appendChild(particle);
+
+        const size = Math.random() * 6 + 2 + 'px';
+        particle.style.width = size;
+        particle.style.height = size;
+        
+        // Цвет: 50% шанс на голубой или розовый неон
+        particle.style.background = Math.random() > 0.5 ? '#00f2ff' : '#ff00ff';
+        particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
+
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+
+        const destinationX = (Math.random() - 0.5) * 150;
+        const destinationY = (Math.random() - 0.5) * 150;
+
+        requestAnimationFrame(() => {
+            particle.style.opacity = '0';
+            particle.style.transform = `translate(${destinationX}px, ${destinationY}px) scale(0)`;
+        });
+
+        setTimeout(() => { particle.remove(); }, 600);
+    }
     </script>
 
 
