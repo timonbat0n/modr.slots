@@ -68,44 +68,37 @@
         border-radius: 10px !important; font-size: 13px;
     }
 
-/* КНОПКА НАВЕРХ */
 #backToTop {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
+    bottom: 25px;
+    right: 25px;
+    width: 45px;
+    height: 45px;
     background: var(--btn-gradient);
-    color: white;
+    border: none;
     border-radius: 50%;
+    cursor: pointer;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 1000;
-    opacity: 0; /* Скрыта по умолчанию */
-    visibility: hidden;
-    transition: all 0.3s ease;
-    border: none;
-    outline: none;
+    /* Скрываем изначально */
+    opacity: 0;
+    pointer-events: none; 
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 #backToTop.show {
     opacity: 1;
-    visibility: visible;
+    pointer-events: auto; /* Делаем кликабельной только когда видна */
+    transform: translateY(0);
 }
 
-#backToTop:active {
-    transform: scale(0.9);
+#backToTop:not(.show) {
+    transform: translateY(20px); /* Эффект вылета снизу */
 }
 
-/* Иконка-стрелка внутри кнопки */
-#backToTop svg {
-    width: 20px;
-    height: 20px;
-    fill: white;
-}
 
 
     /* КОД И КНОПКА */
@@ -349,18 +342,51 @@
 
 </div>
 <script>
-    // 1. ФУНКЦИЯ ПОИСКА
+    // --- 1. КНОПКА НАВЕРХ (ЛОГИКА) ---
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+        // Если пролистали больше 200px, добавляем класс 'show'
+        if (window.pageYOffset > 200) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // --- 2. КОПИРОВАНИЕ ---
+    function copy(btn) {
+        const codeElement = btn.closest('td').querySelector('.code-text');
+        const textToCopy = codeElement.innerText.trim();
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const oldText = btn.innerText;
+            btn.innerText = 'ГОТОВО ✓';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerText = oldText;
+                btn.classList.remove('copied');
+            }, 1500);
+        });
+    }
+
+    // --- 3. ПОИСК И КРЕСТИК ---
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = document.querySelectorAll('#mainTable tbody tr');
 
-        // Показываем/скрываем крестик
-        clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
+        if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
 
         let storyMatches = false;
-
         rows.forEach(row => {
             if (row.classList.contains('story-row')) {
                 const storyName = row.innerText.toLowerCase();
@@ -380,56 +406,21 @@
         });
     }
 
-// Логика кнопки "Наверх"
-const backToTopBtn = document.getElementById('backToTop');
-
-window.onscroll = function() {
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        backToTopBtn.classList.add('show');
-    } else {
-        backToTopBtn.classList.remove('show');
-    }
-};
-
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // Плавная прокрутка
-    });
-}
-
-
-    // 2. ФУНКЦИЯ ОЧИСТКИ (КРЕСТИК)
     function clearInput() {
         const input = document.getElementById('searchInput');
-        input.value = ''; // Сброс текста
-        runFilter();      // Запуск фильтра (покажет всё)
-        input.focus();    // Возвращаем фокус
+        input.value = '';
+        runFilter();
+        input.focus();
     }
 
-    // 3. ФУНКЦИЯ КОПИРОВАНИЯ
-    function copy(btn) {
-        const codeElement = btn.closest('td').querySelector('.code-text');
-        const textToCopy = codeElement.innerText.trim();
-
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const oldText = btn.innerText;
-            btn.innerText = 'ГОТОВО ✓';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerText = oldText;
-                btn.classList.remove('copied');
-            }, 1500);
-        });
-    }
-
-    // ТЕМА
+    // --- 4. ТЕМА ---
     function toggleTheme() {
         document.body.classList.toggle('dark-theme');
         const isDark = document.body.classList.contains('dark-theme');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
     }
+    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
 </script>
 
 <button id="backToTop" onclick="scrollToTop()">
