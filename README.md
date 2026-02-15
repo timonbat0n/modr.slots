@@ -3,48 +3,106 @@
 
 <style>
     :root {
-        --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
-        --accent-blue: #0091ea; --story-header: #d1e9ff; --code-bg: #f0faff;
+        /* Светлая тема */
+        --bg-page: #eef7ff; 
+        --table-bg: #ffffff; 
+        --text-main: #074799;
+        --accent-blue: #0091ea; 
+        --story-header: #d1e9ff; 
+        --code-bg: #f0faff;
         --highlight: #fff176;
         --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    /* ТЕМНАЯ ТЕМА — Исправлено */
     body.dark-theme {
-        --bg-page: #0f172a; --table-bg: #1e293b; --text-main: #f1f5f9;
-        --accent-blue: #38bdf8; --story-header: #334155; --code-bg: #0f172a;
+        /* Темная тема - исправлены заголовки и фон */
+        --bg-page: #0f172a; 
+        --table-bg: #1e293b; 
+        --text-main: #f1f5f9;
+        --accent-blue: #38bdf8; 
+        --story-header: #334155; /* Глубокий серый для заголовков историй */
+        --code-bg: #0f172a;
         --highlight: #fb8c00;
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
     * { box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; background: var(--bg-page); color: var(--text-main); padding: 10px; margin: 0; display: flex; flex-direction: column; align-items: center; transition: 0.3s; min-height: 100vh; }
 
-    /* МАСШТАБ */
-    .tg-wrapper, .search-wrapper, .table-container { width: 100%; max-width: 600px; margin-bottom: 12px; }
-
-    /* КНОПКА ОТПРАВИТЬ */
-    .tg-btn { 
-        display: flex; align-items: center; justify-content: center; gap: 10px;
-        width: 100%; padding: 14px; background: var(--btn-gradient);
-        color: white !important; text-decoration: none; font-weight: 800; border-radius: 14px;
-        box-shadow: 0 6px 15px rgba(0, 145, 234, 0.2);
+    body { 
+        font-family: 'Segoe UI', Roboto, sans-serif; 
+        background: var(--bg-page); 
+        color: var(--text-main); 
+        padding: 10px; 
+        margin: 0; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        transition: background 0.3s, color 0.3s; 
+        min-height: 100vh;
     }
 
-    /* ПОИСК */
+    /* МАСШТАБ И КОНТЕЙНЕРЫ */
+    .tg-wrapper, .search-wrapper, .table-container { 
+        width: 100%; 
+        max-width: 600px; /* Оптимально для мобильных и ПК */
+        margin-bottom: 12px; 
+    }
+
+    /* КНОПКА ОТПРАВИТЬ СЛОТЫ */
+    .tg-btn { 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 10px;
+        width: 100%; 
+        padding: 14px; 
+        background: var(--btn-gradient);
+        color: white !important; 
+        text-decoration: none; 
+        font-weight: 800; 
+        border-radius: 14px;
+        box-shadow: 0 6px 15px rgba(0, 145, 234, 0.2);
+        font-size: 15px;
+        transition: transform 0.2s;
+    }
+    .tg-btn:active { transform: scale(0.98); }
+
+    /* ПОИСКОВАЯ СТРОКА */
     .search-wrapper { position: relative; }
     #searchInput {
-        width: 100%; padding: 12px 45px; border-radius: 14px; border: none;
-        background: var(--table-bg) var(--search-icon) no-repeat 14px center; background-size: 18px;
-        color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        width: 100%; 
+        padding: 12px 45px; 
+        border-radius: 14px; 
+        border: none;
+        background: var(--table-bg) var(--search-icon) no-repeat 14px center; 
+        background-size: 18px;
+        color: var(--text-main); 
+        outline: none; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        font-size: 14px;
     }
-    #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold; display: none; z-index: 5; }
+    #clearSearch { 
+        position: absolute; 
+        right: 15px; 
+        top: 50%; 
+        transform: translateY(-50%); 
+        cursor: pointer; 
+        color: var(--accent-blue); 
+        font-size: 22px; 
+        font-weight: bold; 
+        display: none; 
+        z-index: 5; 
+    }
 
-    /* ТАБЛИЦА — Жесткая фиксация */
-    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; table-layout: fixed; }
+    /* ТАБЛИЦА - ФИКСИРОВАННЫЙ МАСШТАБ (ЧТОБЫ НЕ СКАКАЛА) */
+    table { 
+        width: 100%; 
+        border-collapse: separate; 
+        border-spacing: 0 6px; 
+        table-layout: fixed; /* Жестко фиксирует ширину колонок */
+    }
     
-    /* Убираем прыжки: фиксируем высоту и отступы */
     td { 
         background-color: var(--table-bg) !important; 
         color: var(--text-main) !important; 
@@ -52,37 +110,91 @@
         border: none; 
         text-align: center; 
         font-size: 12px;
-        height: 65px; /* Фиксированная высота ячейки */
+        height: 70px; /* Фиксированная высота ячейки */
         vertical-align: middle;
         overflow: hidden;
+        transition: background 0.3s;
     }
     
-    tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; word-break: break-word; }
+    /* Пропорции колонок */
+    tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; word-wrap: break-word; }
     tr td:nth-child(2) { width: 45%; }
-    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
+    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; opacity: 0.9; }
 
-    /* Заголовки историй */
+    /* ЗАГОЛОВКИ ИСТОРИЙ - ИСПРАВЛЕНО ДЛЯ ТЕМНОЙ ТЕМЫ */
     .story-row td { 
-        background: var(--story-header) !important; 
+        background-color: var(--story-header) !important; 
         color: var(--accent-blue) !important; 
-        height: 40px !important; 
+        height: 45px !important; /* Высота заголовка меньше обычной ячейки */
         text-align: left !important; 
         padding-left: 15px !important; 
         border-radius: 12px !important; 
+        font-weight: 800;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    /* ПОДСВЕТКА */
-    mark { background: var(--highlight); color: #000; border-radius: 2px; }
+    /* ПОДСВЕТКА ПОИСКА */
+    mark { 
+        background-color: var(--highlight); 
+        color: #000; 
+        border-radius: 2px; 
+        padding: 0 1px;
+    }
 
-    /* КОПИРОВАНИЕ */
-    .code-text { font-family: monospace; font-size: 9px; display: block; margin-bottom: 4px; color: var(--accent-blue); word-break: break-all; padding: 4px; background: var(--code-bg); border-radius: 6px; line-height: 1; }
-    .copy-btn { background: var(--btn-gradient); color: white; border: none; padding: 6px; border-radius: 8px; cursor: pointer; width: 95%; font-weight: bold; font-size: 9px; text-transform: uppercase; }
+    /* КОПИРОВАНИЕ И КОД */
+    .code-text { 
+        font-family: 'Courier New', monospace; 
+        font-size: 9px; 
+        display: block; 
+        margin-bottom: 5px; 
+        color: var(--accent-blue); 
+        word-break: break-all; 
+        padding: 5px; 
+        background: var(--code-bg); 
+        border-radius: 6px; 
+        line-height: 1.1;
+    }
+    
+    .copy-btn { 
+        background: var(--btn-gradient); 
+        color: white; 
+        border: none; 
+        padding: 7px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        width: 95%; 
+        font-weight: bold; 
+        font-size: 10px; 
+        text-transform: uppercase; 
+        transition: 0.2s;
+    }
     .copy-btn.copied { background: #27ae60 !important; }
 
     /* КНОПКИ УПРАВЛЕНИЯ */
-    #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: var(--table-bg); width: 35px; height: 35px; border-radius: 50%; z-index: 100; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); color: var(--text-main); }
-    #backToTop { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--btn-gradient); border: none; border-radius: 50%; cursor: pointer; z-index: 99; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    #backToTop.show { opacity: 1; pointer-events: auto; }
+    #themeBtn { 
+        position: fixed; top: 10px; right: 10px; 
+        border: none; background: var(--table-bg); 
+        width: 38px; height: 38px; border-radius: 50%; 
+        z-index: 100; cursor: pointer; 
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+        color: var(--text-main); font-size: 18px;
+    }
+    
+    #backToTop { 
+        position: fixed; bottom: 20px; right: 20px; 
+        width: 48px; height: 48px; 
+        background: var(--btn-gradient); 
+        border: none; border-radius: 50%; 
+        cursor: pointer; z-index: 99; 
+        display: flex; align-items: center; justify-content: center; 
+        opacity: 0; pointer-events: none; 
+        transition: 0.4s; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+    }
+    #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    #backToTop:not(.show) { transform: translateY(20px); }
 </style>
 
 <button id="themeBtn" onclick="toggleTheme()">🌙</button>
@@ -390,7 +502,5 @@
         document.getElementById('themeBtn').innerText = '☀️';
     }
 </script>
-
-</head>
 <body>
 
