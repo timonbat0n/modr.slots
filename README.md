@@ -22,7 +22,8 @@
 
 
 <style>
-    /* 1. ПЕРЕМЕННЫЕ */
+<style>
+    /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
     :root {
         --bg-page: #f1f5f9;
         --table-bg: #ffffff;
@@ -33,10 +34,12 @@
         --btn-copy: #03a9f4;
         --border-table: #e1f5fe;
         --code-bg: #f5faff;
+        --highlight: #ffeb3b; /* Желтый для светлой темы */
+        --highlight-text: #000000;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    body.dark-theme, body.dark-mode {
+    body.dark-theme {
         --bg-page: #0f172a;
         --table-bg: #1e293b;
         --text-main: #f1f5f9;
@@ -46,29 +49,32 @@
         --btn-copy: #0ea5e9;
         --border-table: #334155;
         --code-bg: #0f172a;
+        --highlight: #facc15; /* Золотистый для темной темы */
+        --highlight-text: #000000;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
     /* 2. ГЛАВНЫЕ СТИЛИ */
     body {
-        font-family: 'Segoe UI', sans-serif;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         margin: 0;
-        padding: 10px;
+        padding: 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
         background-color: var(--bg-page) !important;
         color: var(--text-main);
-        overflow-x: hidden; /* Убирает болтанку вправо-влево */
+        overflow-x: hidden; /* Убирает горизонтальную болтанку */
+        transition: background-color 0.3s ease;
     }
 
-    /* УБРАЛИ БОКОВУЮ ПАНЕЛЬ */
-    .side-nav, .nav-toggle, #lettersContainer {
+    /* Удаление лишнего */
+    .side-nav, .nav-toggle, #lettersContainer, #scrollToTop, .scroll-btn, #backToTop {
         display: none !important;
     }
 
-    /* 3. ПОИСК (ВОЗВРАЩАЕМ ЛУПУ И КРЕСТИК) */
+    /* 3. ПОИСК (ЛУПА И КРЕСТИК) */
     .search-wrapper { 
         width: 100%; 
         max-width: 500px; 
@@ -78,7 +84,7 @@
     
     #searchInput { 
         width: 100%; 
-        padding: 14px 45px 14px 45px; /* Отступы под лупу и крестик */
+        padding: 14px 45px; 
         border: 2px solid var(--border-table); 
         border-radius: 14px; 
         font-size: 16px; 
@@ -86,37 +92,24 @@
         color: var(--text-main);
         outline: none; 
         box-sizing: border-box; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
-    /* Лупа */
     .search-wrapper::before {
-        content: ""; 
-        position: absolute; 
-        left: 14px; 
-        top: 50%;
-        transform: translateY(-50%); 
-        width: 20px; 
-        height: 20px;
+        content: ""; position: absolute; left: 14px; top: 50%;
+        transform: translateY(-50%); width: 22px; height: 22px;
         background: var(--search-icon) no-repeat center;
-        background-size: contain;
-        z-index: 2;
+        background-size: contain; z-index: 2; pointer-events: none;
     }
 
-    /* Крестик */
     #clearSearch {
-        position: absolute; 
-        right: 14px; 
-        top: 50%;
-        transform: translateY(-50%); 
-        cursor: pointer;
-        font-size: 20px; 
-        color: var(--text-info);
-        z-index: 3;
-        line-height: 1;
-        display: none; /* Включается в JS если инпут не пуст */
+        position: absolute; right: 14px; top: 50%;
+        transform: translateY(-50%); cursor: pointer;
+        font-size: 24px; color: var(--text-info); z-index: 3;
+        line-height: 1; display: none;
     }
 
-    /* 4. ТАБЛИЦА (УБИРАЕМ БОЛТАНКУ) */
+    /* 4. ТАБЛИЦА (ФИКСИРОВАННАЯ) */
     .table-container { 
         width: 100%; 
         max-width: 500px; 
@@ -124,20 +117,18 @@
         border-radius: 16px; 
         overflow: hidden; 
         border: 1px solid var(--border-table);
-        box-sizing: border-box; /* Важно чтобы не распирало */
+        box-sizing: border-box;
     }
 
-    table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        table-layout: fixed; /* Жестко фиксирует колонки */
-    }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
     td, th { 
-        padding: 12px 8px; 
-        text-align: center;
+        padding: 12px 5px; 
+        text-align: center; 
         border-bottom: 1px solid var(--border-table);
-        word-wrap: break-word; /* Чтобы длинный текст не ломал таблицу */
+        color: var(--text-main);
+        background-color: var(--table-bg);
+        word-wrap: break-word;
     }
 
     .story-row td {
@@ -147,47 +138,38 @@
         padding-left: 15px !important;
     }
 
-    /* 5. КНОПКИ (ТЕМА СПРАВА) */
-    .theme-toggle {
-        position: fixed; 
-        top: 15px; 
-        right: 15px; /* Вернули вправо */
-        background: var(--table-bg); 
-        border: 2px solid var(--accent-blue);
-        color: var(--accent-blue); 
-        border-radius: 50%;
-        width: 42px; height: 42px; 
-        cursor: pointer; 
-        z-index: 1000;
-        display: flex; align-items: center; justify-content: center;
+    /* 5. ПОДСВЕТКА ПОИСКА */
+    mark {
+        background-color: var(--highlight) !important;
+        color: var(--highlight-text) !important;
+        border-radius: 3px;
+        padding: 0 1px;
+        font-weight: bold;
     }
 
-    /* УБРАЛИ ЛИШНЮЮ КНОПКУ НАВЕРХ */
-    #scrollToTop, .scroll-btn, #backToTop {
-        display: none !important;
+    /* 6. КНОПКА ТЕМЫ СПРАВА */
+    .theme-toggle {
+        position: fixed; top: 15px; right: 15px;
+        background: var(--table-bg); border: 2px solid var(--accent-blue);
+        color: var(--accent-blue); border-radius: 50%;
+        width: 44px; height: 44px; cursor: pointer; z-index: 1000;
+        display: flex; align-items: center; justify-content: center; font-size: 20px;
     }
 
     .copy-btn {
         background-color: var(--btn-copy);
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        width: 90%;
+        color: white; border: none; padding: 10px;
+        border-radius: 8px; font-weight: bold; width: 95%;
+        cursor: pointer; transition: 0.2s;
     }
 
     .code-text {
-        font-family: monospace;
-        background: var(--code-bg);
-        padding: 4px;
-        border-radius: 4px;
-        display: block;
-        margin-bottom: 5px;
-        font-size: 13px;
+        font-family: monospace; background: var(--code-bg);
+        padding: 4px; border-radius: 4px; display: block;
+        margin-bottom: 5px; font-size: 13px; color: var(--accent-blue);
     }
 </style>
+
 
 
 
@@ -418,121 +400,37 @@
 
 </div>
 <script>
-// === 1. ГЕНЕРАЦИЯ АЛФАВИТА И УПРАВЛЕНИЕ ПАНЕЛЬЮ ===
-
-// Функция прокрутки вверх
-function goToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Следим за скроллом: показываем кнопку, когда пролистали 300px
-window.addEventListener('scroll', () => {
-    const scrollBtn = document.getElementById('scrollToTop');
-    if (window.scrollY > 300) {
-        scrollBtn.classList.add('show');
-    } else {
-        scrollBtn.classList.remove('show');
-    }
-});
-
-
-// Открытие/закрытие панели по клику на стрелку
-function toggleNav(event) {
-    if (event) event.stopPropagation(); 
-    const nav = document.getElementById('sideNav');
-    nav.classList.toggle('hidden');
-}
-
-// Закрытие панели при клике в любое место экрана
-document.addEventListener('click', (event) => {
-    const nav = document.getElementById('sideNav');
-    if (nav && !nav.contains(event.target) && !nav.classList.contains('hidden')) {
-        nav.classList.add('hidden');
-    }
-});
-
-// Автоматическое создание букв на основе заголовков историй
-function generateAlphabet() {
-    const nav = document.getElementById('sideNav');
-    if (!nav) return;
-
-    // Находим или создаем контейнер для букв (чтобы не удалить стрелку)
-    let container = document.getElementById('lettersContainer');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'lettersContainer';
-        nav.appendChild(container);
-    }
-    
-    const stories = document.querySelectorAll('.story-row');
-    const letters = new Set();
-    container.innerHTML = ''; 
-
-    stories.forEach(story => {
-        const firstLetter = story.innerText.trim()[0].toUpperCase();
-        if (firstLetter && !letters.has(firstLetter)) {
-            letters.add(firstLetter);
-            const link = document.createElement('a');
-            link.href = "javascript:void(0)";
-            link.innerText = firstLetter;
-            link.onclick = (e) => {
-                e.stopPropagation(); // Чтобы панель не закрылась мгновенно
-                const offset = 20;
-                const elementPosition = story.getBoundingClientRect().top + window.pageYOffset;
-                window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
-                
-                // Эффект выделения истории
-                story.style.transition = "background 0.5s";
-                story.style.background = "rgba(255, 64, 129, 0.3)";
-                setTimeout(() => story.style.background = "", 1000);
-            };
-            container.appendChild(link);
-        }
-    });
-}
-
-// === 2. ПОИСК И ПАСХАЛКИ ===
+// === 1. ПОИСК И ПОДСВЕТКА ===
 
 function filterData() {
     const inputField = document.getElementById("searchInput");
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
-    const nav = document.getElementById('sideNav');
+    const clearBtn = document.getElementById("clearSearch");
 
-    // Скрываем всю панель, если начат поиск
-    if (nav) {
-        nav.style.opacity = filter ? "0" : "1";
-        nav.style.pointerEvents = filter ? "none" : "auto";
-    }
+    // Показываем крестик только если есть текст
+    if (clearBtn) clearBtn.style.display = filter ? "block" : "none";
 
-    // ЛОГИКА ПАСХАЛКИ
+    // ПАСХАЛКА
     const triggerWords = ["modr", "ирина"];
     if (triggerWords.includes(filter)) {
         if (typeof confetti === 'function') {
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4081', '#ffffff', '#0288d1'] });
         }
-        inputField.classList.add('shake');
-
         for (let i = 1; i < tr.length; i++) {
             tr[i].style.display = ""; 
             if (!tr[i].classList.contains('story-row')) {
                 const nameCell = tr[i].cells[0];
-                if (!nameCell.hasAttribute("data-original")) {
-                    nameCell.setAttribute("data-original", nameCell.innerText);
-                }
+                if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", nameCell.innerText);
                 nameCell.innerHTML = "Люблю вас! ❤️";
                 nameCell.style.color = "#ff4081";
-                nameCell.style.fontWeight = "bold";
             }
         }
-        setTimeout(() => {
-            inputField.classList.remove('shake');
-            clearInput(); 
-        }, 4000);
+        setTimeout(clearInput, 4000);
         return;
     }
 
-    // ОБЫЧНЫЙ ПОИСК
+    // ЛОГИКА ПОИСКА
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
@@ -542,18 +440,22 @@ function filterData() {
         } else {
             const nameCell = row.cells[0];
             const original = nameCell.getAttribute("data-original") || nameCell.innerText;
-            if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
+            
+            // Сохраняем оригинал для сброса поиска
+            if (!nameCell.hasAttribute("data-original")) {
+                nameCell.setAttribute("data-original", original);
+            }
 
             const match = original.toLowerCase().includes(filter);
             if (match || storyVisible) {
                 row.style.display = "";
-                nameCell.innerHTML = (match && filter !== "") 
-                    ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") 
-                    : original;
-                
-                let p = row.previousElementSibling;
-                while(p && !p.classList.contains('story-row')) p = p.previousElementSibling;
-                if(p) p.style.display = "";
+                // Подсветка через <mark>
+                if (match && filter !== "") {
+                    const regex = new RegExp(`(${filter})`, "gi");
+                    nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
+                } else {
+                    nameCell.innerHTML = original;
+                }
             } else {
                 row.style.display = "none";
             }
@@ -561,24 +463,20 @@ function filterData() {
     }
 }
 
-// === 3. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
-
 function clearInput() {
     const input = document.getElementById("searchInput");
     if (input) {
         input.value = "";
-        const cells = document.querySelectorAll('td');
-        cells.forEach(cell => {
-            if (cell.hasAttribute("data-original")) {
-                cell.innerHTML = cell.getAttribute("data-original");
-                cell.style.color = "";
-                cell.style.fontWeight = "";
-            }
+        document.querySelectorAll('td[data-original]').forEach(cell => {
+            cell.innerHTML = cell.getAttribute("data-original");
+            cell.style.color = "";
         });
         filterData();
         input.focus();
     }
 }
+
+// === 2. КОПИРОВАНИЕ И ТЕМЫ ===
 
 function copy(btn) {
     const text = btn.parentElement.querySelector('.code-text').innerText;
@@ -598,27 +496,25 @@ function toggleTheme() {
     document.body.classList.toggle("dark-theme");
     const isDark = document.body.classList.contains("dark-theme");
     localStorage.setItem("theme", isDark ? "dark" : "light");
+    
     const btn = document.getElementById("themeBtn");
     if (btn) btn.innerText = isDark ? "☀️" : "🌙";
 }
 
-// === 4. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ===
+// === 3. ЗАГРУЗКА ===
 
 window.addEventListener('DOMContentLoaded', () => {
-    generateAlphabet();
-    
-    // Загрузка темы
+    // Применяем сохраненную тему
     if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
+        document.body.classList.add("dark-theme");
         const btn = document.getElementById("themeBtn");
         if (btn) btn.innerText = "☀️";
     }
     
-    // Заголовки вкладки
+    // Пасхалка на заголовок
     window.onblur = () => document.title = "Жду тебя! 💎";
     window.onfocus = () => document.title = "RC Slots - База";
 });
-
 </script>
 
 <div id="scrollToTop" class="scroll-btn" onclick="goToTop()">↑</div>
