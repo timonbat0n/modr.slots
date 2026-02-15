@@ -543,10 +543,15 @@ window.addEventListener('DOMContentLoaded', createStars);
             const rows = document.querySelectorAll('#mainTable tbody tr');
             document.getElementById('clearSearch').style.display = filter.length > 0 ? 'block' : 'none';
 
-            if ((filter === 'modr' || filter === 'ирина' || filter === 'таймер') && !easterEggTriggered) {
+            if ((filter === 'modr' || filter === 'ирина' ) && !easterEggTriggered) {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                 easterEggTriggered = true;
             } else if (filter === '') { easterEggTriggered = false; }
+
+            elif (filter === 'timer') {
+        showFullscreenText("SYSTEM OVERRIDE"); // Та самая функция из прошлого шага
+        input.value = ''; // Очищаем поиск после срабатывания
+        return; // Прерываем поиск, чтобы не фильтровать таблицу по слову timer
 
             let storyMatches = false;
             rows.forEach(row => {
