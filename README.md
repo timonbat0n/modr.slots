@@ -72,14 +72,16 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
+    background: transparent; /* Фона больше нет */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10001;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease;
+    /* Добавим небольшое размытие заднего фона, чтобы текст лучше читался */
+    backdrop-filter: blur(2px); 
 }
 
 #secret-overlay.show {
@@ -87,28 +89,17 @@
 }
 
 .secret-text {
-    font-size: 3rem;
-    color: #00f2ff;
-    text-shadow: 0 0 20px #00f2ff, 0 0 40px #00f2ff;
+    font-size: 4rem; /* Делаем текст еще мощнее */
+    color: #ff00ff; /* Можно сделать розовым для контраста */
+    text-shadow: 
+        0 0 10px #ff00ff, 
+        0 0 30px #ff00ff, 
+        0 0 60px #ff00ff;
     text-align: center;
-    font-weight: bold;
-    font-family: sans-serif;
-    padding: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.5));
 }
-
-/* Эффект дрожания текста */
-.shake {
-    animation: shake-anim 0.3s infinite;
-}
-
-@keyframes shake-anim {
-    0% { transform: translate(0,0); }
-    25% { transform: translate(2px, -2px); }
-    50% { transform: translate(-2px, 2px); }
-    75% { transform: translate(2px, 2px); }
-    100% { transform: translate(0,0); }
-}
-    
 #toast {
     background: var(--toast-bg);
     color: var(--toast-color);
