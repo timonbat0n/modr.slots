@@ -24,7 +24,7 @@
 <style>
     /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
     :root {
-        --bg-page: #e3f2fd;
+        --bg-page: #f1f5f9;      /* Чистый светлый фон */
         --table-bg: #ffffff;
         --text-main: #0d47a1;
         --text-info: #546e7a;
@@ -38,8 +38,9 @@
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    body.dark-mode {
-        --bg-page: #0f172a;
+    /* Используем один класс .dark-theme для консистентности */
+    body.dark-theme {
+        --bg-page: #0f172a;      /* Чистый темный фон */
         --table-bg: #1e293b;
         --text-main: #f1f5f9;
         --text-info: #94a3b8;
@@ -52,129 +53,68 @@
         --footer-color: #64748b;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
-<body class="light-theme"> ```
 
-### 2. Полный CSS (замени всё, что касается фона и тем)
-Этот код четко разделяет два состояния. Если у `body` есть класс `dark-theme`, фон **обязан** стать темным.
+    /* 2. БАЗОВЫЕ НАСТРОЙКИ (БЕЗ ШЕЛУХИ) */
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        /* Только цвет, без картинок и градиентов */
+        background-color: var(--bg-page) !important;
+        background-image: none !important; 
+        color: var(--text-main);
+        transition: background-color 0.3s ease;
+    }
 
-```css
-/* Базовые настройки для обоих режимов */
-body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    transition: background-color 0.3s ease; /* Плавная смена цвета */
-}
-
-/* СВЕТЛАЯ ТЕМА */
-body.light-theme {
-    background-color: #f1f5f9;
-    background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-    background-size: 25px 25px;
-    color: #1e293b;
-}
-
-body.light-theme table {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-/* ТЕМНАЯ ТЕМА */
-body.dark-theme {
-    background-color: #0f172a !important; /* Форсируем темный цвет */
-    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px) !important;
-    background-size: 25px 25px;
-    color: #f8fafc;
-}
-
-body.dark-theme table {
-    background: rgba(30, 41, 59, 0.7) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Цвет текста в таблице для темной темы */
-body.dark-theme td {
-    color: #f8fafc;
-}
-
-
-table {
-    animation: fadeIn 0.8s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-    /* 3. ДИЗАЙН ПОИСКА (ФИНАЛ) */
-    .search-wrapper { 
+    /* ТАБЛИЦА (БЕЗ СТЕКЛА) */
+    .table-container { 
         width: 100%; 
         max-width: 500px; 
-        margin: 0 auto 20px; 
-        position: relative; 
-        display: flex;
-        align-items: center;
+        background-color: var(--table-bg) !important; 
+        border-radius: 16px; 
+        overflow: hidden; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-table);
+        /* Убран backdrop-filter */
+    }
+
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
+        table-layout: fixed; 
+        background-color: var(--table-bg) !important; /* Убрана прозрачность */
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 3. ПОИСК */
+    .search-wrapper { 
+        width: 100%; max-width: 500px; margin: 0 auto 20px; position: relative; display: flex; align-items: center;
     }
     
     #searchInput { 
-        width: 100%; 
-        padding: 14px 45px 14px 46px; 
-        border: 2px solid transparent; 
-        border-radius: 14px; 
-        font-size: 16px; 
-        background-color: var(--table-bg); 
-        color: var(--text-main);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        outline: none; 
-        box-sizing: border-box; 
-        transition: all 0.3s;
+        width: 100%; padding: 14px 45px 14px 46px; border: 2px solid transparent; border-radius: 14px; 
+        font-size: 16px; background-color: var(--table-bg); color: var(--text-main);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); outline: none; box-sizing: border-box; transition: all 0.3s;
     }
     
-    #searchInput:focus { 
-        border-color: var(--accent-blue);
-        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
-    }
+    #searchInput:focus { border-color: var(--accent-blue); }
 
     .search-wrapper::before {
-        content: ""; position: absolute; left: 16px; top: 50%;
-        transform: translateY(-50%); width: 22px; height: 22px;
-        background: var(--search-icon) no-repeat center;
-        background-size: contain;
-        z-index: 2; pointer-events: none;
+        content: ""; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); 
+        width: 22px; height: 22px; background: var(--search-icon) no-repeat center;
+        background-size: contain; z-index: 2; pointer-events: none;
     }
 
-    #clearSearch {
-        position: absolute; right: 14px; top: 50%;
-        transform: translateY(-50%); cursor: pointer;
-        font-size: 22px; color: var(--text-info);
-        display: none; z-index: 3; padding: 5px;
-        line-height: 1; user-select: none; transition: color 0.2s;
-    }
-
-    #clearSearch:hover { color: var(--accent-blue); }
-
-    #searchInput:not(:placeholder-shown) + #clearSearch { display: block; }
-
-    /* 4. ТАБЛИЦА (ФИКСИРОВАННАЯ ГЕОМЕТРИЯ) */
-    .table-container { 
-        width: 100%; max-width: 500px; 
-        background-color: var(--table-bg) !important; 
-        border-radius: 16px; overflow: hidden; 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--border-table);
-    }
-
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; background-color: transparent; }
-
+    /* 4. ЯЧЕЙКИ И СТРОКИ */
     th { 
         background-color: var(--code-bg); color: var(--accent-blue); 
         padding: 12px 5px; font-size: 0.8em; text-transform: uppercase;
@@ -182,190 +122,56 @@ table {
     }
 
     td { 
-        padding: 10px 5px !important; 
-        border-bottom: 1px solid var(--border-table); 
-        color: var(--text-main) !important;
-        background-color: var(--table-bg) !important;
-        text-align: center; vertical-align: middle;
-        /* Фикс высоты, чтобы таблица не прыгала */
-        height: 75px !important; 
-        line-height: 1.2 !important;
-        font-size: 14px !important;
-        box-sizing: border-box !important;
+        padding: 10px 5px !important; border-bottom: 1px solid var(--border-table); 
+        color: var(--text-main) !important; background-color: var(--table-bg) !important;
+        text-align: center; height: 75px !important; font-size: 14px !important;
     }
 
-    th:nth-child(1), td:nth-child(1) { width: 25%; font-weight: 700; }
-    th:nth-child(2), td:nth-child(2) { width: 50%; }
-    th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 11px; color: var(--text-info); }
-
-    /* 5. ПОДСВЕТКА (БЕЗ РАСШИРЕНИЯ ТЕКСТА) */
-    mark { 
-        background-color: var(--highlight); 
-        color: #000; 
-        border-radius: 2px;
-        padding: 0 !important;
-        margin: 0 !important;
-        font-weight: inherit !important;
-        font-size: inherit !important;
-    }
-
-    /* 6. ЭЛЕМЕНТЫ СТРОК */
     .story-row, .story-row td { 
         background-color: var(--story-header) !important; 
         color: var(--text-main) !important; font-weight: 800; text-align: left !important;
-        padding: 12px 16px !important; border-bottom: none; height: 45px !important;
+        padding: 12px 16px !important; height: 45px !important;
     }
 
     .code-text { 
         font-family: 'Courier New', monospace; color: var(--accent-blue); 
         background-color: var(--code-bg); padding: 5px; border-radius: 6px; 
-        border: 1px solid var(--border-table); font-size: 11px;
-        word-break: break-all; display: block; margin-bottom: 4px;
-        line-height: 1.1;
+        border: 1px solid var(--border-table); font-size: 11px; display: block;
     }
     
     .copy-btn {
         background-color: var(--btn-copy); color: white; border: none; 
-        padding: 6px 0; border-radius: 8px; cursor: pointer; 
-        font-size: 10px; font-weight: 600; width: 100%; transition: 0.2s;
+        padding: 6px 0; border-radius: 8px; cursor: pointer; font-size: 10px; width: 100%;
     }
-    .copy-btn.copied { background-color: #10b981; }
 
-    /* 7. КНОПКИ УПРАВЛЕНИЯ */
+    /* 5. КНОПКИ И ПАНЕЛИ */
     .theme-toggle {
-        position: fixed; top: 15px; right: 15px;
-        background: var(--table-bg); border: 2px solid var(--accent-blue);
-        color: var(--accent-blue); border-radius: 50%;
-        width: 42px; height: 42px; cursor: pointer; z-index: 1000;
-        display: flex; align-items: center; justify-content: center; font-size: 20px;
+        position: fixed; top: 15px; right: 15px; background: var(--table-bg); 
+        border: 2px solid var(--accent-blue); color: var(--accent-blue); 
+        border-radius: 50%; width: 42px; height: 42px; cursor: pointer; z-index: 1000;
+        display: flex; align-items: center; justify-content: center;
     }
 
-    .tg-minimal-btn {
-        display: inline-block; padding: 12px 28px; background: var(--table-bg);
-        color: var(--text-main) !important; text-decoration: none; font-weight: 700;
-        border-radius: 12px; border: 2px solid var(--accent-blue); font-size: 14px;
-        margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    #backToTop {
-        display: none; position: fixed; bottom: 25px; right: 25px;
-        background: var(--accent-blue); color: white; border: none;
-        width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 99;
-        font-size: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .footer-text { margin-top: 40px; margin-bottom: 20px; font-size: 12px; color: var(--footer-color); }
-    
     .scroll-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    background: var(--accent-blue, #0288d1);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    z-index: 1002; /* Выше всех, чтобы всегда можно было нажать */
-    opacity: 0; /* По умолчанию скрыта */
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.scroll-btn.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.scroll-btn:hover {
-    transform: scale(1.1);
-    background: #ff4081; /* Розовый акцент при наведении */
-}
-
-/* Если на мобилке мешает буквам, можно чуть сместить */
-@media (max-width: 600px) {
-    .scroll-btn {
-        bottom: 15px;
-        right: 60px; /* Сдвигаем левее, чтобы не перекрывать стрелку алфавита */
+        position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
+        background: var(--accent-blue); color: white; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s;
     }
-}
+    .scroll-btn.show { opacity: 1; visibility: visible; }
 
-    
-/* Основной контейнер панели */
-.side-nav {
-    position: fixed;
-    right: 0; /* Прижата к самому краю */
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    z-index: 1000;
-    background: rgba(2, 136, 209, 0.15);
-    backdrop-filter: blur(10px);
-    padding: 15px 5px;
-    border-radius: 15px 0 0 15px; /* Скругление только слева */
-    border: 1px solid rgba(2, 136, 209, 0.2);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Плавный выезд */
-}
-
-/* Состояние "Спрятана" */
-.side-nav.hidden {
-    transform: translateY(-50%) translateX(100%); /* Уезжает вправо */
-}
-
-/* Стрелка-язычок */
-.nav-toggle {
-    position: absolute;
-    left: -30px; /* Выступает за пределы панели */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 60px;
-    background: rgba(2, 136, 209, 0.8);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 15px 0 0 15px;
-    font-size: 20px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.side-nav.hidden .nav-toggle {
-    left: -35px; /* Чуть сильнее выпирает, когда скрыта */
-}
-
-/* Меняем направление стрелки */
-.nav-toggle::after { content: '›'; }
-.side-nav.hidden .nav-toggle::after { content: '‹'; }
-
-/* Буквы внутри */
-.side-nav a {
-    text-decoration: none;
-    color: #0288d1;
-    font-weight: 900;
-    font-size: 16px;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2px;
-}
-
-
+    .side-nav {
+        position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+        display: flex; flex-direction: column; gap: 4px; z-index: 1000;
+        background: rgba(2, 136, 209, 0.2); padding: 15px 5px; border-radius: 15px 0 0 15px;
+    }
+    .side-nav a {
+        text-decoration: none; color: var(--accent-blue); font-weight: 900;
+        width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
+        background: var(--table-bg); border-radius: 8px;
+    }
 </style>
+
+
 
 </head>
 <body id="body">
@@ -769,8 +575,8 @@ function copy(btn) {
 }
 
 function toggleTheme() {
-    document.body.classList.toggle("dark-mode");
-    const isDark = document.body.classList.contains("dark-mode");
+    document.body.classList.toggle("dark-theme");
+    const isDark = document.body.classList.contains("dark-theme");
     localStorage.setItem("theme", isDark ? "dark" : "light");
     const btn = document.getElementById("themeBtn");
     if (btn) btn.innerText = isDark ? "☀️" : "🌙";
