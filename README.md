@@ -556,38 +556,78 @@
 // Вызываем создание при загрузке и при смене темы (опционально)
 window.addEventListener('DOMContentLoaded', createStars);
 
-        function filterTable() {
+   function runFilter() {
     const input = document.getElementById('searchInput');
     const filter = input.value.toLowerCase().trim();
     const rows = document.querySelectorAll('tbody tr');
+    const clearBtn = document.getElementById('clearSearch');
 
-    // --- ПАСХАЛКИ ---
-    
-    // 1. На слова MODR или ИРИНА — запускаем конфетти
+    // Показываем/скрываем крестик очистки
+    clearBtn.style.display = input.value.length > 0 ? 'block' : 'none';
+
+    // --- МАГИЯ ПАСХАЛОК ---
     if (filter === 'modr' || filter === 'ирина') {
-        startConfetti(); // Функция ниже
-        input.value = ''; // Очищаем поиск
+        startConfetti(); 
+        clearInput(); // Очищаем поле после срабатывания
+        return; 
     } 
     
-    // 2. На слово ТАЙМЕР — выводим текст на экран
-    else if (filter === 'timer' || filter === 'таймер') {
-        showFullscreenText("SYSTEM OVERRIDE"); // Функция ниже
-        input.value = ''; // Очищаем поиск
+    if (filter === 'timer' || filter === 'таймер') {
+        showFullscreenText("ДАЙТЕ ВИКЕ ТАЙМЕР АДМИНКУ");
+        clearInput(); // Очищаем поле после срабатывания
+        return;
     }
 
-    // --- ОБЫЧНЫЙ ПОИСК (Логика починена) ---
+    // --- ОБЫЧНЫЙ ПОИСК ---
     rows.forEach(row => {
-        // Проверяем текст во всей строке (имя, история, код)
-        const rowText = row.innerText.toLowerCase();
-        if (rowText.includes(filter)) {
-            row.style.display = ''; // Показываем
-        } else {
-            row.style.display = 'none'; // Скрываем
-        }
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
     });
 }
 
-        function clearInput() { document.getElementById('searchInput').value = ''; runFilter(); }
+// Функция очистки (чтобы крестик работал)
+function clearInput() {
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    document.getElementById('clearSearch').style.display = 'none';
+    runFilter(); // Сбрасываем фильтр таблицы
+}
+
+// --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ МАГИИ ---
+
+function startConfetti() {
+    for (let i = 0; i < 40; i++) {
+        const d = document.createElement('div');
+        d.innerHTML = '💎';
+        d.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * 100}vw;
+            top: -50px;
+            font-size: ${Math.random() * 20 + 15}px;
+            z-index: 10002;
+            pointer-events: none;
+            transition: transform ${Math.random() * 2 + 2}s linear, opacity 2s;
+        `;
+        document.body.appendChild(d);
+        requestAnimationFrame(() => {
+            d.style.transform = `translateY(110vh) rotate(${Math.random() * 360}deg)`;
+            d.style.opacity = '0';
+        });
+        setTimeout(() => d.remove(), 4000);
+    }
+}
+
+function showFullscreenText(message) {
+    let overlay = document.getElementById('secret-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'secret-overlay';
+        overlay.innerHTML = `<div class="secret-text">${message}</div>`;
+        document.body.appendChild(overlay);
+    }
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 3000);
+}
 
       function copy(btn) {
     const text = btn.previousElementSibling.innerText;
@@ -603,30 +643,6 @@ window.addEventListener('DOMContentLoaded', createStars);
     }, 2000);
 }
 
-// Функция для Конфетти
-function startConfetti() {
-    for (let i = 0; i < 50; i++) {
-        const confetti = document.createElement('div');
-        confetti.innerText = '💎'; // Вместо бумажек — алмазы!
-        confetti.style.position = 'fixed';
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.top = '-20px';
-        confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
-        confetti.style.zIndex = '10002';
-        confetti.style.pointerEvents = 'none';
-        confetti.style.transition = `transform ${Math.random() * 2 + 2}s linear, opacity 2s`;
-        
-        document.body.appendChild(confetti);
-
-        // Анимация падения
-        requestAnimationFrame(() => {
-            confetti.style.transform = `translateY(110vh) rotate(${Math.random() * 360}deg)`;
-            confetti.style.opacity = '0';
-        });
-
-        setTimeout(() => confetti.remove(), 4000);
-    }
-}
 
 // Функция для Текста на весь экран
 function showFullscreenText(message) {
