@@ -18,7 +18,7 @@
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
-    * { box-sizing: border-box; } /* Чтобы паддинги не расширяли таблицу */
+    * { box-sizing: border-box; }
 
     body { 
         font-family: 'Segoe UI', sans-serif; background: var(--bg-page); 
@@ -26,7 +26,8 @@
         flex-direction: column; align-items: center; transition: 0.3s; margin: 0; 
     }
 
-    .search-wrapper, .tg-wrapper { width: 100%; max-width: 600px; position: relative; margin-bottom: 10px; }
+    /* ПОИСК С РАБОЧИМ КРЕСТИКОМ */
+    .search-wrapper { width: 100%; max-width: 600px; position: relative; margin-bottom: 10px; }
     
     #searchInput {
         width: 100%; padding: 12px 40px; border-radius: 12px; border: none;
@@ -34,6 +35,16 @@
         color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14px;
     }
 
+    /* Стиль крестика */
+    #clearSearch {
+        position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+        cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold;
+        display: none; /* Скрыт по умолчанию */
+        width: 30px; height: 30px; line-height: 30px; text-align: center; z-index: 10;
+    }
+
+    /* КНОПКА TG */
+    .tg-wrapper { width: 100%; max-width: 600px; margin-bottom: 10px; }
     .tg-btn { 
         width: 100%; padding: 12px; background: var(--btn-gradient); 
         color: white !important; text-decoration: none; border-radius: 12px; 
@@ -41,19 +52,15 @@
         justify-content: center; align-items: center; gap: 8px;
     }
 
-    /* ТАБЛИЦА НА ВЕСЬ ЭКРАН */
-    .table-container { width: 100%; max-width: 600px; overflow-x: hidden; }
+    /* ТАБЛИЦА */
+    .table-container { width: 100%; max-width: 600px; }
     table { width: 100%; border-collapse: separate; border-spacing: 0 5px; table-layout: fixed; }
     
-    td { 
-        background: var(--table-bg); padding: 10px 4px; border: none; 
-        text-align: center; vertical-align: middle; font-size: 12px;
-    }
+    td { background: var(--table-bg); padding: 10px 4px; border: none; text-align: center; font-size: 12px; }
     
-    /* Пропорции колонок: Имя (25%), Код (40%), Инфо (35%) */
     tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
     tr td:nth-child(2) { width: 40%; }
-    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 35%; font-size: 10px; line-height: 1.2; }
+    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 35%; font-size: 10px; opacity: 0.9; }
 
     .story-row td { 
         background: var(--story-header) !important; color: var(--accent-blue) !important; 
@@ -61,20 +68,18 @@
         border-radius: 10px !important; font-size: 13px;
     }
 
-    /* КОМПАКТНЫЙ БЛОК КОДА */
+    /* КОД И КНОПКА */
     .code-text { 
         font-family: monospace; font-size: 9px; display: block; 
         margin-bottom: 6px; color: var(--accent-blue); word-break: break-all; 
         padding: 4px; background: var(--code-bg); border-radius: 6px; 
     }
     
-    /* МАЛЕНЬКАЯ КНОПКА КОПИРОВАТЬ */
     .copy-btn {
         background: var(--btn-gradient); color: white; border: none; 
-        padding: 5px 2px; border-radius: 6px; cursor: pointer; 
-        width: 90%; max-width: 100px; /* Ограничили ширину */
-        font-weight: bold; text-transform: uppercase; font-size: 9px; 
-        outline: none; margin: 0 auto;
+        padding: 6px 2px; border-radius: 6px; cursor: pointer; 
+        width: 90%; max-width: 100px; font-weight: bold; 
+        text-transform: uppercase; font-size: 9px; outline: none;
     }
     .copy-btn.copied { background: #27ae60 !important; }
 
@@ -304,13 +309,14 @@
 
 </div>
 <script>
-    // 1. УМНЫЙ ПОИСК И КРЕСТИК
+    // 1. ФУНКЦИЯ ПОИСКА
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = document.querySelectorAll('#mainTable tbody tr');
 
+        // Показываем/скрываем крестик
         clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
 
         let storyMatches = false;
@@ -334,65 +340,39 @@
         });
     }
 
+    // 2. ФУНКЦИЯ ОЧИСТКИ (КРЕСТИК)
     function clearInput() {
         const input = document.getElementById('searchInput');
-        input.value = '';
-        runFilter();
-        input.focus();
+        input.value = ''; // Сброс текста
+        runFilter();      // Запуск фильтра (покажет всё)
+        input.focus();    // Возвращаем фокус
     }
 
-    // 2. ФУНКЦИЯ COPY (Улучшенная совместимость)
+    // 3. ФУНКЦИЯ КОПИРОВАНИЯ
     function copy(btn) {
         const codeElement = btn.closest('td').querySelector('.code-text');
         const textToCopy = codeElement.innerText.trim();
 
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => showStatus(btn))
-                .catch(() => fallbackCopy(textToCopy, btn));
-        } else {
-            fallbackCopy(textToCopy, btn);
-        }
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const oldText = btn.innerText;
+            btn.innerText = 'ГОТОВО ✓';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerText = oldText;
+                btn.classList.remove('copied');
+            }, 1500);
+        });
     }
 
-    function fallbackCopy(text, btn) {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showStatus(btn);
-        } catch (err) {
-            console.error('Ошибка копирования', err);
-        }
-        document.body.removeChild(textArea);
-    }
-
-    function showStatus(btn) {
-        const originalText = btn.innerText;
-        btn.innerText = 'ГОТОВО ✓';
-        btn.classList.add('copied');
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.classList.remove('copied');
-        }, 2000);
-    }
-
-    // 3. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
+    // ТЕМА
     function toggleTheme() {
         document.body.classList.toggle('dark-theme');
         const isDark = document.body.classList.contains('dark-theme');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
     }
-
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-theme');
-    }
 </script>
+
 
 
 
