@@ -47,6 +47,24 @@
         overflow-x: hidden;
     }
 
+#toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00f2ff;
+    border: 1px solid #00f2ff;
+    padding: 12px 25px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+    transform: translateY(100px);
+    transition: transform 0.3s ease;
+    z-index: 10000;
+}
+#toast.show {
+    transform: translateY(0);
+}
+    
     /* ЗВЕЗДНЫЙ ФОН */
     #star-container { 
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
@@ -499,14 +517,26 @@ window.addEventListener('DOMContentLoaded', createStars);
 
         function clearInput() { document.getElementById('searchInput').value = ''; runFilter(); }
 
-        function copy(btn) {
-            const text = btn.closest('td').querySelector('.code-text').innerText.trim();
-            navigator.clipboard.writeText(text).then(() => {
-                btn.innerText = 'ГОТОВО ✓'; btn.classList.add('copied');
-                setTimeout(() => { btn.innerText = 'КОПИРОВАТЬ'; btn.classList.remove('copied'); }, 1500);
-            });
-        }
+      function copy(btn) {
+    const text = btn.previousElementSibling.innerText;
+    navigator.clipboard.writeText(text);
+    
+    // Показываем красивое уведомление
+    const toast = document.getElementById('toast') || createToast();
+    toast.innerText = `Код ${text} скопирован!`;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2000);
+}
 
+function createToast() {
+    const t = document.createElement('div');
+    t.id = 'toast';
+    document.body.appendChild(t);
+    return t;
+}
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
             const isDark = document.body.classList.contains('dark-theme');
