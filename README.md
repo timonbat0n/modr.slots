@@ -1,219 +1,121 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RC Slots - База</title>
+    
+    <style>
+        :root {
+            --bg-page: #eef7ff;
+            --table-bg: #ffffff;
+            --text-main: #074799;
+            --accent-blue: #0091ea;
+            --story-header: #d1e9ff;
+            --border-table: #b3e5fc;
+            --code-bg: #f0faff;
+            --highlight: #81d4fa;
+            --highlight-text: #004b8d;
+            --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        body.dark-theme {
+            --bg-page: #0f172a;
+            --table-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --accent-blue: #38bdf8;
+            --story-header: #334155;
+            --border-table: #334155;
+            --code-bg: #0f172a;
+            --highlight: #0288d1;
+            --highlight-text: #ffffff;
+            --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        }
 
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0; padding: 15px;
+            display: flex; flex-direction: column; align-items: center;
+            background-color: var(--bg-page); color: var(--text-main);
+            overflow-x: hidden; transition: background 0.3s ease;
+        }
 
-<div id="sideNav" class="side-nav hidden">
-    <div id="navToggle" class="nav-toggle" onclick="toggleNav(event)">‹</div>
+        /* ПОИСК */
+        .search-wrapper { width: 100%; max-width: 500px; margin: 10px 0; position: relative; }
+        #searchInput {
+            width: 100%; padding: 14px 45px; border: 2px solid var(--border-table);
+            border-radius: 16px; background: var(--table-bg); color: var(--text-main);
+            outline: none; box-sizing: border-box; font-size: 16px;
+        }
+        .search-wrapper::before {
+            content: ""; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            width: 22px; height: 22px; background: var(--search-icon) no-repeat center; background-size: contain;
+        }
+        #clearSearch {
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; font-size: 24px; color: var(--accent-blue); display: none;
+        }
+
+        /* КНОПКА НАВЕРХУ */
+        .tg-wrapper { width: 100%; max-width: 500px; margin: 10px 0 20px; }
+        .tg-minimal-btn {
+            display: block; width: 100%; padding: 15px; background: var(--table-bg);
+            color: var(--accent-blue) !important; text-align: center; text-decoration: none;
+            font-weight: 800; border-radius: 16px; border: 2px solid var(--accent-blue);
+            box-sizing: border-box; transition: 0.2s;
+        }
+        .tg-minimal-btn:active { background: var(--accent-blue); color: white !important; }
+
+        /* ТАБЛИЦА */
+        .table-container { 
+            width: 100%; max-width: 500px; background: var(--table-bg);
+            border-radius: 18px; border: 2px solid var(--border-table);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th { background: var(--story-header); padding: 10px; font-size: 12px; }
+        td { padding: 12px 8px; border-bottom: 1px solid var(--border-table); text-align: center; font-size: 14px; }
+
+        .story-row td {
+            background-color: var(--story-header) !important; font-weight: 800;
+            text-align: left !important; padding-left: 15px !important; color: var(--text-main);
+        }
+
+        .code-text {
+            font-family: monospace; background: var(--code-bg); padding: 4px;
+            border-radius: 6px; display: block; margin-bottom: 6px;
+            font-size: 11px; border: 1px solid var(--border-table); word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--accent-blue); color: white; border: none;
+            padding: 7px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer;
+        }
+
+        .info-txt { font-size: 11px; opacity: 0.8; font-style: italic; line-height: 1.2; }
+
+        mark { background: var(--highlight); color: var(--highlight-text); border-radius: 3px; padding: 0 2px; }
+
+        .theme-toggle {
+            position: fixed; top: 15px; right: 15px; background: var(--table-bg);
+            border: 2px solid var(--accent-blue); color: var(--accent-blue);
+            border-radius: 50%; width: 44px; height: 44px; z-index: 1000;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="themeBtn" class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск персонажа или истории...">
+        <span id="clearSearch" onclick="clearInput()">×</span>
     </div>
 
-
-    <meta charset="UTF-8">
-
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/x-icon" href="./favicon.ico?v=99">
-<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=99">
-<link rel="apple-touch-icon" href="./favicon.ico?v=99">
-
-
-    <title>modr.slots</title>
-
-
-<style>
-    /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
-    :root {
-        --bg-page: #eef7ff;         /* Нежно-голубой фон */
-        --table-bg: #ffffff;
-        --text-main: #074799;       /* Глубокий синий текст */
-        --text-info: #546e7a;
-        --accent-blue: #0091ea;     /* Основной голубой акцент */
-        --story-header: #d1e9ff;    /* Выделение строк-заголовков */
-        --btn-copy: #00b0ff;
-        --border-table: #b3e5fc;    /* Обводка элементов */
-        --code-bg: #f0faff;
-        --highlight: #81d4fa;       /* Голубая подсветка поиска */
-        --highlight-text: #004b8d;
-        /* Иконка лупы */
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
-    }
-
-    body.dark-theme {
-        --bg-page: #0f172a;
-        --table-bg: #1e293b;
-        --text-main: #f1f5f9;
-        --text-info: #94a3b8;
-        --accent-blue: #38bdf8;
-        --story-header: #334155;
-        --btn-copy: #0ea5e9;
-        --border-table: #334155;
-        --code-bg: #0f172a;
-        --highlight: #0288d1;
-        --highlight-text: #ffffff;
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
-    }
-
-    /* 2. ОСНОВНОЙ СТИЛЬ */
-    body {
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        margin: 0;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        background-color: var(--bg-page) !important;
-        color: var(--text-main);
-        overflow-x: hidden;
-        transition: all 0.3s ease;
-    }
-
-    /* Скрываем старую шелуху */
-    .side-nav, .nav-toggle, #lettersContainer, #scrollToTop, .scroll-btn { display: none !important; }
-
-    /* 3. ПОИСК (ЛУПА И КРЕСТ) */
-    .search-wrapper { 
-        width: 100%; max-width: 500px; 
-        margin: 0 auto 20px; position: relative; 
-    }
-    
-    #searchInput { 
-        width: 100%; 
-        padding: 14px 45px; 
-        border: 2px solid var(--border-table); /* Обводка поиска */
-        border-radius: 16px; 
-        font-size: 16px; 
-        background-color: var(--table-bg); 
-        color: var(--text-main);
-        outline: none; 
-        box-sizing: border-box; 
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    /* Лупа слева */
-    .search-wrapper::before {
-        content: ""; position: absolute; left: 14px; top: 50%;
-        transform: translateY(-50%); width: 22px; height: 22px;
-        background: var(--search-icon) no-repeat center;
-        background-size: contain; z-index: 2;
-    }
-
-    /* Крестик справа */
-    #clearSearch {
-        position: absolute; right: 14px; top: 50%;
-        transform: translateY(-50%); cursor: pointer;
-        font-size: 26px; color: var(--accent-blue); 
-        z-index: 3; line-height: 1; font-weight: bold;
-    }
-
-    /* 4. ТАБЛИЦА И ОБВОДКА */
-    .table-container { 
-        width: 100%; max-width: 500px; 
-        background-color: var(--table-bg) !important; 
-        border-radius: 18px; 
-        overflow: hidden; 
-        border: 2px solid var(--border-table); /* Четкая обводка таблицы */
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-
-    td, th { 
-        padding: 12px 6px; text-align: center; 
-        border-bottom: 1px solid var(--border-table);
-        background-color: var(--table-bg);
-    }
-
-    .story-row td {
-        background-color: var(--story-header) !important;
-        font-weight: 800; text-align: left !important;
-        padding-left: 20px !important; border-bottom: 2px solid var(--border-table);
-    }
-
-    /* ПОДСВЕТКА НАЙДЕННОГО */
-    mark {
-        background-color: var(--highlight) !important;
-        color: var(--highlight-text) !important;
-        border-radius: 4px; padding: 0 2px;
-    }
-
-    /* 5. КНОПКИ (ОБВОДКА И ЦВЕТ) */
-    
-    /* Переключатель тем */
-    .theme-toggle {
-        position: fixed; top: 15px; right: 15px;
-        background: var(--table-bg); 
-        border: 2px solid var(--accent-blue); /* Обводка переключателя */
-        color: var(--accent-blue); border-radius: 50%;
-        width: 46px; height: 46px; cursor: pointer; z-index: 1000;
-        display: flex; align-items: center; justify-content: center; font-size: 22px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    /* Кнопка отправить слоты */
-    .tg-wrapper { width: 100%; max-width: 500px; margin-top: 20px; }
-
-    .tg-minimal-btn {
-        display: block; width: 100%; padding: 16px;
-        background-color: var(--table-bg); /* Светлый фон */
-        color: var(--accent-blue) !important;
-        text-align: center; text-decoration: none;
-        font-weight: 800; border-radius: 16px;
-        border: 2px solid var(--accent-blue); /* Четкая обводка кнопки */
-        box-sizing: border-box; transition: 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-
-    .tg-minimal-btn:hover {
-        background-color: var(--accent-blue);
-        color: #ffffff !important;
-    }
-
-    /* Копирование */
-    .copy-btn {
-        background-color: var(--btn-copy);
-        color: white; border: none; padding: 8px;
-        border-radius: 10px; font-weight: 700; width: 90%;
-        cursor: pointer; border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .code-text {
-        font-family: 'Courier New', monospace; background: var(--code-bg);
-        padding: 5px; border-radius: 6px; display: block;
-        margin-bottom: 6px; font-size: 13px; color: var(--text-main);
-        border: 1px solid var(--border-table);
-    }
-</style>
-
-
-
-
-
-
-
-</head>
-<body id="body">
-
-<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
-<button onclick="topFunction()" id="backToTop">↑</button>
-
-<div class="header-box">
-    <h2>ПОЛНАЯ БАЗА СЛОТОВ MODR.💎</h2>
-</div>
-
-<div class="search-wrapper">
-    <input type="text" id="searchInput" oninput="filterData()" placeholder="Поиск героя или истории...">
-    <div id="clearSearch" onclick="clearInput()">×</div>
-</div>
-
-
-
-
-<div class="tg-wrapper">
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 🩵</a>
-</div>
-
+    <div class="tg-wrapper">
+        <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 🩵</a>
+    </div>
 <div class="table-container">
     <table id="mainTable">
         <thead>
@@ -416,102 +318,93 @@
 
 
 </div>
-<script>
-<script>
-function filterData() {
-    const inputField = document.getElementById("searchInput");
-    const filter = inputField.value.toLowerCase().trim();
-    const tr = document.getElementById("mainTable").getElementsByTagName("tr");
-    const clearBtn = document.getElementById("clearSearch");
 
-    // Управление крестиком
-    if (clearBtn) clearBtn.style.display = filter ? "block" : "none";
+    <script>
+        function filterData() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase().trim();
+            const tr = document.querySelectorAll("#mainTable tbody tr");
+            const clearBtn = document.getElementById("clearSearch");
 
-    // ПАСХАЛКА
-    if (["modr", "ирина"].includes(filter)) {
-        if (typeof confetti === 'function') confetti({ particleCount: 150, spread: 70 });
-        for (let i = 1; i < tr.length; i++) {
-            if (!tr[i].classList.contains('story-row')) {
-                const nameCell = tr[i].cells[0];
-                if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", nameCell.innerText);
-                nameCell.innerHTML = "Люблю вас! ❤️";
-                nameCell.style.color = "#ff4081";
-            }
+            if (clearBtn) clearBtn.style.display = filter ? "block" : "none";
+
+            let lastStoryRow = null;
+            let storyMatches = false;
+
+            tr.forEach(row => {
+                if (row.classList.contains('story-row')) {
+                    // Проверяем, подходит ли название истории под поиск
+                    const storyName = row.innerText.toLowerCase();
+                    storyMatches = storyName.includes(filter);
+                    lastStoryRow = row;
+                    row.style.display = storyMatches ? "" : "none";
+                    
+                    // Сбрасываем подсветку в заголовке
+                    if (!row.hasAttribute("data-original")) row.setAttribute("data-original", row.innerHTML);
+                    row.innerHTML = storyMatches && filter !== "" 
+                        ? row.getAttribute("data-original").replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>")
+                        : row.getAttribute("data-original");
+                } else {
+                    const nameCell = row.cells[0];
+                    const infoCell = row.cells[2];
+                    
+                    if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", nameCell.innerText);
+                    if (!infoCell.hasAttribute("data-original")) infoCell.setAttribute("data-original", infoCell.innerText);
+
+                    const nameText = nameCell.getAttribute("data-original");
+                    const infoText = infoCell.getAttribute("data-original");
+
+                    const nameMatch = nameText.toLowerCase().includes(filter);
+                    const infoMatch = infoText.toLowerCase().includes(filter);
+
+                    if (storyMatches || nameMatch || infoMatch) {
+                        row.style.display = "";
+                        if (lastStoryRow) lastStoryRow.style.display = ""; // Показываем заголовок, если нашли персонажа
+
+                        // Подсветка текста
+                        if (filter !== "") {
+                            const regex = new RegExp(`(${filter})`, "gi");
+                            nameCell.innerHTML = nameMatch ? nameText.replace(regex, "<mark>$1</mark>") : nameText;
+                            infoCell.innerHTML = infoMatch ? infoText.replace(regex, "<mark>$1</mark>") : infoText;
+                        } else {
+                            nameCell.innerHTML = nameText;
+                            infoCell.innerHTML = infoText;
+                        }
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
         }
-        setTimeout(clearInput, 4000);
-        return;
-    }
 
-    let storyVisible = false;
-    for (let i = 1; i < tr.length; i++) {
-        const row = tr[i];
-        if (row.classList.contains('story-row')) {
-            storyVisible = row.innerText.toLowerCase().includes(filter);
-            row.style.display = storyVisible ? "" : "none";
-        } else {
-            const nameCell = row.cells[0];
-            const original = nameCell.getAttribute("data-original") || nameCell.innerText;
-            if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
-
-            const match = original.toLowerCase().includes(filter);
-            if (match || storyVisible) {
-                row.style.display = "";
-                nameCell.innerHTML = (match && filter !== "") 
-                    ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") 
-                    : original;
-            } else {
-                row.style.display = "none";
-            }
+        function clearInput() {
+            document.getElementById("searchInput").value = "";
+            filterData();
         }
-    }
-}
 
-function clearInput() {
-    const input = document.getElementById("searchInput");
-    if (input) {
-        input.value = "";
-        document.querySelectorAll('td[data-original]').forEach(cell => {
-            cell.innerHTML = cell.getAttribute("data-original");
-            cell.style.color = "";
+        function toggleTheme() {
+            document.body.classList.toggle("dark-theme");
+            const isDark = document.body.classList.contains("dark-theme");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
+        }
+
+        function copy(btn) {
+            const text = btn.previousElementSibling.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const oldText = btn.innerText;
+                btn.innerText = "ГОТОВО ✓";
+                btn.style.background = "#4caf50";
+                setTimeout(() => { btn.innerText = oldText; btn.style.background = ""; }, 1000);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-theme");
+                document.getElementById("themeBtn").innerText = "☀️";
+            }
         });
-        filterData();
-        input.focus();
-    }
-}
-
-function copy(btn) {
-    const text = btn.parentElement.querySelector('.code-text').innerText;
-    navigator.clipboard.writeText(text).then(() => {
-        const oldText = btn.innerText;
-        btn.innerText = "ГОТОВО ✓";
-        btn.style.background = "#4caf50";
-        setTimeout(() => {
-            btn.innerText = oldText;
-            btn.style.background = "";
-        }, 1000);
-    });
-}
-
-function toggleTheme() {
-    document.body.classList.toggle("dark-theme");
-    const isDark = document.body.classList.contains("dark-theme");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    const btn = document.getElementById("themeBtn");
-    if (btn) btn.innerText = isDark ? "☀️" : "🌙";
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-theme");
-        const btn = document.getElementById("themeBtn");
-        if (btn) btn.innerText = "☀️";
-    }
-});
-</script>
-
-<div id="scrollToTop" class="scroll-btn" onclick="goToTop()">↑</div>
-
-<div class="footer-text">modr. x timon.</div>
-
+    </script>
 </body>
 </html>
