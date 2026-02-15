@@ -8,6 +8,7 @@
     :root {
         --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
         --accent-blue: #0091ea; --story-header: #d1e9ff; --code-bg: #f0faff;
+        --highlight: #fff176; /* Цвет подсветки в светлой теме */
         --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
@@ -15,6 +16,7 @@
     body.dark-theme {
         --bg-page: #0f172a; --table-bg: #1e293b; --text-main: #f1f5f9;
         --accent-blue: #38bdf8; --story-header: #334155; --code-bg: #0f172a;
+        --highlight: #fb8c00; /* Оранжевая подсветка в темной теме */
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
@@ -26,98 +28,63 @@
         flex-direction: column; align-items: center; transition: 0.3s; margin: 0; 
     }
 
-    /* ПОИСК С РАБОЧИМ КРЕСТИКОМ */
+    /* ПОИСК */
     .search-wrapper { width: 100%; max-width: 600px; position: relative; margin-bottom: 10px; }
-    
     #searchInput {
         width: 100%; padding: 12px 40px; border-radius: 12px; border: none;
         background: var(--table-bg) var(--search-icon) no-repeat 12px center; background-size: 18px;
         color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14px;
     }
-
-    /* Стиль крестика */
     #clearSearch {
         position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold;
-        display: none; /* Скрыт по умолчанию */
-        width: 30px; height: 30px; line-height: 30px; text-align: center; z-index: 10;
+        cursor: pointer; color: var(--accent-blue); font-size: 22px; display: none; z-index: 10;
     }
 
-    /* КНОПКА TG */
-    .tg-wrapper { width: 100%; max-width: 600px; margin-bottom: 10px; }
-    .tg-btn { 
-        width: 100%; padding: 12px; background: var(--btn-gradient); 
-        color: white !important; text-decoration: none; border-radius: 12px; 
-        text-align: center; font-weight: bold; font-size: 14px; display: flex; 
-        justify-content: center; align-items: center; gap: 8px;
-    }
-
-    /* ТАБЛИЦА */
+    /* ТАБЛИЦА: ИСПРАВЛЕНИЕ ВЕРХУШКИ */
     .table-container { width: 100%; max-width: 600px; }
     table { width: 100%; border-collapse: separate; border-spacing: 0 5px; table-layout: fixed; }
     
-    td { background: var(--table-bg); padding: 10px 4px; border: none; text-align: center; font-size: 12px; }
+    /* Принудительно красим ВСЕ ячейки, включая заголовки */
+    th, td { 
+        background-color: var(--table-bg) !important; 
+        color: var(--text-main) !important;
+        padding: 10px 4px; border: none; text-align: center; font-size: 12px; 
+    }
     
-    tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
+    /* Стили для подсветки найденного текста */
+    mark {
+        background-color: var(--highlight);
+        color: #000;
+        border-radius: 2px;
+        padding: 0 1px;
+    }
+
+    /* Остальные стили строк */
+    tr td:nth-child(1) { border-radius: 12px 0 0 12px; font-weight: bold; width: 25%; }
     tr td:nth-child(2) { width: 40%; }
-    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 35%; font-size: 10px; opacity: 0.9; }
+    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 35%; font-size: 10px; }
 
     .story-row td { 
         background: var(--story-header) !important; color: var(--accent-blue) !important; 
-        font-weight: 800; text-align: left !important; padding-left: 15px !important; 
-        border-radius: 10px !important; font-size: 13px;
+        font-weight: 800; text-align: left !important; padding-left: 15px !important; border-radius: 10px !important; 
     }
 
-#backToTop {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 45px;
-    height: 45px;
-    background: var(--btn-gradient);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Скрываем изначально */
-    opacity: 0;
-    pointer-events: none; 
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-#backToTop.show {
-    opacity: 1;
-    pointer-events: auto; /* Делаем кликабельной только когда видна */
-    transform: translateY(0);
-}
-
-#backToTop:not(.show) {
-    transform: translateY(20px); /* Эффект вылета снизу */
-}
-
-
-
-    /* КОД И КНОПКА */
-    .code-text { 
-        font-family: monospace; font-size: 9px; display: block; 
-        margin-bottom: 6px; color: var(--accent-blue); word-break: break-all; 
-        padding: 4px; background: var(--code-bg); border-radius: 6px; 
+    /* КНОПКА НАВЕРХ */
+    #backToTop {
+        position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
+        background: var(--btn-gradient); border: none; border-radius: 50%;
+        cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none; transition: 0.4s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    
+    #backToTop.show { opacity: 1; pointer-events: auto; }
+
     .copy-btn {
-        background: var(--btn-gradient); color: white; border: none; 
-        padding: 6px 2px; border-radius: 6px; cursor: pointer; 
-        width: 90%; max-width: 100px; font-weight: bold; 
-        text-transform: uppercase; font-size: 9px; outline: none;
+        background: var(--btn-gradient); color: white; border: none; padding: 6px 2px;
+        border-radius: 8px; cursor: pointer; width: 90%; font-weight: bold; font-size: 9px;
     }
     .copy-btn.copied { background: #27ae60 !important; }
-
-    #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: none; font-size: 20px; z-index: 100; cursor: pointer; }
 </style>
+
 
 
 
@@ -342,60 +309,45 @@
 
 </div>
 <script>
-    // --- 1. КНОПКА НАВЕРХ (ЛОГИКА) ---
-    const backToTopBtn = document.getElementById('backToTop');
+    // Сохраним оригинальный текст имен, чтобы не "портить" его тегами mark при многократном поиске
+    const originalNames = new Map();
 
-    window.addEventListener('scroll', () => {
-        // Если пролистали больше 200px, добавляем класс 'show'
-        if (window.pageYOffset > 200) {
-            backToTopBtn.classList.add('show');
-        } else {
-            backToTopBtn.classList.remove('show');
-        }
-    });
-
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-
-    // --- 2. КОПИРОВАНИЕ ---
-    function copy(btn) {
-        const codeElement = btn.closest('td').querySelector('.code-text');
-        const textToCopy = codeElement.innerText.trim();
-
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const oldText = btn.innerText;
-            btn.innerText = 'ГОТОВО ✓';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerText = oldText;
-                btn.classList.remove('copied');
-            }, 1500);
-        });
-    }
-
-    // --- 3. ПОИСК И КРЕСТИК ---
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = document.querySelectorAll('#mainTable tbody tr');
 
-        if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
+        clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
 
         let storyMatches = false;
+
         rows.forEach(row => {
             if (row.classList.contains('story-row')) {
                 const storyName = row.innerText.toLowerCase();
                 storyMatches = storyName.includes(filter);
                 row.style.display = storyMatches ? '' : 'none';
             } else {
-                const charContent = row.innerText.toLowerCase();
-                if (storyMatches || charContent.includes(filter)) {
+                const nameCell = row.cells[0];
+                const infoCell = row.cells[2];
+                
+                // Инициализируем карту оригинальных значений
+                if (!originalNames.has(nameCell)) originalNames.set(nameCell, nameCell.innerText);
+                const originalText = originalNames.get(nameCell);
+                
+                const charMatches = originalText.toLowerCase().includes(filter) || infoCell.innerText.toLowerCase().includes(filter);
+
+                if (storyMatches || charMatches) {
                     row.style.display = '';
+                    
+                    // ПОДСВЕТКА (только если есть фильтр)
+                    if (filter.length > 0 && originalText.toLowerCase().includes(filter)) {
+                        const regex = new RegExp(`(${filter})`, "gi");
+                        nameCell.innerHTML = originalText.replace(regex, '<mark>$1</mark>');
+                    } else {
+                        nameCell.innerText = originalText;
+                    }
+
                     let prev = row.previousElementSibling;
                     while (prev && !prev.classList.contains('story-row')) prev = prev.previousElementSibling;
                     if (prev) prev.style.display = '';
@@ -407,13 +359,31 @@
     }
 
     function clearInput() {
-        const input = document.getElementById('searchInput');
-        input.value = '';
+        document.getElementById('searchInput').value = '';
         runFilter();
-        input.focus();
+        document.getElementById('searchInput').focus();
     }
 
-    // --- 4. ТЕМА ---
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('backToTop');
+        if (window.pageYOffset > 300) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+
+    function copy(btn) {
+        const codeText = btn.closest('td').querySelector('.code-text').innerText.trim();
+        navigator.clipboard.writeText(codeText).then(() => {
+            const old = btn.innerText;
+            btn.innerText = 'ГОТОВО ✓';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1500);
+        });
+    }
+
     function toggleTheme() {
         document.body.classList.toggle('dark-theme');
         const isDark = document.body.classList.contains('dark-theme');
@@ -422,6 +392,7 @@
     }
     if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
 </script>
+
 
 <button id="backToTop" onclick="scrollToTop()">
     <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:white;">
