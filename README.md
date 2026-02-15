@@ -22,9 +22,10 @@
 
 
 <style>
-    /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
+
+    /* 1. ПЕРЕМЕННЫЕ ЦВЕТОВ */
     :root {
-        --bg-page: #f1f5f9;      /* Чистый светлый фон */
+        --bg-page: #f1f5f9;
         --table-bg: #ffffff;
         --text-main: #0d47a1;
         --text-info: #546e7a;
@@ -34,13 +35,11 @@
         --border-table: #e1f5fe;
         --code-bg: #f5faff;
         --highlight: #ffeb3b;
-        --footer-color: #94a3b8;
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        --nav-bg: rgba(2, 136, 209, 0.1);
     }
 
-    /* Используем один класс .dark-theme для консистентности */
     body.dark-theme {
-        --bg-page: #0f172a;      /* Чистый темный фон */
+        --bg-page: #0f172a;
         --table-bg: #1e293b;
         --text-main: #f1f5f9;
         --text-info: #94a3b8;
@@ -49,127 +48,164 @@
         --btn-copy: #0ea5e9;
         --border-table: #334155;
         --code-bg: #0f172a;
-        --highlight: #facc15;
-        --footer-color: #64748b;
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        --nav-bg: rgba(56, 189, 248, 0.1);
     }
 
-    /* 2. БАЗОВЫЕ НАСТРОЙКИ (БЕЗ ШЕЛУХИ) */
+    /* 2. БАЗОВЫЕ СТИЛИ (БЕЗ ШЕЛУХИ) */
     body {
-        font-family: 'Segoe UI', sans-serif;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         margin: 0;
-        padding: 20px;
+        padding: 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
-        /* Только цвет, без картинок и градиентов */
         background-color: var(--bg-page) !important;
-        background-image: none !important; 
+        background-image: none !important;
         color: var(--text-main);
         transition: background-color 0.3s ease;
+        overflow-x: hidden;
     }
 
-    /* ТАБЛИЦА (БЕЗ СТЕКЛА) */
+    /* 3. КОНТЕЙНЕР И ТАБЛИЦА (ФИКСИРОВАННЫЕ) */
     .table-container { 
         width: 100%; 
         max-width: 500px; 
         background-color: var(--table-bg) !important; 
         border-radius: 16px; 
         overflow: hidden; 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         border: 1px solid var(--border-table);
-        /* Убран backdrop-filter */
+        box-sizing: border-box;
     }
 
     table { 
         width: 100%; 
         border-collapse: collapse; 
         table-layout: fixed; 
-        background-color: var(--table-bg) !important; /* Убрана прозрачность */
-        animation: fadeIn 0.8s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* 3. ПОИСК */
-    .search-wrapper { 
-        width: 100%; max-width: 500px; margin: 0 auto 20px; position: relative; display: flex; align-items: center;
-    }
-    
-    #searchInput { 
-        width: 100%; padding: 14px 45px 14px 46px; border: 2px solid transparent; border-radius: 14px; 
-        font-size: 16px; background-color: var(--table-bg); color: var(--text-main);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); outline: none; box-sizing: border-box; transition: all 0.3s;
-    }
-    
-    #searchInput:focus { border-color: var(--accent-blue); }
-
-    .search-wrapper::before {
-        content: ""; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); 
-        width: 22px; height: 22px; background: var(--search-icon) no-repeat center;
-        background-size: contain; z-index: 2; pointer-events: none;
-    }
-
-    /* 4. ЯЧЕЙКИ И СТРОКИ */
-    th { 
-        background-color: var(--code-bg); color: var(--accent-blue); 
-        padding: 12px 5px; font-size: 0.8em; text-transform: uppercase;
-        border-bottom: 2px solid var(--border-table);
+        background-color: var(--table-bg);
     }
 
     td { 
-        padding: 10px 5px !important; border-bottom: 1px solid var(--border-table); 
-        color: var(--text-main) !important; background-color: var(--table-bg) !important;
-        text-align: center; height: 75px !important; font-size: 14px !important;
+        padding: 12px 8px; 
+        border-bottom: 1px solid var(--border-table); 
+        color: var(--text-main) !important;
+        background-color: var(--table-bg) !important;
+        text-align: center;
+        font-size: 14px;
+        word-wrap: break-word;
     }
 
-    .story-row, .story-row td { 
+    th { 
+        background-color: var(--code-bg); 
+        color: var(--accent-blue); 
+        padding: 12px 5px; 
+        font-size: 11px; 
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--border-table);
+    }
+
+    /* Заголовки разделов (Стори) */
+    .story-row td { 
         background-color: var(--story-header) !important; 
-        color: var(--text-main) !important; font-weight: 800; text-align: left !important;
-        padding: 12px 16px !important; height: 45px !important;
+        color: var(--text-main) !important; 
+        font-weight: 800; 
+        text-align: left !important;
+        padding: 12px 16px !important;
+        height: auto !important;
     }
 
-    .code-text { 
-        font-family: 'Courier New', monospace; color: var(--accent-blue); 
-        background-color: var(--code-bg); padding: 5px; border-radius: 6px; 
-        border: 1px solid var(--border-table); font-size: 11px; display: block;
-    }
-    
+    /* 4. КНОПКИ */
     .copy-btn {
-        background-color: var(--btn-copy); color: white; border: none; 
-        padding: 6px 0; border-radius: 8px; cursor: pointer; font-size: 10px; width: 100%;
+        background-color: var(--btn-copy) !important;
+        color: white !important;
+        border: none;
+        padding: 10px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+        width: 90%;
+        text-transform: uppercase;
+        transition: transform 0.1s;
     }
 
-    /* 5. КНОПКИ И ПАНЕЛИ */
-    .theme-toggle {
-        position: fixed; top: 15px; right: 15px; background: var(--table-bg); 
-        border: 2px solid var(--accent-blue); color: var(--accent-blue); 
-        border-radius: 50%; width: 42px; height: 42px; cursor: pointer; z-index: 1000;
-        display: flex; align-items: center; justify-content: center;
+    .copy-btn:active { transform: scale(0.95); }
+    .copy-btn.copied { background-color: #10b981 !important; }
+
+    /* Главная кнопка внизу */
+    .tg-minimal-btn {
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        margin: 25px auto;
+        padding: 16px;
+        background-color: var(--accent-blue);
+        color: #ffffff !important;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 800;
+        border-radius: 14px;
+        border: none;
+        transition: 0.3s;
     }
 
-    .scroll-btn {
-        position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
-        background: var(--accent-blue); color: white; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s;
-    }
-    .scroll-btn.show { opacity: 1; visibility: visible; }
-
+    /* 5. БОКОВАЯ ПАНЕЛЬ (ПОЧИНЕНО) */
     .side-nav {
-        position: fixed; right: 0; top: 50%; transform: translateY(-50%);
-        display: flex; flex-direction: column; gap: 4px; z-index: 1000;
-        background: rgba(2, 136, 209, 0.2); padding: 15px 5px; border-radius: 15px 0 0 15px;
+        position: fixed;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        z-index: 1000;
+        background: var(--nav-bg);
+        padding: 10px 4px;
+        border-radius: 12px 0 0 12px;
+        border: 1px solid var(--border-table);
+        max-height: 80vh; /* Чтобы не вылезала за экран */
+        overflow-y: auto; /* Если букв слишком много */
     }
+
     .side-nav a {
-        text-decoration: none; color: var(--accent-blue); font-weight: 900;
-        width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
-        background: var(--table-bg); border-radius: 8px;
+        text-decoration: none;
+        color: var(--accent-blue);
+        font-weight: 800;
+        font-size: 13px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        background: var(--table-bg);
+        transition: 0.2s;
+    }
+
+    .side-nav a:hover {
+        background: var(--accent-blue);
+        color: white;
+    }
+
+    /* 6. ПОИСК */
+    .search-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; position: relative; }
+    
+    #searchInput { 
+        width: 100%; padding: 14px 15px 14px 40px; border-radius: 12px; border: 1px solid var(--border-table);
+        background-color: var(--table-bg); color: var(--text-main); outline: none; box-sizing: border-box;
+    }
+
+    /* Кнопка смены темы */
+    .theme-toggle {
+        position: fixed; top: 15px; left: 15px; /* Перенес влево, чтобы не мешать буквам */
+        background: var(--table-bg); border: 1px solid var(--accent-blue);
+        color: var(--accent-blue); border-radius: 50%; width: 40px; height: 40px;
+        cursor: pointer; z-index: 1001; display: flex; align-items: center; justify-content: center;
     }
 </style>
+
+
 
 
 
