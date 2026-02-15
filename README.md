@@ -6,105 +6,67 @@
     <title>modr.slots</title>
 <style>
     :root {
-        /* СВЕТЛАЯ ТЕМА */
-        --bg-page: #eef7ff;
-        --table-bg: #ffffff;
-        --text-main: #074799;
-        --accent-blue: #0091ea;
-        --story-header: #d1e9ff;
-        --border-table: #b3e5fc;
-        --code-bg: #f0faff;
-        --highlight: #ffeb3b;
+        --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
+        --accent-blue: #0091ea; --story-header: #d1e9ff; --code-bg: #f0faff;
         --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
     body.dark-theme {
-        /* ТЕМНАЯ ТЕМА */
-        --bg-page: #0f172a;
-        --table-bg: #1e293b;
-        --text-main: #f1f5f9;
-        --accent-blue: #38bdf8;
-        --story-header: #334155;
-        --border-table: #334155;
-        --code-bg: #0f172a;
-        --highlight: #fbc02d;
+        --bg-page: #0f172a; --table-bg: #1e293b; --text-main: #f1f5f9;
+        --accent-blue: #38bdf8; --story-header: #334155; --code-bg: #0f172a;
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    body { 
-        background-color: var(--bg-page); color: var(--text-main); 
-        font-family: 'Segoe UI', system-ui, sans-serif; 
-        display: flex; flex-direction: column; align-items: center; 
-        padding: 15px; margin: 0; transition: background 0.3s ease; 
-    }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg-page); color: var(--text-main); padding: 15px; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
 
-    /* КНОПКА ТЕМЫ */
-    .theme-toggle {
-        position: fixed; top: 15px; right: 15px; width: 44px; height: 44px;
-        border-radius: 50%; border: 2px solid var(--accent-blue);
-        background: var(--table-bg); color: var(--accent-blue);
-        cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    /* ПОИСК */
-    .search-wrapper { width: 100%; max-width: 500px; position: relative; margin: 10px 0; }
+    /* ПОИСК С КРЕСТИКОМ */
+    .search-wrapper { width: 100%; max-width: 500px; position: relative; margin-bottom: 20px; }
+    
     #searchInput {
-        width: 100%; padding: 14px 45px; border-radius: 16px; border: 2px solid var(--border-table);
+        width: 100%; padding: 14px 45px; border-radius: 16px; border: none;
         background: var(--table-bg) var(--search-icon) no-repeat 14px center; background-size: 20px;
-        color: var(--text-main); outline: none; box-sizing: border-box; font-size: 16px;
+        color: var(--text-main); outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        font-size: 16px; transition: 0.3s;
     }
+
+    /* Дизайн крестика */
     #clearSearch {
         position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; font-size: 24px; color: var(--accent-blue); display: none;
+        cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold;
+        display: none; width: 30px; height: 30px; line-height: 28px; text-align: center;
+        user-select: none; transition: transform 0.2s ease;
     }
+    #clearSearch:active { transform: translateY(-50%) scale(0.8); }
 
-    /* КНОПКА ОТПРАВКИ СЛОТОВ */
-    .tg-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; }
-    .tg-btn {
-        display: flex; align-items: center; justify-content: center; gap: 10px;
-        width: 100%; padding: 16px; background: var(--btn-gradient);
-        color: white !important; text-decoration: none; font-weight: 800; font-size: 16px;
-        border-radius: 18px; box-sizing: border-box; transition: all 0.2s ease;
-        box-shadow: 0 8px 20px rgba(0, 145, 234, 0.25); border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .tg-btn:active { transform: scale(0.97); filter: brightness(1.1); }
+    /* ТАБЛИЦА КАРТОЧКАМИ */
+    .table-container { width: 100%; max-width: 500px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+    td { background: var(--table-bg); padding: 16px 12px; border: none; text-align: center; transition: 0.3s; }
+    tr td:first-child { border-radius: 15px 0 0 15px; }
+    tr td:last-child { border-radius: 0 15px 15px 0; }
 
-    /* ТАБЛИЦА (АДАПТИРОВАННАЯ) */
-    .table-container { 
-        width: 100%; max-width: 500px; border-radius: 20px; 
-        border: 2px solid var(--border-table); overflow: hidden; 
-        background-color: var(--table-bg) !important;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    table { width: 100%; border-collapse: collapse; background-color: transparent; }
-    td, th { 
-        padding: 12px 8px; border-bottom: 1px solid var(--border-table); 
-        color: var(--text-main) !important; background-color: var(--table-bg) !important; 
-        text-align: center; font-size: 14px;
-    }
     .story-row td { 
-        background-color: var(--story-header) !important; color: var(--accent-blue) !important;
-        font-weight: 800; text-align: left !important; padding-left: 20px !important; 
+        background: var(--story-header) !important; color: var(--accent-blue) !important; 
+        font-weight: 800; text-align: left !important; padding-left: 20px !important; border-radius: 15px !important; 
     }
 
-    /* КОПИРОВАНИЕ И КОДЫ */
-    .code-text {
-        font-family: monospace; background: var(--code-bg); color: var(--accent-blue);
-        padding: 8px; border-radius: 10px; display: block; margin-bottom: 8px;
-        font-size: 11px; border: 1px solid var(--border-table); word-break: break-all;
-    }
+    /* КНОПКИ */
     .copy-btn {
-        background: var(--btn-gradient); color: white !important; border: none;
-        padding: 10px; border-radius: 12px; font-weight: 700; width: 100%;
-        cursor: pointer; transition: 0.2s; text-transform: uppercase; font-size: 12px;
+        background: var(--btn-gradient); color: white; border: none; padding: 10px;
+        border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s;
+        text-transform: uppercase; font-size: 11px;
     }
-    .copy-btn.success { background: #4caf50 !important; box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
+    .copy-btn.copied { background: #27ae60 !important; box-shadow: 0 0 12px rgba(39, 174, 96, 0.4); }
 
-    mark { background: var(--highlight); color: #000; border-radius: 4px; padding: 0 2px; }
+    .tg-btn { 
+        width: 100%; max-width: 500px; padding: 16px; background: var(--btn-gradient); 
+        color: white !important; text-decoration: none; border-radius: 18px; text-align: center; 
+        font-weight: bold; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 8px;
+        box-shadow: 0 8px 15px rgba(0, 145, 234, 0.2);
+    }
 </style>
+
 
 
 
@@ -112,25 +74,16 @@
 </head>
 <body>
 
-  <button id="themeBtn" class="theme-toggle" onclick="toggleTheme()">🌙</button>
+<button id="themeBtn" style="position:fixed; top:15px; right:15px; border:none; background:none; font-size:24px; cursor:pointer;" onclick="toggleTheme()">🌙</button>
 
 <div class="search-wrapper">
     <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
     <div id="clearSearch" onclick="clearInput()">×</div>
 </div>
 
-
-   
-
-
-<div class="tg-wrapper">
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
-        <span>Отправить слоты🩵</span>
-        <svg style="width:20px;height:20px;fill:white" viewBox="0 0 24 24">
-            <path d="M13 10V3L4 14H11V21L20 10H13Z" />
-        </svg>
-    </a>
-</div>
+<a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
+    ОТПРАВИТЬ СЛОТЫ ⚡
+</a>
 
 <div class="table-container">
     <table id="mainTable">
@@ -335,52 +288,34 @@
 
 </div>
 <script>
-    // 1. ТЕМА
-    function toggleTheme() {
-        const body = document.body;
-        const btn = document.getElementById('themeBtn');
-        body.classList.toggle('dark-theme');
-        const isDark = body.classList.contains('dark-theme');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        btn.innerText = isDark ? '☀️' : '🌙';
-    }
-
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-theme');
-        document.getElementById('themeBtn').innerText = '☀️';
-    }
-
-    // 2. ПОИСК С МАРКЕРАМИ
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = document.querySelectorAll('#mainTable tbody tr');
-        clearBtn.style.display = filter ? 'block' : 'none';
 
-        let storyVisible = false;
-        let currentStory = null;
+        // Работа крестика: показываем только если есть текст
+        clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
+
+        let storyMatches = false;
 
         rows.forEach(row => {
-            if (!row.hasAttribute('data-orig')) row.setAttribute('data-orig', row.innerHTML);
-            const originalHTML = row.getAttribute('data-orig');
-            const text = row.innerText.toLowerCase();
-
             if (row.classList.contains('story-row')) {
-                currentStory = row;
-                storyVisible = text.includes(filter);
-                row.style.display = storyVisible ? '' : 'none';
-                row.innerHTML = originalHTML;
+                const storyName = row.innerText.toLowerCase();
+                storyMatches = storyName.includes(filter);
+                row.style.display = storyMatches ? '' : 'none';
             } else {
-                if (storyVisible || text.includes(filter)) {
+                const charContent = row.innerText.toLowerCase();
+                const charMatches = charContent.includes(filter);
+
+                if (storyMatches || charMatches) {
                     row.style.display = '';
-                    if (currentStory) currentStory.style.display = '';
-                    if (filter) {
-                        const regex = new RegExp(`(${filter})`, "gi");
-                        row.innerHTML = originalHTML.replace(regex, '<mark>$1</mark>');
-                    } else {
-                        row.innerHTML = originalHTML;
+                    // Находим ближайший заголовок истории выше и показываем его
+                    let current = row.previousElementSibling;
+                    while (current && !current.classList.contains('story-row')) {
+                        current = current.previousElementSibling;
                     }
+                    if (current) current.style.display = '';
                 } else {
                     row.style.display = 'none';
                 }
@@ -388,23 +323,34 @@
         });
     }
 
+    // Функция очистки для крестика
     function clearInput() {
-        document.getElementById('searchInput').value = '';
-        runFilter();
+        const input = document.getElementById('searchInput');
+        input.value = ''; // Стираем текст
+        runFilter();      // Обновляем таблицу (покажет всё)
+        input.focus();    // Возвращаем фокус в поле
     }
 
-    // 3. КОПИРОВАНИЕ
+    // Кнопка копирования с текстом "ГОТОВО"
     function copyCode(btn) {
-        const code = btn.parentElement.querySelector('.code-text').innerText;
-        navigator.clipboard.writeText(code).then(() => {
-            const oldText = btn.innerText;
-            btn.innerText = 'СКОПИРОВАНО ✓';
-            btn.classList.add('success');
+        const codeText = btn.parentElement.querySelector('.code-text').innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            const originalText = btn.innerText;
+            btn.innerText = 'ГОТОВО ✓';
+            btn.classList.add('copied');
             setTimeout(() => {
-                btn.innerText = oldText;
-                btn.classList.remove('success');
-            }, 1500);
+                btn.innerText = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
         });
+    }
+
+    // Работа темы
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
     }
 </script>
 
