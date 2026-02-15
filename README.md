@@ -84,21 +84,40 @@
     backdrop-filter: blur(2px); 
 }
 
+#secret-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 10001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
 #secret-overlay.show {
     opacity: 1;
 }
 
 .secret-text {
-    font-size: 4rem; /* Делаем текст еще мощнее */
-    color: #ff00ff; /* Можно сделать розовым для контраста */
-    text-shadow: 
-        0 0 10px #ff00ff, 
-        0 0 30px #ff00ff, 
-        0 0 60px #ff00ff;
+    font-size: 5rem;
+    color: #00f2ff;
+    text-shadow: 0 0 20px #00f2ff, 0 0 50px #00f2ff;
     text-align: center;
     font-weight: 900;
     text-transform: uppercase;
-    filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.5));
+    animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+/* Для мобилок уменьшим шрифт текста */
+@media (max-width: 600px) {
+    .secret-text { font-size: 2.5rem; }
 }
 #toast {
     background: var(--toast-bg);
@@ -537,44 +556,36 @@
 // Вызываем создание при загрузке и при смене темы (опционально)
 window.addEventListener('DOMContentLoaded', createStars);
 
-        function runFilter() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase().trim();
-            const rows = document.querySelectorAll('#mainTable tbody tr');
-            document.getElementById('clearSearch').style.display = filter.length > 0 ? 'block' : 'none';
+        function filterTable() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase().trim();
+    const rows = document.querySelectorAll('tbody tr');
 
-            if ((filter === 'modr' || filter === 'ирина' ) && !easterEggTriggered) {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                easterEggTriggered = true;
-            } else if (filter === '') { easterEggTriggered = false; }
+    // --- ПАСХАЛКИ ---
+    
+    // 1. На слова MODR или ИРИНА — запускаем конфетти
+    if (filter === 'modr' || filter === 'ирина') {
+        startConfetti(); // Функция ниже
+        input.value = ''; // Очищаем поиск
+    } 
+    
+    // 2. На слово ТАЙМЕР — выводим текст на экран
+    else if (filter === 'timer' || filter === 'таймер') {
+        showFullscreenText("SYSTEM OVERRIDE"); // Функция ниже
+        input.value = ''; // Очищаем поиск
+    }
 
-            elif (filter === 'timer') {
-        showFullscreenText("SYSTEM OVERRIDE"); // Та самая функция из прошлого шага
-        input.value = ''; // Очищаем поиск после срабатывания
-        return; // Прерываем поиск, чтобы не фильтровать таблицу по слову timer
-
-            let storyMatches = false;
-            rows.forEach(row => {
-                if (row.classList.contains('story-row')) {
-                    storyMatches = row.innerText.toLowerCase().includes(filter);
-                    row.style.display = storyMatches ? '' : 'none';
-                } else {
-                    const nameCell = row.cells[0];
-                    if (!originalNames.has(nameCell)) originalNames.set(nameCell, nameCell.innerText);
-                    const originalText = originalNames.get(nameCell);
-                    const match = originalText.toLowerCase().includes(filter) || row.cells[2].innerText.toLowerCase().includes(filter);
-
-                    if (storyMatches || match) {
-                        row.style.display = '';
-                        nameCell.innerHTML = (filter && originalText.toLowerCase().includes(filter)) ? 
-                            originalText.replace(new RegExp(`(${filter})`, "gi"), '<mark>$1</mark>') : originalText;
-                        let prev = row.previousElementSibling;
-                        while (prev && !prev.classList.contains('story-row')) prev = prev.previousElementSibling;
-                        if (prev) prev.style.display = '';
-                    } else { row.style.display = 'none'; }
-                }
-            });
+    // --- ОБЫЧНЫЙ ПОИСК (Логика починена) ---
+    rows.forEach(row => {
+        // Проверяем текст во всей строке (имя, история, код)
+        const rowText = row.innerText.toLowerCase();
+        if (rowText.includes(filter)) {
+            row.style.display = ''; // Показываем
+        } else {
+            row.style.display = 'none'; // Скрываем
         }
+    });
+}
 
         function clearInput() { document.getElementById('searchInput').value = ''; runFilter(); }
 
@@ -590,6 +601,44 @@ window.addEventListener('DOMContentLoaded', createStars);
     setTimeout(() => {
         toast.classList.remove('show');
     }, 2000);
+}
+
+// Функция для Конфетти
+function startConfetti() {
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.innerText = '💎'; // Вместо бумажек — алмазы!
+        confetti.style.position = 'fixed';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '-20px';
+        confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+        confetti.style.zIndex = '10002';
+        confetti.style.pointerEvents = 'none';
+        confetti.style.transition = `transform ${Math.random() * 2 + 2}s linear, opacity 2s`;
+        
+        document.body.appendChild(confetti);
+
+        // Анимация падения
+        requestAnimationFrame(() => {
+            confetti.style.transform = `translateY(110vh) rotate(${Math.random() * 360}deg)`;
+            confetti.style.opacity = '0';
+        });
+
+        setTimeout(() => confetti.remove(), 4000);
+    }
+}
+
+// Функция для Текста на весь экран
+function showFullscreenText(message) {
+    let overlay = document.getElementById('secret-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'secret-overlay';
+        overlay.innerHTML = `<div class="secret-text">${message}</div>`;
+        document.body.appendChild(overlay);
+    }
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 3000);
 }
 
 function createToast() {
