@@ -5,107 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Base</title>
     
-    <style>
-        /* ПЕРЕМЕННЫЕ ЦВЕТОВ */
-        :root {
-            --bg-page: #eef7ff;
-            --table-bg: #ffffff;
-            --text-main: #074799;
-            --accent-blue: #0091ea;
-            --story-header: #d1e9ff;
-            --border-table: #b3e5fc;
-            --code-bg: #f0faff;
-            --highlight: #81d4fa;
-        }
+ <style>
+    /* ПЕРЕМЕННЫЕ И ТЕМЫ */
+    :root {
+        --bg-page: #eef7ff;
+        --table-bg: #ffffff;
+        --text-main: #074799;
+        --accent-blue: #0091ea;
+        --story-header: #d1e9ff;
+        --border-table: #b3e5fc;
+        --code-bg: #f0faff;
+        --highlight: #ffeb3b; 
+        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+    }
 
-        body.dark-theme {
-            --bg-page: #0f172a;
-            --table-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --accent-blue: #38bdf8;
-            --story-header: #334155;
-            --border-table: #334155;
-            --code-bg: #0f172a;
-            --highlight: #0288d1;
-        }
+    body.dark-theme {
+        --bg-page: #0f172a;
+        --table-bg: #1e293b;
+        --text-main: #f1f5f9;
+        --accent-blue: #38bdf8;
+        --story-header: #334155;
+        --border-table: #334155;
+        --code-bg: #0f172a;
+        --highlight: #fbc02d;
+        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+    }
 
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            margin: 0; padding: 15px;
-            background-color: var(--bg-page);
-            color: var(--text-main);
-            transition: background 0.2s ease;
-            display: flex; flex-direction: column; align-items: center;
-        }
+    /* ОСНОВНЫЕ СТИЛИ */
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        margin: 0; padding: 15px;
+        background-color: var(--bg-page); color: var(--text-main);
+        display: flex; flex-direction: column; align-items: center;
+        transition: background 0.2s ease;
+    }
 
-        /* КНОПКА ТЕМЫ */
-        .theme-toggle {
-            position: fixed; top: 15px; right: 15px;
-            width: 44px; height: 44px; border-radius: 50%;
-            border: 2px solid var(--accent-blue);
-            background: var(--table-bg);
-            color: var(--accent-blue);
-            cursor: pointer; z-index: 1000;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-        }
+    /* ПОИСКОВАЯ СТРОКА */
+    .search-wrapper { width: 100%; max-width: 500px; margin: 10px 0; position: relative; }
+    
+    #searchInput {
+        width: 100%; padding: 14px 45px; border: 2px solid var(--border-table);
+        border-radius: 16px; background: var(--table-bg); color: var(--text-main);
+        outline: none; box-sizing: border-box; font-size: 16px; transition: 0.2s;
+    }
 
-        /* ПОИСК */
-        .search-wrapper { width: 100%; max-width: 500px; margin: 10px 0; position: relative; }
-        #searchInput {
-            width: 100%; padding: 14px 40px; border: 2px solid var(--border-table);
-            border-radius: 16px; background: var(--table-bg); color: var(--text-main);
-            outline: none; box-sizing: border-box; font-size: 16px;
-        }
-        #clearSearch {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            cursor: pointer; font-size: 22px; color: var(--accent-blue); display: none; font-weight: bold;
-        }
+    /* Лупа */
+    .search-wrapper::before {
+        content: ""; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+        width: 20px; height: 20px; background: var(--search-icon) no-repeat center;
+        background-size: contain; pointer-events: none;
+    }
 
-        /* КНОПКА ОТПРАВИТЬ */
-        .tg-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; }
-        .tg-btn {
-            display: block; width: 100%; padding: 15px; border-radius: 16px;
-            border: 2px solid var(--accent-blue); background: var(--table-bg);
-            color: var(--accent-blue) !important; text-align: center;
-            text-decoration: none; font-weight: 800; box-sizing: border-box;
-        }
-        .tg-btn:active { background: var(--accent-blue); color: white !important; }
+    /* Крестик очистки */
+    #clearSearch {
+        position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+        cursor: pointer; font-size: 24px; color: var(--accent-blue); 
+        display: none; font-weight: bold; line-height: 1; user-select: none;
+    }
 
-        /* ТАБЛИЦА */
-        .table-container { 
-            width: 100%; max-width: 500px; border-radius: 18px; 
-            border: 2px solid var(--border-table); overflow: hidden;
-            background: var(--table-bg); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { background: var(--story-header); color: var(--text-main); padding: 10px; font-size: 12px; }
-        td { 
-            padding: 12px 8px; border-bottom: 1px solid var(--border-table); 
-            text-align: center; font-size: 14px; color: var(--text-main);
-            background: var(--table-bg); word-wrap: break-word;
-        }
+    /* КНОПКА ТЕМЫ */
+    .theme-toggle {
+        position: fixed; top: 15px; right: 15px; width: 44px; height: 44px;
+        border-radius: 50%; border: 2px solid var(--accent-blue);
+        background: var(--table-bg); color: var(--accent-blue);
+        cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center;
+    }
 
-        .story-row td {
-            background-color: var(--story-header) !important;
-            color: var(--text-main) !important; font-weight: 800;
-            text-align: left !important; padding-left: 15px !important;
-        }
+    /* КНОПКА ОТПРАВКИ */
+    .tg-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; }
+    .tg-btn {
+        display: block; width: 100%; padding: 15px; border-radius: 16px;
+        border: 2px solid var(--accent-blue); background: var(--table-bg);
+        color: var(--accent-blue) !important; text-align: center;
+        text-decoration: none; font-weight: 800; box-sizing: border-box; transition: 0.2s;
+    }
+    .tg-btn:active { background: var(--accent-blue); color: white !important; }
 
-        .code-text {
-            font-family: monospace; background: var(--code-bg); padding: 6px;
-            border-radius: 8px; display: block; margin-bottom: 6px;
-            font-size: 10px; border: 1px solid var(--border-table); 
-            word-break: break-all; color: var(--accent-blue);
-        }
+    /* ТАБЛИЦА */
+    .table-container { 
+        width: 100%; max-width: 500px; border-radius: 18px; 
+        border: 2px solid var(--border-table); overflow: hidden;
+        background: var(--table-bg); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; background: var(--table-bg); }
+    
+    th { background: var(--story-header); color: var(--text-main); padding: 10px; font-size: 12px; border-bottom: 2px solid var(--border-table); }
+    
+    td { padding: 12px 8px; border-bottom: 1px solid var(--border-table); text-align: center; color: var(--text-main); background: var(--table-bg); }
+    
+    .story-row td {
+        background-color: var(--story-header) !important; font-weight: 800; 
+        text-align: left !important; padding-left: 15px !important; color: var(--text-main) !important;
+    }
 
-        .copy-btn {
-            background: var(--accent-blue); color: white; border: none;
-            padding: 8px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer;
-        }
+    /* МАРКЕР И КОД */
+    mark { background: var(--highlight); color: #000; border-radius: 3px; padding: 0 2px; }
 
-        .info-txt { font-size: 11px; opacity: 0.8; font-style: italic; }
-        mark { background: var(--highlight); color: #000; border-radius: 3px; }
-    </style>
+    .code-text {
+        font-family: monospace; background: var(--code-bg); padding: 6px;
+        border-radius: 8px; display: block; margin-bottom: 6px; font-size: 10px;
+        border: 1px solid var(--border-table); word-break: break-all; color: var(--accent-blue);
+    }
+
+    .copy-btn {
+        background: var(--accent-blue); color: white; border: none;
+        padding: 8px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer;
+    }
+</style>
+
 </head>
 <body>
 
@@ -344,42 +351,79 @@
             });
 
             // --- ПОИСК ---
-            window.filterData = function() {
-                const filter = searchInput.value.toLowerCase().trim();
-                const rows = document.querySelectorAll('#mainTable tbody tr');
-                clearSearch.style.display = filter ? 'block' : 'none';
+        
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearch');
+    const rows = document.querySelectorAll('#mainTable tbody tr');
 
-                let currentStoryRow = null;
-                let storyVisible = false;
+    // Кэшируем оригинальный текст, чтобы поиск не ломался при повторном вводе
+    rows.forEach(row => {
+        if (!row.classList.contains('story-row')) {
+            row.cells[0].setAttribute('data-orig', row.cells[0].innerText);
+            row.cells[2].setAttribute('data-orig', row.cells[2].innerText);
+        } else {
+            row.setAttribute('data-orig', row.innerText);
+        }
+    });
 
-                rows.forEach(row => {
-                    if (row.classList.contains('story-row')) {
-                        currentStoryRow = row;
-                        storyVisible = row.innerText.toLowerCase().includes(filter);
-                        row.style.display = storyVisible ? '' : 'none';
+    function filterData() {
+        const filter = searchInput.value.toLowerCase().trim();
+        clearSearch.style.display = filter ? 'block' : 'none';
+
+        let currentStoryRow = null;
+        let storyVisible = false;
+
+        rows.forEach(row => {
+            if (row.classList.contains('story-row')) {
+                currentStoryRow = row;
+                const originalText = row.getAttribute('data-orig');
+                storyVisible = originalText.toLowerCase().includes(filter);
+                
+                row.style.display = storyVisible ? '' : 'none';
+                // Подсветка в названии истории
+                row.cells[0].innerHTML = (filter && storyVisible) 
+                    ? originalText.replace(new RegExp(`(${filter})`, 'gi'), '<mark>$1</mark>') 
+                    : originalText;
+            } else {
+                const nameCell = row.cells[0];
+                const infoCell = row.cells[2];
+                const nameOrig = nameCell.getAttribute('data-orig');
+                const infoOrig = infoCell.getAttribute('data-orig');
+
+                const nameMatch = nameOrig.toLowerCase().includes(filter);
+                const infoMatch = infoOrig.toLowerCase().includes(filter);
+
+                if (storyVisible || nameMatch || infoMatch) {
+                    row.style.display = '';
+                    if (currentStoryRow) currentStoryRow.style.display = '';
+                    
+                    // Подсветка совпадений маркером
+                    if (filter) {
+                        const regex = new RegExp(`(${filter})`, 'gi');
+                        nameCell.innerHTML = nameMatch ? nameOrig.replace(regex, '<mark>$1</mark>') : nameOrig;
+                        infoCell.innerHTML = infoMatch ? infoOrig.replace(regex, '<mark>$1</mark>') : infoOrig;
                     } else {
-                        const nameCell = row.cells[0];
-                        const infoCell = row.cells[2];
-                        const nameText = nameCell.innerText.toLowerCase();
-                        const infoText = infoCell.innerText.toLowerCase();
-
-                        if (storyVisible || nameText.includes(filter) || infoText.includes(filter)) {
-                            row.style.display = '';
-                            if (currentStoryRow) currentStoryRow.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
+                        nameCell.innerHTML = nameOrig;
+                        infoCell.innerHTML = infoOrig;
                     }
-                });
-            };
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    }
 
-            searchInput.addEventListener('keyup', filterData);
+    searchInput.addEventListener('input', filterData);
+    
+    clearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        filterData();
+        searchInput.focus();
+    });
+});
 
-            clearSearch.addEventListener('click', () => {
-                searchInput.value = '';
-                filterData();
-                searchInput.focus();
-            });
+
 
             // --- КОПИРОВАНИЕ ---
             document.querySelectorAll('.copy-btn').forEach(btn => {
