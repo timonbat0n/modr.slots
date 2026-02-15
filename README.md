@@ -237,6 +237,9 @@
 <tr><td>Мент (Эллиот)</td><td><span class="code-text">d1f1d2190a7a331a0bdaa0554c94b</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">2 сезон, 5 серия, путь баланса</td></tr>
 <tr><td>Трексио</td><td><span class="code-text">d451d86fcd41910efba62d216d323f07</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">путь баланса</td></tr>
 
+<tr class="story-row"><td colspan="3">Высокий прибой</td></tr>
+<tr><td>Джейк</td><td><span class="code-text">8af31a9c52257f0c085ea5ffdc1cf3d3</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Отвага</td></tr>
+
 <tr class="story-row"><td colspan="3">Дракула: История любви</td></tr>
 <tr><td>Ноэ</td><td><span class="code-text">5544e1ef9352878265d67cb8b4f1035d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">конец 3го сезона, баланс</td></tr>
 <tr><td>Влад</td><td><span class="code-text">5ef89c04eb5fe0084c7bc0c98ffe5b23</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">начало 3го сезона, баланс</td></tr>
@@ -272,6 +275,9 @@
 <tr><td>Тобиас</td><td><span class="code-text">5706512d2f48a49cbec573ce5496ed38</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жгг, сочувствие</td></tr>
 <tr><td>Эстебан</td><td><span class="code-text">3afeef4fe5f6874b1e5fdba2cd1ce59d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жгг, сочувствие</td></tr>
 
+<tr class="story-row"><td colspan="3">Королева за 30 дней</td></tr>
+<tr><td>Адам</td><td><span class="code-text">83b84000fdf539754928b33d18e249ed</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Упорство</td></tr>
+
 <tr class="story-row"><td colspan="3">Легенда Ивы</td></tr>
 <tr><td>Кадзу</td><td><span class="code-text">974e6428cd00bcbc1f3737c02b1d1024</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Тимон, новый код! страсть, янтарная лиса</td></tr>
 
@@ -280,6 +286,9 @@
 <tr><td>Сет</td><td><span class="code-text">a0b719bc394314786f64253a8539cb30</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хитрость, некромантия</td></tr>
 <tr><td>Амен</td><td><span class="code-text">6cd61d7df682189d9911cadaf85c5482</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">честность, некромантия</td></tr>
 <tr><td>Анубис</td><td><span class="code-text">07642c99bee9f281d329174668b6fcf3</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">честность, онейромантия</td></tr>
+
+<tr class="story-row"><td colspan="3">По тонкому льду</td></tr>
+<tr><td>Ходж</td><td><span class="code-text">93475beb0b556f2e6fc3c18551edb6fa</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Баланс</td></tr>
 
 <tr class="story-row"><td colspan="3">Пси Ψ</td></tr>
 <tr><td>Иво</td><td><span class="code-text">2cdd74cc1251b961aba59029430d775c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">импульс, вектор</td></tr>
@@ -307,6 +316,7 @@
 <tr><td>Кас</td><td><span class="code-text">4ab7ade6839cc30b6168df5b62f75349</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">вера</td></tr>
 <tr><td>Давид</td><td><span class="code-text">ff367761332a352cb36e5e5a0bb1bcea</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">вера</td></tr>
 <tr><td>Малек</td><td><span class="code-text">ea0602a00c8bedc52bb5aaaa54c4435f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">скептицизм</td></tr>
+<tr><td>Давид</td><td><span class="code-text">74d99b334219b8e8d762475c91f0acb0</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">скептицизм</td></tr>
 
 <tr class="story-row"><td colspan="3">Роза Пустыни</td></tr>
 <tr><td>Адиль</td><td><span class="code-text">fe7933dfe668439263d6139f367c3601</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мечтательность, баланс пустыни и дитя, без 3го сезона</td></tr>
@@ -329,6 +339,8 @@
 <tr><td>Ян</td><td><span class="code-text">fbc509aa35f9955b1939e8f398b7d37e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог, милосердие, выс адаптация</td></tr>
 <tr><td>Каин</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">бог, милосердие, выс адаптация</td></tr>
 <tr><td>Каин+Авель</td><td><span class="code-text">8aa3af17bddb8304f8d06365fb038698</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дьявол, жесткость, выс адаптация</td></tr>
+<tr><td>Каин</td><td><span class="code-text">2c30b39060ee94b301471b9ae6c1bb04</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Шепот дьявола Высокая адаптация/td></tr>
+<tr><td>Борис</td><td><span class="code-text">a0d2993286217cf643ce1ad1b6446cf0</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог Высокая адаптация/td></tr>
 
 <tr class="story-row"><td colspan="3">Секрет Небес 2</td></tr>
 <tr><td>Голод</td><td><span class="code-text">b1af411532cdba680e5a35e18a39a4d7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность, Война мёртв</td></tr>
