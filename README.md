@@ -65,6 +65,49 @@
         transform: translateY(110vh) rotate(360deg);
     }
 }
+
+#secret-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#secret-overlay.show {
+    opacity: 1;
+}
+
+.secret-text {
+    font-size: 3rem;
+    color: #00f2ff;
+    text-shadow: 0 0 20px #00f2ff, 0 0 40px #00f2ff;
+    text-align: center;
+    font-weight: bold;
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+/* Эффект дрожания текста */
+.shake {
+    animation: shake-anim 0.3s infinite;
+}
+
+@keyframes shake-anim {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(2px, -2px); }
+    50% { transform: translate(-2px, 2px); }
+    75% { transform: translate(2px, 2px); }
+    100% { transform: translate(0,0); }
+}
     
 #toast {
     background: var(--toast-bg);
@@ -657,6 +700,53 @@ function startDiamondRain() {
         }, i * 50); // Постепенное появление
     }
 }
+
+let touchTimer;
+
+// Функция запуска пасхалки
+function triggerSecret() {
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // Двойная вибрация
+    showFullscreenText("ВИКЕ ТАЙМЕР<br>АДМИНКУ");
+}
+
+function showFullscreenText(message) {
+    let overlay = document.getElementById('secret-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'secret-overlay';
+        overlay.innerHTML = `<div class="secret-text shake">${message}</div>`;
+        document.body.appendChild(overlay);
+    }
+    overlay.classList.add('show');
+    
+    // Прячем через 3 секунды
+    setTimeout(() => {
+        overlay.classList.remove('show');
+    }, 3000);
+}
+
+// Слушатели для всего документа
+document.addEventListener('touchstart', (e) => {
+    touchTimer = setTimeout(triggerSecret, 3000); // 3 секунды
+});
+
+document.addEventListener('touchend', () => {
+    clearTimeout(touchTimer);
+});
+
+// На всякий случай для ПК (тоже при долгом клике в любом месте)
+document.addEventListener('mousedown', () => {
+    touchTimer = setTimeout(triggerSecret, 3000);
+});
+
+document.addEventListener('mouseup', () => {
+    clearTimeout(touchTimer);
+});
+
+// Если пользователь начал двигать пальцем (скроллить) - отменяем таймер
+document.addEventListener('touchmove', () => {
+    clearTimeout(touchTimer);
+});
     
     </script>
 
