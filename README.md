@@ -169,7 +169,7 @@
     }
     #backToTop.show { opacity: 1; pointer-events: auto; }
 </style>
-</head>
+
 <body>
 
  <body>
