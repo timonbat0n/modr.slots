@@ -330,28 +330,7 @@
 </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('searchInput');
-            const clearSearch = document.getElementById('clearSearch');
-            const themeBtn = document.getElementById('themeBtn');
-            const body = document.body;
-
-            // --- ТЕМА ---
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                body.classList.add('dark-theme');
-                themeBtn.innerText = '☀️';
-            }
-
-            themeBtn.addEventListener('click', () => {
-                body.classList.toggle('dark-theme');
-                const isDark = body.classList.contains('dark-theme');
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                themeBtn.innerText = isDark ? '☀️' : '🌙';
-            });
-
-            // --- ПОИСК ---
-        
+        <script>
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const clearSearch = document.getElementById('clearSearch');
@@ -422,25 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.focus();
     });
 });
+</script>
 
-
-
-            // --- КОПИРОВАНИЕ ---
-            document.querySelectorAll('.copy-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const code = this.previousElementSibling.innerText;
-                    navigator.clipboard.writeText(code).then(() => {
-                        const originalText = this.innerText;
-                        this.innerText = 'ГОТОВО ✓';
-                        this.style.background = '#4caf50';
-                        setTimeout(() => {
-                            this.innerText = originalText;
-                            this.style.background = '';
-                        }, 1000);
-                    });
-                });
-            });
-        });
-    </script>
 </body>
 </html>
