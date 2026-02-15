@@ -52,28 +52,57 @@
         --footer-color: #64748b;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
+<body class="light-theme"> ```
 
-    /* 2. БАЗОВЫЕ НАСТРОЙКИ */
-/* 1. БАЗОВЫЕ СТИЛИ (Светлая тема по умолчанию) */
-/* Стандартный светлый фон */
+### 2. Полный CSS (замени всё, что касается фона и тем)
+Этот код четко разделяет два состояния. Если у `body` есть класс `dark-theme`, фон **обязан** стать темным.
+
+```css
+/* Базовые настройки для обоих режимов */
 body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s ease; /* Плавная смена цвета */
+}
+
+/* СВЕТЛАЯ ТЕМА */
+body.light-theme {
     background-color: #f1f5f9;
     background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
     background-size: 25px 25px;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+    color: #1e293b;
 }
 
-/* Когда кнопка включает ТЕМНЫЙ режим */
-body.dark {
-    background-color: #0f172a !important;
+body.light-theme table {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ТЕМНАЯ ТЕМА */
+body.dark-theme {
+    background-color: #0f172a !important; /* Форсируем темный цвет */
     background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px) !important;
-    color: #ffffff !important;
+    background-size: 25px 25px;
+    color: #f8fafc;
 }
 
-/* Стеклянная таблица внутри темной темы */
-body.dark table {
+body.dark-theme table {
     background: rgba(30, 41, 59, 0.7) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Цвет текста в таблице для темной темы */
+body.dark-theme td {
+    color: #f8fafc;
 }
 
 
