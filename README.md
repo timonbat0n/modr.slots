@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -319,7 +319,7 @@
 
 </div>
 
-    <script>
+      <script>
         function filterData() {
             const input = document.getElementById("searchInput");
             const filter = input.value.toLowerCase().trim();
@@ -405,6 +405,6 @@
                 document.getElementById("themeBtn").innerText = "☀️";
             }
         });
-    </script>
 </body>
+    </script>
 </html>
