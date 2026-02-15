@@ -1,11 +1,12 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RC Slots - База</title>
+    <title>RC Slots Base</title>
     
     <style>
+        /* ПЕРЕМЕННЫЕ ЦВЕТОВ */
         :root {
             --bg-page: #eef7ff;
             --table-bg: #ffffff;
@@ -15,8 +16,6 @@
             --border-table: #b3e5fc;
             --code-bg: #f0faff;
             --highlight: #81d4fa;
-            --highlight-text: #004b8d;
-            --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
         }
 
         body.dark-theme {
@@ -28,93 +27,97 @@
             --border-table: #334155;
             --code-bg: #0f172a;
             --highlight: #0288d1;
-            --highlight-text: #ffffff;
-            --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0; padding: 15px;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            transition: background 0.2s ease;
             display: flex; flex-direction: column; align-items: center;
-            background-color: var(--bg-page); color: var(--text-main);
-            overflow-x: hidden; transition: background 0.3s ease;
+        }
+
+        /* КНОПКА ТЕМЫ */
+        .theme-toggle {
+            position: fixed; top: 15px; right: 15px;
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            background: var(--table-bg);
+            color: var(--accent-blue);
+            cursor: pointer; z-index: 1000;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
         }
 
         /* ПОИСК */
         .search-wrapper { width: 100%; max-width: 500px; margin: 10px 0; position: relative; }
         #searchInput {
-            width: 100%; padding: 14px 45px; border: 2px solid var(--border-table);
+            width: 100%; padding: 14px 40px; border: 2px solid var(--border-table);
             border-radius: 16px; background: var(--table-bg); color: var(--text-main);
             outline: none; box-sizing: border-box; font-size: 16px;
         }
-        .search-wrapper::before {
-            content: ""; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            width: 22px; height: 22px; background: var(--search-icon) no-repeat center; background-size: contain;
-        }
         #clearSearch {
-            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-            cursor: pointer; font-size: 24px; color: var(--accent-blue); display: none;
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; font-size: 22px; color: var(--accent-blue); display: none; font-weight: bold;
         }
 
-        /* КНОПКА НАВЕРХУ */
-        .tg-wrapper { width: 100%; max-width: 500px; margin: 10px 0 20px; }
-        .tg-minimal-btn {
-            display: block; width: 100%; padding: 15px; background: var(--table-bg);
-            color: var(--accent-blue) !important; text-align: center; text-decoration: none;
-            font-weight: 800; border-radius: 16px; border: 2px solid var(--accent-blue);
-            box-sizing: border-box; transition: 0.2s;
+        /* КНОПКА ОТПРАВИТЬ */
+        .tg-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; }
+        .tg-btn {
+            display: block; width: 100%; padding: 15px; border-radius: 16px;
+            border: 2px solid var(--accent-blue); background: var(--table-bg);
+            color: var(--accent-blue) !important; text-align: center;
+            text-decoration: none; font-weight: 800; box-sizing: border-box;
         }
-        .tg-minimal-btn:active { background: var(--accent-blue); color: white !important; }
+        .tg-btn:active { background: var(--accent-blue); color: white !important; }
 
         /* ТАБЛИЦА */
         .table-container { 
-            width: 100%; max-width: 500px; background: var(--table-bg);
-            border-radius: 18px; border: 2px solid var(--border-table);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden;
+            width: 100%; max-width: 500px; border-radius: 18px; 
+            border: 2px solid var(--border-table); overflow: hidden;
+            background: var(--table-bg); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { background: var(--story-header); padding: 10px; font-size: 12px; }
-        td { padding: 12px 8px; border-bottom: 1px solid var(--border-table); text-align: center; font-size: 14px; }
+        th { background: var(--story-header); color: var(--text-main); padding: 10px; font-size: 12px; }
+        td { 
+            padding: 12px 8px; border-bottom: 1px solid var(--border-table); 
+            text-align: center; font-size: 14px; color: var(--text-main);
+            background: var(--table-bg); word-wrap: break-word;
+        }
 
         .story-row td {
-            background-color: var(--story-header) !important; font-weight: 800;
-            text-align: left !important; padding-left: 15px !important; color: var(--text-main);
+            background-color: var(--story-header) !important;
+            color: var(--text-main) !important; font-weight: 800;
+            text-align: left !important; padding-left: 15px !important;
         }
 
         .code-text {
-            font-family: monospace; background: var(--code-bg); padding: 4px;
-            border-radius: 6px; display: block; margin-bottom: 6px;
-            font-size: 11px; border: 1px solid var(--border-table); word-break: break-all;
+            font-family: monospace; background: var(--code-bg); padding: 6px;
+            border-radius: 8px; display: block; margin-bottom: 6px;
+            font-size: 10px; border: 1px solid var(--border-table); 
+            word-break: break-all; color: var(--accent-blue);
         }
 
         .copy-btn {
             background: var(--accent-blue); color: white; border: none;
-            padding: 7px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer;
+            padding: 8px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer;
         }
 
-        .info-txt { font-size: 11px; opacity: 0.8; font-style: italic; line-height: 1.2; }
-
-        mark { background: var(--highlight); color: var(--highlight-text); border-radius: 3px; padding: 0 2px; }
-
-        .theme-toggle {
-            position: fixed; top: 15px; right: 15px; background: var(--table-bg);
-            border: 2px solid var(--accent-blue); color: var(--accent-blue);
-            border-radius: 50%; width: 44px; height: 44px; z-index: 1000;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-        }
+        .info-txt { font-size: 11px; opacity: 0.8; font-style: italic; }
+        mark { background: var(--highlight); color: #000; border-radius: 3px; }
     </style>
 </head>
 <body>
 
-    <button id="themeBtn" class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <button id="themeBtn" class="theme-toggle">🌙</button>
 
     <div class="search-wrapper">
-        <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Поиск персонажа или истории...">
-        <span id="clearSearch" onclick="clearInput()">×</span>
+        <input type="text" id="searchInput" placeholder="Поиск персонажа или истории...">
+        <span id="clearSearch">×</span>
     </div>
 
     <div class="tg-wrapper">
-        <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-minimal-btn">Отправить слоты 🩵</a>
+        <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">Отправить слоты 🩵</a>
     </div>
 <div class="table-container">
     <table id="mainTable">
@@ -319,92 +322,81 @@
 
 </div>
 
-      <script>
-        function filterData() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toLowerCase().trim();
-            const tr = document.querySelectorAll("#mainTable tbody tr");
-            const clearBtn = document.getElementById("clearSearch");
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const clearSearch = document.getElementById('clearSearch');
+            const themeBtn = document.getElementById('themeBtn');
+            const body = document.body;
 
-            if (clearBtn) clearBtn.style.display = filter ? "block" : "none";
-
-            let lastStoryRow = null;
-            let storyMatches = false;
-
-            tr.forEach(row => {
-                if (row.classList.contains('story-row')) {
-                    // Проверяем, подходит ли название истории под поиск
-                    const storyName = row.innerText.toLowerCase();
-                    storyMatches = storyName.includes(filter);
-                    lastStoryRow = row;
-                    row.style.display = storyMatches ? "" : "none";
-                    
-                    // Сбрасываем подсветку в заголовке
-                    if (!row.hasAttribute("data-original")) row.setAttribute("data-original", row.innerHTML);
-                    row.innerHTML = storyMatches && filter !== "" 
-                        ? row.getAttribute("data-original").replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>")
-                        : row.getAttribute("data-original");
-                } else {
-                    const nameCell = row.cells[0];
-                    const infoCell = row.cells[2];
-                    
-                    if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", nameCell.innerText);
-                    if (!infoCell.hasAttribute("data-original")) infoCell.setAttribute("data-original", infoCell.innerText);
-
-                    const nameText = nameCell.getAttribute("data-original");
-                    const infoText = infoCell.getAttribute("data-original");
-
-                    const nameMatch = nameText.toLowerCase().includes(filter);
-                    const infoMatch = infoText.toLowerCase().includes(filter);
-
-                    if (storyMatches || nameMatch || infoMatch) {
-                        row.style.display = "";
-                        if (lastStoryRow) lastStoryRow.style.display = ""; // Показываем заголовок, если нашли персонажа
-
-                        // Подсветка текста
-                        if (filter !== "") {
-                            const regex = new RegExp(`(${filter})`, "gi");
-                            nameCell.innerHTML = nameMatch ? nameText.replace(regex, "<mark>$1</mark>") : nameText;
-                            infoCell.innerHTML = infoMatch ? infoText.replace(regex, "<mark>$1</mark>") : infoText;
-                        } else {
-                            nameCell.innerHTML = nameText;
-                            infoCell.innerHTML = infoText;
-                        }
-                    } else {
-                        row.style.display = "none";
-                    }
-                }
-            });
-        }
-
-        function clearInput() {
-            document.getElementById("searchInput").value = "";
-            filterData();
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle("dark-theme");
-            const isDark = document.body.classList.contains("dark-theme");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-            document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
-        }
-
-        function copy(btn) {
-            const text = btn.previousElementSibling.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const oldText = btn.innerText;
-                btn.innerText = "ГОТОВО ✓";
-                btn.style.background = "#4caf50";
-                setTimeout(() => { btn.innerText = oldText; btn.style.background = ""; }, 1000);
-            });
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem("theme") === "dark") {
-                document.body.classList.add("dark-theme");
-                document.getElementById("themeBtn").innerText = "☀️";
+            // --- ТЕМА ---
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+                themeBtn.innerText = '☀️';
             }
+
+            themeBtn.addEventListener('click', () => {
+                body.classList.toggle('dark-theme');
+                const isDark = body.classList.contains('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                themeBtn.innerText = isDark ? '☀️' : '🌙';
+            });
+
+            // --- ПОИСК ---
+            window.filterData = function() {
+                const filter = searchInput.value.toLowerCase().trim();
+                const rows = document.querySelectorAll('#mainTable tbody tr');
+                clearSearch.style.display = filter ? 'block' : 'none';
+
+                let currentStoryRow = null;
+                let storyVisible = false;
+
+                rows.forEach(row => {
+                    if (row.classList.contains('story-row')) {
+                        currentStoryRow = row;
+                        storyVisible = row.innerText.toLowerCase().includes(filter);
+                        row.style.display = storyVisible ? '' : 'none';
+                    } else {
+                        const nameCell = row.cells[0];
+                        const infoCell = row.cells[2];
+                        const nameText = nameCell.innerText.toLowerCase();
+                        const infoText = infoCell.innerText.toLowerCase();
+
+                        if (storyVisible || nameText.includes(filter) || infoText.includes(filter)) {
+                            row.style.display = '';
+                            if (currentStoryRow) currentStoryRow.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+            };
+
+            searchInput.addEventListener('keyup', filterData);
+
+            clearSearch.addEventListener('click', () => {
+                searchInput.value = '';
+                filterData();
+                searchInput.focus();
+            });
+
+            // --- КОПИРОВАНИЕ ---
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const code = this.previousElementSibling.innerText;
+                    navigator.clipboard.writeText(code).then(() => {
+                        const originalText = this.innerText;
+                        this.innerText = 'ГОТОВО ✓';
+                        this.style.background = '#4caf50';
+                        setTimeout(() => {
+                            this.innerText = originalText;
+                            this.style.background = '';
+                        }, 1000);
+                    });
+                });
+            });
         });
-</body>
     </script>
+</body>
 </html>
