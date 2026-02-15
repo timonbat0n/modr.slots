@@ -8,85 +8,135 @@
     
 <style>
     :root {
-        --bg-page: #eef7ff; --table-bg: rgba(255, 255, 255, 0.7); --text-main: #074799;
-        --accent-blue: #0091ea; --story-header: rgba(209, 233, 255, 0.8); --code-bg: rgba(240, 250, 255, 0.6);
+        /* Светлая тема */
+        --bg-page: #eef7ff; 
+        --table-bg: rgba(255, 255, 255, 0.7); 
+        --text-main: #074799;
+        --accent-blue: #0091ea; 
+        --story-header: rgba(209, 233, 255, 0.85); 
+        --code-bg: rgba(240, 250, 255, 0.6);
         --highlight: #fff176;
         --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
     body.dark-theme {
-        --bg-page: #0f172a; --table-bg: rgba(30, 41, 59, 0.7); --text-main: #f1f5f9;
-        --accent-blue: #38bdf8; --story-header: rgba(51, 65, 85, 0.8); --code-bg: rgba(15, 23, 42, 0.6);
+        /* Темная тема */
+        --bg-page: #0f172a; 
+        --table-bg: rgba(30, 41, 59, 0.6); 
+        --text-main: #f1f5f9;
+        --accent-blue: #38bdf8; 
+        --story-header: rgba(51, 65, 85, 0.9); 
+        --code-bg: rgba(15, 23, 42, 0.7);
         --highlight: #fb8c00;
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
     * { box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; background: var(--bg-page); transition: 0.3s; }
+
+    body { 
+        font-family: 'Segoe UI', Roboto, sans-serif; 
+        margin: 0; padding: 10px; 
+        display: flex; flex-direction: column; align-items: center; 
+        min-height: 100vh; background: var(--bg-page); 
+        transition: background 0.5s ease;
+        overflow-x: hidden;
+    }
+
+    /* ЗВЕЗДНЫЙ ФОН */
+    #star-container { 
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+        z-index: -2; pointer-events: none; transition: opacity 0.8s ease;
+    }
+    
+    /* Растворение звезд в светлой теме */
+    body:not(.dark-theme) #star-container { opacity: 0.3; }
+    body.dark-theme #star-container { opacity: 1; }
+
+    .star { 
+        position: absolute; background: white; border-radius: 50%; opacity: 0; 
+        animation: twinkle var(--duration) infinite ease-in-out; 
+    }
+    
+    /* Звезды в светлой теме становятся нежно-голубыми */
+    body:not(.dark-theme) .star { background: var(--accent-blue); }
+
+    @keyframes twinkle { 
+        0%, 100% { opacity: 0; transform: scale(0.5); } 
+        50% { opacity: var(--max-opacity); transform: scale(1.2); } 
+    }
 
     /* ЭФФЕКТ СТЕКЛА (Glassmorphism) */
     .tg-btn, #searchInput, td, th, #themeBtn, .code-text {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
-    /* МАСШТАБ */
-    .tg-wrapper, .search-wrapper, .table-container { width: 100%; max-width: 600px; z-index: 1; margin-bottom: 12px; }
+    /* КОНТЕЙНЕРЫ */
+    .tg-wrapper, .search-wrapper, .table-container { 
+        width: 100%; max-width: 600px; z-index: 1; margin-bottom: 12px; 
+    }
 
-    /* НЕОНОВАЯ КНОПКА */
+    /* КНОПКА ОТПРАВИТЬ */
     .tg-btn { 
-        display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; 
-        background: var(--btn-gradient); color: white !important; text-decoration: none; 
-        font-weight: 800; border-radius: 14px; font-size: 15px;
-        box-shadow: 0 4px 15px rgba(0, 145, 234, 0.3);
-        transition: 0.3s;
+        display: flex; align-items: center; justify-content: center; width: 100%; 
+        padding: 14px; background: var(--btn-gradient); color: white !important; 
+        text-decoration: none; font-weight: 800; border-radius: 14px; 
+        box-shadow: 0 4px 15px rgba(0, 145, 234, 0.3); transition: 0.3s;
     }
-    body.dark-theme .tg-btn {
-        animation: neonPulse 2s infinite;
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-    }
+    body.dark-theme .tg-btn { animation: neonPulse 2s infinite; }
 
     @keyframes neonPulse {
-        0% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.4); }
-        50% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.6); }
-        100% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.4); }
+        0%, 100% { box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
+        50% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.7); }
     }
 
-    /* ПОИСК */
+    /* ПОИСК И КРЕСТИК */
     .search-wrapper { position: relative; }
     #searchInput { 
         width: 100%; padding: 12px 45px; border-radius: 14px; border: none; 
-        background: var(--table-bg) var(--search-icon) no-repeat 14px center; background-size: 18px; 
-        color: var(--text-main); outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        background: var(--table-bg) var(--search-icon) no-repeat 14px center; 
+        background-size: 18px; color: var(--text-main); outline: none;
     }
-    body.dark-theme #searchInput:focus { box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
+    
+    #clearSearch { 
+        position: absolute; right: 15px; top: 50%; transform: translateY(-50%); 
+        cursor: pointer; color: var(--accent-blue); font-size: 24px; font-weight: bold; 
+        display: none; z-index: 10; line-height: 1; transition: 0.2s;
+    }
+    #clearSearch:hover { transform: translateY(-50%) scale(1.2); color: #ff5252; }
 
-    /* ТАБЛИЦА С НЕОНОВЫМ ХОВЕРОМ */
+    /* ТАБЛИЦА */
     table { width: 100%; border-collapse: separate; border-spacing: 0 6px; table-layout: fixed; }
     th, td { 
         background-color: var(--table-bg) !important; color: var(--text-main) !important; 
-        padding: 8px 4px !important; text-align: center; font-size: 12px; height: 70px; 
-        vertical-align: middle; transition: 0.3s; 
+        padding: 8px 4px !important; text-align: center; font-size: 12px; 
+        height: 72px; vertical-align: middle; transition: 0.3s ease; 
     }
     
     thead th { height: 40px; text-transform: uppercase; font-size: 11px; color: var(--accent-blue) !important; border: none !important; }
+    
     tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
     tr td:nth-child(2) { width: 45%; }
     tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
 
-    /* Ховер эффект (Неон) */
+    /* ЗАГОЛОВКИ ИСТОРИЙ */
+    .story-row td { 
+        background-color: var(--story-header) !important; color: var(--accent-blue) !important; 
+        height: 48px !important; text-align: left !important; padding-left: 15px !important; 
+        border-radius: 12px !important; font-weight: 800; border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    }
+
+    /* ТЕМНЫЙ ХОВЕР */
     tbody tr:not(.story-row):hover td {
-        background: rgba(0, 145, 234, 0.15) !important;
+        background: rgba(0, 145, 234, 0.1) !important;
         box-shadow: inset 0 0 10px rgba(0, 145, 234, 0.1);
     }
     body.dark-theme tbody tr:not(.story-row):hover td {
-        background: rgba(56, 189, 248, 0.2) !important;
-        box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.2);
+        background: rgba(15, 23, 42, 0.9) !important;
+        box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.3);
+        color: #fff !important;
     }
-
-    .story-row td { background-color: var(--story-header) !important; color: var(--accent-blue) !important; height: 45px !important; text-align: left !important; padding-left: 15px !important; border-radius: 12px !important; font-weight: 800; }
 
     /* ПОДСВЕТКА */
     mark { 
@@ -96,29 +146,39 @@
 
     /* КОД И КНОПКИ */
     .code-text { font-family: monospace; font-size: 9px; display: block; margin-bottom: 5px; color: var(--accent-blue); word-break: break-all; padding: 5px; border-radius: 6px; }
-    .copy-btn { background: var(--btn-gradient); color: white; border: none; padding: 7px; border-radius: 8px; cursor: pointer; width: 95%; font-weight: bold; font-size: 10px; transition: 0.2s; }
-    .copy-btn:active { transform: scale(0.95); }
+    .copy-btn { 
+        background: var(--btn-gradient); color: white; border: none; padding: 7px; 
+        border-radius: 8px; cursor: pointer; width: 95%; font-weight: bold; font-size: 10px; 
+    }
 
-    /* УПРАВЛЕНИЕ */
-    #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: var(--table-bg); width: 38px; height: 38px; border-radius: 50%; z-index: 100; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: var(--text-main); }
-    #backToTop { position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px; background: var(--btn-gradient); border: none; border-radius: 50%; cursor: pointer; z-index: 99; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; color: white; font-size: 20px; }
+    /* КНОПКИ УПРАВЛЕНИЯ */
+    #themeBtn { 
+        position: fixed; top: 10px; right: 10px; border: none; background: var(--table-bg); 
+        width: 38px; height: 38px; border-radius: 50%; z-index: 100; cursor: pointer; 
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: var(--text-main); 
+    }
+    #backToTop { 
+        position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px; 
+        background: var(--btn-gradient); border: none; border-radius: 50%; 
+        cursor: pointer; z-index: 99; display: flex; align-items: center; 
+        justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; color: #fff;
+    }
     #backToTop.show { opacity: 1; pointer-events: auto; }
 </style>
 </head>
 <body>
 
+ <body>
     <div id="star-container"></div>
-
+    
     <button id="themeBtn" onclick="toggleTheme()">🌙</button>
 
-    <div class="tg-wrapper">
-        <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">ОТПРАВИТЬ СЛОТЫ ⚡</a>
-    </div>
-
     <div class="search-wrapper">
-        <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа...">
+        <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
         <div id="clearSearch" onclick="clearInput()">×</div>
     </div>
+    
+    </body>
 
     <div class="table-container">
     <table id="mainTable">
@@ -326,23 +386,43 @@
         const originalNames = new Map();
         let easterEggTriggered = false;
 
-        // Создание звезд
-        function createStars() {
-            const container = document.getElementById('star-container');
-            for (let i = 0; i < 80; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                const size = Math.random() * 2 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-                star.style.setProperty('--max-opacity', Math.random() * 0.7);
-                star.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(star);
-            }
-        }
+      function createStars() {
+    const container = document.getElementById('star-container');
+    container.innerHTML = ''; // Очистка перед созданием
+    const starCount = 80;
+
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Позиция
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        // Размеры и анимация
+        const size = Math.random() * 2 + 1;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 5;
+        const opacity = Math.random() * 0.8;
+
+        Object.assign(star.style, {
+            left: `${x}%`,
+            top: `${y}%`,
+            width: `${size}px`,
+            height: `${size}px`,
+            position: 'absolute',
+            animationDelay: `${delay}s`
+        });
+        
+        star.style.setProperty('--duration', `${duration}s`);
+        star.style.setProperty('--max-opacity', opacity);
+
+        container.appendChild(star);
+    }
+}
+
+// Вызываем создание при загрузке и при смене темы (опционально)
+window.addEventListener('DOMContentLoaded', createStars);
 
         function runFilter() {
             const input = document.getElementById('searchInput');
