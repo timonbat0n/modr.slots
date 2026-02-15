@@ -199,40 +199,7 @@
     }
     #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-    /* ЖИВОЙ ФОН */
-.bg-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Чтобы фон был за контентом */
-    overflow: hidden;
-    background: var(--bg-page);
-    transition: background 0.3s;
-}
 
-.blob {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: var(--accent-blue);
-    filter: blur(80px); /* Делает пятна мягкими */
-    border-radius: 50%;
-    opacity: 0.15; /* Очень прозрачно, чтобы не мешать тексту */
-    animation: move 20s infinite alternate;
-}
-
-/* Настройки для каждого пятна (разные позиции и скорость) */
-.blob:nth-child(1) { top: -100px; left: -100px; animation-duration: 25s; }
-.blob:nth-child(2) { bottom: -100px; right: -100px; animation-duration: 30s; opacity: 0.1; }
-.blob:nth-child(3) { top: 40%; left: 50%; animation-duration: 20s; width: 200px; opacity: 0.08; }
-
-/* Анимация плавного движения */
-@keyframes move {
-    from { transform: translate(0, 0) scale(1); }
-    to { transform: translate(50px, 100px) scale(1.2); }
-}
 
 /* В темной теме сделаем пятна чуть заметнее */
 body.dark-theme .blob {
@@ -302,10 +269,6 @@ body:not(.dark-theme) .star {
     <div id="clearSearch" onclick="clearInput()">×</div>
 </div>
 <div class="bg-animation">
-    <div class="blob"></div>
-    <div class="blob"></div>
-    <div class="blob"></div>
-</div>
 <div class="table-container">
     <table id="mainTable">
         <thead>
