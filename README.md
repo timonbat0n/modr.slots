@@ -4,113 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Base</title>
-    <style>
-    /* ПЕРЕМЕННЫЕ И ТЕМЫ */
+<style>
     :root {
-        --bg-page: #eef7ff;
-        --table-bg: #ffffff;
-        --text-main: #074799;
-        --accent-blue: #0091ea;
-        --story-header: #d1e9ff;
-        --border-table: #b3e5fc;
-        --code-bg: #f0faff;
-        --highlight: #ffeb3b; 
+        --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
+        --accent-blue: #0091ea; --story-header: #d1e9ff; --border-table: #b3e5fc;
+        --code-bg: #f0faff; --highlight: #ffeb3b;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
     body.dark-theme {
-        --bg-page: #0f172a;
-        --table-bg: #1e293b;
-        --text-main: #f1f5f9;
-        --accent-blue: #38bdf8;
-        --story-header: #334155;
-        --border-table: #334155;
-        --code-bg: #0f172a;
-        --highlight: #fbc02d;
+        --bg-page: #0f172a; --table-bg: #1e293b; --text-main: #f1f5f9;
+        --accent-blue: #38bdf8; --story-header: #334155; --border-table: #334155;
+        --code-bg: #0f172a; --highlight: #fbc02d;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    /* ОСНОВНЫЕ СТИЛИ */
-    body {
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        margin: 0; padding: 15px;
-        background-color: var(--bg-page); color: var(--text-main);
-        display: flex; flex-direction: column; align-items: center;
-        transition: background 0.2s ease;
-    }
+    body { background-color: var(--bg-page); color: var(--text-main); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 15px; transition: 0.2s; }
 
-    /* ПОИСКОВАЯ СТРОКА */
-    .search-wrapper { width: 100%; max-width: 500px; margin: 10px 0; position: relative; }
-    
+    /* Поиск */
+    .search-wrapper { width: 100%; max-width: 500px; position: relative; margin: 10px 0; }
     #searchInput {
-        width: 100%; padding: 14px 45px; border: 2px solid var(--border-table);
-        border-radius: 16px; background: var(--table-bg); color: var(--text-main);
-        outline: none; box-sizing: border-box; font-size: 16px; transition: 0.2s;
+        width: 100%; padding: 14px 45px; border-radius: 16px; border: 2px solid var(--border-table);
+        background: var(--table-bg) var(--search-icon) no-repeat 14px center; background-size: 20px;
+        color: var(--text-main); outline: none; box-sizing: border-box; font-size: 16px;
     }
-
-    /* Лупа */
-    .search-wrapper::before {
-        content: ""; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-        width: 20px; height: 20px; background: var(--search-icon) no-repeat center;
-        background-size: contain; pointer-events: none;
-    }
-
-    /* Крестик очистки */
     #clearSearch {
         position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; font-size: 24px; color: var(--accent-blue); 
-        display: none; font-weight: bold; line-height: 1; user-select: none;
+        cursor: pointer; font-size: 24px; color: var(--accent-blue); display: none;
     }
 
-    /* КНОПКА ТЕМЫ */
-    .theme-toggle {
-        position: fixed; top: 15px; right: 15px; width: 44px; height: 44px;
-        border-radius: 50%; border: 2px solid var(--accent-blue);
-        background: var(--table-bg); color: var(--accent-blue);
-        cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center;
-    }
+    /* Таблица */
+    .table-container { width: 100%; max-width: 500px; border-radius: 18px; border: 2px solid var(--border-table); overflow: hidden; background: var(--table-bg); }
+    table { width: 100%; border-collapse: collapse; background: var(--table-bg); }
+    td, th { padding: 12px 8px; border-bottom: 1px solid var(--border-table); color: var(--text-main); text-align: center; }
+    .story-row td { background: var(--story-header) !important; font-weight: bold; text-align: left !important; }
 
-    /* КНОПКА ОТПРАВКИ */
-    .tg-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; }
-    .tg-btn {
-        display: block; width: 100%; padding: 15px; border-radius: 16px;
-        border: 2px solid var(--accent-blue); background: var(--table-bg);
-        color: var(--accent-blue) !important; text-align: center;
-        text-decoration: none; font-weight: 800; box-sizing: border-box; transition: 0.2s;
-    }
-    .tg-btn:active { background: var(--accent-blue); color: white !important; }
+    /* Маркер */
+    mark { background: var(--highlight); color: #000; border-radius: 3px; }
 
-    /* ТАБЛИЦА */
-    .table-container { 
-        width: 100%; max-width: 500px; border-radius: 18px; 
-        border: 2px solid var(--border-table); overflow: hidden;
-        background: var(--table-bg); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; background: var(--table-bg); }
-    
-    th { background: var(--story-header); color: var(--text-main); padding: 10px; font-size: 12px; border-bottom: 2px solid var(--border-table); }
-    
-    td { padding: 12px 8px; border-bottom: 1px solid var(--border-table); text-align: center; color: var(--text-main); background: var(--table-bg); }
-    
-    .story-row td {
-        background-color: var(--story-header) !important; font-weight: 800; 
-        text-align: left !important; padding-left: 15px !important; color: var(--text-main) !important;
-    }
-
-    /* МАРКЕР И КОД */
-    mark { background: var(--highlight); color: #000; border-radius: 3px; padding: 0 2px; }
-
-    .code-text {
-        font-family: monospace; background: var(--code-bg); padding: 6px;
-        border-radius: 8px; display: block; margin-bottom: 6px; font-size: 10px;
-        border: 1px solid var(--border-table); word-break: break-all; color: var(--accent-blue);
-    }
-
-    .copy-btn {
-        background: var(--accent-blue); color: white; border: none;
-        padding: 8px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer;
-    }
+    .theme-toggle { position: fixed; top: 15px; right: 15px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--accent-blue); background: var(--table-bg); color: var(--accent-blue); cursor: pointer; }
 </style>
+
 
 
 </head>
@@ -118,10 +52,11 @@
 
     <button id="themeBtn" class="theme-toggle">🌙</button>
 
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Поиск персонажа или истории...">
-        <span id="clearSearch">×</span>
-    </div>
+   <div class="search-wrapper">
+    <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск...">
+    <div id="clearSearch" onclick="clearInput()">×</div>
+</div>
+
 
     <div class="tg-wrapper">
         <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">Отправить слоты 🩵</a>
@@ -330,61 +265,44 @@
 </div>
 
     <script>
-        <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('searchInput');
-    const clearSearch = document.getElementById('clearSearch');
-    const rows = document.querySelectorAll('#mainTable tbody tr');
+        
+    // Функция поиска (вызывается через oninput в HTML)
+    function runFilter() {
+        const input = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearch');
+        const filter = input.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('#mainTable tbody tr');
 
-    // Кэшируем оригинальный текст, чтобы поиск не ломался при повторном вводе
-    rows.forEach(row => {
-        if (!row.classList.contains('story-row')) {
-            row.cells[0].setAttribute('data-orig', row.cells[0].innerText);
-            row.cells[2].setAttribute('data-orig', row.cells[2].innerText);
-        } else {
-            row.setAttribute('data-orig', row.innerText);
-        }
-    });
+        clearBtn.style.display = filter ? 'block' : 'none';
 
-    function filterData() {
-        const filter = searchInput.value.toLowerCase().trim();
-        clearSearch.style.display = filter ? 'block' : 'none';
-
-        let currentStoryRow = null;
         let storyVisible = false;
+        let currentStory = null;
 
         rows.forEach(row => {
+            // Сохраняем оригинал текста, если его еще нет
+            if (!row.hasAttribute('data-orig')) {
+                row.setAttribute('data-orig', row.innerHTML);
+            }
+            
+            const originalHTML = row.getAttribute('data-orig');
+            const textContent = row.innerText.toLowerCase();
+
             if (row.classList.contains('story-row')) {
-                currentStoryRow = row;
-                const originalText = row.getAttribute('data-orig');
-                storyVisible = originalText.toLowerCase().includes(filter);
-                
+                currentStory = row;
+                storyVisible = textContent.includes(filter);
                 row.style.display = storyVisible ? '' : 'none';
-                // Подсветка в названии истории
-                row.cells[0].innerHTML = (filter && storyVisible) 
-                    ? originalText.replace(new RegExp(`(${filter})`, 'gi'), '<mark>$1</mark>') 
-                    : originalText;
+                row.innerHTML = originalHTML; // Сброс подсветки для заголовка
             } else {
-                const nameCell = row.cells[0];
-                const infoCell = row.cells[2];
-                const nameOrig = nameCell.getAttribute('data-orig');
-                const infoOrig = infoCell.getAttribute('data-orig');
-
-                const nameMatch = nameOrig.toLowerCase().includes(filter);
-                const infoMatch = infoOrig.toLowerCase().includes(filter);
-
-                if (storyVisible || nameMatch || infoMatch) {
+                if (storyVisible || textContent.includes(filter)) {
                     row.style.display = '';
-                    if (currentStoryRow) currentStoryRow.style.display = '';
+                    if (currentStory) currentStory.style.display = '';
                     
-                    // Подсветка совпадений маркером
+                    // Подсветка маршалом
                     if (filter) {
-                        const regex = new RegExp(`(${filter})`, 'gi');
-                        nameCell.innerHTML = nameMatch ? nameOrig.replace(regex, '<mark>$1</mark>') : nameOrig;
-                        infoCell.innerHTML = infoMatch ? infoOrig.replace(regex, '<mark>$1</mark>') : infoOrig;
+                        const regex = new RegExp(`(${filter})`, "gi");
+                        row.innerHTML = originalHTML.replace(regex, '<mark>$1</mark>');
                     } else {
-                        nameCell.innerHTML = nameOrig;
-                        infoCell.innerHTML = infoOrig;
+                        row.innerHTML = originalHTML;
                     }
                 } else {
                     row.style.display = 'none';
@@ -393,15 +311,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    searchInput.addEventListener('input', filterData);
-    
-    clearSearch.addEventListener('click', () => {
-        searchInput.value = '';
-        filterData();
-        searchInput.focus();
-    });
-});
+    function clearInput() {
+        const input = document.getElementById('searchInput');
+        input.value = '';
+        runFilter();
+        input.focus();
+    }
 </script>
+
 
 </body>
 </html>
