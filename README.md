@@ -54,22 +54,30 @@
     }
 
     /* 2. БАЗОВЫЕ НАСТРОЙКИ */
-    body {
+body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #0f172a; /* Глубокий темный */
-    /* Мягкий узор из точек */
-    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 25px 25px;
-    background-attachment: fixed;
     
+    /* Основной фон (можно менять на любой) */
+    background-color: #0f172a; 
+    
+    /* Универсальный узор: используем белые точки с очень низкой прозрачностью */
+    /* Они будут видны и на черном, и на синем, и на сером фоне */
+    background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1.5px), /* Точки */
+    radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);     /* Пятно света в центре */
+
+    background-size: 30px 30px;
+    background-attachment: fixed;
+
     color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
 }
+
 
 table {
     animation: fadeIn 0.8s ease-in-out;
