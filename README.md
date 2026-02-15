@@ -509,7 +509,7 @@ window.addEventListener('DOMContentLoaded', createStars);
             const rows = document.querySelectorAll('#mainTable tbody tr');
             document.getElementById('clearSearch').style.display = filter.length > 0 ? 'block' : 'none';
 
-            if ((filter === 'modr' || filter === 'ирина') && !easterEggTriggered) {
+            if ((filter === 'modr' || filter === 'ирина' || filter === 'таймер') && !easterEggTriggered) {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                 easterEggTriggered = true;
             } else if (filter === '') { easterEggTriggered = false; }
