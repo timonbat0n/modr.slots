@@ -68,6 +68,46 @@
         border-radius: 10px !important; font-size: 13px;
     }
 
+/* КНОПКА НАВЕРХ */
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: var(--btn-gradient);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1000;
+    opacity: 0; /* Скрыта по умолчанию */
+    visibility: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#backToTop:active {
+    transform: scale(0.9);
+}
+
+/* Иконка-стрелка внутри кнопки */
+#backToTop svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+
     /* КОД И КНОПКА */
     .code-text { 
         font-family: monospace; font-size: 9px; display: block; 
@@ -340,6 +380,25 @@
         });
     }
 
+// Логика кнопки "Наверх"
+const backToTopBtn = document.getElementById('backToTop');
+
+window.onscroll = function() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        backToTopBtn.classList.add('show');
+    } else {
+        backToTopBtn.classList.remove('show');
+    }
+};
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Плавная прокрутка
+    });
+}
+
+
     // 2. ФУНКЦИЯ ОЧИСТКИ (КРЕСТИК)
     function clearInput() {
         const input = document.getElementById('searchInput');
@@ -373,6 +432,11 @@
     }
 </script>
 
+<button id="backToTop" onclick="scrollToTop()">
+    <svg viewBox="0 0 24 24">
+        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path>
+    </svg>
+</button>
 
 
 
