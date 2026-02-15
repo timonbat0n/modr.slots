@@ -18,54 +18,71 @@
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
-    body { font-family: 'Segoe UI', sans-serif; background: var(--bg-page); color: var(--text-main); padding: 15px; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+    body { 
+        font-family: 'Segoe UI', sans-serif; background: var(--bg-page); 
+        color: var(--text-main); padding: 10px; display: flex; 
+        flex-direction: column; align-items: center; transition: 0.3s; margin: 0; 
+    }
 
-    /* ПОИСК С КРЕСТИКОМ */
-    .search-wrapper { width: 100%; max-width: 500px; position: relative; margin-bottom: 20px; }
+    /* ПОИСК И КНОПКА TG — теперь шире */
+    .search-wrapper, .tg-wrapper { width: 95%; max-width: none; position: relative; margin-bottom: 10px; }
     
     #searchInput {
-        width: 100%; padding: 14px 45px; border-radius: 16px; border: none;
-        background: var(--table-bg) var(--search-icon) no-repeat 14px center; background-size: 20px;
-        color: var(--text-main); outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        font-size: 16px; transition: 0.3s;
+        width: 100%; padding: 10px 40px; border-radius: 12px; border: none;
+        background: var(--table-bg) var(--search-icon) no-repeat 12px center; background-size: 18px;
+        color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14px;
     }
 
-    /* Дизайн крестика */
     #clearSearch {
-        position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold;
-        display: none; width: 30px; height: 30px; line-height: 28px; text-align: center;
-        user-select: none; transition: transform 0.2s ease;
+        position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+        cursor: pointer; color: var(--accent-blue); font-size: 20px; display: none;
     }
-    #clearSearch:active { transform: translateY(-50%) scale(0.8); }
 
-    /* ТАБЛИЦА КАРТОЧКАМИ */
-    .table-container { width: 100%; max-width: 500px; }
-    table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
-    td { background: var(--table-bg); padding: 16px 12px; border: none; text-align: center; transition: 0.3s; }
-    tr td:first-child { border-radius: 15px 0 0 15px; }
-    tr td:last-child { border-radius: 0 15px 15px 0; }
+    .tg-btn { 
+        width: 100%; padding: 12px; background: var(--btn-gradient); 
+        color: white !important; text-decoration: none; border-radius: 12px; 
+        text-align: center; font-weight: bold; font-size: 14px; display: flex; 
+        justify-content: center; align-items: center; gap: 8px; box-sizing: border-box;
+    }
+
+    /* ТАБЛИЦА НА ВЕСЬ ЭКРАН */
+    .table-container { width: 95%; } /* Растягиваем на 95% ширины экрана */
+    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+    
+    /* Сжимаем ячейки */
+    td { 
+        background: var(--table-bg); padding: 8px 6px; border: none; 
+        text-align: center; transition: 0.2s; font-size: 13px; /* Уменьшили шрифт */
+    }
+    
+    tr td:first-child { border-radius: 10px 0 0 10px; width: 25%; } /* Имя персонажа */
+    tr td:nth-child(2) { width: 45%; } /* Столбец с кодом */
+    tr td:last-child { border-radius: 0 10px 10px 0; width: 30%; font-size: 11px; opacity: 0.8; } /* Инфо */
 
     .story-row td { 
         background: var(--story-header) !important; color: var(--accent-blue) !important; 
-        font-weight: 800; text-align: left !important; padding-left: 20px !important; border-radius: 15px !important; 
+        font-weight: 800; text-align: left !important; padding-left: 15px !important; 
+        border-radius: 10px !important; font-size: 14px;
     }
 
-    /* КНОПКИ */
+    /* КОМПАКТНЫЕ КОДЫ И КНОПКИ */
+    .code-text { 
+        font-family: monospace; font-size: 10px; display: block; 
+        margin-bottom: 5px; color: var(--accent-blue); word-break: break-all; 
+        padding: 4px; background: var(--code-bg); border-radius: 6px; 
+    }
+    
     .copy-btn {
-        background: var(--btn-gradient); color: white; border: none; padding: 10px;
-        border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s;
-        text-transform: uppercase; font-size: 11px;
+        background: var(--btn-gradient); color: white; border: none; padding: 6px;
+        border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; 
+        text-transform: uppercase; font-size: 10px; outline: none;
     }
-    .copy-btn.copied { background: #27ae60 !important; box-shadow: 0 0 12px rgba(39, 174, 96, 0.4); }
+    .copy-btn.copied { background: #27ae60 !important; }
 
-    .tg-btn { 
-        width: 100%; max-width: 500px; padding: 16px; background: var(--btn-gradient); 
-        color: white !important; text-decoration: none; border-radius: 18px; text-align: center; 
-        font-weight: bold; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 8px;
-        box-shadow: 0 8px 15px rgba(0, 145, 234, 0.2);
-    }
+    /* Кнопка темы */
+    #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: none; font-size: 20px; z-index: 100; cursor: pointer; }
 </style>
+
 
 
 
