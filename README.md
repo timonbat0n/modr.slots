@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>modr.slots</title>
 <style>
-    /* Переменные и база */
     :root {
         --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
         --accent-blue: #0091ea; --story-header: #d1e9ff; --code-bg: #f0faff;
@@ -23,68 +22,73 @@
     }
 
     * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg-page); color: var(--text-main); padding: 10px; margin: 0; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
 
-    /* Поисковая строка */
-    .search-wrapper { 
-        width: 100%; 
-        max-width: 800px; 
-        position: relative; 
-        margin: 0 auto 15px auto; 
+    /* МАСШТАБ */
+    .tg-wrapper, .search-wrapper, .table-container { width: 100%; max-width: 800px; margin-bottom: 12px; }
+
+    /* КНОПКА ОТПРАВИТЬ */
+    .tg-btn { 
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        width: 100%; padding: 14px; background: var(--btn-gradient);
+        color: white !important; text-decoration: none; font-weight: 800; border-radius: 14px;
+        box-shadow: 0 6px 15px rgba(0, 145, 234, 0.2);
     }
 
+    /* ПОИСК */
+    .search-wrapper { position: relative; }
     #searchInput {
-        width: 100%; 
-        padding: 12px 45px; 
-        border-radius: 14px; 
-        border: none;
-        background: var(--table-bg) var(--search-icon) no-repeat 14px center; 
-        background-size: 18px;
-        color: var(--text-main); 
-        outline: none; 
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-        font-size: 15px;
-        transition: 0.3s;
+        width: 100%; padding: 12px 45px; border-radius: 14px; border: none;
+        background: var(--table-bg) var(--search-icon) no-repeat 14px center; background-size: 18px;
+        color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+    #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold; display: none; }
 
-    /* Крестик очистки */
-    #clearSearch {
-        position: absolute; 
-        right: 15px; 
-        top: 50%; 
-        transform: translateY(-50%);
-        cursor: pointer; 
-        color: var(--accent-blue); 
-        font-size: 24px; 
-        font-weight: bold; 
-        display: none; 
-        z-index: 10;
-        line-height: 1;
-        user-select: none;
-    }
+    /* ТАБЛИЦА */
+    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; table-layout: fixed; }
+    th, td { background-color: var(--table-bg) !important; color: var(--text-main) !important; padding: 10px 4px; border: none; text-align: center; font-size: 12px; }
+    
+    tr td:first-child { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
+    tr td:nth-child(2) { width: 45%; }
+    tr td:last-child { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
 
-    /* Подсветка текста */
-    mark {
-        background-color: var(--highlight);
-        color: #000;
-        border-radius: 2px;
-        padding: 0 1px;
-    }
+    .story-row td { background: var(--story-header) !important; color: var(--accent-blue) !important; font-weight: 800; text-align: left !important; padding-left: 15px !important; border-radius: 12px !important; }
+
+    /* ПОДСВЕТКА */
+    mark { background: var(--highlight); color: #000; border-radius: 2px; }
+
+    /* КНОПКИ УПРАВЛЕНИЯ */
+    #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: var(--table-bg); width: 35px; height: 35px; border-radius: 50%; z-index: 100; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    #backToTop { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--btn-gradient); border: none; border-radius: 50%; cursor: pointer; z-index: 99; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    #backToTop.show { opacity: 1; pointer-events: auto; }
+
+    .copy-btn { background: var(--btn-gradient); color: white; border: none; padding: 6px; border-radius: 8px; cursor: pointer; width: 95%; font-weight: bold; font-size: 9px; text-transform: uppercase; }
+    .copy-btn.copied { background: #27ae60 !important; }
+    .code-text { font-family: monospace; font-size: 9px; display: block; margin-bottom: 4px; color: var(--accent-blue); word-break: break-all; padding: 4px; background: var(--code-bg); border-radius: 6px; }
 </style>
-
 
 </head>
 <body>
 
-<button id="themeBtn" style="position:fixed; top:15px; right:15px; border:none; background:none; font-size:24px; cursor:pointer;" onclick="toggleTheme()">🌙</button>
+<button id="themeBtn" onclick="toggleTheme()">🌙</button>
+
+<div class="tg-wrapper">
+    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">ОТПРАВИТЬ СЛОТЫ ⚡</a>
+</div>
 
 <div class="search-wrapper">
     <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
     <div id="clearSearch" onclick="clearInput()">×</div>
 </div>
 
-<a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
-    ОТПРАВИТЬ СЛОТЫ ⚡
-</a>
+<div class="table-container">
+    <table id="mainTable">
+        </table>
+</div>
+
+<button id="backToTop" onclick="scrollToTop()">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>
+</button>
 
 <div class="table-container">
     <table id="mainTable">
@@ -292,16 +296,16 @@
     const originalNames = new Map();
     let easterEggTriggered = false;
 
+    // ФИЛЬТР + ПОДСВЕТКА + ПАСХАЛКА
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = document.querySelectorAll('#mainTable tbody tr');
 
-        // 1. Управление крестиком
-        clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
+        if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
 
-        // 2. Логика пасхалки
+        // Пасхалка
         if ((filter === 'modr' || filter === 'ирина') && !easterEggTriggered) {
             fireConfetti();
             easterEggTriggered = true;
@@ -309,35 +313,23 @@
             easterEggTriggered = false;
         }
 
-        // 3. Фильтрация и подсветка
         let storyMatches = false;
         rows.forEach(row => {
             if (row.classList.contains('story-row')) {
-                // Если заголовок истории совпадает с поиском
                 storyMatches = row.innerText.toLowerCase().includes(filter);
                 row.style.display = storyMatches ? '' : 'none';
             } else {
                 const nameCell = row.cells[0];
-                const infoCell = row.cells[2];
-                
-                // Сохраняем оригинал имени для корректной очистки подсветки
                 if (!originalNames.has(nameCell)) originalNames.set(nameCell, nameCell.innerText);
                 const originalText = originalNames.get(nameCell);
                 
-                const charMatches = originalText.toLowerCase().includes(filter) || infoCell.innerText.toLowerCase().includes(filter);
+                const charMatches = originalText.toLowerCase().includes(filter) || row.cells[2].innerText.toLowerCase().includes(filter);
 
                 if (storyMatches || charMatches) {
                     row.style.display = '';
+                    nameCell.innerHTML = (filter && originalText.toLowerCase().includes(filter)) ? 
+                        originalText.replace(new RegExp(`(${filter})`, "gi"), '<mark>$1</mark>') : originalText;
                     
-                    // Подсветка совпадений в имени
-                    if (filter.length > 0 && originalText.toLowerCase().includes(filter)) {
-                        const regex = new RegExp(`(${filter})`, "gi");
-                        nameCell.innerHTML = originalText.replace(regex, '<mark>$1</mark>');
-                    } else {
-                        nameCell.innerText = originalText;
-                    }
-
-                    // Показываем заголовок истории, если нашелся персонаж внутри
                     let prev = row.previousElementSibling;
                     while (prev && !prev.classList.contains('story-row')) prev = prev.previousElementSibling;
                     if (prev) prev.style.display = '';
@@ -348,39 +340,48 @@
         });
     }
 
-    // Функция очистки
     function clearInput() {
-        const input = document.getElementById('searchInput');
-        input.value = '';
+        document.getElementById('searchInput').value = '';
         runFilter();
-        input.focus();
+        document.getElementById('searchInput').focus();
     }
 
-    // Функция конфетти
-    function fireConfetti() {
-        const duration = 3 * 1000;
-        const end = Date.now() + duration;
+    function copy(btn) {
+        const text = btn.closest('td').querySelector('.code-text').innerText.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            const old = btn.innerText;
+            btn.innerText = 'ГОТОВО ✓';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1500);
+        });
+    }
 
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
+    }
+
+    function fireConfetti() {
+        const duration = 3000, end = Date.now() + duration;
         (function frame() {
-            confetti({
-                particleCount: 3,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ['#0091ea', '#38bdf8', '#ffffff']
-            });
-            confetti({
-                particleCount: 3,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ['#0091ea', '#38bdf8', '#ffffff']
-            });
+            confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#0091ea', '#ffffff'] });
+            confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#0091ea', '#ffffff'] });
             if (Date.now() < end) requestAnimationFrame(frame);
         }());
     }
-</script>
 
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('backToTop');
+        if (window.pageYOffset > 300) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
+</script>
 
 <button id="backToTop" onclick="scrollToTop()">
     <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:white;">
