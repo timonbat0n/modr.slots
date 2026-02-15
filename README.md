@@ -239,8 +239,58 @@ body.dark-theme .blob {
     opacity: 0.2;
     background: #1e40af; /* Глубокий синий для темной темы */
 }
-</style>
 
+    /* ФОН СО ЗВЕЗДАМИ */
+.star-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: var(--bg-page);
+    overflow: hidden;
+    transition: background 0.5s;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle var(--duration) infinite ease-in-out;
+}
+
+/* Светлая тема: звезды превращаются в нежные голубые точки */
+body:not(.dark-theme) .star {
+    background: var(--accent-blue);
+    opacity: 0.2;
+}
+
+/* Анимация мерцания */
+@keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: var(--max-opacity); transform: scale(1.2); }
+}
+
+/* Эффект падающей звезды (метеор) */
+.meteor {
+    position: absolute;
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    opacity: 0;
+    animation: meteor-fall 4s infinite linear;
+}
+
+@keyframes meteor-fall {
+    0% { transform: translateY(-100px) translateX(0) rotate(-45deg); opacity: 0; }
+    10% { opacity: 1; }
+    20% { transform: translateY(100vh) translateX(-100vh) rotate(-45deg); opacity: 0; }
+    100% { opacity: 0; }
+}
+</style>
+<div id="star-container" class="star-background"></div>
 <button id="themeBtn" onclick="toggleTheme()">🌙</button>
 
 <div class="tg-wrapper">
@@ -460,6 +510,47 @@ body.dark-theme .blob {
 </button>
 
 <script>
+
+    function createStars() {
+    const container = document.getElementById('star-container');
+    const starCount = 100;
+
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Случайные параметры для каждой звезды
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const size = Math.random() * 3 + 1;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 5;
+        const opacity = Math.random() * 0.5 + 0.3;
+
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--duration', `${duration}s`);
+        star.style.setProperty('--max-opacity', opacity);
+        star.style.animationDelay = `${delay}s`;
+
+        container.appendChild(star);
+    }
+
+    // Добавляем пару падающих метеоров
+    for (let i = 0; i < 2; i++) {
+        const meteor = document.createElement('div');
+        meteor.className = 'meteor';
+        meteor.style.left = `${Math.random() * 100}%`;
+        meteor.style.animationDelay = `${Math.random() * 10}s`;
+        container.appendChild(meteor);
+    }
+}
+
+// Запускаем создание при загрузке
+window.addEventListener('DOMContentLoaded', createStars);
+    
     const originalNames = new Map();
     let easterEggTriggered = false;
 
