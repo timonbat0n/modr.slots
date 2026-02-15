@@ -50,6 +50,22 @@
         overflow-x: hidden;
     }
 
+.diamond-rain {
+    position: fixed;
+    top: -50px;
+    font-size: 24px;
+    z-index: 9999;
+    pointer-events: none;
+    animation: fall linear forwards;
+    filter: drop-shadow(0 0 5px #00f2ff);
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+    
 #toast {
     background: var(--toast-bg);
     color: var(--toast-color);
@@ -597,6 +613,51 @@ function createToast() {
 
         setTimeout(() => { particle.remove(); }, 600);
     }
+
+let clickCount = 0;
+let lastClickTime = 0;
+
+document.addEventListener('click', function() {
+    const currentTime = new Date().getTime();
+    
+    // Если между кликами прошло больше 500мс, сбрасываем счетчик
+    if (currentTime - lastClickTime > 500) {
+        clickCount = 0;
+    }
+    
+    clickCount++;
+    lastClickTime = currentTime;
+
+    if (clickCount === 5) {
+        startDiamondRain();
+        clickCount = 0; // Сброс после запуска
+    }
+});
+
+function startDiamondRain() {
+    // Создаем 40 алмазов с разной задержкой
+    for (let i = 0; i < 40; i++) {
+        setTimeout(() => {
+            const diamond = document.createElement('div');
+            diamond.className = 'diamond-rain';
+            diamond.innerHTML = '💎'; // Используем эмодзи алмаза
+            
+            // Рандомная позиция по горизонтали
+            diamond.style.left = Math.random() * 100 + 'vw';
+            // Рандомный размер
+            diamond.style.fontSize = Math.random() * 20 + 15 + 'px';
+            // Рандомная длительность падения (от 2 до 4 секунд)
+            const duration = Math.random() * 2 + 2;
+            diamond.style.animationDuration = duration + 's';
+            
+            document.body.appendChild(diamond);
+
+            // Удаляем через 4 секунды
+            setTimeout(() => diamond.remove(), duration * 1000);
+        }, i * 50); // Постепенное появление
+    }
+}
+    
     </script>
 
 
