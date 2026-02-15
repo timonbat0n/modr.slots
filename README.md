@@ -6,22 +6,53 @@
     <title>RC Slots Base</title>
 <style>
     :root {
-        --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
-        --accent-blue: #0091ea; --story-header: #d1e9ff; --border-table: #b3e5fc;
-        --code-bg: #f0faff; --highlight: #ffeb3b;
+        --bg-page: #eef7ff;
+        --table-bg: #ffffff;
+        --text-main: #074799;
+        --accent-blue: #0091ea;
+        --story-header: #d1e9ff;
+        --border-table: #b3e5fc;
+        --code-bg: #f0faff;
+        --highlight: #ffeb3b;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
     body.dark-theme {
-        --bg-page: #0f172a; --table-bg: #1e293b; --text-main: #f1f5f9;
-        --accent-blue: #38bdf8; --story-header: #334155; --border-table: #334155;
-        --code-bg: #0f172a; --highlight: #fbc02d;
+        --bg-page: #0f172a;
+        --table-bg: #1e293b;
+        --text-main: #f1f5f9;
+        --accent-blue: #38bdf8;
+        --story-header: #334155;
+        --border-table: #334155;
+        --code-bg: #0f172a;
+        --highlight: #fbc02d;
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    body { background-color: var(--bg-page); color: var(--text-main); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 15px; transition: 0.2s; }
+    body { 
+        background-color: var(--bg-page); 
+        color: var(--text-main); 
+        font-family: 'Segoe UI', sans-serif; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        padding: 15px; 
+        transition: background 0.3s ease, color 0.3s ease; 
+    }
 
-    /* Поиск */
+    /* КНОПКА ПЕРЕКЛЮЧЕНИЯ */
+    .theme-toggle {
+        position: fixed; top: 15px; right: 15px; 
+        width: 44px; height: 44px; border-radius: 50%; 
+        border: 2px solid var(--accent-blue); 
+        background: var(--table-bg); 
+        color: var(--accent-blue); 
+        cursor: pointer; z-index: 1000;
+        display: flex; align-items: center; justify-content: center; font-size: 20px;
+        transition: all 0.3s ease;
+    }
+
+    /* ПОИСК */
     .search-wrapper { width: 100%; max-width: 500px; position: relative; margin: 10px 0; }
     #searchInput {
         width: 100%; padding: 14px 45px; border-radius: 16px; border: 2px solid var(--border-table);
@@ -33,16 +64,18 @@
         cursor: pointer; font-size: 24px; color: var(--accent-blue); display: none;
     }
 
-    /* Таблица */
-    .table-container { width: 100%; max-width: 500px; border-radius: 18px; border: 2px solid var(--border-table); overflow: hidden; background: var(--table-bg); }
+    /* ТАБЛИЦА */
+    .table-container { 
+        width: 100%; max-width: 500px; border-radius: 18px; 
+        border: 2px solid var(--border-table); overflow: hidden; 
+        background: var(--table-bg); transition: background 0.3s ease;
+    }
     table { width: 100%; border-collapse: collapse; background: var(--table-bg); }
     td, th { padding: 12px 8px; border-bottom: 1px solid var(--border-table); color: var(--text-main); text-align: center; }
     .story-row td { background: var(--story-header) !important; font-weight: bold; text-align: left !important; }
 
-    /* Маркер */
+    /* МАРКЕР */
     mark { background: var(--highlight); color: #000; border-radius: 3px; }
-
-    .theme-toggle { position: fixed; top: 15px; right: 15px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--accent-blue); background: var(--table-bg); color: var(--accent-blue); cursor: pointer; }
 </style>
 
 
@@ -50,12 +83,15 @@
 </head>
 <body>
 
-    <button id="themeBtn" class="theme-toggle">🌙</button>
+  <button id="themeBtn" class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
-   <div class="search-wrapper">
-    <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск...">
+<div class="search-wrapper">
+    <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
     <div id="clearSearch" onclick="clearInput()">×</div>
 </div>
+
+
+   
 
 
     <div class="tg-wrapper">
@@ -264,9 +300,30 @@
 
 </div>
 
-    <script>
+  <script>
+    // 1. ЛОГИКА ТЕМЫ
+    const themeBtn = document.getElementById('themeBtn');
+    
+    // Проверяем сохраненную тему при загрузке
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeBtn.innerText = '☀️';
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        body.classList.toggle('dark-theme');
         
-    // Функция поиска (вызывается через oninput в HTML)
+        if (body.classList.contains('dark-theme')) {
+            localStorage.setItem('theme', 'dark');
+            themeBtn.innerText = '☀️';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeBtn.innerText = '🌙';
+        }
+    }
+
+    // 2. ЛОГИКА ПОИСКА
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
@@ -279,7 +336,6 @@
         let currentStory = null;
 
         rows.forEach(row => {
-            // Сохраняем оригинал текста, если его еще нет
             if (!row.hasAttribute('data-orig')) {
                 row.setAttribute('data-orig', row.innerHTML);
             }
@@ -291,13 +347,12 @@
                 currentStory = row;
                 storyVisible = textContent.includes(filter);
                 row.style.display = storyVisible ? '' : 'none';
-                row.innerHTML = originalHTML; // Сброс подсветки для заголовка
+                row.innerHTML = originalHTML;
             } else {
                 if (storyVisible || textContent.includes(filter)) {
                     row.style.display = '';
                     if (currentStory) currentStory.style.display = '';
                     
-                    // Подсветка маршалом
                     if (filter) {
                         const regex = new RegExp(`(${filter})`, "gi");
                         row.innerHTML = originalHTML.replace(regex, '<mark>$1</mark>');
@@ -318,6 +373,7 @@
         input.focus();
     }
 </script>
+
 
 
 </body>
