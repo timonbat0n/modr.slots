@@ -54,31 +54,60 @@
     }
 
     /* 2. БАЗОВЫЕ НАСТРОЙКИ */
+/* 1. БАЗОВЫЕ СТИЛИ (Светлая тема по умолчанию) */
 body {
     font-family: 'Segoe UI', Roboto, sans-serif;
     margin: 0;
     padding: 20px;
-    
-    /* ФОН: выбери один из вариантов ниже */
-    /* Для светлой темы: */
-    background-color: #f8fafc; 
-    /* Для темной темы (раскомментируй, если нужно): 
-    background-color: #0f172a; */
-
-    /* УЗОР: нейтральные точки, которые работают везде */
+    background-color: #f1f5f9; /* Светло-серый фон */
     background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-size: 25px 25px;
     background-attachment: fixed;
-
-    /* Цвет текста тоже должен меняться! */
-    color: #1e293b; /* Темный текст для светлой темы */
-    
+    color: #1e293b;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    transition: background-color 0.3s ease;
 }
 
+table {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* 2. ТЕМНАЯ ТЕМА (Включается сама, когда на iPhone включен темный режим) */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #0f172a; /* Глубокий темный фон */
+        background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        color: #f8fafc;
+    }
+
+    table {
+        background: rgba(30, 41, 59, 0.6); /* Темное стекло */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    td {
+        color: #e2e8f0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    th {
+        background: rgba(0, 0, 0, 0.2);
+        color: #38bdf8; /* Голубой акцент */
+    }
+    
+    /* Цвет букв в боковой панели, если она есть */
+    .alphabet-sidebar a {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
 
 
 table {
