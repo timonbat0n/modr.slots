@@ -1,275 +1,87 @@
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<style>
-    :root {
-        /* Светлая тема */
-        --bg-page: #eef7ff; 
-        --table-bg: #ffffff; 
-        --text-main: #074799;
-        --accent-blue: #0091ea; 
-        --story-header: #d1e9ff; 
-        --code-bg: #f0faff;
-        --highlight: #fff176;
-        --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
-    }
-
-    body.dark-theme {
-        /* Темная тема */
-        --bg-page: #0f172a; 
-        --table-bg: #1e293b; 
-        --text-main: #f1f5f9;
-        --accent-blue: #38bdf8; 
-        --story-header: #334155; 
-        --code-bg: #0f172a;
-        --highlight: #fb8c00;
-        --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    }
-
-    * { box-sizing: border-box; }
-
-   body {
-    background: transparent;
-        font-family: 'Segoe UI', Roboto, sans-serif; 
-        color: var(--text-main); 
-        padding: 10px; 
-        margin: 0; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        transition: background 0.3s, color 0.3s; 
-        min-height: 100vh;
-    }
-
-    /* МАСШТАБ И КОНТЕЙНЕРЫ */
-    .tg-wrapper, .search-wrapper, .table-container { 
-        width: 100%; 
-        max-width: 600px; 
-        margin-bottom: 12px; 
-    }
-
-    /* КНОПКА ОТПРАВИТЬ СЛОТЫ */
-    .tg-btn { 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        gap: 10px;
-        width: 100%; 
-        padding: 14px; 
-        background: var(--btn-gradient);
-        color: white !important; 
-        text-decoration: none; 
-        font-weight: 800; 
-        border-radius: 14px;
-        box-shadow: 0 6px 15px rgba(0, 145, 234, 0.2);
-        font-size: 15px;
-    }
-
-    /* ПОИСКОВАЯ СТРОКА */
-    .search-wrapper { position: relative; }
-    #searchInput {
-        width: 100%; 
-        padding: 12px 45px; 
-        border-radius: 14px; 
-        border: none;
-        background: var(--table-bg) var(--search-icon) no-repeat 14px center; 
-        background-size: 18px;
-        color: var(--text-main); 
-        outline: none; 
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        font-size: 14px;
-    }
-    #clearSearch { 
-        position: absolute; 
-        right: 15px; 
-        top: 50%; 
-        transform: translateY(-50%); 
-        cursor: pointer; 
-        color: var(--accent-blue); 
-        font-size: 22px; 
-        font-weight: bold; 
-        display: none; 
-        z-index: 5; 
-    }
-
-    /* ТАБЛИЦА - ПОЛНАЯ ФИКСАЦИЯ */
-    table { 
-        width: 100%; 
-        border-collapse: separate; 
-        border-spacing: 0 6px; 
-        table-layout: fixed; 
-    }
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODR Slots Database</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
-    /* Стили ячеек (th - для верхней строки, td - для данных) */
-    th, td { 
-        background-color: var(--table-bg) !important; 
-        color: var(--text-main) !important; 
-        padding: 8px 4px !important; 
-        border: none !important; 
-        text-align: center; 
-        font-size: 12px;
-        height: 70px; 
-        vertical-align: middle;
-        overflow: hidden;
-    }
+    <style>
+        :root {
+            --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
+            --accent-blue: #0091ea; --story-header: #d1e9ff; --code-bg: #f0faff;
+            --highlight: #fff176;
+            --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
+            --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        }
 
-    /* ПРИНУДИТЕЛЬНО ТЕМНАЯ ВЕРХНЯЯ СТРОКА */
-    thead th, thead td {
-        background-color: var(--table-bg) !important;
-        color: var(--accent-blue) !important;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 11px;
-        height: 40px; /* Шапка чуть ниже основных строк */
-    }
-    
-    /* Пропорции колонок */
-    tr th:nth-child(1), tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
-    tr th:nth-child(2), tr td:nth-child(2) { width: 45%; }
-    tr th:nth-child(3), tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
+        body.dark-theme {
+            --bg-page: #0f172a; --table-bg: #1e293b; --text-main: #f1f5f9;
+            --accent-blue: #38bdf8; --story-header: #334155; --code-bg: #0f172a;
+            --highlight: #fb8c00;
+            --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+        }
 
-    /* ЗАГОЛОВКИ ИСТОРИЙ */
-    .story-row td { 
-        background-color: var(--story-header) !important; 
-        color: var(--accent-blue) !important; 
-        height: 45px !important; 
-        text-align: left !important; 
-        padding-left: 15px !important; 
-        border-radius: 12px !important; 
-        font-weight: 800;
-        font-size: 13px;
-    }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; background: var(--bg-page); transition: background 0.3s; }
 
-    /* ПОДСВЕТКА ПОИСКА */
-    mark { 
-        background-color: var(--highlight); 
-        color: #000; 
-        border-radius: 2px; 
-        padding: 0 1px;
-    }
+        /* ЗВЕЗДНЫЙ ФОН */
+        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
+        body.dark-theme .star { background: white; }
+        body:not(.dark-theme) .star { background: var(--accent-blue); opacity: 0.1; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--max-opacity); transform: scale(1.2); } }
 
-    /* КОПИРОВАНИЕ И КОД */
-    .code-text { 
-        font-family: 'Courier New', monospace; 
-        font-size: 9px; 
-        display: block; 
-        margin-bottom: 5px; 
-        color: var(--accent-blue); 
-        word-break: break-all; 
-        padding: 5px; 
-        background: var(--code-bg); 
-        border-radius: 6px; 
-    }
-    
-    .copy-btn { 
-        background: var(--btn-gradient); 
-        color: white; 
-        border: none; 
-        padding: 7px; 
-        border-radius: 8px; 
-        cursor: pointer; 
-        width: 95%; 
-        font-weight: bold; 
-        font-size: 10px; 
-        text-transform: uppercase; 
-    }
-    .copy-btn.copied { background: #27ae60 !important; }
+        /* МАСШТАБ И КОНТЕЙНЕРЫ */
+        .tg-wrapper, .search-wrapper, .table-container { width: 100%; max-width: 600px; z-index: 1; margin-bottom: 12px; }
 
-    /* КНОПКИ УПРАВЛЕНИЯ */
-    #themeBtn { 
-        position: fixed; top: 10px; right: 10px; 
-        border: none; background: var(--table-bg); 
-        width: 38px; height: 38px; border-radius: 50%; 
-        z-index: 100; cursor: pointer; 
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
-        color: var(--text-main); font-size: 18px;
-    }
-    
-    #backToTop { 
-        position: fixed; bottom: 20px; right: 20px; 
-        width: 48px; height: 48px; 
-        background: var(--btn-gradient); 
-        border: none; border-radius: 50%; 
-        cursor: pointer; z-index: 99; 
-        display: flex; align-items: center; justify-content: center; 
-        opacity: 0; pointer-events: none; 
-        transition: 0.4s; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
-    }
-    #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        /* КНОПКА ОТПРАВИТЬ */
+        .tg-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background: var(--btn-gradient); color: white !important; text-decoration: none; font-weight: 800; border-radius: 14px; box-shadow: 0 6px 15px rgba(0, 145, 234, 0.2); }
 
+        /* ПОИСК */
+        .search-wrapper { position: relative; }
+        #searchInput { width: 100%; padding: 12px 45px; border-radius: 14px; border: none; background: var(--table-bg) var(--search-icon) no-repeat 14px center; background-size: 18px; color: var(--text-main); outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-blue); font-size: 22px; display: none; }
 
+        /* ТАБЛИЦА (ФИКСИРОВАННАЯ) */
+        table { width: 100%; border-collapse: separate; border-spacing: 0 6px; table-layout: fixed; }
+        th, td { background-color: var(--table-bg) !important; color: var(--text-main) !important; padding: 8px 4px !important; border: none !important; text-align: center; font-size: 12px; height: 70px; vertical-align: middle; overflow: hidden; }
+        
+        thead th { height: 40px; text-transform: uppercase; font-size: 11px; color: var(--accent-blue) !important; }
+        tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
+        tr td:nth-child(2) { width: 45%; }
+        tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
 
-/* В темной теме сделаем пятна чуть заметнее */
-body.dark-theme .blob {
-    opacity: 0.2;
-    background: #1e40af; /* Глубокий синий для темной темы */
-}
+        .story-row td { background-color: var(--story-header) !important; color: var(--accent-blue) !important; height: 45px !important; text-align: left !important; padding-left: 15px !important; border-radius: 12px !important; font-weight: 800; }
 
-    /* ФОН СО ЗВЕЗДАМИ */
-.star-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: var(--bg-page);
-    overflow: hidden;
-    transition: background 0.5s;
-}
+        /* ЭЛЕМЕНТЫ ВНУТРИ */
+        mark { background: var(--highlight); color: #000; border-radius: 2px; }
+        .code-text { font-family: monospace; font-size: 9px; display: block; margin-bottom: 5px; color: var(--accent-blue); word-break: break-all; padding: 5px; background: var(--code-bg); border-radius: 6px; }
+        .copy-btn { background: var(--btn-gradient); color: white; border: none; padding: 7px; border-radius: 8px; cursor: pointer; width: 95%; font-weight: bold; font-size: 10px; }
+        .copy-btn.copied { background: #27ae60 !important; }
 
-.star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    opacity: 0;
-    animation: twinkle var(--duration) infinite ease-in-out;
-}
+        /* ИНТЕРФЕЙС */
+        #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: var(--table-bg); width: 38px; height: 38px; border-radius: 50%; z-index: 100; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: var(--text-main); }
+        #backToTop { position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px; background: var(--btn-gradient); border: none; border-radius: 50%; cursor: pointer; z-index: 99; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; }
+        #backToTop.show { opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body>
 
-/* Светлая тема: звезды превращаются в нежные голубые точки */
-body:not(.dark-theme) .star {
-    background: var(--accent-blue);
-    opacity: 0.2;
-}
+    <div id="star-container"></div>
 
-/* Анимация мерцания */
-@keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: var(--max-opacity); transform: scale(1.2); }
-}
+    <button id="themeBtn" onclick="toggleTheme()">🌙</button>
 
-/* Эффект падающей звезды (метеор) */
-.meteor {
-    position: absolute;
-    width: 2px;
-    height: 50px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
-    opacity: 0;
-    animation: meteor-fall 4s infinite linear;
-}
+    <div class="tg-wrapper">
+        <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">ОТПРАВИТЬ СЛОТЫ ⚡</a>
+    </div>
 
-@keyframes meteor-fall {
-    0% { transform: translateY(-100px) translateX(0) rotate(-45deg); opacity: 0; }
-    10% { opacity: 1; }
-    20% { transform: translateY(100vh) translateX(-100vh) rotate(-45deg); opacity: 0; }
-    100% { opacity: 0; }
-}
-</style>
-<div id="star-container" class="star-background"></div>
-<button id="themeBtn" onclick="toggleTheme()">🌙</button>
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа...">
+        <div id="clearSearch" onclick="clearInput()">×</div>
+    </div>
 
-<div class="tg-wrapper">
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">ОТПРАВИТЬ СЛОТЫ ⚡</a>
-</div>
-
-<div class="search-wrapper">
-    <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
-    <div id="clearSearch" onclick="clearInput()">×</div>
-</div>
-<div class="bg-animation">
-<div class="table-container">
+    <div class="table-container">
     <table id="mainTable">
         <thead>
             <tr>
@@ -468,141 +280,96 @@ body:not(.dark-theme) .star {
         </tbody>
     </table>
 
-<button id="backToTop" onclick="scrollToTop()">
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>
-</button>
 
-<script>
+    <button id="backToTop" onclick="scrollToTop()">▲</button>
 
-    function createStars() {
-    const container = document.getElementById('star-container');
-    const starCount = 100;
+    <script>
+        const originalNames = new Map();
+        let easterEggTriggered = false;
 
-    for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        
-        // Случайные параметры для каждой звезды
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const size = Math.random() * 3 + 1;
-        const duration = Math.random() * 3 + 2;
-        const delay = Math.random() * 5;
-        const opacity = Math.random() * 0.5 + 0.3;
-
-        star.style.left = `${x}%`;
-        star.style.top = `${y}%`;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.setProperty('--duration', `${duration}s`);
-        star.style.setProperty('--max-opacity', opacity);
-        star.style.animationDelay = `${delay}s`;
-
-        container.appendChild(star);
-    }
-
-    // Добавляем пару падающих метеоров
-    for (let i = 0; i < 2; i++) {
-        const meteor = document.createElement('div');
-        meteor.className = 'meteor';
-        meteor.style.left = `${Math.random() * 100}%`;
-        meteor.style.animationDelay = `${Math.random() * 10}s`;
-        container.appendChild(meteor);
-    }
-}
-
-// Запускаем создание при загрузке
-window.addEventListener('DOMContentLoaded', createStars);
-    
-    const originalNames = new Map();
-    let easterEggTriggered = false;
-
-    function runFilter() {
-        const input = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearSearch');
-        const filter = input.value.toLowerCase().trim();
-        const rows = document.querySelectorAll('#mainTable tbody tr');
-
-        if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
-
-        if ((filter === 'modr' || filter === 'ирина') && !easterEggTriggered) {
-            fireConfetti();
-            easterEggTriggered = true;
-        } else if (filter === '') {
-            easterEggTriggered = false;
+        // Создание звезд
+        function createStars() {
+            const container = document.getElementById('star-container');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                star.style.setProperty('--max-opacity', Math.random() * 0.7);
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
         }
 
-        let storyMatches = false;
-        rows.forEach(row => {
-            if (row.classList.contains('story-row')) {
-                storyMatches = row.innerText.toLowerCase().includes(filter);
-                row.style.display = storyMatches ? '' : 'none';
-            } else {
-                const nameCell = row.cells[0];
-                if (!originalNames.has(nameCell)) originalNames.set(nameCell, nameCell.innerText);
-                const originalText = originalNames.get(nameCell);
-                
-                const charMatches = originalText.toLowerCase().includes(filter) || row.cells[2].innerText.toLowerCase().includes(filter);
+        function runFilter() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#mainTable tbody tr');
+            document.getElementById('clearSearch').style.display = filter.length > 0 ? 'block' : 'none';
 
-                if (storyMatches || charMatches) {
-                    row.style.display = '';
-                    nameCell.innerHTML = (filter && originalText.toLowerCase().includes(filter)) ? 
-                        originalText.replace(new RegExp(`(${filter})`, "gi"), '<mark>$1</mark>') : originalText;
-                    
-                    let prev = row.previousElementSibling;
-                    while (prev && !prev.classList.contains('story-row')) prev = prev.previousElementSibling;
-                    if (prev) prev.style.display = '';
+            if ((filter === 'modr' || filter === 'ирина') && !easterEggTriggered) {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                easterEggTriggered = true;
+            } else if (filter === '') { easterEggTriggered = false; }
+
+            let storyMatches = false;
+            rows.forEach(row => {
+                if (row.classList.contains('story-row')) {
+                    storyMatches = row.innerText.toLowerCase().includes(filter);
+                    row.style.display = storyMatches ? '' : 'none';
                 } else {
-                    row.style.display = 'none';
+                    const nameCell = row.cells[0];
+                    if (!originalNames.has(nameCell)) originalNames.set(nameCell, nameCell.innerText);
+                    const originalText = originalNames.get(nameCell);
+                    const match = originalText.toLowerCase().includes(filter) || row.cells[2].innerText.toLowerCase().includes(filter);
+
+                    if (storyMatches || match) {
+                        row.style.display = '';
+                        nameCell.innerHTML = (filter && originalText.toLowerCase().includes(filter)) ? 
+                            originalText.replace(new RegExp(`(${filter})`, "gi"), '<mark>$1</mark>') : originalText;
+                        let prev = row.previousElementSibling;
+                        while (prev && !prev.classList.contains('story-row')) prev = prev.previousElementSibling;
+                        if (prev) prev.style.display = '';
+                    } else { row.style.display = 'none'; }
                 }
+            });
+        }
+
+        function clearInput() { document.getElementById('searchInput').value = ''; runFilter(); }
+
+        function copy(btn) {
+            const text = btn.closest('td').querySelector('.code-text').innerText.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.innerText = 'ГОТОВО ✓'; btn.classList.add('copied');
+                setTimeout(() => { btn.innerText = 'КОПИРОВАТЬ'; btn.classList.remove('copied'); }, 1500);
+            });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
+        }
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            window.pageYOffset > 300 ? btn.classList.add('show') : btn.classList.remove('show');
+        });
+
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        window.onload = () => {
+            createStars();
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('themeBtn').innerText = '☀️';
             }
-        });
-    }
-
-    function clearInput() {
-        document.getElementById('searchInput').value = '';
-        runFilter();
-        document.getElementById('searchInput').focus();
-    }
-
-    function copy(btn) {
-        const text = btn.closest('td').querySelector('.code-text').innerText.trim();
-        navigator.clipboard.writeText(text).then(() => {
-            const old = btn.innerText;
-            btn.innerText = 'ГОТОВО ✓';
-            btn.classList.add('copied');
-            setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1500);
-        });
-    }
-
-    function toggleTheme() {
-        document.body.classList.toggle('dark-theme');
-        const isDark = document.body.classList.contains('dark-theme');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
-    }
-
-    function fireConfetti() {
-        const duration = 3000, end = Date.now() + duration;
-        (function frame() {
-            confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#0091ea', '#ffffff'] });
-            confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#0091ea', '#ffffff'] });
-            if (Date.now() < end) requestAnimationFrame(frame);
-        }());
-    }
-
-    window.addEventListener('scroll', () => {
-        const btn = document.getElementById('backToTop');
-        if (window.pageYOffset > 300) btn.classList.add('show');
-        else btn.classList.remove('show');
-    });
-
-    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-theme');
-        document.getElementById('themeBtn').innerText = '☀️';
-    }
-</script>
-<body>
-
+        };
+    </script>
+</body>
+</html>
