@@ -22,6 +22,9 @@
         --highlight: #fff176;
         --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        --toast-bg: rgba(0, 0, 0, 0.8);
+    --toast-color: #00f2ff;
+    --particle-color: #00f2ff;
     }
 
     body.dark-theme {
@@ -48,6 +51,9 @@
     }
 
 #toast {
+    background: var(--toast-bg);
+    color: var(--toast-color);
+    border: 1px solid var(--toast-color);
     position: fixed;
     bottom: 20px;
     right: 20px;
