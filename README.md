@@ -45,15 +45,42 @@
     #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold; display: none; }
 
     /* ТАБЛИЦА */
-    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; table-layout: fixed; }
-    th, td { background-color: var(--table-bg) !important; color: var(--text-main) !important; padding: 10px 4px; border: none; text-align: center; font-size: 12px; }
-    
-    tr td:first-child { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
-    tr td:nth-child(2) { width: 45%; }
-    tr td:last-child { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
+  /* В блоке таблицы */
+table { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 0 6px; 
+    table-layout: fixed; /* ГАРАНТИРУЕТ стабильность размеров */
+    overflow: hidden;
+}
 
-    .story-row td { background: var(--story-header) !important; color: var(--accent-blue) !important; font-weight: 800; text-align: left !important; padding-left: 15px !important; border-radius: 12px !important; }
+/* Жестко задаем ширину каждой колонки в процентах */
+/* Первая колонка (Имя) */
+tr td:nth-child(1) { 
+    width: 25%; 
+    border-radius: 12px 0 0 12px; 
+    font-weight: bold; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; /* Не дает имени распирать ячейку */
+}
 
+/* Вторая колонка (Код) */
+tr td:nth-child(2) { 
+    width: 45%; 
+}
+
+/* Третья колонка (Инфо) */
+tr td:nth-child(3) { 
+    width: 30%; 
+    border-radius: 0 12px 12px 0; 
+    font-size: 10px; 
+}
+
+/* Чтобы заголовок истории не ломал структуру */
+.story-row td { 
+    width: 100% !important; 
+}
     /* ПОДСВЕТКА */
     mark { background: var(--highlight); color: #000; border-radius: 2px; }
 
