@@ -424,12 +424,10 @@
 </script>
 
 <button id="backToTop" onclick="scrollToTop()">
-    <svg viewBox="0 0 24 24">
+    <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:white;">
         <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path>
     </svg>
 </button>
-
-
 
 
 </body>
