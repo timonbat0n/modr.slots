@@ -16,12 +16,12 @@
     }
 
     body.dark-theme {
-        /* Темная тема - исправлены заголовки и фон */
+        /* Темная тема */
         --bg-page: #0f172a; 
         --table-bg: #1e293b; 
         --text-main: #f1f5f9;
         --accent-blue: #38bdf8; 
-        --story-header: #334155; /* Глубокий серый для заголовков историй */
+        --story-header: #334155; 
         --code-bg: #0f172a;
         --highlight: #fb8c00;
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
@@ -45,7 +45,7 @@
     /* МАСШТАБ И КОНТЕЙНЕРЫ */
     .tg-wrapper, .search-wrapper, .table-container { 
         width: 100%; 
-        max-width: 600px; /* Оптимально для мобильных и ПК */
+        max-width: 600px; 
         margin-bottom: 12px; 
     }
 
@@ -64,9 +64,7 @@
         border-radius: 14px;
         box-shadow: 0 6px 15px rgba(0, 145, 234, 0.2);
         font-size: 15px;
-        transition: transform 0.2s;
     }
-    .tg-btn:active { transform: scale(0.98); }
 
     /* ПОИСКОВАЯ СТРОКА */
     .search-wrapper { position: relative; }
@@ -95,44 +93,52 @@
         z-index: 5; 
     }
 
-    /* ТАБЛИЦА - ФИКСИРОВАННЫЙ МАСШТАБ (ЧТОБЫ НЕ СКАКАЛА) */
+    /* ТАБЛИЦА - ПОЛНАЯ ФИКСАЦИЯ */
     table { 
         width: 100%; 
         border-collapse: separate; 
         border-spacing: 0 6px; 
-        table-layout: fixed; /* Жестко фиксирует ширину колонок */
+        table-layout: fixed; 
     }
     
-    td { 
+    /* Стили ячеек (th - для верхней строки, td - для данных) */
+    th, td { 
         background-color: var(--table-bg) !important; 
         color: var(--text-main) !important; 
         padding: 8px 4px !important; 
-        border: none; 
+        border: none !important; 
         text-align: center; 
         font-size: 12px;
-        height: 70px; /* Фиксированная высота ячейки */
+        height: 70px; 
         vertical-align: middle;
         overflow: hidden;
-        transition: background 0.3s;
+    }
+
+    /* ПРИНУДИТЕЛЬНО ТЕМНАЯ ВЕРХНЯЯ СТРОКА */
+    thead th, thead td {
+        background-color: var(--table-bg) !important;
+        color: var(--accent-blue) !important;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 11px;
+        height: 40px; /* Шапка чуть ниже основных строк */
     }
     
     /* Пропорции колонок */
-    tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; word-wrap: break-word; }
-    tr td:nth-child(2) { width: 45%; }
-    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; opacity: 0.9; }
+    tr th:nth-child(1), tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
+    tr th:nth-child(2), tr td:nth-child(2) { width: 45%; }
+    tr th:nth-child(3), tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
 
-    /* ЗАГОЛОВКИ ИСТОРИЙ - ИСПРАВЛЕНО ДЛЯ ТЕМНОЙ ТЕМЫ */
+    /* ЗАГОЛОВКИ ИСТОРИЙ */
     .story-row td { 
         background-color: var(--story-header) !important; 
         color: var(--accent-blue) !important; 
-        height: 45px !important; /* Высота заголовка меньше обычной ячейки */
+        height: 45px !important; 
         text-align: left !important; 
         padding-left: 15px !important; 
         border-radius: 12px !important; 
         font-weight: 800;
         font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
     }
 
     /* ПОДСВЕТКА ПОИСКА */
@@ -154,7 +160,6 @@
         padding: 5px; 
         background: var(--code-bg); 
         border-radius: 6px; 
-        line-height: 1.1;
     }
     
     .copy-btn { 
@@ -168,7 +173,6 @@
         font-weight: bold; 
         font-size: 10px; 
         text-transform: uppercase; 
-        transition: 0.2s;
     }
     .copy-btn.copied { background: #27ae60 !important; }
 
@@ -194,7 +198,6 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
     }
     #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
-    #backToTop:not(.show) { transform: translateY(20px); }
 </style>
 
 <button id="themeBtn" onclick="toggleTheme()">🌙</button>
