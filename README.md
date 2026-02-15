@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RC Slots Base</title>
-    
- <style>
+    <style>
     /* ПЕРЕМЕННЫЕ И ТЕМЫ */
     :root {
         --bg-page: #eef7ff;
@@ -112,6 +111,7 @@
         padding: 8px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer;
     }
 </style>
+
 
 </head>
 <body>
