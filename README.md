@@ -22,21 +22,21 @@
 
 
 <style>
-<style>
     /* 1. ПЕРЕМЕННЫЕ И ТЕМЫ */
     :root {
-        --bg-page: #f1f5f9;
+        --bg-page: #eef7ff;         /* Нежно-голубой фон */
         --table-bg: #ffffff;
-        --text-main: #0d47a1;
+        --text-main: #074799;       /* Глубокий синий текст */
         --text-info: #546e7a;
-        --accent-blue: #0288d1;
-        --story-header: #bbdefb;
-        --btn-copy: #03a9f4;
-        --border-table: #e1f5fe;
-        --code-bg: #f5faff;
-        --highlight: #ffeb3b; /* Желтый для светлой темы */
-        --highlight-text: #000000;
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        --accent-blue: #0091ea;     /* Основной голубой акцент */
+        --story-header: #d1e9ff;    /* Выделение строк-заголовков */
+        --btn-copy: #00b0ff;
+        --border-table: #b3e5fc;    /* Обводка элементов */
+        --code-bg: #f0faff;
+        --highlight: #81d4fa;       /* Голубая подсветка поиска */
+        --highlight-text: #004b8d;
+        /* Иконка лупы */
+        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
     body.dark-theme {
@@ -49,14 +49,14 @@
         --btn-copy: #0ea5e9;
         --border-table: #334155;
         --code-bg: #0f172a;
-        --highlight: #facc15; /* Золотистый для темной темы */
-        --highlight-text: #000000;
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        --highlight: #0288d1;
+        --highlight-text: #ffffff;
+        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    /* 2. ГЛАВНЫЕ СТИЛИ */
+    /* 2. ОСНОВНОЙ СТИЛЬ */
     body {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        font-family: 'Segoe UI', system-ui, sans-serif;
         margin: 0;
         padding: 15px;
         display: flex;
@@ -65,110 +65,127 @@
         min-height: 100vh;
         background-color: var(--bg-page) !important;
         color: var(--text-main);
-        overflow-x: hidden; /* Убирает горизонтальную болтанку */
-        transition: background-color 0.3s ease;
+        overflow-x: hidden;
+        transition: all 0.3s ease;
     }
 
-    /* Удаление лишнего */
-    .side-nav, .nav-toggle, #lettersContainer, #scrollToTop, .scroll-btn, #backToTop {
-        display: none !important;
-    }
+    /* Скрываем старую шелуху */
+    .side-nav, .nav-toggle, #lettersContainer, #scrollToTop, .scroll-btn { display: none !important; }
 
-    /* 3. ПОИСК (ЛУПА И КРЕСТИК) */
+    /* 3. ПОИСК (ЛУПА И КРЕСТ) */
     .search-wrapper { 
-        width: 100%; 
-        max-width: 500px; 
-        margin: 0 auto 20px; 
-        position: relative; 
+        width: 100%; max-width: 500px; 
+        margin: 0 auto 20px; position: relative; 
     }
     
     #searchInput { 
         width: 100%; 
         padding: 14px 45px; 
-        border: 2px solid var(--border-table); 
-        border-radius: 14px; 
+        border: 2px solid var(--border-table); /* Обводка поиска */
+        border-radius: 16px; 
         font-size: 16px; 
         background-color: var(--table-bg); 
         color: var(--text-main);
         outline: none; 
         box-sizing: border-box; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
+    /* Лупа слева */
     .search-wrapper::before {
         content: ""; position: absolute; left: 14px; top: 50%;
         transform: translateY(-50%); width: 22px; height: 22px;
         background: var(--search-icon) no-repeat center;
-        background-size: contain; z-index: 2; pointer-events: none;
+        background-size: contain; z-index: 2;
     }
 
+    /* Крестик справа */
     #clearSearch {
         position: absolute; right: 14px; top: 50%;
         transform: translateY(-50%); cursor: pointer;
-        font-size: 24px; color: var(--text-info); z-index: 3;
-        line-height: 1; display: none;
+        font-size: 26px; color: var(--accent-blue); 
+        z-index: 3; line-height: 1; font-weight: bold;
     }
 
-    /* 4. ТАБЛИЦА (ФИКСИРОВАННАЯ) */
+    /* 4. ТАБЛИЦА И ОБВОДКА */
     .table-container { 
-        width: 100%; 
-        max-width: 500px; 
+        width: 100%; max-width: 500px; 
         background-color: var(--table-bg) !important; 
-        border-radius: 16px; 
+        border-radius: 18px; 
         overflow: hidden; 
-        border: 1px solid var(--border-table);
-        box-sizing: border-box;
+        border: 2px solid var(--border-table); /* Четкая обводка таблицы */
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
     td, th { 
-        padding: 12px 5px; 
-        text-align: center; 
+        padding: 12px 6px; text-align: center; 
         border-bottom: 1px solid var(--border-table);
-        color: var(--text-main);
         background-color: var(--table-bg);
-        word-wrap: break-word;
     }
 
     .story-row td {
         background-color: var(--story-header) !important;
-        font-weight: 800;
-        text-align: left !important;
-        padding-left: 15px !important;
+        font-weight: 800; text-align: left !important;
+        padding-left: 20px !important; border-bottom: 2px solid var(--border-table);
     }
 
-    /* 5. ПОДСВЕТКА ПОИСКА */
+    /* ПОДСВЕТКА НАЙДЕННОГО */
     mark {
         background-color: var(--highlight) !important;
         color: var(--highlight-text) !important;
-        border-radius: 3px;
-        padding: 0 1px;
-        font-weight: bold;
+        border-radius: 4px; padding: 0 2px;
     }
 
-    /* 6. КНОПКА ТЕМЫ СПРАВА */
+    /* 5. КНОПКИ (ОБВОДКА И ЦВЕТ) */
+    
+    /* Переключатель тем */
     .theme-toggle {
         position: fixed; top: 15px; right: 15px;
-        background: var(--table-bg); border: 2px solid var(--accent-blue);
+        background: var(--table-bg); 
+        border: 2px solid var(--accent-blue); /* Обводка переключателя */
         color: var(--accent-blue); border-radius: 50%;
-        width: 44px; height: 44px; cursor: pointer; z-index: 1000;
-        display: flex; align-items: center; justify-content: center; font-size: 20px;
+        width: 46px; height: 46px; cursor: pointer; z-index: 1000;
+        display: flex; align-items: center; justify-content: center; font-size: 22px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
+    /* Кнопка отправить слоты */
+    .tg-wrapper { width: 100%; max-width: 500px; margin-top: 20px; }
+
+    .tg-minimal-btn {
+        display: block; width: 100%; padding: 16px;
+        background-color: var(--table-bg); /* Светлый фон */
+        color: var(--accent-blue) !important;
+        text-align: center; text-decoration: none;
+        font-weight: 800; border-radius: 16px;
+        border: 2px solid var(--accent-blue); /* Четкая обводка кнопки */
+        box-sizing: border-box; transition: 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .tg-minimal-btn:hover {
+        background-color: var(--accent-blue);
+        color: #ffffff !important;
+    }
+
+    /* Копирование */
     .copy-btn {
         background-color: var(--btn-copy);
-        color: white; border: none; padding: 10px;
-        border-radius: 8px; font-weight: bold; width: 95%;
-        cursor: pointer; transition: 0.2s;
+        color: white; border: none; padding: 8px;
+        border-radius: 10px; font-weight: 700; width: 90%;
+        cursor: pointer; border: 1px solid rgba(0,0,0,0.05);
     }
 
     .code-text {
-        font-family: monospace; background: var(--code-bg);
-        padding: 4px; border-radius: 4px; display: block;
-        margin-bottom: 5px; font-size: 13px; color: var(--accent-blue);
+        font-family: 'Courier New', monospace; background: var(--code-bg);
+        padding: 5px; border-radius: 6px; display: block;
+        margin-bottom: 6px; font-size: 13px; color: var(--text-main);
+        border: 1px solid var(--border-table);
     }
 </style>
+
 
 
 
@@ -400,25 +417,20 @@
 
 </div>
 <script>
-// === 1. ПОИСК И ПОДСВЕТКА ===
-
+<script>
 function filterData() {
     const inputField = document.getElementById("searchInput");
     const filter = inputField.value.toLowerCase().trim();
     const tr = document.getElementById("mainTable").getElementsByTagName("tr");
     const clearBtn = document.getElementById("clearSearch");
 
-    // Показываем крестик только если есть текст
+    // Управление крестиком
     if (clearBtn) clearBtn.style.display = filter ? "block" : "none";
 
     // ПАСХАЛКА
-    const triggerWords = ["modr", "ирина"];
-    if (triggerWords.includes(filter)) {
-        if (typeof confetti === 'function') {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4081', '#ffffff', '#0288d1'] });
-        }
+    if (["modr", "ирина"].includes(filter)) {
+        if (typeof confetti === 'function') confetti({ particleCount: 150, spread: 70 });
         for (let i = 1; i < tr.length; i++) {
-            tr[i].style.display = ""; 
             if (!tr[i].classList.contains('story-row')) {
                 const nameCell = tr[i].cells[0];
                 if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", nameCell.innerText);
@@ -430,7 +442,6 @@ function filterData() {
         return;
     }
 
-    // ЛОГИКА ПОИСКА
     let storyVisible = false;
     for (let i = 1; i < tr.length; i++) {
         const row = tr[i];
@@ -440,22 +451,14 @@ function filterData() {
         } else {
             const nameCell = row.cells[0];
             const original = nameCell.getAttribute("data-original") || nameCell.innerText;
-            
-            // Сохраняем оригинал для сброса поиска
-            if (!nameCell.hasAttribute("data-original")) {
-                nameCell.setAttribute("data-original", original);
-            }
+            if (!nameCell.hasAttribute("data-original")) nameCell.setAttribute("data-original", original);
 
             const match = original.toLowerCase().includes(filter);
             if (match || storyVisible) {
                 row.style.display = "";
-                // Подсветка через <mark>
-                if (match && filter !== "") {
-                    const regex = new RegExp(`(${filter})`, "gi");
-                    nameCell.innerHTML = original.replace(regex, "<mark>$1</mark>");
-                } else {
-                    nameCell.innerHTML = original;
-                }
+                nameCell.innerHTML = (match && filter !== "") 
+                    ? original.replace(new RegExp(`(${filter})`, "gi"), "<mark>$1</mark>") 
+                    : original;
             } else {
                 row.style.display = "none";
             }
@@ -476,12 +479,9 @@ function clearInput() {
     }
 }
 
-// === 2. КОПИРОВАНИЕ И ТЕМЫ ===
-
 function copy(btn) {
     const text = btn.parentElement.querySelector('.code-text').innerText;
     navigator.clipboard.writeText(text).then(() => {
-        if (window.navigator.vibrate) window.navigator.vibrate(25);
         const oldText = btn.innerText;
         btn.innerText = "ГОТОВО ✓";
         btn.style.background = "#4caf50";
@@ -496,24 +496,16 @@ function toggleTheme() {
     document.body.classList.toggle("dark-theme");
     const isDark = document.body.classList.contains("dark-theme");
     localStorage.setItem("theme", isDark ? "dark" : "light");
-    
     const btn = document.getElementById("themeBtn");
     if (btn) btn.innerText = isDark ? "☀️" : "🌙";
 }
 
-// === 3. ЗАГРУЗКА ===
-
 window.addEventListener('DOMContentLoaded', () => {
-    // Применяем сохраненную тему
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-theme");
         const btn = document.getElementById("themeBtn");
         if (btn) btn.innerText = "☀️";
     }
-    
-    // Пасхалка на заголовок
-    window.onblur = () => document.title = "Жду тебя! 💎";
-    window.onfocus = () => document.title = "RC Slots - База";
 });
 </script>
 
