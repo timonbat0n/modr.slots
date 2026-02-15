@@ -390,6 +390,14 @@
 <tr><td>Александр</td><td><span class="code-text">b0ecb26e5011f2eb4717d15b23d187fa</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">логика</td></tr>
 <tr class="story-row"><td colspan="3">Я Охочусь на Тебя 2</td></tr>
 <tr><td>Эзра</td><td><span class="code-text">9e61e9fd7a31c6a938a427b0c934f926</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">логика</td></tr>
+<tr>
+    <td>Александр</td>
+    <td>
+        <span class="code-text">be33eb23b5b85f75b53dafb2ff9e7c21</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>логика, авторитет с финалом</td>
+</tr>
 
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
