@@ -177,7 +177,11 @@
         <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
         <div id="clearSearch" onclick="clearInput()">×</div>
     </div>
-    
+    <div class="tg-wrapper">
+        <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
+            ОТПРАВИТЬ СЛОТЫ ⚡
+        </a>
+    </div>
     </body>
 
     <div class="table-container">
