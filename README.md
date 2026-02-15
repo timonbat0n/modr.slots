@@ -18,70 +18,69 @@
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
+    * { box-sizing: border-box; } /* Чтобы паддинги не расширяли таблицу */
+
     body { 
         font-family: 'Segoe UI', sans-serif; background: var(--bg-page); 
-        color: var(--text-main); padding: 10px; display: flex; 
+        color: var(--text-main); padding: 10px 5px; display: flex; 
         flex-direction: column; align-items: center; transition: 0.3s; margin: 0; 
     }
 
-    /* ПОИСК И КНОПКА TG — теперь шире */
-    .search-wrapper, .tg-wrapper { width: 95%; max-width: none; position: relative; margin-bottom: 10px; }
+    .search-wrapper, .tg-wrapper { width: 100%; max-width: 600px; position: relative; margin-bottom: 10px; }
     
     #searchInput {
-        width: 100%; padding: 10px 40px; border-radius: 12px; border: none;
+        width: 100%; padding: 12px 40px; border-radius: 12px; border: none;
         background: var(--table-bg) var(--search-icon) no-repeat 12px center; background-size: 18px;
         color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14px;
-    }
-
-    #clearSearch {
-        position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; color: var(--accent-blue); font-size: 20px; display: none;
     }
 
     .tg-btn { 
         width: 100%; padding: 12px; background: var(--btn-gradient); 
         color: white !important; text-decoration: none; border-radius: 12px; 
         text-align: center; font-weight: bold; font-size: 14px; display: flex; 
-        justify-content: center; align-items: center; gap: 8px; box-sizing: border-box;
+        justify-content: center; align-items: center; gap: 8px;
     }
 
     /* ТАБЛИЦА НА ВЕСЬ ЭКРАН */
-    .table-container { width: 95%; } /* Растягиваем на 95% ширины экрана */
-    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+    .table-container { width: 100%; max-width: 600px; overflow-x: hidden; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0 5px; table-layout: fixed; }
     
-    /* Сжимаем ячейки */
     td { 
-        background: var(--table-bg); padding: 8px 6px; border: none; 
-        text-align: center; transition: 0.2s; font-size: 13px; /* Уменьшили шрифт */
+        background: var(--table-bg); padding: 10px 4px; border: none; 
+        text-align: center; vertical-align: middle; font-size: 12px;
     }
     
-    tr td:first-child { border-radius: 10px 0 0 10px; width: 25%; } /* Имя персонажа */
-    tr td:nth-child(2) { width: 45%; } /* Столбец с кодом */
-    tr td:last-child { border-radius: 0 10px 10px 0; width: 30%; font-size: 11px; opacity: 0.8; } /* Инфо */
+    /* Пропорции колонок: Имя (25%), Код (40%), Инфо (35%) */
+    tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
+    tr td:nth-child(2) { width: 40%; }
+    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 35%; font-size: 10px; line-height: 1.2; }
 
     .story-row td { 
         background: var(--story-header) !important; color: var(--accent-blue) !important; 
         font-weight: 800; text-align: left !important; padding-left: 15px !important; 
-        border-radius: 10px !important; font-size: 14px;
+        border-radius: 10px !important; font-size: 13px;
     }
 
-    /* КОМПАКТНЫЕ КОДЫ И КНОПКИ */
+    /* КОМПАКТНЫЙ БЛОК КОДА */
     .code-text { 
-        font-family: monospace; font-size: 10px; display: block; 
-        margin-bottom: 5px; color: var(--accent-blue); word-break: break-all; 
+        font-family: monospace; font-size: 9px; display: block; 
+        margin-bottom: 6px; color: var(--accent-blue); word-break: break-all; 
         padding: 4px; background: var(--code-bg); border-radius: 6px; 
     }
     
+    /* МАЛЕНЬКАЯ КНОПКА КОПИРОВАТЬ */
     .copy-btn {
-        background: var(--btn-gradient); color: white; border: none; padding: 6px;
-        border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; 
-        text-transform: uppercase; font-size: 10px; outline: none;
+        background: var(--btn-gradient); color: white; border: none; 
+        padding: 5px 2px; border-radius: 6px; cursor: pointer; 
+        width: 90%; max-width: 100px; /* Ограничили ширину */
+        font-weight: bold; text-transform: uppercase; font-size: 9px; 
+        outline: none; margin: 0 auto;
     }
     .copy-btn.copied { background: #27ae60 !important; }
 
-    /* Кнопка темы */
     #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: none; font-size: 20px; z-index: 100; cursor: pointer; }
 </style>
+
 
 
 
