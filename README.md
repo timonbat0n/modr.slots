@@ -14,6 +14,7 @@
         --border-table: #b3e5fc;
         --code-bg: #f0faff;
         --highlight: #ffeb3b;
+        --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
@@ -26,30 +27,24 @@
         --border-table: #334155;
         --code-bg: #0f172a;
         --highlight: #fbc02d;
+        --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
     body { 
-        background-color: var(--bg-page); 
-        color: var(--text-main); 
-        font-family: 'Segoe UI', sans-serif; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        padding: 15px; 
-        transition: background 0.3s ease, color 0.3s ease; 
+        background-color: var(--bg-page); color: var(--text-main); 
+        font-family: 'Segoe UI', system-ui, sans-serif; 
+        display: flex; flex-direction: column; align-items: center; 
+        padding: 15px; margin: 0; transition: 0.3s; 
     }
 
-    /* КНОПКА ПЕРЕКЛЮЧЕНИЯ */
+    /* КНОПКА ТЕМЫ */
     .theme-toggle {
-        position: fixed; top: 15px; right: 15px; 
-        width: 44px; height: 44px; border-radius: 50%; 
-        border: 2px solid var(--accent-blue); 
-        background: var(--table-bg); 
-        color: var(--accent-blue); 
-        cursor: pointer; z-index: 1000;
-        display: flex; align-items: center; justify-content: center; font-size: 20px;
-        transition: all 0.3s ease;
+        position: fixed; top: 15px; right: 15px; width: 44px; height: 44px;
+        border-radius: 50%; border: 2px solid var(--accent-blue);
+        background: var(--table-bg); color: var(--accent-blue);
+        cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     /* ПОИСК */
@@ -66,17 +61,50 @@
 
     /* ТАБЛИЦА */
     .table-container { 
-        width: 100%; max-width: 500px; border-radius: 18px; 
-        border: 2px solid var(--border-table); overflow: hidden; 
-        background: var(--table-bg); transition: background 0.3s ease;
+        width: 100%; max-width: 500px; border-radius: 20px; 
+        border: 2px solid var(--border-table); overflow: hidden; background: var(--table-bg);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
     table { width: 100%; border-collapse: collapse; background: var(--table-bg); }
     td, th { padding: 12px 8px; border-bottom: 1px solid var(--border-table); color: var(--text-main); text-align: center; }
-    .story-row td { background: var(--story-header) !important; font-weight: bold; text-align: left !important; }
+    .story-row td { background: var(--story-header) !important; font-weight: 800; text-align: left !important; padding-left: 20px !important; }
 
-    /* МАРКЕР */
-    mark { background: var(--highlight); color: #000; border-radius: 3px; }
+    /* КОД И КНОПКА КОПИРОВАНИЯ */
+    .code-text {
+        font-family: 'SF Mono', monospace; background: var(--code-bg); color: var(--accent-blue);
+        padding: 8px; border-radius: 10px; display: block; margin-bottom: 8px;
+        font-size: 11px; border: 1px solid var(--border-table); word-break: break-all;
+    }
+
+    .copy-btn {
+        background: var(--btn-gradient);
+        color: white !important;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0, 145, 234, 0.3);
+        text-transform: uppercase;
+    }
+
+    .copy-btn:active {
+        transform: scale(0.96);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .copy-btn.success {
+        background: #4caf50 !important;
+        box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+    }
+
+    mark { background: var(--highlight); color: #000; border-radius: 4px; padding: 0 2px; }
 </style>
+
 
 
 
@@ -300,30 +328,22 @@
 
 </div>
 
-  <script>
-    // 1. ЛОГИКА ТЕМЫ
+<script>
+    // 1. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
     const themeBtn = document.getElementById('themeBtn');
-    
-    // Проверяем сохраненную тему при загрузке
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-theme');
         themeBtn.innerText = '☀️';
     }
 
     function toggleTheme() {
-        const body = document.body;
-        body.classList.toggle('dark-theme');
-        
-        if (body.classList.contains('dark-theme')) {
-            localStorage.setItem('theme', 'dark');
-            themeBtn.innerText = '☀️';
-        } else {
-            localStorage.setItem('theme', 'light');
-            themeBtn.innerText = '🌙';
-        }
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        themeBtn.innerText = isDark ? '☀️' : '🌙';
     }
 
-    // 2. ЛОГИКА ПОИСКА
+    // 2. ПОИСК И МАРКЕРЫ
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
@@ -339,7 +359,6 @@
             if (!row.hasAttribute('data-orig')) {
                 row.setAttribute('data-orig', row.innerHTML);
             }
-            
             const originalHTML = row.getAttribute('data-orig');
             const textContent = row.innerText.toLowerCase();
 
@@ -352,7 +371,6 @@
                 if (storyVisible || textContent.includes(filter)) {
                     row.style.display = '';
                     if (currentStory) currentStory.style.display = '';
-                    
                     if (filter) {
                         const regex = new RegExp(`(${filter})`, "gi");
                         row.innerHTML = originalHTML.replace(regex, '<mark>$1</mark>');
@@ -367,11 +385,29 @@
     }
 
     function clearInput() {
-        const input = document.getElementById('searchInput');
-        input.value = '';
+        document.getElementById('searchInput').value = '';
         runFilter();
-        input.focus();
     }
+
+    // 3. УМНОЕ КОПИРОВАНИЕ (Работает даже после фильтрации)
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('copy-btn')) {
+            const btn = e.target;
+            const codeSpan = btn.parentElement.querySelector('.code-text');
+            const textToCopy = codeSpan.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'СКОПИРОВАНО ✓';
+                btn.classList.add('success');
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove('success');
+                }, 1500);
+            });
+        }
+    });
 </script>
 
 
