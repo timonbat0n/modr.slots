@@ -288,13 +288,13 @@
 
 </div>
 <script>
+    // 1. УМНЫЙ ПОИСК И КРЕСТИК
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = document.querySelectorAll('#mainTable tbody tr');
 
-        // Работа крестика: показываем только если есть текст
         clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
 
         let storyMatches = false;
@@ -306,16 +306,11 @@
                 row.style.display = storyMatches ? '' : 'none';
             } else {
                 const charContent = row.innerText.toLowerCase();
-                const charMatches = charContent.includes(filter);
-
-                if (storyMatches || charMatches) {
+                if (storyMatches || charContent.includes(filter)) {
                     row.style.display = '';
-                    // Находим ближайший заголовок истории выше и показываем его
-                    let current = row.previousElementSibling;
-                    while (current && !current.classList.contains('story-row')) {
-                        current = current.previousElementSibling;
-                    }
-                    if (current) current.style.display = '';
+                    let prev = row.previousElementSibling;
+                    while (prev && !prev.classList.contains('story-row')) prev = prev.previousElementSibling;
+                    if (prev) prev.style.display = '';
                 } else {
                     row.style.display = 'none';
                 }
@@ -323,36 +318,66 @@
         });
     }
 
-    // Функция очистки для крестика
     function clearInput() {
         const input = document.getElementById('searchInput');
-        input.value = ''; // Стираем текст
-        runFilter();      // Обновляем таблицу (покажет всё)
-        input.focus();    // Возвращаем фокус в поле
+        input.value = '';
+        runFilter();
+        input.focus();
     }
 
-    // Кнопка копирования с текстом "ГОТОВО"
-    function copyCode(btn) {
-        const codeText = btn.parentElement.querySelector('.code-text').innerText;
-        navigator.clipboard.writeText(codeText).then(() => {
-            const originalText = btn.innerText;
-            btn.innerText = 'ГОТОВО ✓';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.classList.remove('copied');
-            }, 2000);
-        });
+    // 2. ФУНКЦИЯ COPY (Улучшенная совместимость)
+    function copy(btn) {
+        const codeElement = btn.closest('td').querySelector('.code-text');
+        const textToCopy = codeElement.innerText.trim();
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => showStatus(btn))
+                .catch(() => fallbackCopy(textToCopy, btn));
+        } else {
+            fallbackCopy(textToCopy, btn);
+        }
     }
 
-    // Работа темы
+    function fallbackCopy(text, btn) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showStatus(btn);
+        } catch (err) {
+            console.error('Ошибка копирования', err);
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function showStatus(btn) {
+        const originalText = btn.innerText;
+        btn.innerText = 'ГОТОВО ✓';
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.classList.remove('copied');
+        }, 2000);
+    }
+
+    // 3. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
     function toggleTheme() {
         document.body.classList.toggle('dark-theme');
         const isDark = document.body.classList.contains('dark-theme');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
     }
+
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
 </script>
+
 
 
 
