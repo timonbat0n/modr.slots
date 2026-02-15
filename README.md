@@ -22,8 +22,7 @@
 
 
 <style>
-
-    /* 1. ПЕРЕМЕННЫЕ ЦВЕТОВ */
+    /* 1. ПЕРЕМЕННЫЕ */
     :root {
         --bg-page: #f1f5f9;
         --table-bg: #ffffff;
@@ -34,11 +33,10 @@
         --btn-copy: #03a9f4;
         --border-table: #e1f5fe;
         --code-bg: #f5faff;
-        --highlight: #ffeb3b;
-        --nav-bg: rgba(2, 136, 209, 0.1);
+        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230288d1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    body.dark-theme {
+    body.dark-theme, body.dark-mode {
         --bg-page: #0f172a;
         --table-bg: #1e293b;
         --text-main: #f1f5f9;
@@ -48,160 +46,146 @@
         --btn-copy: #0ea5e9;
         --border-table: #334155;
         --code-bg: #0f172a;
-        --nav-bg: rgba(56, 189, 248, 0.1);
+        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
 
-    /* 2. БАЗОВЫЕ СТИЛИ (БЕЗ ШЕЛУХИ) */
+    /* 2. ГЛАВНЫЕ СТИЛИ */
     body {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        font-family: 'Segoe UI', sans-serif;
         margin: 0;
-        padding: 15px;
+        padding: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
         background-color: var(--bg-page) !important;
-        background-image: none !important;
         color: var(--text-main);
-        transition: background-color 0.3s ease;
-        overflow-x: hidden;
+        overflow-x: hidden; /* Убирает болтанку вправо-влево */
     }
 
-    /* 3. КОНТЕЙНЕР И ТАБЛИЦА (ФИКСИРОВАННЫЕ) */
+    /* УБРАЛИ БОКОВУЮ ПАНЕЛЬ */
+    .side-nav, .nav-toggle, #lettersContainer {
+        display: none !important;
+    }
+
+    /* 3. ПОИСК (ВОЗВРАЩАЕМ ЛУПУ И КРЕСТИК) */
+    .search-wrapper { 
+        width: 100%; 
+        max-width: 500px; 
+        margin: 0 auto 20px; 
+        position: relative; 
+    }
+    
+    #searchInput { 
+        width: 100%; 
+        padding: 14px 45px 14px 45px; /* Отступы под лупу и крестик */
+        border: 2px solid var(--border-table); 
+        border-radius: 14px; 
+        font-size: 16px; 
+        background-color: var(--table-bg); 
+        color: var(--text-main);
+        outline: none; 
+        box-sizing: border-box; 
+    }
+
+    /* Лупа */
+    .search-wrapper::before {
+        content: ""; 
+        position: absolute; 
+        left: 14px; 
+        top: 50%;
+        transform: translateY(-50%); 
+        width: 20px; 
+        height: 20px;
+        background: var(--search-icon) no-repeat center;
+        background-size: contain;
+        z-index: 2;
+    }
+
+    /* Крестик */
+    #clearSearch {
+        position: absolute; 
+        right: 14px; 
+        top: 50%;
+        transform: translateY(-50%); 
+        cursor: pointer;
+        font-size: 20px; 
+        color: var(--text-info);
+        z-index: 3;
+        line-height: 1;
+        display: none; /* Включается в JS если инпут не пуст */
+    }
+
+    /* 4. ТАБЛИЦА (УБИРАЕМ БОЛТАНКУ) */
     .table-container { 
         width: 100%; 
         max-width: 500px; 
         background-color: var(--table-bg) !important; 
         border-radius: 16px; 
         overflow: hidden; 
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         border: 1px solid var(--border-table);
-        box-sizing: border-box;
+        box-sizing: border-box; /* Важно чтобы не распирало */
     }
 
     table { 
         width: 100%; 
         border-collapse: collapse; 
-        table-layout: fixed; 
-        background-color: var(--table-bg);
+        table-layout: fixed; /* Жестко фиксирует колонки */
     }
 
-    td { 
+    td, th { 
         padding: 12px 8px; 
-        border-bottom: 1px solid var(--border-table); 
-        color: var(--text-main) !important;
-        background-color: var(--table-bg) !important;
         text-align: center;
-        font-size: 14px;
-        word-wrap: break-word;
+        border-bottom: 1px solid var(--border-table);
+        word-wrap: break-word; /* Чтобы длинный текст не ломал таблицу */
     }
 
-    th { 
-        background-color: var(--code-bg); 
-        color: var(--accent-blue); 
-        padding: 12px 5px; 
-        font-size: 11px; 
-        text-transform: uppercase;
-        border-bottom: 2px solid var(--border-table);
-    }
-
-    /* Заголовки разделов (Стори) */
-    .story-row td { 
-        background-color: var(--story-header) !important; 
-        color: var(--text-main) !important; 
-        font-weight: 800; 
+    .story-row td {
+        background-color: var(--story-header) !important;
+        font-weight: 800;
         text-align: left !important;
-        padding: 12px 16px !important;
-        height: auto !important;
+        padding-left: 15px !important;
     }
 
-    /* 4. КНОПКИ */
-    .copy-btn {
-        background-color: var(--btn-copy) !important;
-        color: white !important;
-        border: none;
-        padding: 10px 0;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 11px;
-        font-weight: 700;
-        width: 90%;
-        text-transform: uppercase;
-        transition: transform 0.1s;
-    }
-
-    .copy-btn:active { transform: scale(0.95); }
-    .copy-btn.copied { background-color: #10b981 !important; }
-
-    /* Главная кнопка внизу */
-    .tg-minimal-btn {
-        display: block;
-        width: 100%;
-        max-width: 300px;
-        margin: 25px auto;
-        padding: 16px;
-        background-color: var(--accent-blue);
-        color: #ffffff !important;
-        text-align: center;
-        text-decoration: none;
-        font-weight: 800;
-        border-radius: 14px;
-        border: none;
-        transition: 0.3s;
-    }
-
-    /* 5. БОКОВАЯ ПАНЕЛЬ (ПОЧИНЕНО) */
-    .side-nav {
-        position: fixed;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        z-index: 1000;
-        background: var(--nav-bg);
-        padding: 10px 4px;
-        border-radius: 12px 0 0 12px;
-        border: 1px solid var(--border-table);
-        max-height: 80vh; /* Чтобы не вылезала за экран */
-        overflow-y: auto; /* Если букв слишком много */
-    }
-
-    .side-nav a {
-        text-decoration: none;
-        color: var(--accent-blue);
-        font-weight: 800;
-        font-size: 13px;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        background: var(--table-bg);
-        transition: 0.2s;
-    }
-
-    .side-nav a:hover {
-        background: var(--accent-blue);
-        color: white;
-    }
-
-    /* 6. ПОИСК */
-    .search-wrapper { width: 100%; max-width: 500px; margin-bottom: 20px; position: relative; }
-    
-    #searchInput { 
-        width: 100%; padding: 14px 15px 14px 40px; border-radius: 12px; border: 1px solid var(--border-table);
-        background-color: var(--table-bg); color: var(--text-main); outline: none; box-sizing: border-box;
-    }
-
-    /* Кнопка смены темы */
+    /* 5. КНОПКИ (ТЕМА СПРАВА) */
     .theme-toggle {
-        position: fixed; top: 15px; left: 15px; /* Перенес влево, чтобы не мешать буквам */
-        background: var(--table-bg); border: 1px solid var(--accent-blue);
-        color: var(--accent-blue); border-radius: 50%; width: 40px; height: 40px;
-        cursor: pointer; z-index: 1001; display: flex; align-items: center; justify-content: center;
+        position: fixed; 
+        top: 15px; 
+        right: 15px; /* Вернули вправо */
+        background: var(--table-bg); 
+        border: 2px solid var(--accent-blue);
+        color: var(--accent-blue); 
+        border-radius: 50%;
+        width: 42px; height: 42px; 
+        cursor: pointer; 
+        z-index: 1000;
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    /* УБРАЛИ ЛИШНЮЮ КНОПКУ НАВЕРХ */
+    #scrollToTop, .scroll-btn, #backToTop {
+        display: none !important;
+    }
+
+    .copy-btn {
+        background-color: var(--btn-copy);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        width: 90%;
+    }
+
+    .code-text {
+        font-family: monospace;
+        background: var(--code-bg);
+        padding: 4px;
+        border-radius: 4px;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
     }
 </style>
 
