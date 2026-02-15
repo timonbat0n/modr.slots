@@ -8,7 +8,7 @@
     :root {
         --bg-page: #eef7ff; --table-bg: #ffffff; --text-main: #074799;
         --accent-blue: #0091ea; --story-header: #d1e9ff; --code-bg: #f0faff;
-        --highlight: #fff176; /* Цвет подсветки в светлой теме */
+        --highlight: #fff176;
         --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
         --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
     }
@@ -16,79 +16,58 @@
     body.dark-theme {
         --bg-page: #0f172a; --table-bg: #1e293b; --text-main: #f1f5f9;
         --accent-blue: #38bdf8; --story-header: #334155; --code-bg: #0f172a;
-        --highlight: #fb8c00; /* Оранжевая подсветка в темной теме */
+        --highlight: #fb8c00;
         --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
     * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg-page); color: var(--text-main); padding: 10px 5px; margin: 0; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
 
-    body { 
-        font-family: 'Segoe UI', sans-serif; background: var(--bg-page); 
-        color: var(--text-main); padding: 10px 5px; display: flex; 
-        flex-direction: column; align-items: center; transition: 0.3s; margin: 0; 
+    /* МАСШТАБ: На весь экран */
+    .search-wrapper, .tg-wrapper, .table-container { width: 100%; max-width: 800px; position: relative; }
+
+    /* КНОПКА ОТПРАВКИ СЛОТОВ */
+    .tg-wrapper { margin-bottom: 12px; }
+    .tg-btn { 
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        width: 100%; padding: 14px; background: var(--btn-gradient);
+        color: white !important; text-decoration: none; font-weight: 800; font-size: 15px;
+        border-radius: 14px; box-shadow: 0 6px 15px rgba(0, 145, 234, 0.2); transition: 0.2s;
     }
+    .tg-btn:active { transform: scale(0.98); }
 
     /* ПОИСК */
-    .search-wrapper { width: 100%; max-width: 600px; position: relative; margin-bottom: 10px; }
+    .search-wrapper { margin-bottom: 10px; }
     #searchInput {
         width: 100%; padding: 12px 40px; border-radius: 12px; border: none;
         background: var(--table-bg) var(--search-icon) no-repeat 12px center; background-size: 18px;
-        color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14px;
+        color: var(--text-main); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 14px;
     }
-    #clearSearch {
-        position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; color: var(--accent-blue); font-size: 22px; display: none; z-index: 10;
-    }
+    #clearSearch { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold; display: none; z-index: 5; }
 
-    /* ТАБЛИЦА: ИСПРАВЛЕНИЕ ВЕРХУШКИ */
-    .table-container { width: 100%; max-width: 600px; }
-    table { width: 100%; border-collapse: separate; border-spacing: 0 5px; table-layout: fixed; }
+    /* ТАБЛИЦА */
+    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; table-layout: fixed; }
+    th, td { background-color: var(--table-bg) !important; color: var(--text-main) !important; padding: 10px 4px; border: none; text-align: center; font-size: 12px; }
     
-    /* Принудительно красим ВСЕ ячейки, включая заголовки */
-    th, td { 
-        background-color: var(--table-bg) !important; 
-        color: var(--text-main) !important;
-        padding: 10px 4px; border: none; text-align: center; font-size: 12px; 
-    }
-    
-    /* Стили для подсветки найденного текста */
-    mark {
-        background-color: var(--highlight);
-        color: #000;
-        border-radius: 2px;
-        padding: 0 1px;
-    }
+    tr td:first-child { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
+    tr td:nth-child(2) { width: 45%; }
+    tr td:last-child { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; opacity: 0.8; }
 
-    /* Остальные стили строк */
-    tr td:nth-child(1) { border-radius: 12px 0 0 12px; font-weight: bold; width: 25%; }
-    tr td:nth-child(2) { width: 40%; }
-    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 35%; font-size: 10px; }
+    .story-row td { background: var(--story-header) !important; color: var(--accent-blue) !important; font-weight: 800; text-align: left !important; padding-left: 15px !important; border-radius: 12px !important; font-size: 13px; width: 100% !important; }
 
-    .story-row td { 
-        background: var(--story-header) !important; color: var(--accent-blue) !important; 
-        font-weight: 800; text-align: left !important; padding-left: 15px !important; border-radius: 10px !important; 
-    }
+    /* ПОДСВЕТКА */
+    mark { background: var(--highlight); color: #000; border-radius: 2px; padding: 0 1px; }
 
-    /* КНОПКА НАВЕРХ */
-    #backToTop {
-        position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
-        background: var(--btn-gradient); border: none; border-radius: 50%;
-        cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center;
-        opacity: 0; pointer-events: none; transition: 0.4s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    #backToTop.show { opacity: 1; pointer-events: auto; }
-
-    .copy-btn {
-        background: var(--btn-gradient); color: white; border: none; padding: 6px 2px;
-        border-radius: 8px; cursor: pointer; width: 90%; font-weight: bold; font-size: 9px;
-    }
+    /* КОПИРОВАНИЕ */
+    .code-text { font-family: monospace; font-size: 9px; display: block; margin-bottom: 6px; color: var(--accent-blue); word-break: break-all; padding: 4px; background: var(--code-bg); border-radius: 6px; }
+    .copy-btn { background: var(--btn-gradient); color: white; border: none; padding: 6px; border-radius: 8px; cursor: pointer; width: 95%; font-weight: bold; text-transform: uppercase; font-size: 9px; transition: 0.3s; }
     .copy-btn.copied { background: #27ae60 !important; }
+
+    /* КНОПКИ УПРАВЛЕНИЯ */
+    #themeBtn { position: fixed; top: 10px; right: 10px; border: none; background: var(--table-bg); box-shadow: 0 2px 5px rgba(0,0,0,0.2); width: 35px; height: 35px; border-radius: 50%; z-index: 100; cursor: pointer; }
+    #backToTop { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--btn-gradient); border: none; border-radius: 50%; cursor: pointer; z-index: 99; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    #backToTop.show { opacity: 1; pointer-events: auto; }
 </style>
-
-
-
-
-
 
 
 
@@ -309,7 +288,6 @@
 
 </div>
 <script>
-    // Сохраним оригинальный текст имен, чтобы не "портить" его тегами mark при многократном поиске
     const originalNames = new Map();
 
     function runFilter() {
@@ -321,39 +299,25 @@
         clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
 
         let storyMatches = false;
-
         rows.forEach(row => {
             if (row.classList.contains('story-row')) {
-                const storyName = row.innerText.toLowerCase();
-                storyMatches = storyName.includes(filter);
+                storyMatches = row.innerText.toLowerCase().includes(filter);
                 row.style.display = storyMatches ? '' : 'none';
             } else {
                 const nameCell = row.cells[0];
-                const infoCell = row.cells[2];
-                
-                // Инициализируем карту оригинальных значений
                 if (!originalNames.has(nameCell)) originalNames.set(nameCell, nameCell.innerText);
                 const originalText = originalNames.get(nameCell);
-                
-                const charMatches = originalText.toLowerCase().includes(filter) || infoCell.innerText.toLowerCase().includes(filter);
+                const charMatches = originalText.toLowerCase().includes(filter) || row.cells[2].innerText.toLowerCase().includes(filter);
 
                 if (storyMatches || charMatches) {
                     row.style.display = '';
+                    nameCell.innerHTML = (filter && originalText.toLowerCase().includes(filter)) ? 
+                        originalText.replace(new RegExp(`(${filter})`, "gi"), '<mark>$1</mark>') : originalText;
                     
-                    // ПОДСВЕТКА (только если есть фильтр)
-                    if (filter.length > 0 && originalText.toLowerCase().includes(filter)) {
-                        const regex = new RegExp(`(${filter})`, "gi");
-                        nameCell.innerHTML = originalText.replace(regex, '<mark>$1</mark>');
-                    } else {
-                        nameCell.innerText = originalText;
-                    }
-
                     let prev = row.previousElementSibling;
                     while (prev && !prev.classList.contains('story-row')) prev = prev.previousElementSibling;
                     if (prev) prev.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                } else { row.style.display = 'none'; }
             }
         });
     }
@@ -364,25 +328,22 @@
         document.getElementById('searchInput').focus();
     }
 
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    window.addEventListener('scroll', () => {
-        const btn = document.getElementById('backToTop');
-        if (window.pageYOffset > 300) btn.classList.add('show');
-        else btn.classList.remove('show');
-    });
-
     function copy(btn) {
-        const codeText = btn.closest('td').querySelector('.code-text').innerText.trim();
-        navigator.clipboard.writeText(codeText).then(() => {
+        const text = btn.closest('td').querySelector('.code-text').innerText.trim();
+        navigator.clipboard.writeText(text).then(() => {
             const old = btn.innerText;
             btn.innerText = 'ГОТОВО ✓';
             btn.classList.add('copied');
             setTimeout(() => { btn.innerText = old; btn.classList.remove('copied'); }, 1500);
         });
     }
+
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('backToTop');
+        window.pageYOffset > 300 ? btn.classList.add('show') : btn.classList.remove('show');
+    });
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
     function toggleTheme() {
         document.body.classList.toggle('dark-theme');
