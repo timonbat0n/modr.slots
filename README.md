@@ -255,12 +255,12 @@ tr td:last-child { border-radius: 0 12px 12px 0 !important; }
     <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
     <div id="clearSearch" onclick="clearInput(event)">×</div>
 </div>
-
 <div class="tg-wrapper">
-    <a href="t.me/modr_slots_bot>" target="_blank" class="tg-btn">
+    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn" id="mainTgBtn">
         ОТПРАВИТЬ СЛОТЫ ⚡
     </a>
 </div>
+
 
     <div class="table-container">
     <table id="mainTable">
