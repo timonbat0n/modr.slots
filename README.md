@@ -447,6 +447,15 @@ tr td:last-child { border-radius: 0 12px 12px 0 !important; }
 
 <tr class="story-row"><td colspan="3">Сердце Треспии</td></tr>
 <tr><td>Рейнхольд</td><td><span class="code-text">a5e2ba6722aa3fe934a4b14a0a0aafd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рациональность</td></tr>
+<tr>
+    <td>Астарот+Дмитрий+Микаэль</td>
+    <td>
+        <span class="code-text">963ead5b753942aba96159697e8c3dde</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>милосердие, тьма Шепфамалума</td>
+</tr>
+
 
 <tr class="story-row"><td colspan="3">Там, где любовь горит вечно</td></tr>
 <tr><td>Граф/Мессир/Шеда</td><td><span class="code-text">05362d9356139f6d50ddbc29585f5cdc</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жизнелюбие, баланс</td></tr>
