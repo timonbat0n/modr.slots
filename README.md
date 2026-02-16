@@ -119,7 +119,7 @@
     <div class="search-wrapper">
         <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
         <button id="clearSearch" onclick="clearInput(event)">✕</button>
-    </div>
+ 
 <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
