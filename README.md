@@ -43,6 +43,39 @@
         min-height: 100vh; background: var(--bg-page);
         transition: background 0.5s ease; overflow-x: hidden;
     }
+
+/* Улучшенный Header таблицы */
+thead th {
+    background-color: var(--table-bg) !important; /* Использует прозрачный фон темы */
+    color: var(--accent-blue) !important; /* Делает текст голубым и читаемым */
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 15px 5px !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
+
+/* Скругление углов для первой строки шапки */
+thead tr th:first-child {
+    border-radius: 12px 0 0 12px;
+}
+thead tr th:last-child {
+    border-radius: 0 12px 12px 0;
+}
+
+/* Фикс для темной темы: убираем белый фон, если он застрял */
+[data-theme="dark"] thead th {
+    background-color: rgba(30, 41, 59, 0.8) !important; /* Глубокий темный фон */
+    color: var(--accent-blue) !important;
+}
+
+/* Чтобы текст "Инфо" не прилипал к краю */
+th:nth-child(3), td:nth-child(3) {
+    text-align: right;
+    padding-right: 15px !important;
+}
+
 /* КНОПКА КОПИРОВАТЬ */
 .copy-btn {
     background: var(--btn-gradient);
