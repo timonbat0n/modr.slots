@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR SLOTS PREMIUM</title>
+    <style>
    :root {
     --bg-color: #1a2a44;
     --card-bg: #2a3d59;
@@ -108,6 +109,7 @@ tr:not(.story-row) td:nth-child(1) { font-size: 20px; font-weight: 900; color: v
 #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 10000; font-size: 14px; }
 #toast.show { display: block; }
 #backToTop { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--card-bg); border: 1px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 100; }
+</style>
 </head>
 <body>
 
