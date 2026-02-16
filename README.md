@@ -27,27 +27,25 @@
             min-height: 100vh;
         }
 
-        /* ФОН СО ЗВЕЗДАМИ */
         #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
         .container { position: relative; z-index: 1; width: 100%; max-width: 550px; margin: 0 auto; }
-        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; }
+        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; color: var(--text-white); }
         .hero-title { font-size: clamp(28px, 8vw, 42px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 30px; }
 
-        /* ПОИСК */
         .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
         #searchInput { width: 100%; padding: 18px 50px 18px 25px; border-radius: 18px; border: none; background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; }
-        #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 5; }
+        #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; display: none; align-items: center; justify-content: center; cursor: pointer; }
 
-        .tg-btn { display: block; background: var(--accent-blue); color: #1a2a44 !important; text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; position: relative; z-index: 2; }
+        .tg-btn { display: block; background: var(--accent-blue); color: #1a2a44 !important; text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; }
 
         /* ТАБЛИЦА */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; border: none; }
         thead { display: none; }
 
-        /* ЗАГОЛОВКИ БЕЗ ФОНА */
+        /* ЧИСТЫЕ БЕЛЫЕ ЗАГОЛОВКИ БЕЗ ФОНА И ЛИНИЙ */
         .story-row { display: block; padding: 80px 0 20px 0; background: transparent !important; }
         .story-row td { 
             display: block !important; 
@@ -57,11 +55,12 @@
             color: #ffffff !important; 
             text-transform: uppercase; 
             border: none !important; 
-            background: none !important;
+            background: none !important; /* Убираем любой фон */
+            box-shadow: none !important; /* Убираем тени блоков */
             padding-left: 5px;
         }
 
-        /* КАРТОЧКИ */
+        /* КАРТОЧКИ ПЕРСОНАЖЕЙ */
         #mainTable tbody tr:not(.story-row) {
             display: flex !important; 
             flex-direction: column !important;
@@ -73,7 +72,13 @@
             border: none !important;
         }
 
-        #mainTable tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; min-width: 0; }
+        #mainTable tr:not(.story-row) td { 
+            display: block !important; 
+            width: 100% !important; 
+            border: none !important;
+            background: transparent !important;
+        }
+
         tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
         tr:not(.story-row) td:nth-child(3) { order: 2; font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
         tr:not(.story-row) td:nth-child(2) { order: 3; display: flex !important; flex-direction: column; }
@@ -81,14 +86,10 @@
         .code-text { display: block; background: var(--code-bg); color: var(--code-text-color); padding: 16px; border-radius: 14px; font-family: monospace; font-size: 14px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px; }
         .copy-btn { width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
-        /* ОВЕРЛЕИ И ЭФФЕКТЫ */
-        .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
+        /* ЭФФЕКТЫ (тост, частицы и т.д.) */
         #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000; }
-        #toast.show { display: block; animation: fadeInUp 0.3s; }
-        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10005; color: var(--accent-blue); font-size: 30px; font-weight: 900; text-align: center; }
-        #secret-overlay.show { display: flex; }
-        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        #toast.show { display: block; }
+        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; }
     </style>
 </head>
 <body>
