@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -376,6 +376,7 @@
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
 
+</div>
 
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
@@ -388,7 +389,7 @@
         const rows = Array.from(document.querySelectorAll('#mainTable tbody tr'));
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
         if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
-        if (filter === 'timer' || filter === 'таймер') { showFullscreenText("ДАЙТЕ ВИКЕ АДМИНКУ"); clearInput(); return; }
+        if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
         let currentHeader = null; let currentStoryRows = []; let storyHeaderMatch = false; let storyHasContentMatch = false;
         rows.forEach((row) => {
             if (row.classList.contains('story-row')) {
@@ -452,3 +453,5 @@
     });
     document.addEventListener('DOMContentLoaded', createStars);
 </script>
+</body>
+</html>
