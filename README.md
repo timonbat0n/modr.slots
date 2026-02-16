@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR SLOTS PREMIUM</title>
-    <style>
+ <style>
         :root {
             --bg-color: #1a2a44;
             --card-bg: #2a3d59;
@@ -32,51 +32,44 @@
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
         .container { position: relative; z-index: 1; width: 100%; max-width: 550px; margin: 0 auto; }
-        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; color: var(--text-white); }
+        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; }
         .hero-title { font-size: clamp(28px, 8vw, 42px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 30px; }
 
-        .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
-        #searchInput { width: 100%; padding: 18px 50px 18px 25px; border-radius: 18px; border: none; background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; }
-        #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; display: none; align-items: center; justify-content: center; cursor: pointer; }
-
-        .tg-btn { display: block; background: var(--accent-blue); color: #1a2a44 !important; text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; }
-
-        /* ТАБЛИЦА */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; border: none; }
-        thead { display: none; }
-
-        /* ЧИСТЫЕ БЕЛЫЕ ЗАГОЛОВКИ БЕЗ ФОНА И ЛИНИЙ */
-        .story-row { display: block; padding: 80px 0 20px 0; background: transparent !important; }
-        .story-row td { 
-            display: block !important; 
-            width: 100% !important; 
-            font-size: 28px; 
+        /* Кнопка ТГ с ГАРАНТИРОВАННЫМ ОТСТУПОМ */
+        .tg-btn { 
+            display: block; 
+            background: var(--accent-blue); 
+            color: #1a2a44 !important; 
+            text-decoration: none; 
+            padding: 20px; 
+            border-radius: 18px; 
+            text-align: center; 
             font-weight: 900; 
-            color: #ffffff !important; 
             text-transform: uppercase; 
-            border: none !important; 
-            background: none !important; /* Убираем любой фон */
-            box-shadow: none !important; /* Убираем тени блоков */
-            padding-left: 5px;
+            margin-bottom: 50px !important; 
+            position: relative; 
+            z-index: 2; 
         }
 
-        /* КАРТОЧКИ ПЕРСОНАЖЕЙ */
+        /* Поиск с отступом */
+        .search-wrapper { 
+            position: relative; 
+            width: 100%; 
+            margin-bottom: 40px !important; 
+        }
+
+        #searchInput { width: 100%; padding: 18px 50px 18px 25px; border-radius: 18px; border: none; background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; }
+        #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 5; }
+
+        /* ЗАГОЛОВКИ И КАРТОЧКИ (твоя база) */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .story-row { display: block; padding: 60px 0 20px 0; background: transparent !important; }
+        .story-row td { display: block !important; width: 100% !important; font-size: 28px; font-weight: 900; color: #ffffff !important; text-transform: uppercase; border: none !important; padding-left: 5px; }
+
         #mainTable tbody tr:not(.story-row) {
-            display: flex !important; 
-            flex-direction: column !important;
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            border: none !important;
-        }
-
-        #mainTable tr:not(.story-row) td { 
-            display: block !important; 
-            width: 100% !important; 
-            border: none !important;
-            background: transparent !important;
+            display: flex !important; flex-direction: column !important;
+            background: var(--card-bg); border-radius: 24px; padding: 25px; margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: none !important;
         }
 
         tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
@@ -86,15 +79,16 @@
         .code-text { display: block; background: var(--code-bg); color: var(--code-text-color); padding: 16px; border-radius: 14px; font-family: monospace; font-size: 14px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px; }
         .copy-btn { width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
-        /* ЭФФЕКТЫ (тост, частицы и т.д.) */
+        /* ОВЕРЛЕИ */
+        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10005; color: var(--accent-blue); font-size: 30px; font-weight: 900; text-align: center; }
+        #secret-overlay.show { display: flex; }
         #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000; }
         #toast.show { display: block; }
-        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="star-container"></div>
+<div id="star-container">
 
 <div class="container">
    
