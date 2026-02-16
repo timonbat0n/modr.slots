@@ -118,7 +118,7 @@
 
 <div class="container">
     <div class="logo">modr.</div>
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>КОПИТЬ АЛМАЗЫ</h1>
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>В ЧАТЕ</h1>
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
