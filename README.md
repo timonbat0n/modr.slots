@@ -4,118 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR SLOTS PREMIUM</title>
-    <style>
-        :root {
-            --bg-color: #1a2a44;
-            --card-bg: #2a3d59;
-            --accent-blue: #7cb9e8;
-            --code-bg: #e1e8f0;
-            --code-text-color: #1a2a44;
-            --text-white: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-            --magic-color: #7cb9e8;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            padding: 40px 15px 100px 15px;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Фон со звездами */
-        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
-        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
-
-        .container { position: relative; z-index: 1; width: 100%; max-width: 550px; margin: 0 auto; }
-        .logo { font-size: 26px; font-weight: 900; margin-bottom: 20px; display: block; }
-        .hero-title { font-size: clamp(28px, 8vw, 40px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 35px; }
-
-        .tg-btn { 
-            display: block; background: var(--accent-blue); color: #1a2a44 !important; 
-            text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; 
-            font-weight: 900; text-transform: uppercase; margin-bottom: 45px !important; 
-            transition: transform 0.2s;
-        }
-        .tg-btn:active { transform: scale(0.95); }
-
-        /* Поиск */
-        .search-wrapper { position: relative; width: 100%; margin-bottom: 50px !important; }
-        #searchInput { 
-            width: 100%; padding: 18px 25px; border-radius: 18px; border: none; 
-            background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; 
-        }
-      #clearSearch { 
-    position: absolute; 
-    right: 15px; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    background: #ccc; 
-    border: none; 
-    border-radius: 50%; 
-    width: 24px; 
-    height: 24px; 
-    display: none; /* Скрипт переключит на flex */
-    align-items: center; 
-    justify-content: center; 
-    cursor: pointer; 
-    color: #333; 
-    z-index: 10;
-    line-height: 1; /* Чтобы крестик был ровно по центру */
+   :root {
+    --bg-color: #1a2a44;
+    --card-bg: #2a3d59;
+    --accent-blue: #7cb9e8;
+    --code-bg: #e1e8f0;
+    --code-text-color: #1a2a44;
+    --text-white: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --magic-color: #7cb9e8;
 }
 
-        /* Таблица */
-        table { width: 100%; border-collapse: collapse; border: none; }
-        
-        /* ЗАГОЛОВКИ ИСТОРИЙ: Чистый текст без фона */
-        .story-row { display: block; padding: 40px 0 15px 5px; background: transparent !important; }
-        .story-row td { 
-            display: block !important; width: 100% !important; font-size: 24px; 
-            font-weight: 900; color: #ffffff !important; text-transform: uppercase; 
-            background: transparent !important; border: none !important;
-        }
+/* Базовые настройки для мобилок */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    -webkit-tap-highlight-color: transparent; 
+}
 
-        /* КАРТОЧКИ ПЕРСОНАЖЕЙ */
-        tbody tr:not(.story-row) {
-            display: flex !important; flex-direction: column !important;
-            background: var(--card-bg) !important; border-radius: 24px; 
-            padding: 25px; margin-bottom: 25px; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-white);
+    padding: 20px 15px 100px 15px; /* Уменьшил отступы для узких экранов */
+    overflow-x: hidden;
+    width: 100%;
+}
 
-        tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; background: transparent !important; }
-        
-        /* Имя персонажа */
-        tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 22px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
-        
-        /* Описание */
-        .info-txt { order: 2; font-size: 14px; color: var(--text-muted) !important; margin-bottom: 20px; line-height: 1.4; }
+/* Космос на фоне */
+#star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
+@keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
-        /* Код и кнопка */
-        tr:not(.story-row) td:nth-child(2) { order: 3; display: flex !important; flex-direction: column; }
-        .code-text { 
-            display: block; background: var(--code-bg); color: var(--code-text-color); 
-            padding: 16px; border-radius: 14px; font-family: monospace; 
-            font-size: 13px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 12px; 
-        }
-        .copy-btn { 
-            width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; 
-            padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
-        }
+.container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
 
-        /* Тосты и оверлеи */
-        #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000; }
-        #toast.show { display: block; }
-        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10005; color: var(--accent-blue); font-size: 35px; font-weight: 900; text-align: center; padding: 20px; letter-spacing: 5px; }
-        #secret-overlay.show { display: flex; }
-        .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
-        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; }
-    </style>
+.logo { font-size: 26px; font-weight: 900; margin-bottom: 15px; display: block; }
+.hero-title { font-size: clamp(24px, 7vw, 36px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 30px; }
+
+.tg-btn { 
+    display: block; background: var(--accent-blue); color: #1a2a44 !important; 
+    text-decoration: none; padding: 18px; border-radius: 18px; text-align: center; 
+    font-weight: 900; text-transform: uppercase; margin-bottom: 35px; 
+    transition: transform 0.2s;
+}
+.tg-btn:active { transform: scale(0.96); }
+
+/* ПОИСК БЕЗ СКАЧУЩЕГО КРЕСТИКА */
+.search-wrapper { position: relative; width: 100%; margin-bottom: 30px; }
+#searchInput { 
+    width: 100%; padding: 16px 45px 16px 20px; border-radius: 16px; border: none; 
+    background: #ffffff; color: #1a2a44; font-size: 16px; font-weight: 700; outline: none; 
+}
+#clearSearch { 
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+    background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; 
+    display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 10;
+}
+
+/* УБИРАЕМ ТАБЛИЧНЫЕ ОГРАНИЧЕНИЯ (Чтобы не резалось) */
+table, tbody, tr, td { 
+    display: block !important; 
+    width: 100% !important; 
+    border: none !important;
+    background: transparent !important;
+}
+
+/* ЗАГОЛОВКИ ИСТОРИЙ (Чистый текст) */
+.story-row { padding: 40px 0 10px 5px !important; }
+.story-row td { 
+    font-size: 24px !important; font-weight: 900 !important; 
+    color: #ffffff !important; text-transform: uppercase !important; 
+}
+
+/* КАРТОЧКИ ПЕРСОНАЖЕЙ */
+tbody tr:not(.story-row) {
+    background: var(--card-bg) !important; 
+    border-radius: 22px; 
+    padding: 20px !important; 
+    margin-bottom: 20px !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Имя */
+tr:not(.story-row) td:nth-child(1) { font-size: 20px; font-weight: 900; color: var(--accent-blue); margin-bottom: 6px; }
+
+/* Описание */
+.info-txt { font-size: 13px; color: var(--text-muted) !important; margin-bottom: 15px; line-height: 1.3; }
+
+/* Код и кнопка */
+.code-text { 
+    display: block; background: var(--code-bg); color: var(--code-text-color); 
+    padding: 14px; border-radius: 12px; font-family: monospace; 
+    font-size: 12px; font-weight: 800; text-align: center; 
+    word-break: break-all; margin-bottom: 10px; 
+}
+.copy-btn { 
+    width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; 
+    padding: 14px; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
+}
+
+/* Фишки */
+#toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 10000; font-size: 14px; }
+#toast.show { display: block; }
+#backToTop { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--card-bg); border: 1px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 100; }
 </head>
 <body>
 
