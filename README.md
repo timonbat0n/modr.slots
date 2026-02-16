@@ -19,7 +19,7 @@
 --toast-bg: rgba(7, 71, 153, 0.9);
 }
 
-```
+
     [data-theme="dark"] {
         /* Темная тема */
         --bg-page: #0f172a;
@@ -43,6 +43,58 @@
         min-height: 100vh; background: var(--bg-page);
         transition: background 0.5s ease; overflow-x: hidden;
     }
+/* КНОПКА КОПИРОВАТЬ */
+.copy-btn {
+    background: var(--btn-gradient);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 11px;
+    width: 90%;
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.copy-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+    box-shadow: 0 0 10px var(--magic-color);
+}
+
+.copy-btn:active {
+    transform: scale(0.95);
+}
+
+/* ПЕРЕКЛЮЧАТЕЛЬ ТЕМ (ID themeBtn) */
+#themeBtn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--table-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 20px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#themeBtn:hover {
+    transform: rotate(15deg) scale(1.1);
+    box-shadow: 0 0 15px var(--magic-color);
+}
 
     /* ЗВЕЗДНЫЙ ФОН */
     #star-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
@@ -99,12 +151,12 @@
 
     #backToTop { position: fixed; bottom: 20px; left: 20px; width: 44px; height: 44px; background: var(--btn-gradient); border-radius: 50%; display: none; align-items: center; justify-content: center; color: white; cursor: pointer; z-index: 999; }
 </style>
-```
+
 
 </head>
 <body>
 
-```
+
 <div id="star-container"></div>
 <button id="themeBtn" onclick="toggleTheme(event)">🌙</button>
 
@@ -505,6 +557,38 @@
         const btn = document.getElementById('backToTop');
         btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
+// Функция применения темы
+function reflectPreference() {
+    // Проверяем сохраненную тему, если нет - берем системную
+    const theme = localStorage.getItem('theme-preference') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    const btn = document.getElementById('themeBtn');
+    if (btn) {
+        btn.innerHTML = theme === 'light' ? '🌙' : '☀️';
+    }
+}
+
+// Функция клика по кнопке
+function toggleTheme(e) {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    
+    localStorage.setItem('theme-preference', next);
+    reflectPreference();
+    
+    // Искры при смене темы
+    if (e) {
+        const x = e.clientX || (e.touches && e.touches[0].clientX);
+        const y = e.clientY || (e.touches && e.touches[0].clientY);
+        spawnParticles(x, y);
+    }
+}
+
+// Вызываем сразу при загрузке скрипта
+reflectPreference();
 
     document.addEventListener('DOMContentLoaded', () => {
         reflectPreference();
@@ -517,6 +601,4 @@
         });
     });
 </script>
-```
 
-</body>
