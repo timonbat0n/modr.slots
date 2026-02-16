@@ -7,10 +7,10 @@
     <style>
         :root {
             --bg-color: #3b5984;
-            --card-bg: #2a3d59;
             --accent-blue: #7cb9e8;
+            --table-bg: #2a3d59;
             --text-white: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.6);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +19,7 @@
             font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
-            padding: 40px 20px;
+            padding: 40px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -27,179 +27,151 @@
 
         .container { width: 100%; max-width: 800px; }
 
-        .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; letter-spacing: -1px; }
+        .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; }
 
         .hero-title {
-            font-size: clamp(28px, 7vw, 44px);
+            font-size: clamp(26px, 6vw, 42px);
             font-weight: 900;
             line-height: 1.1;
             color: var(--accent-blue);
             text-transform: uppercase;
-            margin-bottom: 15px;
-            text-align: center;
+            margin-bottom: 10px;
         }
 
         .hero-desc {
-            font-size: 15px;
-            line-height: 1.5;
+            font-size: 14px;
             color: var(--text-muted);
             margin-bottom: 30px;
-            text-align: center;
+            max-width: 500px;
         }
-
-        /* КАРТОЧКИ ПРЕИМУЩЕСТВ */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .feature-card h3 { font-size: 16px; margin-bottom: 10px; color: var(--accent-blue); }
-        .feature-card p { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
 
         /* ПОИСК */
         #searchInput {
             width: 100%;
-            padding: 18px 20px;
-            border-radius: 15px;
+            padding: 16px 20px;
+            border-radius: 12px;
             border: none;
             background: #fff;
             color: #1a2a44;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            outline: none;
         }
 
         .tg-btn {
-            display: block;
+            display: inline-block;
             width: 100%;
             background: var(--accent-blue);
-            color: #1a2a44;
+            color: #1a2a44 !important;
             text-decoration: none;
-            padding: 20px;
-            border-radius: 15px;
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 40px;
         }
 
-        /* ТАБЛИЦА-КАРТОЧКИ */
-        table, tbody, tr, td { display: block; width: 100%; }
-        thead { display: none; }
+        /* ТАБЛИЦА */
+        .table-wrapper {
+            background: var(--table-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
 
-        .story-row { margin: 30px 0 15px 5px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        /* Строка с названием истории */
         .story-row td {
-            font-size: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px 20px;
             font-weight: 900;
             text-transform: uppercase;
+            letter-spacing: 1px;
             color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        tr:not(.story-row) {
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
+        /* Обычные ячейки */
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            vertical-align: middle;
+        }
+
+        .char-name { font-weight: 800; color: var(--accent-blue); font-size: 16px; }
+        .char-info { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+        /* Контейнер кода и кнопки */
+        .code-cell {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* Имя (1-я ячейка) */
-        tr:not(.story-row) td:nth-child(1) {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--accent-blue);
-        }
-
-        /* Описание (3-я ячейка) */
-        tr:not(.story-row) td:nth-child(3) {
-            font-size: 13px;
-            color: var(--text-muted);
-            order: 2; /* Порядок: под именем */
-        }
-
-        /* Код и Кнопка (2-я ячейка) */
-        tr:not(.story-row) td:nth-child(2) {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            order: 3;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            justify-content: space-between;
         }
 
         .code-text {
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 10px;
             font-family: monospace;
-            font-size: 14px;
-            word-break: break-all;
-            text-align: center;
+            font-size: 13px;
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .copy-btn {
             background: var(--accent-blue);
             color: #1a2a44;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 900;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
+            flex-shrink: 0;
         }
+
+        .copy-btn:hover { opacity: 0.9; }
 
         #backToTop {
             position: fixed;
-            bottom: 25px; right: 25px;
-            width: 50px; height: 50px;
-            background: var(--card-bg);
+            bottom: 20px; right: 20px;
+            width: 45px; height: 45px;
+            background: var(--table-bg);
             border: 2px solid var(--accent-blue);
             color: var(--accent-blue);
             border-radius: 50%;
             display: none; align-items: center; justify-content: center;
             cursor: pointer;
         }
+
+        @media (max-width: 600px) {
+            td { padding: 12px 15px; }
+            .code-cell { flex-direction: column; align-items: stretch; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-   
+    <div class="logo">modr.</div>
 
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
-
-    <div class="features">
-        <div class="feature-card">
-            <h3>Неограниченно</h3>
-            <p>Играя с нашим модом, вы экономите время. Больше никакой рекламы.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Платные выборы</h3>
-            <p>Все сцены переведены. Вы точно ничего не пропустите в истории.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Низкая стоимость</h3>
-            <p>Доступ ко всем преимуществам всего за 69 рублей в месяц.</p>
-        </div>
-  
-
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>В ЧАТЕ</h1>
+ 
     <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
 
-    <a href="#" class="tg-btn">Отправить слоты ⚡</a>
-
-     <div class="table-container">
+    <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
+  <div class="table-container">
     <table id="mainTable">
         <thead>
             <tr>
@@ -444,8 +416,9 @@
     </td>
     <td>логика, авторитет с финалом</td>
 </tr>
-</div>
 
+<tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
+<tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
 <div id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
 
 <script>
@@ -453,8 +426,8 @@
         const code = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(code).then(() => {
             const oldText = btn.innerText;
-            btn.innerText = 'СКОПИРОВАНО!';
-            setTimeout(() => btn.innerText = oldText, 1500);
+            btn.innerText = 'ГОТОВО';
+            setTimeout(() => btn.innerText = oldText, 1200);
         });
     }
 
@@ -464,7 +437,7 @@
         const headers = document.querySelectorAll(".story-row");
 
         rows.forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(input) ? "flex" : "none";
+            row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
         });
 
         headers.forEach(header => {
@@ -474,7 +447,7 @@
                 if (next.style.display !== 'none') visible = true;
                 next = next.nextElementSibling;
             }
-            header.style.display = visible ? "block" : "none";
+            header.style.display = visible ? "" : "none";
         });
     }
 
