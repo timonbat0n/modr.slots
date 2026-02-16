@@ -115,7 +115,7 @@
             align-items: center; justify-content: center; cursor: pointer; 
         }
     </style>
-
+</head>
 <body>
 
 <div id="star-container">
