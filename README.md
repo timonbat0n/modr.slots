@@ -607,7 +607,7 @@ window.addEventListener('DOMContentLoaded', createStars);
         return; 
     } 
     
-    if (filter === 'timer' || filter === 'таймер') {
+     (filter === 'timer' || filter === 'таймер') {
         showFullscreenText("ДАЙТЕ ВИКЕ ТАЙМЕР АДМИНКУ");
         clearInput(); // Очищаем поле после срабатывания
         return;
