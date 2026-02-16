@@ -4,142 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR Slots</title>
-   <style>
+  <style>
     :root {
-        --bg-color: #3b5984;         /* Основной фон страницы */
-        --table-bg: #1a2a44;         /* Глубокий темно-синий для таблицы */
-        --accent-blue: #7cb9e8;      /* Голубой для имен и кнопок */
+        --bg-color: #3b5984;         /* Фон страницы */
+        --card-bg: #2a3d59;          /* Темно-синие карточки */
+        --accent-blue: #7cb9e8;      /* Голубой акцент */
         --text-white: #ffffff;
-        --text-muted: rgba(255, 255, 255, 0.5);
-        --border-color: rgba(255, 255, 255, 0.08);
+        --text-muted: rgba(255, 255, 255, 0.7);
     }
 
-    /* Общий контейнер таблицы */
-    .table-wrapper {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: 'Inter', -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-white);
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container { width: 100%; max-width: 600px; }
+
+    /* ЛОГОТИП */
+    .logo { 
+        font-size: 24px; 
+        font-weight: 900; 
+        margin-bottom: 20px; 
+        align-self: flex-start;
+    }
+
+    /* ЗАГОЛОВОК (Тот самый крупный текст) */
+    .hero-title {
+        font-size: clamp(30px, 8vw, 48px);
+        font-weight: 900;
+        line-height: 1.1;
+        color: var(--accent-blue);
+        text-transform: uppercase;
+        margin-bottom: 15px;
+    }
+
+    .hero-desc {
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--text-muted);
+        margin-bottom: 30px;
+    }
+
+    /* ПОИСК */
+    .search-wrapper { margin-bottom: 15px; width: 100%; }
+
+    #searchInput {
         width: 100%;
-        max-width: 800px;
-        background: var(--table-bg);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        margin: 20px auto;
+        padding: 18px 20px;
+        border-radius: 15px;
+        border: none;
+        background: #ffffff;
+        color: #1a2a44;
+        font-size: 16px;
+        font-weight: 700;
+        outline: none;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
+    /* КНОПКА ТЕЛЕГРАМ (Яркая) */
+    .tg-btn {
+        display: block;
+        width: 100%;
+        background: var(--accent-blue);
+        color: #1a2a44 !important;
+        text-decoration: none;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(124, 185, 232, 0.3);
+    }
+
+    .tg-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+    /* ТАБЛИЦА-КАРТОЧКИ */
     table {
         width: 100%;
-        border-collapse: collapse;
-        font-family: 'Inter', -apple-system, sans-serif;
+        border-collapse: separate; 
+        border-spacing: 0 15px; 
     }
 
-    /* Строка-заголовок истории (W: Ловчая и т.д.) */
     .story-row td {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 18px 24px;
+        padding: 10px 5px;
+        font-size: 20px;
         font-weight: 900;
         text-transform: uppercase;
         color: var(--text-white);
-        letter-spacing: 1px;
-        font-size: 14px;
-        border-bottom: 2px solid var(--border-color);
     }
 
-    /* Обычная ячейка */
-    td {
-        padding: 16px 24px;
-        border-bottom: 1px solid var(--border-color);
+    tr:not(.story-row) {
+        background-color: var(--card-bg);
+    }
+
+    tr:not(.story-row) td:first-child {
+        border-radius: 20px 0 0 20px;
+        padding-left: 20px;
+    }
+
+    tr:not(.story-row) td:last-child {
+        border-radius: 0 20px 20px 0;
+        padding-right: 20px;
+    }
+
+    tr:not(.story-row) td {
+        padding: 20px 10px;
         vertical-align: middle;
     }
 
-    /* Стили текста внутри ячеек */
-    .char-name {
-        font-weight: 800;
-        color: var(--accent-blue);
-        font-size: 16px;
-        display: block;
-    }
+    /* Текст внутри таблицы */
+    .char-name { font-size: 18px; font-weight: 800; color: var(--accent-blue); }
+    .char-info { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
 
-    .char-info {
-        font-size: 12px;
-        color: var(--text-muted);
-        margin-top: 4px;
-        display: block;
-    }
-
-    /* Контейнер для кода и кнопки */
-    .code-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        background: rgba(0, 0, 0, 0.25);
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-    }
+    /* Код и кнопка в ячейке */
+    .code-wrapper { display: flex; flex-direction: column; gap: 8px; }
 
     .code-text {
-        font-family: 'Courier New', monospace;
+        background: rgba(0,0,0,0.3);
+        padding: 10px;
+        border-radius: 10px;
+        font-family: monospace;
         font-size: 13px;
+        text-align: center;
         color: #fff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        flex-grow: 1;
+        border: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* Кнопка Копировать */
     .copy-btn {
         background: var(--accent-blue);
         color: #1a2a44;
         border: none;
-        padding: 8px 14px;
-        border-radius: 8px;
-        font-size: 11px;
+        padding: 10px;
+        border-radius: 10px;
         font-weight: 900;
         text-transform: uppercase;
+        font-size: 11px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        flex-shrink: 0;
     }
 
-    .copy-btn:hover {
-        filter: brightness(1.1);
-        transform: translateY(-1px);
-    }
-
-    .copy-btn:active {
-        transform: translateY(0);
-    }
-
-    /* Адаптивность для мобилок */
+    /* Мобильная версия */
     @media (max-width: 600px) {
-        td {
-            padding: 12px 16px;
-        }
-        .code-container {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 8px;
-            text-align: center;
-        }
-        .code-text {
-            text-overflow: clip;
-            white-space: normal;
-            word-break: break-all;
-        }
+        tr:not(.story-row) { display: flex; flex-direction: column; border-radius: 20px; }
+        tr:not(.story-row) td { display: block; width: 100% !important; padding: 10px 20px !important; text-align: center; }
+        tr:not(.story-row) td:first-child { border-radius: 20px 20px 0 0; }
+        tr:not(.story-row) td:last-child { border-radius: 0 0 20px 20px; }
     }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="logo">modr.</div>
-
+    
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>В ЧАТЕ</h1>
- 
-    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
+    
+
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
+    </div>
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
-  <div class="table-container">
+
     <table id="mainTable">
         <thead>
             <tr>
