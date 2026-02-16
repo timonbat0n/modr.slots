@@ -11,99 +11,78 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
 <style>
-    :root {
-        /* Светлая тема */
-        --bg-page: #eef7ff; 
-        --table-bg: rgba(255, 255, 255, 0.7); 
-        --text-main: #074799;
-        --accent-blue: #0091ea; 
-        --story-header: rgba(209, 233, 255, 0.85); 
-        --code-bg: rgba(240, 250, 255, 0.6);
-        --highlight: #fff176;
-        --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
-        --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
-        --toast-bg: rgba(0, 0, 0, 0.8);
-    --toast-color: #00f2ff;
-    --particle-color: #00f2ff;
-    }
-
-    body.dark-theme {
-        /* Темная тема */
-        --bg-page: #0f172a; 
-        --table-bg: rgba(30, 41, 59, 0.6); 
-        --text-main: #f1f5f9;
-        --accent-blue: #38bdf8; 
-        --story-header: rgba(51, 65, 85, 0.9); 
-        --code-bg: rgba(15, 23, 42, 0.7);
-        --highlight: #fb8c00;
-        --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    }
-
-    * { box-sizing: border-box; }
-
-    body { 
-        font-family: 'Segoe UI', Roboto, sans-serif; 
-        margin: 0; padding: 10px; 
-        display: flex; flex-direction: column; align-items: center; 
-        min-height: 100vh; background: var(--bg-page); 
-        transition: background 0.5s ease;
-        overflow-x: hidden;
-    }
-
-.diamond-rain {
-    position: fixed;
-    top: -50px;
-    font-size: 24px;
-    z-index: 9999;
-    pointer-events: none;
-    animation: fall linear forwards;
-    filter: drop-shadow(0 0 5px #00f2ff);
+:root {
+    /* Светлая тема */
+    --bg-page: #eef7ff;
+    --table-bg: rgba(255, 255, 255, 0.7);
+    --text-main: #074799;
+    --accent-blue: #0091ea;
+    --story-header: rgba(209, 233, 255, 0.85);
+    --code-bg: rgba(240, 250, 255, 0.6);
+    --highlight: #fff176;
+    --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
+    --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+    
+    /* Переменные для магии (Светлые) */
+    --magic-color: #0091ea;
+    --magic-text-shadow: 0 0 20px rgba(0, 145, 234, 0.5);
+    --toast-bg: rgba(7, 71, 153, 0.9);
 }
 
-@keyframes fall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-    }
+[data-theme="dark"] {
+    /* Темная тема */
+    --bg-page: #0f172a;
+    --table-bg: rgba(30, 41, 59, 0.6);
+    --text-main: #f1f5f9;
+    --accent-blue: #38bdf8;
+    --story-header: rgba(51, 65, 85, 0.9);
+    --code-bg: rgba(15, 23, 42, 0.7);
+    --highlight: #fb8c00;
+    --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+    
+    /* Переменные для магии (Неон) */
+    --magic-color: #00f2ff;
+    --magic-text-shadow: 0 0 20px #00f2ff, 0 0 50px #00f2ff;
+    --toast-bg: rgba(0, 0, 0, 0.8);
 }
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--bg-page);
+    transition: background 0.5s ease;
+    overflow-x: hidden;
+}
+
+/* --- ПАСХАЛКИ И ЭФФЕКТЫ --- */
 
 #secret-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: transparent; /* Фона больше нет */
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10001;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s ease;
-    /* Добавим небольшое размытие заднего фона, чтобы текст лучше читался */
-    backdrop-filter: blur(2px); 
-}
-
-#secret-overlay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    z-index: 10001;
-    opacity: 0;
-    pointer-events: none;
     transition: opacity 0.5s ease;
+    backdrop-filter: blur(4px);
 }
 
-#secret-overlay.show {
-    opacity: 1;
-}
+#secret-overlay.show { opacity: 1; }
 
 .secret-text {
     font-size: 5rem;
-    color: #00f2ff;
-    text-shadow: 0 0 20px #00f2ff, 0 0 50px #00f2ff;
+    color: var(--magic-color);
+    text-shadow: var(--magic-text-shadow);
     text-align: center;
     font-weight: 900;
     text-transform: uppercase;
@@ -115,165 +94,178 @@
     to { transform: scale(1.1); }
 }
 
-/* Для мобилок уменьшим шрифт текста */
-@media (max-width: 600px) {
-    .secret-text { font-size: 2.5rem; }
-}
-#toast {
-    background: var(--toast-bg);
-    color: var(--toast-color);
-    border: 1px solid var(--toast-color);
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #00f2ff;
-    border: 1px solid #00f2ff;
-    padding: 12px 25px;
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
-    transform: translateY(100px);
-    transition: transform 0.3s ease;
-    z-index: 10000;
-}
-#toast.show {
-    transform: translateY(0);
-}
-    
-    /* ЗВЕЗДНЫЙ ФОН */
-    #star-container { 
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-        z-index: -2; pointer-events: none; transition: opacity 0.8s ease;
-    }
-    
-    /* Растворение звезд в светлой теме */
-    body:not(.dark-theme) #star-container { opacity: 0.3; }
-    body.dark-theme #star-container { opacity: 1; }
-
-    .star { 
-        position: absolute; background: white; border-radius: 50%; opacity: 0; 
-        animation: twinkle var(--duration) infinite ease-in-out; 
-    }
-    
-    /* Звезды в светлой теме становятся нежно-голубыми */
-    body:not(.dark-theme) .star { background: var(--accent-blue); }
-
-    @keyframes twinkle { 
-        0%, 100% { opacity: 0; transform: scale(0.5); } 
-        50% { opacity: var(--max-opacity); transform: scale(1.2); } 
-    }
-
-    /* ЭФФЕКТ СТЕКЛА (Glassmorphism) */
-    .tg-btn, #searchInput, td, th, #themeBtn, .code-text {
-        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-
-    /* КОНТЕЙНЕРЫ */
-    .tg-wrapper, .search-wrapper, .table-container { 
-        width: 100%; max-width: 600px; z-index: 1; margin-bottom: 12px; 
-    }
-
-    /* КНОПКА ОТПРАВИТЬ */
-    .tg-btn { 
-        display: flex; align-items: center; justify-content: center; width: 100%; 
-        padding: 14px; background: var(--btn-gradient); color: white !important; 
-        text-decoration: none; font-weight: 800; border-radius: 14px; 
-        box-shadow: 0 4px 15px rgba(0, 145, 234, 0.3); transition: 0.3s;
-    }
-    body.dark-theme .tg-btn { animation: neonPulse 2s infinite; }
-
-    @keyframes neonPulse {
-        0%, 100% { box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
-        50% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.7); }
-    }
-
-    /* ПОИСК И КРЕСТИК */
-    .search-wrapper { position: relative; }
-    #searchInput { 
-        width: 100%; padding: 12px 45px; border-radius: 14px; border: none; 
-        background: var(--table-bg) var(--search-icon) no-repeat 14px center; 
-        background-size: 18px; color: var(--text-main); outline: none;
-    }
-    
-    #clearSearch { 
-        position: absolute; right: 15px; top: 50%; transform: translateY(-50%); 
-        cursor: pointer; color: var(--accent-blue); font-size: 24px; font-weight: bold; 
-        display: none; z-index: 10; line-height: 1; transition: 0.2s;
-    }
-    #clearSearch:hover { transform: translateY(-50%) scale(1.2); color: #ff5252; }
-
-    /* ТАБЛИЦА */
-    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; table-layout: fixed; }
-    th, td { 
-        background-color: var(--table-bg) !important; color: var(--text-main) !important; 
-        padding: 8px 4px !important; text-align: center; font-size: 12px; 
-        height: 72px; vertical-align: middle; transition: 0.3s ease; 
-    }
-    
-    thead th { height: 40px; text-transform: uppercase; font-size: 11px; color: var(--accent-blue) !important; border: none !important; }
-    
-    tr td:nth-child(1) { border-radius: 12px 0 0 12px; width: 25%; font-weight: bold; }
-    tr td:nth-child(2) { width: 45%; }
-    tr td:nth-child(3) { border-radius: 0 12px 12px 0; width: 30%; font-size: 10px; }
-
-    /* ЗАГОЛОВКИ ИСТОРИЙ */
-    .story-row td { 
-        background-color: var(--story-header) !important; color: var(--accent-blue) !important; 
-        height: 48px !important; text-align: left !important; padding-left: 15px !important; 
-        border-radius: 12px !important; font-weight: 800; border: 1px solid rgba(56, 189, 248, 0.2) !important;
-    }
-
-    /* ТЕМНЫЙ ХОВЕР */
-    tbody tr:not(.story-row):hover td {
-        background: rgba(0, 145, 234, 0.1) !important;
-        box-shadow: inset 0 0 10px rgba(0, 145, 234, 0.1);
-    }
-    body.dark-theme tbody tr:not(.story-row):hover td {
-        background: rgba(15, 23, 42, 0.9) !important;
-        box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.3);
-        color: #fff !important;
-    }
-
-    /* ПОДСВЕТКА */
-    mark { 
-        background: var(--highlight); color: #000; border-radius: 2px; 
-        box-shadow: 0 0 8px var(--highlight); font-weight: bold; 
-    }
-
-    /* КОД И КНОПКИ */
-    .code-text { font-family: monospace; font-size: 9px; display: block; margin-bottom: 5px; color: var(--accent-blue); word-break: break-all; padding: 5px; border-radius: 6px; }
-    .copy-btn { 
-        background: var(--btn-gradient); color: white; border: none; padding: 7px; 
-        border-radius: 8px; cursor: pointer; width: 95%; font-weight: bold; font-size: 10px; 
-    }
-
-    /* КНОПКИ УПРАВЛЕНИЯ */
-    #themeBtn { 
-        position: fixed; top: 10px; right: 10px; border: none; background: var(--table-bg); 
-        width: 38px; height: 38px; border-radius: 50%; z-index: 100; cursor: pointer; 
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: var(--text-main); 
-    }
-    #backToTop { 
-        position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px; 
-        background: var(--btn-gradient); border: none; border-radius: 50%; 
-        cursor: pointer; z-index: 99; display: flex; align-items: center; 
-        justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; color: #fff;
-    }
-    #backToTop.show { opacity: 1; pointer-events: auto; }
-
-        .particle {
+.particle {
     position: fixed;
     pointer-events: none;
     width: 6px;
     height: 6px;
-    background: #00f2ff; /* Цвет искр под неон */
-    box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
+    background: var(--magic-color);
+    box-shadow: 0 0 10px var(--magic-color);
     border-radius: 50%;
+    z-index: 10005;
+}
+
+.diamond-rain {
+    position: fixed;
+    top: -50px;
+    font-size: 24px;
     z-index: 9999;
-    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+    pointer-events: none;
+    animation: fall linear forwards;
+    filter: drop-shadow(0 0 5px var(--magic-color));
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* --- ИНТЕРФЕЙС --- */
+
+#toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--toast-bg);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 10px;
+    border: 1px solid var(--magic-color);
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+    transform: translateY(150px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000;
+}
+
+#toast.show { transform: translateY(0); }
+
+#star-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+}
+
+[data-theme="light"] #star-container { opacity: 0.3; }
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration) infinite ease-in-out;
+}
+
+[data-theme="light"] .star { background: var(--accent-blue); }
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: var(--max-opacity); transform: scale(1.2); }
+}
+
+/* --- КОНТЕЙНЕРЫ И ТАБЛИЦА --- */
+
+.tg-wrapper, .search-wrapper, .table-container {
+    width: 100%;
+    max-width: 600px;
+    z-index: 1;
+    margin-bottom: 12px;
+}
+
+.tg-btn, #searchInput, td, th, #theme-toggle, .code-text {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 45px;
+    border-radius: 14px;
+    border: none;
+    background: var(--table-bg) var(--search-icon) no-repeat 14px center;
+    background-size: 18px;
+    color: var(--text-main);
+    outline: none;
+}
+
+#clearSearch {
+    position: absolute;
+    right: 15px; top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--accent-blue);
+    font-size: 24px;
+    display: none;
+    transition: 0.2s;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+th, td {
+    background-color: var(--table-bg) !important;
+    color: var(--text-main) !important;
+    padding: 10px 5px !important;
+    text-align: center;
+    font-size: 12px;
+    transition: 0.3s ease;
+}
+
+tr td:first-child { border-radius: 12px 0 0 12px; }
+tr td:last-child { border-radius: 0 12px 12px 0; }
+
+.story-row td {
+    background-color: var(--story-header) !important;
+    color: var(--accent-blue) !important;
+    text-align: left !important;
+    padding-left: 15px !important;
+    border-radius: 12px !important;
+    font-weight: 800;
+}
+
+.copy-btn {
+    background: var(--btn-gradient);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 90%;
+    font-weight: bold;
+}
+
+/* КНОПКИ УПРАВЛЕНИЯ */
+#theme-toggle {
+    position: fixed;
+    top: 10px; right: 10px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--table-bg);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+}
+
+#backToTop {
+    position: fixed;
+    bottom: 25px; right: 25px;
+    width: 50px; height: 50px;
+    background: var(--btn-gradient);
+    border-radius: 50%;
+    display: none; /* Скрыто по умолчанию, управляется JS */
+    align-items: center; justify-content: center;
+    color: white;
+    z-index: 999;
+}
+
+@media (max-width: 600px) {
+    .secret-text { font-size: 2.5rem; }
 }
 </style>
+
 
 <body>
 
@@ -549,65 +541,43 @@
 
     <button id="backToTop" onclick="scrollToTop()">▲</button>
 
-    <script>
-
+<script>
 /**
- * 1. УПРАВЛЕНИЕ ТЕМОЙ
+ * 1. СИСТЕМА ТЕМЫ (Интеграция с твоим CSS)
  */
 const storageKey = 'theme-preference';
 
-// Функция, которая применяет тему
 const reflectPreference = () => {
     const theme = localStorage.getItem(storageKey) || 
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    
+    // Устанавливаем атрибут для CSS переменных
     document.documentElement.setAttribute('data-theme', theme);
     
-    // Обновляем иконку или текст на кнопке (опционально)
+    // Обновляем иконку на кнопке
     const themeBtn = document.querySelector('#theme-toggle');
-    if (themeBtn) {
-        themeBtn.innerText = theme === 'light' ? '🌙' : '☀️';
-    }
+    if (themeBtn) themeBtn.innerHTML = theme === 'light' ? '🌙' : '☀️';
 };
 
-// Функция переключения
-const toggleTheme = () => {
+const toggleTheme = (e) => {
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'light' ? 'dark' : 'light';
     localStorage.setItem(storageKey, next);
     reflectPreference();
+    
+    // Искры при смене темы
+    if (e) {
+        const x = e.clientX || (e.touches && e.touches[0].clientX);
+        const y = e.clientY || (e.touches && e.touches[0].clientY);
+        spawnParticles(x, y);
+    }
 };
 
-// Запускаем проверку темы немедленно (до загрузки DOM)
+// Запуск темы немедленно, чтобы не было "мигания" белым
 reflectPreference();
 
 /**
- * 2. КОПИРОВАНИЕ И УВЕДОМЛЕНИЯ
- */
-function copy(btn) {
-    const text = btn.getAttribute('data-code') || btn.previousElementSibling?.innerText;
-    if (!text) return;
-
-    navigator.clipboard.writeText(text).then(() => {
-        showToast(`Код ${text} скопирован!`);
-    }).catch(err => {
-        console.error('Ошибка копирования:', err);
-    });
-}
-
-function showToast(msg) {
-    let toast = document.getElementById('toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'toast';
-        document.body.appendChild(toast);
-    }
-    toast.innerText = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-}
-
-/**
- * 3. ПОИСК И ПАСХАЛКИ
+ * 2. ПОИСК И ПАСХАЛКИ
  */
 function runFilter() {
     const input = document.getElementById('searchInput');
@@ -617,7 +587,7 @@ function runFilter() {
     const filter = input.value.toLowerCase().trim();
     const rows = document.querySelectorAll('tbody tr');
 
-    // Показываем/скрываем крестик очистки
+    // Управление крестиком
     if (clearBtn) clearBtn.style.display = input.value.length > 0 ? 'flex' : 'none';
 
     // ПАСХАЛКИ
@@ -634,6 +604,11 @@ function runFilter() {
 
     // ЛОГИКА ФИЛЬТРАЦИИ
     rows.forEach(row => {
+        // Не скрываем строки-заголовки историй при поиске, если хочешь видеть структуру
+        if (row.classList.contains('story-row')) {
+            row.style.display = filter === '' ? '' : 'none'; 
+            return;
+        }
         const rowText = row.innerText.toLowerCase();
         row.style.display = rowText.includes(filter) ? '' : 'none';
     });
@@ -649,117 +624,139 @@ function clearInput() {
 }
 
 /**
- * 4. ЭФФЕКТЫ (ИСКРЫ, КОНФЕТТИ, ТЕКСТ)
+ * 3. КОПИРОВАНИЕ И TOAST
  */
-/**
- * 4. ЭФФЕКТЫ (ИСКРЫ, КОНФЕТТИ, ТЕКСТ)
- */
+function copy(btn) {
+    const text = btn.getAttribute('data-code') || btn.previousElementSibling?.innerText;
+    if (!text) return;
 
-// Обработка и клика, и тапа
-const interactionEvents = ['click', 'touchstart'];
-
-interactionEvents.forEach(eventType => {
-    document.addEventListener(eventType, (e) => {
-        // Определяем координаты (для тапа они в touches[0])
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-        const target = e.target;
-        const isButton = target.tagName === 'BUTTON' || 
-                         target.closest('button') || 
-                         target.classList.contains('copy-btn') || 
-                         target.id === 'clearSearch' ||
-                         target.id === 'backToTop';
-
-        if (isButton && clientX && clientY) {
-            for (let i = 0; i < 10; i++) {
-                createParticle(clientX, clientY);
-            }
-        }
-    }, { passive: true }); // passive для лучшей производительности на мобилках
-});
-
-function createParticle(x, y) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    document.body.appendChild(p);
-
-    // Случайный цвет между голубым и розовым
-    const color = Math.random() > 0.5 ? '#00f2ff' : '#ff00ff';
-    
-    // Стили через JS, чтобы точно работало
-    p.style.position = 'fixed';
-    p.style.left = x + 'px';
-    p.style.top = y + 'px';
-    p.style.width = '6px';
-    p.style.height = '6px';
-    p.style.backgroundColor = color;
-    p.style.borderRadius = '50%';
-    p.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
-    p.style.zIndex = '10005';
-    p.style.pointerEvents = 'none';
-    p.style.transition = 'all 0.6s ease-out';
-
-    requestAnimationFrame(() => {
-        const destX = (Math.random() - 0.5) * 150;
-        const destY = (Math.random() - 0.5) * 150;
-        p.style.transform = `translate(${destX}px, ${destY}px) scale(0)`;
-        p.style.opacity = '0';
+    navigator.clipboard.writeText(text).then(() => {
+        showToast(`Код ${text} скопирован!`);
     });
-
-    setTimeout(() => p.remove(), 600);
 }
 
-                     e.target.closest('button') || 
-                     e.target.classList.contains('copy-btn') || 
-                     e.target.id === 'clearSearch';
-
-    if (isButton) {
-        for (let i = 0; i < 10; i++) {
-            createParticle(e.clientX, e.clientY);
-        }
+function showToast(msg) {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        document.body.appendChild(toast);
     }
-});
-
-function createParticle(x, y) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    document.body.appendChild(p);
-
-    const color = Math.random() > 0.5 ? '#00f2ff' : '#ff00ff';
-    p.style.cssText = `position:fixed; left:${x}px; top:${y}px; width:6px; height:6px; background:${color}; box-shadow:0 0 10px ${color}; border-radius:50%; pointer-events:none; z-index:10005; transition:all 0.6s ease-out;`;
-
-    requestAnimationFrame(() => {
-        p.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`;
-        p.style.opacity = '0';
-    });
-    setTimeout(() => p.remove(), 600);
+    toast.innerText = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
 /**
- * 5. СКРОЛЛ И ИНИЦИАЛИЗАЦИЯ
+ * 4. ЭФФЕКТЫ (ИСКРЫ, КОНФЕТТИ, ТЕКСТ)
  */
+function spawnParticles(x, y) {
+    if (!x || !y) return;
+    for (let i = 0; i < 10; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        document.body.appendChild(p);
+        
+        // Позиция
+        p.style.left = x + 'px';
+        p.style.top = y + 'px';
+
+        requestAnimationFrame(() => {
+            const destX = (Math.random() - 0.5) * 120;
+            const destY = (Math.random() - 0.5) * 120;
+            p.style.transform = `translate(${destX}px, ${destY}px) scale(0)`;
+            p.style.opacity = '0';
+        });
+        setTimeout(() => p.remove(), 600);
+    }
+}
+
+function startConfetti() {
+    for (let i = 0; i < 40; i++) {
+        const d = document.createElement('div');
+        d.className = 'diamond-rain';
+        d.innerHTML = '💎';
+        d.style.left = Math.random() * 100 + 'vw';
+        d.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 4000);
+    }
+}
+
+function showFullscreenText(message) {
+    let overlay = document.getElementById('secret-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'secret-overlay';
+        overlay.innerHTML = `<div class="secret-text">${message}</div>`;
+        document.body.appendChild(overlay);
+    }
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 3000);
+}
+
+/**
+ * 5. ГЕНЕРАЦИЯ ЗВЕЗД
+ */
+function createStars() {
+    const container = document.getElementById('star-container');
+    if (!container) return;
+    const count = 100;
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 3 + 'px';
+        star.style.width = size;
+        star.style.height = size;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+        star.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
+        container.appendChild(star);
+    }
+}
+
+/**
+ * 6. ИНИЦИАЛИЗАЦИЯ И СОБЫТИЯ
+ */
+const handleInteraction = (e) => {
+    const x = e.clientX || (e.touches && e.touches[0].clientX);
+    const y = e.clientY || (e.touches && e.touches[0].clientY);
+    const target = e.target;
+
+    // Искры для кнопок
+    if (target.tagName === 'BUTTON' || target.closest('button') || target.classList.contains('copy-btn') || target.id === 'clearSearch' || target.id === 'backToTop') {
+        spawnParticles(x, y);
+    }
+    
+    // Клик по теме
+    if (target.id === 'theme-toggle' || target.closest('#theme-toggle')) {
+        toggleTheme(e);
+    }
+};
+
+document.addEventListener('click', handleInteraction);
+document.addEventListener('touchstart', handleInteraction, { passive: true });
+
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 window.addEventListener('scroll', () => {
     const btn = document.getElementById('backToTop');
-    if (btn) btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+    if (btn) {
+        if (window.scrollY > 300) btn.classList.add('show');
+        else btn.classList.remove('show');
+    }
 });
 
-// Запуск при полной загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     reflectPreference();
-    
-    // Привязка кнопки темы
-    const themeBtn = document.querySelector('#theme-toggle');
-    if (themeBtn) themeBtn.onclick = onClickTheme;
-    
-    // Инициализация поиска (если в поле что-то осталось после перезагрузки)
+    createStars();
     runFilter();
 });
 </script>
+
 
     
     
