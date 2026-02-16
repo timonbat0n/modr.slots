@@ -1,15 +1,3 @@
-
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODR SLOTS PREMIUM</title>
-  Похоже, при объединении кода произошел конфликт логики: «табличные» теги сопротивлялись блочной верстке, а скрипт перестал видеть новые элементы.
-
-Я полностью пересобрал код, вычистил «мусор» и вернул кнопку «Наверх», космический фон и все пасхалки. Теперь всё работает на div-ах (без таблиц вообще), что гарантирует отсутствие багов на телефонах.
-
-HTML
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -27,7 +15,7 @@ HTML
             --text-muted: rgba(255, 255, 255, 0.7);
         }
 
-        /* Базовый сброс */
+        /* Убираем все лишнее, чтобы не резалось по краям */
         * { box-sizing: border-box !important; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
@@ -35,17 +23,16 @@ HTML
             background-color: var(--bg-color);
             color: var(--text-white);
             padding: 20px 15px 100px 15px;
-            width: 100%;
             overflow-x: hidden;
+            width: 100%;
         }
 
-        /* Фон со звездами */
+        /* Звездный фон */
         #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
         .container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
-
         .logo { font-size: 24px; font-weight: 900; margin-bottom: 10px; display: block; }
         .hero-title { font-size: clamp(22px, 7vw, 34px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 25px; }
 
@@ -55,82 +42,90 @@ HTML
             font-weight: 900; text-transform: uppercase; margin-bottom: 30px; 
         }
 
-        /* Поиск с фиксированным крестиком */
-        .search-wrapper { position: relative; width: 100%; margin-bottom: 20px; display: flex; align-items: center; }
+        /* ПОИСК */
+        .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
         #searchInput { 
-            width: 100%; padding: 15px 45px 15px 15px; border-radius: 12px; border: none; 
+            width: 100% !important; padding: 15px 45px 15px 15px; border-radius: 12px; border: none; 
             font-size: 16px; font-weight: 700; background: #fff; color: #000; outline: none;
         }
         #clearSearch { 
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+            position: absolute !important; right: 12px; top: 50%; transform: translateY(-50%); 
             display: none; width: 26px; height: 26px; background: #ccc; border-radius: 50%; 
-            border: none; z-index: 10; cursor: pointer; align-items: center; justify-content: center;
-            font-size: 14px; color: #333; font-weight: bold;
+            border: none; cursor: pointer; align-items: center; justify-content: center;
+            font-size: 14px; color: #333; font-weight: bold; z-index: 10;
         }
 
-        /* Стили заголовков и карточек */
-        .story-section { width: 100%; margin-top: 25px; }
-        .story-header { 
-            font-size: 22px; font-weight: 900; color: #fff; 
-            text-transform: uppercase; padding: 15px 0 10px 5px; 
-            display: block; 
+        /* МАГИЯ ТАБЛИЦЫ: превращаем строки в карты */
+        table, tbody { display: block !important; width: 100% !important; }
+
+        /* Заголовки (story-row) — чистый текст */
+        .story-row { display: block !important; padding: 35px 0 10px 5px !important; background: transparent !important; }
+        .story-row td { 
+            display: block !important; font-size: 22px !important; font-weight: 900 !important; 
+            color: #fff !important; text-transform: uppercase; border: none !important;
         }
 
-        .card {
-            background: var(--card-bg); border-radius: 20px; 
-            padding: 20px; margin-bottom: 15px; 
-            display: flex; flex-direction: column;
+        /* Обычные строки (персонажи) — превращаем в КАРТЫ */
+        tr:not(.story-row) {
+            display: flex !important; flex-direction: column !important;
+            background: var(--card-bg) !important; border-radius: 20px !important; 
+            padding: 20px !important; margin-bottom: 15px !important; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            width: 100%;
+            width: 100% !important;
         }
 
-        .char-name { font-size: 19px; font-weight: 900; color: var(--accent-blue); margin-bottom: 8px; text-transform: uppercase; }
-        
-        .code-box { 
-            background: var(--code-bg); color: var(--code-text-color); 
-            padding: 14px; border-radius: 12px; font-family: monospace; 
-            font-size: 12px; font-weight: 800; text-align: center; 
-            word-break: break-all; margin-bottom: 12px; 
+        tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; padding: 0 !important; }
+
+        /* Имя (первая ячейка) */
+        tr:not(.story-row) td:nth-child(1) { 
+            font-size: 19px !important; font-weight: 900 !important; 
+            color: var(--accent-blue) !important; margin-bottom: 8px !important; 
+            order: 1;
+        }
+
+        /* Код и кнопка (вторая ячейка) */
+        tr:not(.story-row) td:nth-child(2) { order: 2; margin-bottom: 10px; }
+
+        /* Описание (третья ячейка) */
+        tr:not(.story-row) td:nth-child(3) { order: 3; }
+
+        .code-text { 
+            display: block !important; background: var(--code-bg) !important; 
+            color: var(--code-text-color) !important; padding: 14px !important; 
+            border-radius: 12px !important; font-family: monospace !important; 
+            font-size: 12px !important; word-break: break-all !important; 
+            margin-bottom: 10px !important; text-align: center; font-weight: 800;
         }
 
         .copy-btn { 
-            width: 100%; background: var(--accent-blue); color: #1a2a44; 
-            padding: 14px; border-radius: 12px; font-weight: 900; 
-            text-transform: uppercase; border: none; cursor: pointer;
+            width: 100% !important; background: var(--accent-blue) !important; 
+            color: #1a2a44 !important; padding: 14px !important; border-radius: 12px !important; 
+            font-weight: 900 !important; text-transform: uppercase; border: none; cursor: pointer;
         }
 
-        .char-info { font-size: 13px; color: var(--text-muted); margin-top: 12px; line-height: 1.4; }
+        .info-txt { font-size: 13px !important; color: var(--text-muted) !important; line-height: 1.4; display: block !important; }
 
-        /* Системные элементы */
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 10px 20px; border-radius: 30px; display: none; z-index: 1000; font-size: 14px; }
-        
-        #backToTop { 
-            position: fixed; bottom: 25px; right: 20px; width: 45px; height: 45px; 
-            background: var(--card-bg); border: 2px solid var(--accent-blue); 
-            color: var(--accent-blue); border-radius: 50%; display: none; 
-            align-items: center; justify-content: center; font-weight: bold;
-            cursor: pointer; z-index: 100;
-        }
-
-        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; color: var(--accent-blue); font-size: 28px; font-weight: 900; text-align: center; }
+        /* Доп элементы */
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 10px 20px; border-radius: 30px; display: none; z-index: 1000; }
+        #backToTop { position: fixed; bottom: 25px; right: 20px; width: 45px; height: 45px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="star-container"></div>
-<div id="secret-overlay"></div>
-<div id="toast"></div>
+<div id="toast">Скопировано!</div>
 
 <div class="container">
-    
+    <div class="logo">modr.</div>
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
     <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
-        <button id="clearSearch" onclick="clearInput(event)">✕</button>
- 
+        <input type="text" id="searchInput" placeholder="Поиск..." oninput="runFilter()">
+        <button id="clearSearch" onclick="clearInput()">✕</button>
+    </div>
+
 <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
@@ -397,69 +392,48 @@ HTML
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
 
-</div>
 
 <div id="backToTop" onclick="scrollToTop()">↑</div>
+
 <script>
-    // 1. Инициализация звезд при загрузке
-    function createStars() {
-        const container = document.getElementById('star-container');
-        if (!container) return;
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div'); 
-            s.className = 'star';
-            const size = Math.random() * 2 + 'px';
-            s.style.width = size; 
-            s.style.height = size;
-            s.style.left = Math.random() * 100 + '%'; 
-            s.style.top = Math.random() * 100 + '%';
-            s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            s.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
-            container.appendChild(s);
+    // Поиск
+    function runFilter() {
+        const filter = document.getElementById('searchInput').value.toLowerCase().trim();
+        const clearBtn = document.getElementById('clearSearch');
+        const table = document.getElementById('mainTable');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        
+        clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
+
+        let currentHeader = null;
+        let hasVisibleCards = false;
+
+        // Логика: скрываем заголовок, если в группе нет совпадений
+        rows.forEach(row => {
+            if (row.classList.contains('story-row')) {
+                if (currentHeader && !hasVisibleCards && filter !== '') {
+                    currentHeader.style.setProperty('display', 'none', 'important');
+                }
+                currentHeader = row;
+                hasVisibleCards = false;
+                row.style.setProperty('display', 'block', 'important');
+            } else {
+                const match = row.innerText.toLowerCase().includes(filter);
+                if (filter === '' || match) {
+                    row.style.setProperty('display', 'flex', 'important');
+                    hasVisibleCards = true;
+                } else {
+                    row.style.setProperty('display', 'none', 'important');
+                }
+            }
+        });
+        
+        // Проверка для последнего заголовка
+        if (currentHeader && !hasVisibleCards && filter !== '') {
+            currentHeader.style.setProperty('display', 'none', 'important');
         }
     }
 
-    // 2. Логика поиска (скрывает пустые заголовки)
-    function runFilter() {
-        const filter = document.getElementById('searchInput').value.toLowerCase().trim();
-        const sections = document.querySelectorAll('.story-section');
-        const clearBtn = document.getElementById('clearSearch');
-        
-        // Показ/скрытие крестика
-        clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
-
-        // Пасхалки
-        if (filter === 'modr') startConfetti();
-        if (filter === 'timer') { showSecret(); return; }
-
-        sections.forEach(section => {
-            const header = section.querySelector('.story-header');
-            const cards = section.querySelectorAll('.card');
-            let hasVisibleCard = false;
-
-            cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
-                if (text.includes(filter)) {
-                    card.style.display = 'flex';
-                    hasVisibleCard = true;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Скрываем всю секцию целиком, если в ней ничего не найдено
-            if (header.innerText.toLowerCase().includes(filter) && filter !== '') {
-                section.style.display = 'block';
-                header.style.display = 'block';
-                cards.forEach(c => c.style.display = 'flex');
-            } else {
-                section.style.display = hasVisibleCard ? 'block' : 'none';
-                header.style.display = hasVisibleCard ? 'block' : 'none';
-            }
-        });
-    }
-
-    // 3. Функция очистки поля поиска
     function clearInput() {
         const input = document.getElementById('searchInput');
         input.value = '';
@@ -467,53 +441,30 @@ HTML
         runFilter();
     }
 
-    // 4. Копирование кода в буфер
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
             const t = document.getElementById('toast');
             t.style.display = 'block';
             setTimeout(() => { t.style.display = 'none'; }, 1500);
-        }).catch(err => {
-            console.error('Ошибка копирования: ', err);
         });
     }
 
-    // 5. Кнопка "Наверх"
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
     window.onscroll = function() {
-        const btn = document.getElementById('backToTop');
-        if (window.scrollY > 300) {
-            btn.style.display = 'flex';
-        } else {
-            btn.style.display = 'none';
-        }
+        document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
     };
 
-    // 6. Спецэффекты (Пасхалки)
-    function startConfetti() {
-        for (let i = 0; i < 20; i++) {
-            const d = document.createElement('div');
-            d.innerHTML = '💎';
-            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:24px; z-index:3000; transition: transform 2.5s linear; pointer-events:none;`;
-            document.body.appendChild(d);
-            setTimeout(() => { d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; }, 50);
-            setTimeout(() => d.remove(), 2600);
+    function createStars() {
+        const container = document.getElementById('star-container');
+        for (let i = 0; i < 40; i++) {
+            const s = document.createElement('div'); s.className = 'star';
+            const size = Math.random() * 2 + 'px';
+            s.style.cssText = `width:${size}; height:${size}; left:${Math.random()*100}%; top:${Math.random()*100}%; --duration:${Math.random()*3+2}s; --max-opacity:${Math.random()*0.7+0.3}`;
+            container.appendChild(s);
         }
     }
 
-    function showSecret() {
-        const o = document.getElementById('secret-overlay');
-        o.style.display = 'flex';
-        setTimeout(() => { 
-            o.style.display = 'none'; 
-            clearInput(); 
-        }, 2000);
-    }
-
-    // Запуск звезд при загрузке страницы
     window.onload = createStars;
 </script>
