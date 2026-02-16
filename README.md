@@ -384,20 +384,29 @@
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
+    // ОСНОВНОЙ ФИЛЬТР
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = Array.from(document.querySelectorAll('#mainTable tbody tr'));
+        
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
         
+        // ПАСХАЛКИ В ПОИСКЕ
         if (filter === 'modr') { startConfetti(); }
+        if (filter === 'timer') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
 
-        let currentHeader = null; let currentStoryRows = []; let storyHeaderMatch = false; let storyHasContentMatch = false;
+        let currentHeader = null; 
+        let currentStoryRows = []; 
+        let storyHeaderMatch = false; 
+        let storyHasContentMatch = false;
+
         rows.forEach((row) => {
             if (row.classList.contains('story-row')) {
                 if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
-                currentHeader = row; currentStoryRows = [];
+                currentHeader = row; 
+                currentStoryRows = [];
                 storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
                 storyHasContentMatch = false;
             } else {
@@ -419,6 +428,7 @@
 
     function clearInput() { document.getElementById('searchInput').value = ''; runFilter(); }
 
+    // КОПИРОВАНИЕ
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
@@ -428,6 +438,7 @@
         });
     }
 
+    // ЗВЕЗДНОЕ НЕБО
     function createStars() {
         const container = document.getElementById('star-container');
         for (let i = 0; i < 50; i++) {
@@ -441,21 +452,51 @@
         }
     }
 
+    // ПАСХАЛКА: АЛМАЗЫ
     function startConfetti() {
         for (let i = 0; i < 30; i++) {
             const d = document.createElement('div'); d.innerHTML = '💎';
             d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: 3s linear;`;
             document.body.appendChild(d);
-            requestAnimationFrame(() => d.style.transform = `translateY(110vh)`);
+            requestAnimationFrame(() => d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`);
             setTimeout(() => d.remove(), 3500);
         }
     }
 
+    // ПАСХАЛКА: ЧАСТИЦЫ КЛИКА
+    function spawnParticles(x, y) {
+        for (let i = 0; i < 8; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:var(--magic-color); transition:0.6s; position:fixed;`;
+            document.body.appendChild(p);
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${(Math.random()-0.5)*100}px, ${(Math.random()-0.5)*100}px) scale(0)`;
+                p.style.opacity = '0';
+            });
+            setTimeout(() => p.remove(), 600);
+        }
+    }
+
+    // ПАСХАЛКА: ПОЛНЫЙ ЭКРАН
+    function showFullscreenText(msg) {
+        const overlay = document.getElementById('secret-overlay');
+        overlay.innerText = msg; overlay.classList.add('show');
+        setTimeout(() => overlay.classList.remove('show'), 2000);
+    }
+
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    
     window.addEventListener('scroll', () => {
         document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
-    document.addEventListener('DOMContentLoaded', createStars);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        createStars();
+        document.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn')) {
+                spawnParticles(e.clientX, e.clientY);
+            }
+        });
+    });
 </script>
-</body>
-</html>
