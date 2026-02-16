@@ -19,7 +19,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
             padding: 40px 15px 100px 15px;
@@ -27,110 +27,60 @@
             min-height: 100vh;
         }
 
-        /* ЗВЕЗДНЫЙ ФОН */
         #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
         .container { position: relative; z-index: 1; width: 100%; max-width: 550px; margin: 0 auto; }
-
         .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; }
+        .hero-title { font-size: clamp(28px, 8vw, 42px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 30px; }
 
-        .hero-title {
-            font-size: clamp(28px, 8vw, 42px);
-            font-weight: 900;
-            line-height: 1.1;
-            color: var(--accent-blue);
-            text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-
-        /* ПОИСК */
         .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
-        #searchInput {
-            width: 100%; padding: 18px 50px 18px 25px; border-radius: 18px; border: none;
-            background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none;
-        }
-        #clearSearch {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            background: #eee; border: none; border-radius: 50%; width: 30px; height: 30px;
-            display: none; align-items: center; justify-content: center; cursor: pointer; color: #333;
-        }
+        #searchInput { width: 100%; padding: 18px 50px 18px 25px; border-radius: 18px; border: none; background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; }
+        #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; display: none; align-items: center; justify-content: center; cursor: pointer; }
 
-        .tg-btn {
-            display: block; background: var(--accent-blue); color: #1a2a44 !important;
-            text-decoration: none; padding: 20px; border-radius: 18px; text-align: center;
-            font-weight: 900; text-transform: uppercase; margin-bottom: 30px; font-size: 16px;
-        }
+        .tg-btn { display: block; background: var(--accent-blue); color: #1a2a44 !important; text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; }
 
         /* ТАБЛИЦА С МАГИЕЙ КАРТОЧЕК */
-        table { width: 100%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         thead { display: none; }
 
         .story-row { display: block; padding: 80px 0 25px 0; }
-        .story-row td { display: block; font-size: 26px; font-weight: 900; color: #fff; text-transform: uppercase; }
+        .story-row td { display: block !important; width: 100% !important; font-size: 26px; font-weight: 900; color: #fff; text-transform: uppercase; border: none; }
 
-        tr:not(.story-row) {
-            display: flex; /* Важно: flex для карточки */
-            flex-direction: column;
+        /* ГЛАВНЫЙ ФИКС ДЛЯ GITHUB */
+        #mainTable tbody tr:not(.story-row) {
+            display: flex !important; 
+            flex-direction: column !important;
             background: var(--card-bg);
             border-radius: 24px;
             padding: 25px;
             margin-bottom: 25px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            position: relative;
+            border: none !important;
         }
 
-        /* ПЕРСОНАЖ (1-я ячейка) */
-        tr:not(.story-row) td:nth-child(1) {
-            order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue);
-            text-transform: uppercase; margin-bottom: 6px;
+        #mainTable tr:not(.story-row) td { 
+            display: block !important; 
+            width: 100% !important; 
+            border: none !important;
+            min-width: 0;
         }
 
-        /* ИНФО (3-я ячейка) - перемещаем под имя */
-        tr:not(.story-row) td:nth-child(3) {
-            order: 2; font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;
-        }
+        tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
+        tr:not(.story-row) td:nth-child(3) { order: 2; font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+        tr:not(.story-row) td:nth-child(2) { order: 3; display: flex !important; flex-direction: column; }
 
-        /* КОД И КНОПКА (2-я ячейка) */
-        tr:not(.story-row) td:nth-child(2) {
-            order: 3; display: flex; flex-direction: column;
-        }
+        .code-text { display: block; background: var(--code-bg); color: var(--code-text-color); padding: 16px; border-radius: 14px; font-family: monospace; font-size: 14px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px; }
+        .copy-btn { width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
-        .code-text {
-            display: block; background: var(--code-bg); color: var(--code-text-color);
-            padding: 16px; border-radius: 14px; font-family: monospace;
-            font-size: 15px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px;
-        }
-
-        .copy-btn {
-            width: 100%; background: var(--accent-blue); color: #1a2a44; border: none;
-            padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase;
-            cursor: pointer; transition: 0.2s;
-        }
-
-        /* ЭФФЕКТЫ И ОВЕРЛЕИ */
+        /* ЭФФЕКТЫ */
         .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
-        #toast {
-            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.8); color: white; padding: 12px 25px; border-radius: 50px;
-            display: none; z-index: 10000; font-weight: 600;
-        }
+        #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000; }
         #toast.show { display: block; animation: fadeInUp 0.3s; }
-
-        #secret-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center;
-            z-index: 10005; color: var(--accent-blue); font-size: 40px; font-weight: 900;
-        }
+        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10005; color: var(--accent-blue); font-size: 30px; font-weight: 900; text-align: center; }
         #secret-overlay.show { display: flex; }
-
-        #backToTop {
-            position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
-            background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue);
-            border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer;
-        }
-
+        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; }
         @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
     </style>
 </head>
@@ -139,7 +89,8 @@
 <div id="star-container"></div>
 
 <div class="container">
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>ПО ЧАТУ</h1>
+    <div class="logo">modr.</div>
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>КОПИТЬ АЛМАЗЫ</h1>
 
     <div class="search-wrapper">
         <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
@@ -148,7 +99,7 @@
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
-    <table id="mainTable">
+  <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
 <tr>
@@ -385,10 +336,6 @@
     </td>
     <td>логика, авторитет с финалом</td>
 </tr>
-
-<tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
-<tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
-<tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
 </div>
 
 <div id="toast"></div>
@@ -396,12 +343,11 @@
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-    // 2. ПОИСК (УМНЫЙ) - Адаптирован под Flex-карточки
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
-        const rows = Array.from(document.querySelectorAll('tbody tr'));
+        const rows = Array.from(document.querySelectorAll('#mainTable tbody tr'));
 
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
@@ -431,11 +377,10 @@
     function finalizeStory(header, rows, headMatch, contentMatch, filter) {
         const showStory = filter === '' || headMatch || contentMatch;
         header.style.display = showStory ? 'block' : 'none';
-        
         rows.forEach(r => {
             const rMatch = r.innerText.toLowerCase().includes(filter);
-            // Используем 'flex', так как карточки должны быть flex-блоками
-            r.style.display = (filter === '' || headMatch || rMatch) ? 'flex' : 'none';
+            // Принудительно ставим flex для найденных строк
+            r.style.setProperty('display', (filter === '' || headMatch || rMatch) ? 'flex' : 'none', 'important');
         });
     }
 
@@ -447,16 +392,14 @@
         if(e && e.clientX) spawnParticles(e.clientX, e.clientY);
     }
 
-    // 3. ЭФФЕКТЫ (Частицы, Конфетти, Текст)
     function spawnParticles(x, y) {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 8; i++) {
             const p = document.createElement('div');
             p.className = 'particle';
-            const color = getComputedStyle(document.documentElement).getPropertyValue('--magic-color').trim();
-            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:${color}; box-shadow:0 0 10px ${color}; transition:0.6s;`;
+            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:var(--magic-color); transition:0.6s;`;
             document.body.appendChild(p);
             requestAnimationFrame(() => {
-                p.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`;
+                p.style.transform = `translate(${(Math.random()-0.5)*100}px, ${(Math.random()-0.5)*100}px) scale(0)`;
                 p.style.opacity = '0';
             });
             setTimeout(() => p.remove(), 600);
@@ -464,46 +407,38 @@
     }
 
     function startConfetti() {
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 30; i++) {
             const d = document.createElement('div');
             d.innerHTML = '💎';
-            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: transform ${(Math.random()*2+2)}s linear, opacity 2s; pointer-events:none;`;
+            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:20px; z-index:10002; transition: transform ${(Math.random()*2+2)}s linear, opacity 2s;`;
             document.body.appendChild(d);
-            requestAnimationFrame(() => { 
-                d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; 
-                d.style.opacity = '0'; 
-            });
+            requestAnimationFrame(() => { d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; d.style.opacity = '0'; });
             setTimeout(() => d.remove(), 4000);
         }
     }
 
     function showFullscreenText(msg) {
         const overlay = document.getElementById('secret-overlay');
-        overlay.innerHTML = `<div class="secret-text">${msg}</div>`;
+        overlay.innerHTML = msg;
         overlay.classList.add('show');
-        setTimeout(() => overlay.classList.remove('show'), 3000);
+        setTimeout(() => overlay.classList.remove('show'), 2500);
     }
 
-    // 4. КОПИРОВАНИЕ
     function copy(btn) {
-        const codeSpan = btn.previousElementSibling;
-        const text = codeSpan ? codeSpan.innerText : "";
-        if (!text) return;
-
+        const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
             const t = document.getElementById('toast');
-            t.innerText = `Скопировано: ${text}`;
+            t.innerText = `Скопировано!`;
             t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2000);
+            setTimeout(() => t.classList.remove('show'), 1500);
         });
     }
 
-    // 5. ИНИЦИАЛИЗАЦИЯ
     function createStars() {
         const container = document.getElementById('star-container');
-        for (let i = 0; i < 80; i++) {
+        for (let i = 0; i < 50; i++) {
             const s = document.createElement('div'); s.className = 'star';
-            const size = Math.random() * 3 + 'px';
+            const size = Math.random() * 2 + 'px';
             s.style.width = size; s.style.height = size;
             s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
             s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
@@ -513,21 +448,10 @@
     }
 
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
     window.addEventListener('scroll', () => {
-        const btn = document.getElementById('backToTop');
-        btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+        document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        createStars();
-        document.addEventListener('click', (e) => {
-            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn') || e.target.id === 'clearSearch') {
-                spawnParticles(e.clientX, e.clientY);
-            }
-        });
-    });
+    document.addEventListener('DOMContentLoaded', createStars);
 </script>
-
 </body>
 </html>
