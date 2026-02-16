@@ -50,11 +50,24 @@
             width: 100%; padding: 18px 25px; border-radius: 18px; border: none; 
             background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; 
         }
-        #clearSearch { 
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); 
-            background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; 
-            display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 10;
-        }
+      #clearSearch { 
+    position: absolute; 
+    right: 15px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background: #ccc; 
+    border: none; 
+    border-radius: 50%; 
+    width: 24px; 
+    height: 24px; 
+    display: none; /* Скрипт переключит на flex */
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    color: #333; 
+    z-index: 10;
+    line-height: 1; /* Чтобы крестик был ровно по центру */
+}
 
         /* Таблица */
         table { width: 100%; border-collapse: collapse; border: none; }
@@ -406,13 +419,16 @@
             r.style.setProperty('display', (filter === '' || headMatch || rMatch) ? 'flex' : 'none', 'important');
         });
     }
-
-    function clearInput(e) { 
-        if(e) e.preventDefault();
-        document.getElementById('searchInput').value = ''; 
-        runFilter(); 
+function clearInput(e) { 
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
     }
-
+    const input = document.getElementById('searchInput');
+    input.value = ''; 
+    input.focus(); // Возвращаем фокус в поле, чтобы клавиатура не прыгала
+    runFilter(); 
+}
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
