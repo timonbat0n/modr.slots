@@ -1,10 +1,10 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR Slots</title>
-<style>
+    <style>
         :root {
             --bg-color: #3b5984;
             --card-bg: #2a3d59;
@@ -19,101 +19,107 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
-            padding: 40px 15px;
+            padding: 20px 15px 80px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .container { width: 100%; max-width: 600px; }
+        .container { width: 100%; max-width: 500px; }
 
-        .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; align-self: flex-start; }
+        .logo { font-size: 22px; font-weight: 900; margin-bottom: 15px; align-self: flex-start; }
         
         .hero-title {
-            font-size: clamp(28px, 8vw, 42px);
+            font-size: 32px;
             font-weight: 900;
             line-height: 1.1;
             color: var(--accent-blue);
             text-transform: uppercase;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .hero-desc {
-            font-size: 15px;
-            line-height: 1.5;
+            font-size: 14px;
+            line-height: 1.4;
             color: var(--text-muted);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         #searchInput {
             width: 100%;
-            padding: 18px 20px;
-            border-radius: 15px;
+            padding: 16px;
+            border-radius: 12px;
             border: none;
-            background: #ffffff;
+            background: #fff;
             color: #1a2a44;
             font-size: 16px;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             outline: none;
         }
 
         .tg-btn {
             display: block;
-            width: 100%;
             background: var(--accent-blue);
             color: #1a2a44 !important;
             text-decoration: none;
-            padding: 18px;
-            border-radius: 15px;
+            padding: 16px;
+            border-radius: 12px;
             text-align: center;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        /* ИСПРАВЛЕНИЕ ТАБЛИЦЫ */
+        /* ТАБЛИЦА БЕЗ БЕЛОГО ФОНА */
         table {
             width: 100%;
             border-collapse: collapse;
-            background: transparent !important; /* Убираем белый фон таблицы */
-            border: none !important;
+            background: transparent !important;
+        }
+
+        tbody { display: block; width: 100%; }
+
+        /* ЗАГОЛОВКИ ИСТОРИЙ */
+        .story-row {
+            display: block;
+            padding: 20px 0 10px 5px;
+            background: transparent !important;
         }
 
         .story-row td {
-            padding: 20px 5px 10px 5px;
+            display: block;
+            background: transparent !important;
+            border: none !important;
+            color: #fff !important;
             font-size: 20px;
             font-weight: 900;
             text-transform: uppercase;
-            color: #fff;
-            background: transparent !important; /* Убираем фон у заголовков */
         }
 
-        /* КАРТОЧКА ПЕРСОНАЖА */
+        /* КАРТОЧКА */
         tr:not(.story-row) {
-            display: flex;
-            flex-direction: column;
-            background-color: var(--card-bg) !important; /* Наш темно-синий */
+            display: block;
+            background-color: var(--card-bg) !important;
             margin-bottom: 20px;
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             border: none !important;
         }
 
         tr:not(.story-row) td {
             display: block;
             width: 100%;
-            padding: 0 !important;
-            background: transparent !important;
             border: none !important;
+            background: transparent !important;
+            padding: 0 !important;
         }
 
         .char-name {
             font-size: 19px;
             font-weight: 800;
             color: var(--accent-blue);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .char-info {
@@ -122,17 +128,16 @@
             margin-bottom: 15px;
         }
 
-        /* КОД И КНОПКА */
         .code-text {
             background: rgba(0,0,0,0.3);
-            padding: 14px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             font-family: monospace;
-            font-size: 14px;
+            font-size: 13px;
             color: #fff;
             text-align: center;
             word-break: break-all;
-            margin-bottom: 12px; /* ОТСТУП ОТ КНОПКИ */
+            margin-bottom: 10px; /* ОТСТУП ОТ КНОПКИ */
             border: 1px solid rgba(255,255,255,0.05);
         }
 
@@ -141,33 +146,46 @@
             background: var(--accent-blue);
             color: #1a2a44;
             border: none;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            font-size: 12px;
-            transition: 0.2s;
         }
 
-        .copy-btn:active {
-            transform: scale(0.98);
-            filter: brightness(0.9);
+        /* КНОПКА НАВЕРХ */
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            border-radius: 50%;
+            display: none; /* Включается скриптом */
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            font-weight: bold;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-   
+    <div class="logo">modr.</div>
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>КОПИТЬ АЛМАЗЫ</h1>
+    <p class="hero-desc">Просто копируйте слоты и наслаждайтесь игрой.</p>
 
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>В ЧАТЕ</h1>
-    <p class="hero-desc">Просто копируйте слоты и наслаждайтесь игрой</p>
+    <input type="text" id="searchInput" placeholder="Поиск персонажа...">
 
-    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
+    <a href="#" class="tg-btn">Отправить слоты ⚡</a>
 
-    <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
-
+      <div class="table-container">
     <table id="mainTable">
         <thead>
             <tr>
@@ -415,39 +433,52 @@
 
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
-<div id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
+
+<div id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</div>
 
 <script>
+    // Починил поиск
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const q = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#mainTable tr:not(.story-row)');
+        const heads = document.querySelectorAll('.story-row');
+
+        rows.forEach(row => {
+            const isVisible = row.innerText.toLowerCase().includes(q);
+            row.style.display = isVisible ? "block" : "none";
+        });
+
+        heads.forEach(h => {
+            let next = h.nextElementSibling;
+            let show = false;
+            while(next && !next.classList.contains('story-row')) {
+                if(next.style.display !== 'none') show = true;
+                next = next.nextElementSibling;
+            }
+            h.style.display = show ? "block" : "none";
+        });
+    });
+
+    // Починил копирование
     function copyText(btn) {
         const code = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(code).then(() => {
-            const oldText = btn.innerText;
-            btn.innerText = 'ГОТОВО';
-            setTimeout(() => btn.innerText = oldText, 1200);
+            const old = btn.innerText;
+            btn.innerText = 'СКОПИРОВАНО!';
+            setTimeout(() => btn.innerText = old, 1500);
         });
     }
 
-    function filterTable() {
-        const input = document.getElementById("searchInput").value.toLowerCase();
-        const rows = document.querySelectorAll("#mainTable tr:not(.story-row)");
-        const headers = document.querySelectorAll(".story-row");
-
-        rows.forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
-        });
-
-        headers.forEach(header => {
-            let next = header.nextElementSibling;
-            let visible = false;
-            while (next && !next.classList.contains('story-row')) {
-                if (next.style.display !== 'none') visible = true;
-                next = next.nextElementSibling;
-            }
-            header.style.display = visible ? "" : "none";
-        });
-    }
-
-    window.onscroll = () => {
-        document.getElementById("backToTop").style.display = window.scrollY > 400 ? "flex" : "none";
+    // Починил кнопку наверх
+    window.onscroll = function() {
+        const btn = document.getElementById("backToTop");
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btn.style.display = "flex";
+        } else {
+            btn.style.display = "none";
+        }
     };
 </script>
+
+</body>
+</html>
