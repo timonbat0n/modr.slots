@@ -4,243 +4,179 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modr Slots</title>
 <style>
-:root {
-/* Светлая тема */
---bg-page: #eef7ff;
---table-bg: rgba(255, 255, 255, 0.7);
---text-main: #074799;
---accent-blue: #0091ea;
---story-header: rgba(209, 233, 255, 0.85);
---code-bg: rgba(240, 250, 255, 0.6);
---highlight: #fff176;
---btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
---search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
---magic-color: #0091ea;
---toast-bg: rgba(7, 71, 153, 0.9);
-}
-
-
-    [data-theme="dark"] {
-        /* Темная тема */
-        --bg-page: #0f172a;
-        --table-bg: rgba(30, 41, 59, 0.6);
-        --text-main: #f1f5f9;
-        --accent-blue: #38bdf8;
-        --story-header: rgba(51, 65, 85, 0.9);
-        --code-bg: rgba(15, 23, 42, 0.7);
-        --highlight: #fb8c00;
-        --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-        --magic-color: #00f2ff;
-        --toast-bg: rgba(0, 0, 0, 0.8);
+    :root {
+        --bg-color: #3b5984; /* Глубокий синий фон как на фото */
+        --accent-blue: #7cb9e8; /* Небесно-голубой для текста */
+        --text-white: #ffffff;
+        --table-row-bg: rgba(255, 255, 255, 0.05);
+        --input-bg: #ffffff;
+        --btn-tg: #56a3e2;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-        font-family: 'Segoe UI', Roboto, sans-serif;
-        margin: 0; padding: 10px;
-        display: flex; flex-direction: column; align-items: center;
-        min-height: 100vh; background: var(--bg-page);
-        transition: background 0.5s ease; overflow-x: hidden;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-white);
+        line-height: 1.4;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-/* Улучшенный Header таблицы */
-thead th {
-    background-color: var(--table-bg) !important; /* Использует прозрачный фон темы */
-    color: var(--accent-blue) !important; /* Делает текст голубым и читаемым */
-    text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 15px 5px !important;
-    border: none !important;
-    transition: all 0.3s ease;
-}
+    /* ЛОГОТИП */
+    .logo {
+        width: 100%;
+        max-width: 800px;
+        font-size: 28px;
+        font-weight: 900;
+        margin-bottom: 60px;
+        letter-spacing: -1px;
+    }
 
-/* Скругление углов для первой строки шапки */
-thead tr th:first-child {
-    border-radius: 12px 0 0 12px;
-}
-thead tr th:last-child {
-    border-radius: 0 12px 12px 0;
-}
+    /* ГЛАВНЫЙ БЛОК */
+    .hero-section {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-/* Фикс для темной темы: убираем белый фон, если он застрял */
-[data-theme="dark"] thead th {
-    background-color: rgba(30, 41, 59, 0.8) !important; /* Глубокий темный фон */
-    color: var(--accent-blue) !important;
-}
+    .hero-title {
+        font-size: clamp(32px, 8vw, 48px); /* Адаптивный размер */
+        font-weight: 800;
+        line-height: 1.1;
+        color: var(--accent-blue);
+        text-transform: uppercase;
+    }
 
-/* Чтобы текст "Инфо" не прилипал к краю */
-th:nth-child(3), td:nth-child(3) {
-    text-align: right;
-    padding-right: 15px !important;
-}
+    .hero-desc {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 500px;
+        margin-bottom: 30px;
+    }
 
-/* КНОПКА КОПИРОВАТЬ */
-.copy-btn {
-    background: var(--btn-gradient);
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 11px;
-    width: 90%;
-    transition: 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.copy-btn:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-    box-shadow: 0 0 10px var(--magic-color);
-}
-
-.copy-btn:active {
-    transform: scale(0.95);
-}
-
-/* ПЕРЕКЛЮЧАТЕЛЬ ТЕМ (ID themeBtn) */
-#themeBtn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--table-bg);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    font-size: 20px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-#themeBtn:hover {
-    transform: rotate(15deg) scale(1.1);
-    box-shadow: 0 0 15px var(--magic-color);
-}
-
-    /* ЗВЕЗДНЫЙ ФОН */
-    #star-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-    [data-theme="light"] #star-container { opacity: 0.3; }
-    .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--duration) infinite ease-in-out; }
-    [data-theme="light"] .star { background: var(--accent-blue); }
-    @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--max-opacity); transform: scale(1.2); } }
-
-    /* ИНТЕРФЕЙСНЫЕ ЭЛЕМЕНТЫ */
-    .search-wrapper { position: relative; width: 100%; max-width: 600px; margin-bottom: 15px; z-index: 10; }
+    /* ПОИСК */
+    .search-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 15px;
+    }
 
     #searchInput {
-        width: 100%; padding: 14px 45px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1) !important;
-        background: var(--table-bg) var(--search-icon) no-repeat 14px center;
-        background-size: 20px; color: var(--text-main); outline: none; backdrop-filter: blur(10px);
+        width: 100%;
+        padding: 16px 20px;
+        border-radius: 8px;
+        border: none;
+        background: var(--input-bg);
+        color: #333;
+        font-size: 16px;
+        font-weight: 500;
     }
 
     #clearSearch {
-        position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold;
-        display: none; z-index: 11; user-select: none; padding: 5px;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 24px;
+        cursor: pointer;
+        display: none;
     }
 
-    .tg-wrapper { width: 100%; max-width: 600px; margin-bottom: 20px; }
+    /* КНОПКА ТЕЛЕГРАМ */
     .tg-btn {
-        display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px;
-        background: var(--btn-gradient); color: white !important; text-decoration: none;
-        font-weight: 800; border-radius: 16px; transition: 0.3s;
-        box-shadow: 0 4px 15px rgba(0, 145, 234, 0.3); border: 1px solid rgba(255,255,255,0.1) !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--btn-tg);
+        color: white;
+        text-decoration: none;
+        padding: 14px 28px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+        text-transform: uppercase;
+        width: fit-content;
+        margin-bottom: 40px;
+        transition: 0.3s ease;
     }
-    .tg-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-    #themeBtn {
-        position: fixed; top: 15px; right: 15px; width: 44px; height: 44px;
-        border-radius: 50%; background: var(--table-bg); cursor: pointer;
-        display: flex; align-items: center; justify-content: center; z-index: 1000;
-        border: 1px solid rgba(255,255,255,0.1) !important; backdrop-filter: blur(10px);
+    .tg-btn:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
     }
 
-    /* ТАБЛИЦА СТИЛИЗАЦИЯ */
-/* КОНТЕЙНЕР ТАБЛИЦЫ */
-/* Основной контейнер */
-.table-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 0 5px; /* Небольшой отступ, чтобы не прилипало к краям экрана */
-}
+    /* ТАБЛИЦА */
+    .table-container {
+        width: 100%;
+        max-width: 800px;
+        margin-top: 20px;
+    }
 
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 8px;
-    table-layout: fixed; /* Жестко фиксируем колонки */
-}
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 1px; /* Тонкая линия между строками */
+    }
 
-/* Колонки: Персонаж | Код | Пояснение (которое обрезалось) */
-th:nth-child(1), td:nth-child(1) { width: 25%; text-align: left; padding-left: 10px; }
-th:nth-child(2), td:nth-child(2) { width: 50%; }
-th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 10px; opacity: 0.8; }
+    th {
+        text-align: left;
+        padding: 15px;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--accent-blue);
+        letter-spacing: 1px;
+    }
 
-td {
-    background: var(--table-bg);
-    color: var(--text-main);
-    padding: 10px 5px;
-    border: none !important;
-    vertical-align: middle;
-    word-wrap: break-word; /* Перенос длинных слов */
-    overflow-wrap: break-word;
-}
+    td {
+        background: var(--table-row-bg);
+        padding: 20px 15px;
+        font-size: 14px;
+        border: none;
+    }
 
-/* Стили для самого текста кода */
-.code-text {
-    display: block;
-    width: 100%;
-    word-break: break-all; /* Тот самый фикс для длинных кодов */
-    font-family: monospace;
-    font-size: 10px;
-    margin-bottom: 5px;
-    color: var(--accent-blue);
-    line-height: 1.2;
-}
+    .story-row td {
+        background: rgba(255, 255, 255, 0.1) !important;
+        font-weight: 800;
+        color: var(--accent-blue);
+        font-size: 16px;
+    }
 
-/* Скругления для строк-карточек */
-tr td:first-child { border-radius: 12px 0 0 12px !important; }
-tr td:last-child { border-radius: 0 12px 12px 0 !important; }
+    /* КНОПКА КОПИРОВАТЬ */
+    .copy-btn {
+        background: transparent;
+        border: 1px solid var(--accent-blue);
+        color: var(--accent-blue);
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 12px;
+        transition: 0.2s;
+    }
 
-/* Кнопка копирования внутри ячейки */
-.copy-btn {
-    width: 100%;
-    max-width: 140px;
-    padding: 6px 2px;
-    font-size: 10px;
-}
+    .copy-btn:hover {
+        background: var(--accent-blue);
+        color: var(--bg-color);
+    }
 
-/* Заголовки историй */
-.story-row td {
-    border-radius: 12px !important;
-    padding: 12px 15px !important;
-    text-align: left !important;
-}
-
-
-    /* ПАСХАЛКИ */
-    #secret-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10001; opacity: 0; pointer-events: none; transition: 0.5s; backdrop-filter: blur(3px); }
-    #secret-overlay.show { opacity: 1; }
-    .secret-text { font-size: 3rem; color: var(--magic-color); text-shadow: 0 0 20px var(--magic-color); font-weight: 900; text-align: center; }
-    .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10005; }
-
-    #toast { position: fixed; bottom: 20px; right: 20px; background: var(--toast-bg); color: white; padding: 12px 20px; border-radius: 8px; transform: translateY(100px); transition: 0.3s; z-index: 10000; border: 1px solid var(--magic-color); }
-    #toast.show { transform: translateY(0); }
-
-    #backToTop { position: fixed; bottom: 20px; left: 20px; width: 44px; height: 44px; background: var(--btn-gradient); border-radius: 50%; display: none; align-items: center; justify-content: center; color: white; cursor: pointer; z-index: 999; }
+    /* ЭФФЕКТЫ */
+    .particle {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        background: var(--accent-blue);
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 1000;
+    }
 </style>
 
 
@@ -248,18 +184,29 @@ tr td:last-child { border-radius: 0 12px 12px 0 !important; }
 <body>
 
 
-<div id="star-container"></div>
-<button id="themeBtn" onclick="toggleTheme(event)">🌙</button>
+<div class="logo">modr.</div>
 
-<div class="search-wrapper">
-    <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
-    <div id="clearSearch" onclick="clearInput(event)">×</div>
-</div>
-<div class="tg-wrapper">
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn" id="mainTgBtn">
-        ОТПРАВИТЬ СЛОТЫ ⚡
+<div class="hero-section">
+    <h1 class="hero-title">
+        ЗАБУДЬТЕ О<br>
+        НЕОБХОДИМОСТИ<br>
+        ИСКАТЬ СЛОТ <br>
+        ПО ЧАТУ
+    </h1>
+    
+
+
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
+        <div id="clearSearch" onclick="clearInput()">×</div>
+    </div>
+
+    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
+        ОТПРАВИТЬ СЛОТЫ
     </a>
 </div>
+
+
 
 
     <div class="table-container">
