@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR Slots</title>
- <style>
+<style>
         :root {
-            --bg-color: #3b5984;         /* Общий фон страницы */
-            --card-bg: #2a3d59;          /* Темно-синий цвет карточки */
-            --accent-blue: #7cb9e8;      /* Голубой акцент */
+            --bg-color: #3b5984;
+            --card-bg: #2a3d59;
+            --accent-blue: #7cb9e8;
             --text-white: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.7);
         }
@@ -16,7 +16,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
             padding: 40px 15px;
@@ -27,7 +27,6 @@
 
         .container { width: 100%; max-width: 600px; }
 
-        /* ЛОГО И ЗАГОЛОВОК */
         .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; align-self: flex-start; }
         
         .hero-title {
@@ -46,7 +45,6 @@
             margin-bottom: 30px;
         }
 
-        /* ПОИСК */
         #searchInput {
             width: 100%;
             padding: 18px 20px;
@@ -56,12 +54,10 @@
             color: #1a2a44;
             font-size: 16px;
             font-weight: 700;
-            margin-bottom: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
             outline: none;
         }
 
-        /* КНОПКА ТГ */
         .tg-btn {
             display: block;
             width: 100%;
@@ -74,113 +70,101 @@
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 40px;
-            transition: 0.2s;
         }
 
-        /* ТАБЛИЦА БЕЗ РАМОК (Карточная система) */
+        /* ИСПРАВЛЕНИЕ ТАБЛИЦЫ */
         table {
             width: 100%;
-            border-collapse: collapse; /* Убираем все стандартные рамки */
-            background: transparent;   /* Никакой белой таблицы */
+            border-collapse: collapse;
+            background: transparent !important; /* Убираем белый фон таблицы */
+            border: none !important;
         }
 
-        /* Заголовки историй */
         .story-row td {
-            padding: 25px 5px 10px 5px;
+            padding: 20px 5px 10px 5px;
             font-size: 20px;
             font-weight: 900;
             text-transform: uppercase;
             color: #fff;
-            border: none;
+            background: transparent !important; /* Убираем фон у заголовков */
         }
 
-        /* Каждая строка превращается в карточку */
+        /* КАРТОЧКА ПЕРСОНАЖА */
         tr:not(.story-row) {
             display: flex;
-            flex-direction: column; /* Элементы внутри строки друг под другом */
-            background-color: var(--card-bg);
-            margin-bottom: 15px;
+            flex-direction: column;
+            background-color: var(--card-bg) !important; /* Наш темно-синий */
+            margin-bottom: 20px;
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: none !important;
         }
 
         tr:not(.story-row) td {
             display: block;
-            padding: 0;
             width: 100%;
-            border: none;
+            padding: 0 !important;
+            background: transparent !important;
+            border: none !important;
         }
 
-        /* Блок с именем */
         .char-name {
             font-size: 19px;
             font-weight: 800;
             color: var(--accent-blue);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
-        /* Блок с инфо */
         .char-info {
             font-size: 13px;
             color: var(--text-muted);
             margin-bottom: 15px;
         }
 
-        /* Блок с кодом */
-        .code-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
+        /* КОД И КНОПКА */
         .code-text {
             background: rgba(0,0,0,0.3);
-            padding: 12px;
+            padding: 14px;
             border-radius: 12px;
             font-family: monospace;
             font-size: 14px;
             color: #fff;
             text-align: center;
             word-break: break-all;
+            margin-bottom: 12px; /* ОТСТУП ОТ КНОПКИ */
             border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Кнопка копировать */
         .copy-btn {
+            width: 100%;
             background: var(--accent-blue);
             color: #1a2a44;
             border: none;
-            padding: 12px;
+            padding: 14px;
             border-radius: 12px;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
             font-size: 12px;
+            transition: 0.2s;
         }
 
-        #backToTop {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            width: 50px; height: 50px;
-            background: var(--card-bg);
-            border: 2px solid var(--accent-blue);
-            color: var(--accent-blue);
-            border-radius: 50%;
-            display: none; align-items: center; justify-content: center;
+        .copy-btn:active {
+            transform: scale(0.98);
+            filter: brightness(0.9);
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>В ЧАТЕ</h1>
-    
+   
 
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
-    </div>
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>В ЧАТЕ</h1>
+    <p class="hero-desc">Просто копируйте слоты и наслаждайтесь игрой</p>
+
+    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
