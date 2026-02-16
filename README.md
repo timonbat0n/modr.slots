@@ -550,102 +550,103 @@
     <button id="backToTop" onclick="scrollToTop()">▲</button>
 
     <script>
-        const originalNames = new Map();
-        let easterEggTriggered = false;
+<script>
+/**
+ * 1. УПРАВЛЕНИЕ ТЕМОЙ
+ */
+const storageKey = 'theme-preference';
+const reflectPreference = () => {
+    const theme = localStorage.getItem(storageKey) || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+};
 
-      function createStars() {
-    const container = document.getElementById('star-container');
-    container.innerHTML = ''; // Очистка перед созданием
-    const starCount = 80;
+const onClickTheme = () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    localStorage.setItem(storageKey, next);
+    reflectPreference();
+};
 
-    for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        
-        // Позиция
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        
-        // Размеры и анимация
-        const size = Math.random() * 2 + 1;
-        const duration = Math.random() * 3 + 2;
-        const delay = Math.random() * 5;
-        const opacity = Math.random() * 0.8;
+/**
+ * 2. КОПИРОВАНИЕ И УВЕДОМЛЕНИЯ
+ */
+function copy(btn) {
+    const text = btn.getAttribute('data-code') || btn.previousElementSibling?.innerText;
+    if (!text) return;
 
-        Object.assign(star.style, {
-            left: `${x}%`,
-            top: `${y}%`,
-            width: `${size}px`,
-            height: `${size}px`,
-            position: 'absolute',
-            animationDelay: `${delay}s`
-        });
-        
-        star.style.setProperty('--duration', `${duration}s`);
-        star.style.setProperty('--max-opacity', opacity);
-
-        container.appendChild(star);
-    }
-}
-
-// Вызываем создание при загрузке и при смене темы (опционально)
-window.addEventListener('DOMContentLoaded', createStars);
-
-   function runFilter() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase().trim();
-    const rows = document.querySelectorAll('tbody tr');
-    const clearBtn = document.getElementById('clearSearch');
-
-    // Показываем/скрываем крестик очистки
-    clearBtn.style.display = input.value.length > 0 ? 'block' : 'none';
-
-    // --- МАГИЯ ПАСХАЛОК ---
-    if (filter === 'modr' || filter === 'ирина') {
-        startConfetti(); 
-        clearInput(); // Очищаем поле после срабатывания
-        return; 
-    } 
-    
-     (filter === 'timer' || filter === 'таймер') {
-        showFullscreenText("ДАЙТЕ ВИКЕ ТАЙМЕР АДМИНКУ");
-        clearInput(); // Очищаем поле после срабатывания
-        return;
-    }
-
-    // --- ОБЫЧНЫЙ ПОИСК ---
-    rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(filter) ? '' : 'none';
+    navigator.clipboard.writeText(text).then(() => {
+        showToast(`Код ${text} скопирован!`);
+    }).catch(err => {
+        console.error('Ошибка копирования:', err);
     });
 }
 
-// Функция очистки (чтобы крестик работал)
-function clearInput() {
-    const input = document.getElementById('searchInput');
-    input.value = '';
-    document.getElementById('clearSearch').style.display = 'none';
-    runFilter(); // Сбрасываем фильтр таблицы
+function showToast(msg) {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
-// --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ МАГИИ ---
+/**
+ * 3. ПОИСК И ПАСХАЛКИ
+ */
+function runFilter() {
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    if (!input) return;
 
+    const filter = input.value.toLowerCase().trim();
+    const rows = document.querySelectorAll('tbody tr');
+
+    // Показываем/скрываем крестик очистки
+    if (clearBtn) clearBtn.style.display = input.value.length > 0 ? 'flex' : 'none';
+
+    // ПАСХАЛКИ
+    if (filter === 'modr' || filter === 'ирина') {
+        startConfetti();
+        clearInput();
+        return;
+    }
+    if (filter === 'timer' || filter === 'таймер') {
+        showFullscreenText("SYSTEM OVERRIDE");
+        clearInput();
+        return;
+    }
+
+    // ЛОГИКА ФИЛЬТРАЦИИ
+    rows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(filter) ? '' : 'none';
+    });
+}
+
+function clearInput() {
+    const input = document.getElementById('searchInput');
+    if (input) {
+        input.value = '';
+        runFilter();
+        input.focus();
+    }
+}
+
+/**
+ * 4. ЭФФЕКТЫ (ИСКРЫ, КОНФЕТТИ, ТЕКСТ)
+ */
 function startConfetti() {
     for (let i = 0; i < 40; i++) {
         const d = document.createElement('div');
         d.innerHTML = '💎';
-        d.style.cssText = `
-            position: fixed;
-            left: ${Math.random() * 100}vw;
-            top: -50px;
-            font-size: ${Math.random() * 20 + 15}px;
-            z-index: 10002;
-            pointer-events: none;
-            transition: transform ${Math.random() * 2 + 2}s linear, opacity 2s;
-        `;
+        d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; pointer-events:none; transition: transform ${Math.random()*2+2}s linear, opacity 2s;`;
         document.body.appendChild(d);
         requestAnimationFrame(() => {
-            d.style.transform = `translateY(110vh) rotate(${Math.random() * 360}deg)`;
+            d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`;
             d.style.opacity = '0';
         });
         setTimeout(() => d.remove(), 4000);
@@ -664,185 +665,60 @@ function showFullscreenText(message) {
     setTimeout(() => overlay.classList.remove('show'), 3000);
 }
 
-      function copy(btn) {
-    const text = btn.previousElementSibling.innerText;
-    navigator.clipboard.writeText(text);
-    
-    // Показываем красивое уведомление
-    const toast = document.getElementById('toast') || createToast();
-    toast.innerText = `Код ${text} скопирован!`;
-    toast.classList.add('show');
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 2000);
-}
+// Искры при клике на кнопки
+document.addEventListener('click', (e) => {
+    const isButton = e.target.tagName === 'BUTTON' || 
+                     e.target.closest('button') || 
+                     e.target.classList.contains('copy-btn') || 
+                     e.target.id === 'clearSearch';
 
-
-// Функция для Текста на весь экран
-function showFullscreenText(message) {
-    let overlay = document.getElementById('secret-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'secret-overlay';
-        overlay.innerHTML = `<div class="secret-text">${message}</div>`;
-        document.body.appendChild(overlay);
-    }
-    overlay.classList.add('show');
-    setTimeout(() => overlay.classList.remove('show'), 3000);
-}
-
-function createToast() {
-    const t = document.createElement('div');
-    t.id = 'toast';
-    document.body.appendChild(t);
-    return t;
-}
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
-        }
-
-        window.addEventListener('scroll', () => {
-            const btn = document.getElementById('backToTop');
-            window.pageYOffset > 300 ? btn.classList.add('show') : btn.classList.remove('show');
-        });
-
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-        window.onload = () => {
-            createStars();
-            if (localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-theme');
-                document.getElementById('themeBtn').innerText = '☀️';
-            }
-        };
-
-        document.addEventListener('click', function(e) {
-        for (let i = 0; i < 8; i++) {
+    if (isButton) {
+        for (let i = 0; i < 10; i++) {
             createParticle(e.clientX, e.clientY);
         }
+    }
+});
+
+function createParticle(x, y) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    document.body.appendChild(p);
+
+    const color = Math.random() > 0.5 ? '#00f2ff' : '#ff00ff';
+    p.style.cssText = `position:fixed; left:${x}px; top:${y}px; width:6px; height:6px; background:${color}; box-shadow:0 0 10px ${color}; border-radius:50%; pointer-events:none; z-index:10005; transition:all 0.6s ease-out;`;
+
+    requestAnimationFrame(() => {
+        p.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`;
+        p.style.opacity = '0';
     });
-
-    function createParticle(x, y) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        document.body.appendChild(particle);
-
-        const size = Math.random() * 6 + 2 + 'px';
-        particle.style.width = size;
-        particle.style.height = size;
-        
-        // Цвет: 50% шанс на голубой или розовый неон
-        particle.style.background = Math.random() > 0.5 ? '#00f2ff' : '#ff00ff';
-        particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
-
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-
-        const destinationX = (Math.random() - 0.5) * 150;
-        const destinationY = (Math.random() - 0.5) * 150;
-
-        requestAnimationFrame(() => {
-            particle.style.opacity = '0';
-            particle.style.transform = `translate(${destinationX}px, ${destinationY}px) scale(0)`;
-        });
-
-        setTimeout(() => { particle.remove(); }, 600);
-    }
-
-let clickCount = 0;
-let lastClickTime = 0;
-
-document.addEventListener('click', function() {
-    const currentTime = new Date().getTime();
-    
-    // Если между кликами прошло больше 500мс, сбрасываем счетчик
-    if (currentTime - lastClickTime > 500) {
-        clickCount = 0;
-    }
-    
-    clickCount++;
-    lastClickTime = currentTime;
-
-    if (clickCount === 5) {
-        startDiamondRain();
-        clickCount = 0; // Сброс после запуска
-    }
-});
-
-function startDiamondRain() {
-    // Создаем 40 алмазов с разной задержкой
-    for (let i = 0; i < 40; i++) {
-        setTimeout(() => {
-            const diamond = document.createElement('div');
-            diamond.className = 'diamond-rain';
-            diamond.innerHTML = '💎'; // Используем эмодзи алмаза
-            
-            // Рандомная позиция по горизонтали
-            diamond.style.left = Math.random() * 100 + 'vw';
-            // Рандомный размер
-            diamond.style.fontSize = Math.random() * 20 + 15 + 'px';
-            // Рандомная длительность падения (от 2 до 4 секунд)
-            const duration = Math.random() * 2 + 2;
-            diamond.style.animationDuration = duration + 's';
-            
-            document.body.appendChild(diamond);
-
-            // Удаляем через 4 секунды
-            setTimeout(() => diamond.remove(), duration * 1000);
-        }, i * 50); // Постепенное появление
-    }
+    setTimeout(() => p.remove(), 600);
 }
 
-let touchTimer;
-
-// Функция запуска пасхалки
-function triggerSecret() {
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // Двойная вибрация
-    showFullscreenText("ВИКЕ ТАЙМЕР<br>АДМИНКУ");
+/**
+ * 5. СКРОЛЛ И ИНИЦИАЛИЗАЦИЯ
+ */
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function showFullscreenText(message) {
-    let overlay = document.getElementById('secret-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'secret-overlay';
-        overlay.innerHTML = `<div class="secret-text shake">${message}</div>`;
-        document.body.appendChild(overlay);
-    }
-    overlay.classList.add('show');
+window.addEventListener('scroll', () => {
+    const btn = document.getElementById('backToTop');
+    if (btn) btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+});
+
+// Запуск при полной загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    reflectPreference();
     
-    // Прячем через 3 секунды
-    setTimeout(() => {
-        overlay.classList.remove('show');
-    }, 3000);
-}
-
-// Слушатели для всего документа
-document.addEventListener('touchstart', (e) => {
-    touchTimer = setTimeout(triggerSecret, 3000); // 3 секунды
+    // Привязка кнопки темы
+    const themeBtn = document.querySelector('#theme-toggle');
+    if (themeBtn) themeBtn.onclick = onClickTheme;
+    
+    // Инициализация поиска (если в поле что-то осталось после перезагрузки)
+    runFilter();
 });
+</script>
 
-document.addEventListener('touchend', () => {
-    clearTimeout(touchTimer);
-});
-
-// На всякий случай для ПК (тоже при долгом клике в любом месте)
-document.addEventListener('mousedown', () => {
-    touchTimer = setTimeout(triggerSecret, 3000);
-});
-
-document.addEventListener('mouseup', () => {
-    clearTimeout(touchTimer);
-});
-
-// Если пользователь начал двигать пальцем (скроллить) - отменяем таймер
-document.addEventListener('touchmove', () => {
-    clearTimeout(touchTimer);
-});
     
     </script>
 
