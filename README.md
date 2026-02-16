@@ -218,23 +218,51 @@ body {
 }
 
 /* ПОИСК */
-.search-wrapper #searchInput {
+.search-wrapper {
+    position: relative;
     width: 100%;
-    padding: 14px 45px;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 14px 45px 14px 45px; /* Большие отступы слева (для иконки) и справа (для крестика) */
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     background: var(--table-bg) var(--search-icon) no-repeat 14px center;
     background-size: 20px;
     color: var(--text-main);
-    font-size: 14px;
+    font-size: 16px;
     outline: none;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
-.search-wrapper #searchInput:focus {
-    box-shadow: 0 0 15px rgba(0, 145, 234, 0.2);
-    border-color: var(--accent-blue) !important;
+#clearSearch {
+    position: absolute;
+    right: 12px; /* Фиксируем внутри поля справа */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    display: none; /* Скрыт по умолчанию */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--accent-blue);
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 100; /* Чтобы быть над инпутом */
+    background: transparent;
+    user-select: none;
 }
+
+#clearSearch:hover {
+    color: #ff5252;
+}
+
 
 #clearSearch {
     position: absolute;
@@ -327,7 +355,7 @@ tr td:last-child { border-radius: 0 12px 12px 0; }
     <div id="clearSearch" onclick="clearInput()">×</div>
 </div>
 
-    </div>
+    
     <div class="tg-wrapper">
         <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
             ОТПРАВИТЬ СЛОТЫ ⚡
@@ -642,6 +670,24 @@ function runFilter() {
     if (clearBtn) {
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
     }
+function clearInput() {
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    
+    if (input) {
+        input.value = ''; // Стираем текст
+        
+        // Сбрасываем таблицу (показываем всё)
+        runFilter(); 
+        
+        // Возвращаем фокус
+        input.focus();
+    }
+    
+    if (clearBtn) {
+        clearBtn.style.display = 'none'; // Скрываем сам крестик
+    }
+}
 
     // 2. Пасхалки
     if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
