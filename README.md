@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -39,7 +39,9 @@
             display: block; background: var(--accent-blue); color: #1a2a44 !important; 
             text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; 
             font-weight: 900; text-transform: uppercase; margin-bottom: 45px !important; 
+            transition: transform 0.2s;
         }
+        .tg-btn:active { transform: scale(0.95); }
 
         .search-wrapper { position: relative; width: 100%; margin-bottom: 50px !important; }
         #searchInput { 
@@ -71,8 +73,7 @@
         tr:not(.story-row) td { display: block !important; width: 100% !important; background: transparent !important; border: none !important; }
         tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
         
-        /* Описание персонажа */
-        .info-txt, tr:not(.story-row) td:nth-child(3) { 
+        .info-txt { 
             order: 2; font-size: 14px; color: var(--text-muted) !important; 
             margin-bottom: 20px; line-height: 1.4; display: block;
         }
@@ -95,13 +96,16 @@
             display: none; z-index: 10000; 
         }
         #toast.show { display: block; }
+
         #secret-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); display: none; align-items: center; 
             justify-content: center; z-index: 10005; color: var(--accent-blue); 
-            font-size: 30px; font-weight: 900; text-align: center; padding: 20px;
+            font-size: 35px; font-weight: 900; text-align: center; padding: 20px;
+            letter-spacing: 5px;
         }
         #secret-overlay.show { display: flex; }
+
         .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
         
         #backToTop { 
@@ -122,7 +126,14 @@
     <div class="logo">modr.</div>
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
 
-   
+    <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
+
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
+        <button id="clearSearch" onclick="clearInput(event)">✕</button>
+    </div>
+
+    
 <div id="star-container">
 <div id="secret-overlay">
 <div id="toast">
@@ -500,3 +511,5 @@
         });
     });
 </script>
+</body>
+</html>
