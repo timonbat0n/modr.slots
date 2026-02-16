@@ -291,6 +291,22 @@ tr td:last-child { border-radius: 0 12px 12px 0 !important; }
 <tr><td>Жанна</td><td><span class="code-text">8cacc44c76e75bf310a487b7f654a6ea</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">чувства, с финалом</td></tr>
 <tr class="story-row"><td colspan="3">Te amo 2 том</td></tr>
 <tr><td>Мэт</td><td><span class="code-text">cf48199c00acd80a0a96ad72fe8544dc</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рассуждение</td></tr>
+<tr>
+    <td>Кейт</td>
+    <td>
+        <span class="code-text">867aba9dd3bf0fe717a7c6e6105df80b</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>интуиция</td>
+</tr>
+<tr>
+    <td>Генри</td>
+    <td>
+        <span class="code-text">f5d7e44835cdc081996d85f2d2391999</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>рассуждение</td>
+</tr>
 
 <tr class="story-row"><td colspan="3">7Б</td></tr>
 <tr><td>Грант</td><td><span class="code-text">2437db5000468bea11082a9c22c91297</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм, милашка</td></tr>
