@@ -136,59 +136,65 @@
 
     /* ТАБЛИЦА СТИЛИЗАЦИЯ */
 /* КОНТЕЙНЕР ТАБЛИЦЫ */
+/* Основной контейнер */
 .table-container {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    overflow-x: visible; /* Убираем обрезку */
+    padding: 0 5px; /* Небольшой отступ, чтобы не прилипало к краям экрана */
 }
 
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 8px; /* Отступы между строками */
-    margin: 0;
-    table-layout: auto; /* Позволяет колонкам адаптироваться */
-    border: none !important;
+    border-spacing: 0 8px;
+    table-layout: fixed; /* Жестко фиксируем колонки */
 }
 
-/* СТИЛИ ЯЧЕЕК */
-th, td {
+/* Колонки: Персонаж | Код | Пояснение (которое обрезалось) */
+th:nth-child(1), td:nth-child(1) { width: 25%; text-align: left; padding-left: 10px; }
+th:nth-child(2), td:nth-child(2) { width: 50%; }
+th:nth-child(3), td:nth-child(3) { width: 25%; font-size: 10px; opacity: 0.8; }
+
+td {
     background: var(--table-bg);
     color: var(--text-main);
-    padding: 12px 10px;
+    padding: 10px 5px;
     border: none !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    vertical-align: middle;
+    word-wrap: break-word; /* Перенос длинных слов */
+    overflow-wrap: break-word;
 }
 
-/* Колонки: задаем примерные пропорции, чтобы не обрезалось */
-th:nth-child(1), td:nth-child(1) { width: 30%; text-align: left; padding-left: 15px; } /* Персонаж */
-th:nth-child(2), td:nth-child(2) { width: 40%; font-family: monospace; } /* Код */
-th:nth-child(3), td:nth-child(3) { width: 30%; } /* Кнопка */
-
-/* Скругляем края для эффекта карточек */
-tr td:first-child {
-    border-radius: 15px 0 0 15px !important;
+/* Стили для самого текста кода */
+.code-text {
+    display: block;
+    width: 100%;
+    word-break: break-all; /* Тот самый фикс для длинных кодов */
+    font-family: monospace;
+    font-size: 10px;
+    margin-bottom: 5px;
+    color: var(--accent-blue);
+    line-height: 1.2;
 }
-tr td:last-child {
-    border-radius: 0 15px 15px 0 !important;
+
+/* Скругления для строк-карточек */
+tr td:first-child { border-radius: 12px 0 0 12px !important; }
+tr td:last-child { border-radius: 0 12px 12px 0 !important; }
+
+/* Кнопка копирования внутри ячейки */
+.copy-btn {
+    width: 100%;
+    max-width: 140px;
+    padding: 6px 2px;
+    font-size: 10px;
 }
 
-/* ЗАГОЛОВКИ ИСТОРИЙ */
+/* Заголовки историй */
 .story-row td {
-    background: var(--story-header) !important;
-    color: var(--accent-blue) !important;
-    font-weight: 800;
+    border-radius: 12px !important;
+    padding: 12px 15px !important;
     text-align: left !important;
-    padding: 15px 20px !important;
-    border-radius: 15px !important; /* Заголовок — цельная капсула */
-}
-
-/* Чтобы на мобилках текст не слипался */
-@media (max-width: 480px) {
-    th, td { padding: 10px 5px; font-size: 13px; }
-    .copy-btn { font-size: 10px; padding: 6px; }
 }
 
 
