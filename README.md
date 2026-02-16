@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -56,15 +56,18 @@
             display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 10;
         }
 
-        /* Стили таблицы (карточки) */
-        table { width: 100%; border-collapse: collapse; }
+        /* Таблица */
+        table { width: 100%; border-collapse: collapse; border: none; }
         
-        .story-row { display: block; padding: 50px 0 20px 0; }
+        /* ЗАГОЛОВКИ ИСТОРИЙ: Чистый текст без фона */
+        .story-row { display: block; padding: 40px 0 15px 5px; background: transparent !important; }
         .story-row td { 
-            display: block !important; width: 100% !important; font-size: 28px; 
+            display: block !important; width: 100% !important; font-size: 24px; 
             font-weight: 900; color: #ffffff !important; text-transform: uppercase; 
+            background: transparent !important; border: none !important;
         }
 
+        /* КАРТОЧКИ ПЕРСОНАЖЕЙ */
         tbody tr:not(.story-row) {
             display: flex !important; flex-direction: column !important;
             background: var(--card-bg) !important; border-radius: 24px; 
@@ -72,10 +75,10 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; }
+        tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; background: transparent !important; }
         
         /* Имя персонажа */
-        tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
+        tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 22px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
         
         /* Описание */
         .info-txt { order: 2; font-size: 14px; color: var(--text-muted) !important; margin-bottom: 20px; line-height: 1.4; }
@@ -85,14 +88,14 @@
         .code-text { 
             display: block; background: var(--code-bg); color: var(--code-text-color); 
             padding: 16px; border-radius: 14px; font-family: monospace; 
-            font-size: 14px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px; 
+            font-size: 13px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 12px; 
         }
         .copy-btn { 
             width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; 
             padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
         }
 
-        /* Вспомогательные элементы */
+        /* Тосты и оверлеи */
         #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000; }
         #toast.show { display: block; }
         #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10005; color: var(--accent-blue); font-size: 35px; font-weight: 900; text-align: center; padding: 20px; letter-spacing: 5px; }
@@ -117,7 +120,6 @@
         <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
         <button id="clearSearch" onclick="clearInput(event)">✕</button>
     </div>
-
 <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
@@ -373,7 +375,6 @@
         
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
         
-        // Пасхалки
         if (filter === 'modr') startConfetti();
         if (filter === 'timer') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
 
@@ -423,7 +424,6 @@
 
     function createStars() {
         const container = document.getElementById('star-container');
-        if(!container) return;
         for (let i = 0; i < 50; i++) {
             const s = document.createElement('div'); s.className = 'star';
             const size = Math.random() * 2 + 'px';
@@ -481,5 +481,3 @@
         });
     });
 </script>
-</body>
-</html>
