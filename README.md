@@ -257,7 +257,7 @@ tr td:last-child { border-radius: 0 12px 12px 0 !important; }
 </div>
 
 <div class="tg-wrapper">
-    <a href="<https://t.me/modr_slots_bot>" target="_blank" class="tg-btn">
+    <a href="t.me/modr_slots_bot>" target="_blank" class="tg-btn">
         ОТПРАВИТЬ СЛОТЫ ⚡
     </a>
 </div>
