@@ -162,30 +162,78 @@ body {
     50% { opacity: var(--max-opacity); transform: scale(1.2); }
 }
 
-/* --- КОНТЕЙНЕРЫ И ТАБЛИЦА --- */
+/* --- КОНТЕЙНЕРЫ И 
 
-.tg-wrapper, .search-wrapper, .table-container {
+/* КНОПКА ОТПРАВИТЬ СЛОТЫ */
+.tg-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    max-width: 600px;
-    z-index: 1;
-    margin-bottom: 12px;
+    padding: 16px;
+    background: var(--btn-gradient);
+    color: white !important;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 145, 234, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.tg-btn, #searchInput, td, th, #theme-toggle, .code-text {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+.tg-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 145, 234, 0.5);
+    filter: brightness(1.1);
+}
+
+/* ПЕРЕКЛЮЧАТЕЛЬ ТЕМ (themeBtn) */
+#themeBtn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--table-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    font-size: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#themeBtn:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 0 15px var(--magic-color);
+}
+
+/* ПОИСК */
+.search-wrapper #searchInput {
+    width: 100%;
+    padding: 14px 45px;
+    border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: var(--table-bg) var(--search-icon) no-repeat 14px center;
+    background-size: 20px;
+    color: var(--text-main);
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
 }
 
-#searchInput {
-    width: 100%;
-    padding: 12px 45px;
-    border-radius: 14px;
-    border: none;
-    background: var(--table-bg) var(--search-icon) no-repeat 14px center;
-    background-size: 18px;
-    color: var(--text-main);
-    outline: none;
+.search-wrapper #searchInput:focus {
+    box-shadow: 0 0 15px rgba(0, 145, 234, 0.2);
+    border-color: var(--accent-blue) !important;
 }
 
 #clearSearch {
