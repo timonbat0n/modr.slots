@@ -113,41 +113,57 @@
         transform: translateY(-2px);
     }
 
-    /* ТАБЛИЦА */
-    .table-container {
-        width: 100%;
-        max-width: 800px;
-        margin-top: 20px;
-    }
+  /* ТЕМНАЯ ТАБЛИЦА */
+td {
+    /* Делаем фон строк темнее и глубже */
+    background: rgba(0, 0, 0, 0.25) !important; 
+    padding: 18px 15px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important; /* Едва заметный разделитель */
+}
 
-    table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 1px; /* Тонкая линия между строками */
-    }
+.story-row td {
+    /* Заголовок истории — глубокий синий, выделяющийся */
+    background: rgba(20, 30, 48, 0.6) !important;
+    color: var(--accent-blue) !important;
+    font-size: 15px !important;
+    letter-spacing: 2px;
+}
 
-    th {
-        text-align: left;
-        padding: 15px;
-        font-size: 12px;
-        text-transform: uppercase;
-        color: var(--accent-blue);
-        letter-spacing: 1px;
-    }
+/* СТИЛЬ КНОПКИ НАВЕРХ */
+#backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.05); /* Прозрачный белый */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50%; /* Круглая */
+    display: none; /* Управляется через JS */
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-blue);
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 
-    td {
-        background: var(--table-row-bg);
-        padding: 20px 15px;
-        font-size: 14px;
-        border: none;
-    }
+#backToTop:hover {
+    background: var(--accent-blue);
+    color: #3b5984; /* Цвет фона при наведении */
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(124, 185, 232, 0.4);
+}
 
-    .story-row td {
-        background: rgba(255, 255, 255, 0.1) !important;
-        font-weight: 800;
-        color: var(--accent-blue);
-        font-size: 16px;
-    }
+/* Фикс для кода (сделаем его чуть ярче на темном фоне) */
+.code-text {
+    color: #ffffff;
+    opacity: 0.9;
+    font-weight: 500;
+}
 
     /* КНОПКА КОПИРОВАТЬ */
     .copy-btn {
