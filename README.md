@@ -1,367 +1,123 @@
-
-<html lang="ru">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODR Slots Database</title>
-
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
-    
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modr Slots</title>
 <style>
 :root {
-    /* Светлая тема */
-    --bg-page: #eef7ff;
-    --table-bg: rgba(255, 255, 255, 0.7);
-    --text-main: #074799;
-    --accent-blue: #0091ea;
-    --story-header: rgba(209, 233, 255, 0.85);
-    --code-bg: rgba(240, 250, 255, 0.6);
-    --highlight: #fff176;
-    --btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
-    --search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
-    
-    /* Переменные для магии (Светлые) */
-    --magic-color: #0091ea;
-    --magic-text-shadow: 0 0 20px rgba(0, 145, 234, 0.5);
-    --toast-bg: rgba(7, 71, 153, 0.9);
+/* Светлая тема */
+--bg-page: #eef7ff;
+--table-bg: rgba(255, 255, 255, 0.7);
+--text-main: #074799;
+--accent-blue: #0091ea;
+--story-header: rgba(209, 233, 255, 0.85);
+--code-bg: rgba(240, 250, 255, 0.6);
+--highlight: #fff176;
+--btn-gradient: linear-gradient(135deg, #0091ea 0%, #00b0ff 100%);
+--search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230091ea' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+--magic-color: #0091ea;
+--toast-bg: rgba(7, 71, 153, 0.9);
 }
 
-[data-theme="dark"] {
-    /* Темная тема */
-    --bg-page: #0f172a;
-    --table-bg: rgba(30, 41, 59, 0.6);
-    --text-main: #f1f5f9;
-    --accent-blue: #38bdf8;
-    --story-header: rgba(51, 65, 85, 0.9);
-    --code-bg: rgba(15, 23, 42, 0.7);
-    --highlight: #fb8c00;
-    --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    
-    /* Переменные для магии (Неон) */
-    --magic-color: #00f2ff;
-    --magic-text-shadow: 0 0 20px #00f2ff, 0 0 50px #00f2ff;
-    --toast-bg: rgba(0, 0, 0, 0.8);
-}
+```
+    [data-theme="dark"] {
+        /* Темная тема */
+        --bg-page: #0f172a;
+        --table-bg: rgba(30, 41, 59, 0.6);
+        --text-main: #f1f5f9;
+        --accent-blue: #38bdf8;
+        --story-header: rgba(51, 65, 85, 0.9);
+        --code-bg: rgba(15, 23, 42, 0.7);
+        --highlight: #fb8c00;
+        --btn-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+        --magic-color: #00f2ff;
+        --toast-bg: rgba(0, 0, 0, 0.8);
+    }
 
-* { box-sizing: border-box; }
+    * { box-sizing: border-box; }
 
-body {
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    margin: 0;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    background: var(--bg-page);
-    transition: background 0.5s ease;
-    overflow-x: hidden;
-}
+    body {
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        margin: 0; padding: 10px;
+        display: flex; flex-direction: column; align-items: center;
+        min-height: 100vh; background: var(--bg-page);
+        transition: background 0.5s ease; overflow-x: hidden;
+    }
 
-/* --- ПАСХАЛКИ И ЭФФЕКТЫ --- */
+    /* ЗВЕЗДНЫЙ ФОН */
+    #star-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+    [data-theme="light"] #star-container { opacity: 0.3; }
+    .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--duration) infinite ease-in-out; }
+    [data-theme="light"] .star { background: var(--accent-blue); }
+    @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--max-opacity); transform: scale(1.2); } }
 
-#secret-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10001;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-    backdrop-filter: blur(4px);
-}
+    /* ИНТЕРФЕЙСНЫЕ ЭЛЕМЕНТЫ */
+    .search-wrapper { position: relative; width: 100%; max-width: 600px; margin-bottom: 15px; z-index: 10; }
 
-#secret-overlay.show { opacity: 1; }
+    #searchInput {
+        width: 100%; padding: 14px 45px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1) !important;
+        background: var(--table-bg) var(--search-icon) no-repeat 14px center;
+        background-size: 20px; color: var(--text-main); outline: none; backdrop-filter: blur(10px);
+    }
 
-.secret-text {
-    font-size: 5rem;
-    color: var(--magic-color);
-    text-shadow: var(--magic-text-shadow);
-    text-align: center;
-    font-weight: 900;
-    text-transform: uppercase;
-    animation: pulse 0.5s infinite alternate;
-}
+    #clearSearch {
+        position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+        cursor: pointer; color: var(--accent-blue); font-size: 22px; font-weight: bold;
+        display: none; z-index: 11; user-select: none; padding: 5px;
+    }
 
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-}
+    .tg-wrapper { width: 100%; max-width: 600px; margin-bottom: 20px; }
+    .tg-btn {
+        display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px;
+        background: var(--btn-gradient); color: white !important; text-decoration: none;
+        font-weight: 800; border-radius: 16px; transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 145, 234, 0.3); border: 1px solid rgba(255,255,255,0.1) !important;
+    }
+    .tg-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-.particle {
-    position: fixed;
-    pointer-events: none;
-    width: 6px;
-    height: 6px;
-    background: var(--magic-color);
-    box-shadow: 0 0 10px var(--magic-color);
-    border-radius: 50%;
-    z-index: 10005;
-}
+    #themeBtn {
+        position: fixed; top: 15px; right: 15px; width: 44px; height: 44px;
+        border-radius: 50%; background: var(--table-bg); cursor: pointer;
+        display: flex; align-items: center; justify-content: center; z-index: 1000;
+        border: 1px solid rgba(255,255,255,0.1) !important; backdrop-filter: blur(10px);
+    }
 
-.diamond-rain {
-    position: fixed;
-    top: -50px;
-    font-size: 24px;
-    z-index: 9999;
-    pointer-events: none;
-    animation: fall linear forwards;
-    filter: drop-shadow(0 0 5px var(--magic-color));
-}
+    /* ТАБЛИЦА СТИЛИЗАЦИЯ */
+    .table-container { width: 100%; max-width: 600px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+    th, td { background: var(--table-bg); color: var(--text-main); padding: 12px 8px; text-align: center; border-radius: 4px; backdrop-filter: blur(5px); }
+    .story-row td { background: var(--story-header) !important; color: var(--accent-blue) !important; font-weight: 800; text-align: left; padding-left: 20px; border-radius: 12px !important; }
 
-@keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); }
-}
+    /* ПАСХАЛКИ */
+    #secret-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10001; opacity: 0; pointer-events: none; transition: 0.5s; backdrop-filter: blur(3px); }
+    #secret-overlay.show { opacity: 1; }
+    .secret-text { font-size: 3rem; color: var(--magic-color); text-shadow: 0 0 20px var(--magic-color); font-weight: 900; text-align: center; }
+    .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10005; }
 
-/* --- ИНТЕРФЕЙС --- */
+    #toast { position: fixed; bottom: 20px; right: 20px; background: var(--toast-bg); color: white; padding: 12px 20px; border-radius: 8px; transform: translateY(100px); transition: 0.3s; z-index: 10000; border: 1px solid var(--magic-color); }
+    #toast.show { transform: translateY(0); }
 
-#toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--toast-bg);
-    color: white;
-    padding: 12px 25px;
-    border-radius: 10px;
-    border: 1px solid var(--magic-color);
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
-    transform: translateY(150px);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10000;
-}
-
-#toast.show { transform: translateY(0); }
-
-#star-container {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: -2;
-    pointer-events: none;
-}
-
-[data-theme="light"] #star-container { opacity: 0.3; }
-
-.star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle var(--duration) infinite ease-in-out;
-}
-
-[data-theme="light"] .star { background: var(--accent-blue); }
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: var(--max-opacity); transform: scale(1.2); }
-}
-
-/* --- КОНТЕЙНЕРЫ И 
-
-/* КНОПКА ОТПРАВИТЬ СЛОТЫ */
-.tg-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 16px;
-    background: var(--btn-gradient);
-    color: white !important;
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 14px;
-    letter-spacing: 1px;
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0, 145, 234, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.tg-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 145, 234, 0.5);
-    filter: brightness(1.1);
-}
-
-/* ПЕРЕКЛЮЧАТЕЛЬ ТЕМ (themeBtn) */
-#themeBtn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--table-bg);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    font-size: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-#themeBtn:hover {
-    transform: scale(1.1) rotate(15deg);
-    box-shadow: 0 0 15px var(--magic-color);
-}
-
-/* ПОИСК */
-.search-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-#searchInput {
-    width: 100%;
-    padding: 14px 45px 14px 45px; /* Большие отступы слева (для иконки) и справа (для крестика) */
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    background: var(--table-bg) var(--search-icon) no-repeat 14px center;
-    background-size: 20px;
-    color: var(--text-main);
-    font-size: 16px;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-#clearSearch {
-    position: absolute;
-    right: 12px; /* Фиксируем внутри поля справа */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
-    display: none; /* Скрыт по умолчанию */
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--accent-blue);
-    font-size: 24px;
-    font-weight: bold;
-    z-index: 100; /* Чтобы быть над инпутом */
-    background: transparent;
-    user-select: none;
-}
-
-#clearSearch:hover {
-    color: #ff5252;
-}
-
-
-#clearSearch {
-    position: absolute;
-    right: 15px; top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: var(--accent-blue);
-    font-size: 24px;
-    display: none;
-    transition: 0.2s;
-}
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 6px;
-}
-
-th, td {
-    background-color: var(--table-bg) !important;
-    color: var(--text-main) !important;
-    padding: 10px 5px !important;
-    text-align: center;
-    font-size: 12px;
-    transition: 0.3s ease;
-}
-
-tr td:first-child { border-radius: 12px 0 0 12px; }
-tr td:last-child { border-radius: 0 12px 12px 0; }
-
-.story-row td {
-    background-color: var(--story-header) !important;
-    color: var(--accent-blue) !important;
-    text-align: left !important;
-    padding-left: 15px !important;
-    border-radius: 12px !important;
-    font-weight: 800;
-}
-
-.copy-btn {
-    background: var(--btn-gradient);
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 90%;
-    font-weight: bold;
-}
-
-/* КНОПКИ УПРАВЛЕНИЯ */
-#theme-toggle {
-    position: fixed;
-    top: 10px; right: 10px;
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: var(--table-bg);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1000;
-}
-
-#backToTop {
-    position: fixed;
-    bottom: 25px; right: 25px;
-    width: 50px; height: 50px;
-    background: var(--btn-gradient);
-    border-radius: 50%;
-    display: none; /* Скрыто по умолчанию, управляется JS */
-    align-items: center; justify-content: center;
-    color: white;
-    z-index: 999;
-}
-
-@media (max-width: 600px) {
-    .secret-text { font-size: 2.5rem; }
-}
+    #backToTop { position: fixed; bottom: 20px; left: 20px; width: 44px; height: 44px; background: var(--btn-gradient); border-radius: 50%; display: none; align-items: center; justify-content: center; color: white; cursor: pointer; z-index: 999; }
 </style>
+```
 
-
+</head>
 <body>
 
- <body>
-    <div id="star-container"></div>
-    
-    <button id="themeBtn" onclick="toggleTheme()">🌙</button>
+```
+<div id="star-container"></div>
+<button id="themeBtn" onclick="toggleTheme(event)">🌙</button>
 
-   <div class="search-wrapper">
+<div class="search-wrapper">
     <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
-    <div id="clearSearch" onclick="clearInput()">×</div>
+    <div id="clearSearch" onclick="clearInput(event)">×</div>
 </div>
 
-    
-    <div class="tg-wrapper">
-        <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
-            ОТПРАВИТЬ СЛОТЫ ⚡
-        </a>
-    </div>
-    </body>
+<div class="tg-wrapper">
+    <a href="<https://t.me/modr_slots_bot>" target="_blank" class="tg-btn">
+        ОТПРАВИТЬ СЛОТЫ ⚡
+    </a>
+</div>
 
     <div class="table-container">
     <table id="mainTable">
@@ -428,7 +184,6 @@ tr td:last-child { border-radius: 0 12px 12px 0; }
     </td>
     <td>баланс</td>
 </tr>
-
 
 <tr class="story-row"><td colspan="3">И поглотит нас морок</td></tr>
 <tr><td>Драган</td><td><span class="code-text">2cd483f99137fd6da27f616d2b0b832a</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, явь, сострадание</td></tr>
@@ -520,7 +275,6 @@ tr td:last-child { border-radius: 0 12px 12px 0; }
     <td>ворон призыв</td>
 </tr>
 
-
 <tr class="story-row"><td colspan="3">Секрет Небес</td></tr>
 <tr><td>одиночка</td><td><span class="code-text">4c9152d8dca82cf40e92d29105979f34</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ангел</td></tr>
 <tr><td>Люцифер</td><td><span class="code-text">35afb2332ef908a54d3bf3cd7f619d40</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">демон</td></tr>
@@ -588,7 +342,6 @@ tr td:last-child { border-radius: 0 12px 12px 0; }
     <td>чародейство / хол. сердце</td>
 </tr>
 
-
 <tr class="story-row"><td colspan="3">Эдемов Сад</td></tr>
 <tr><td>Одиночка</td><td><span class="code-text">1b196faa0f4649e8b3c98f50eace2b90</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">1 сезон, 8 серия на выборе ветки</td></tr>
 <tr><td>Минхёк</td><td><span class="code-text">4f03e11a86304a1fd884dfb12c7d827d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Амбиции, выс популярность</td></tr>
@@ -612,268 +365,158 @@ tr td:last-child { border-radius: 0 12px 12px 0; }
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
-
-
-    
-
-
-    <button id="backToTop" onclick="scrollToTop()">▲</button>
+<div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-/**
- * 1. СИСТЕМА ТЕМЫ (Интеграция с твоим CSS)
- */
-const storageKey = 'theme-preference';
+    const storageKey = 'theme-preference';
 
-const reflectPreference = () => {
-    const theme = localStorage.getItem(storageKey) || 
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    
-    // Устанавливаем атрибут для CSS переменных
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    // Обновляем иконку на кнопке
-    const themeBtn = document.querySelector('#theme-toggle');
-    if (themeBtn) themeBtn.innerHTML = theme === 'light' ? '🌙' : '☀️';
-};
-
-const toggleTheme = (e) => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
-    localStorage.setItem(storageKey, next);
-    reflectPreference();
-    
-    // Искры при смене темы
-    if (e) {
-        const x = e.clientX || (e.touches && e.touches[0].clientX);
-        const y = e.clientY || (e.touches && e.touches[0].clientY);
-        spawnParticles(x, y);
+    // 1. ТЕМА
+    function reflectPreference() {
+        const theme = localStorage.getItem(storageKey) || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.getElementById('themeBtn').innerHTML = theme === 'light' ? '🌙' : '☀️';
     }
-};
 
-// Запуск темы немедленно, чтобы не было "мигания" белым
-reflectPreference();
+    function toggleTheme(e) {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        localStorage.setItem(storageKey, next);
+        reflectPreference();
+        if(e) spawnParticles(e.clientX, e.clientY);
+    }
 
-/**
- * 2. ПОИСК И ПАСХАЛКИ
- */
-// --- ФУНКЦИЯ ПОИСКА ---
-function runFilter() {
-    const input = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('clearSearch');
-    if (!input) return;
+    // 2. ПОИСК (УМНЫЙ)
+    function runFilter() {
+        const input = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearch');
+        const filter = input.value.toLowerCase().trim();
+        const rows = Array.from(document.querySelectorAll('tbody tr'));
 
-    const filter = input.value.toLowerCase().trim();
-    const rows = Array.from(document.querySelectorAll('tbody tr'));
-
-    // 1. Показываем/скрываем крестик
-    if (clearBtn) {
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
+
+        if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
+        if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
+
+        let storyHeaderMatch = false;
+        let storyHasContentMatch = false;
+        let currentStoryRows = [];
+        let currentHeader = null;
+
+        rows.forEach((row) => {
+            if (row.classList.contains('story-row')) {
+                if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
+                currentHeader = row;
+                currentStoryRows = [];
+                storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
+                storyHasContentMatch = false;
+            } else {
+                currentStoryRows.push(row);
+                if (row.innerText.toLowerCase().includes(filter)) storyHasContentMatch = true;
+            }
+        });
+        if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
     }
-function clearInput() {
-    const input = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('clearSearch');
-    
-    if (input) {
-        input.value = ''; // Стираем текст
-        
-        // Сбрасываем таблицу (показываем всё)
-        runFilter(); 
-        
-        // Возвращаем фокус
+
+    function finalizeStory(header, rows, headMatch, contentMatch, filter) {
+        const show = filter === '' || headMatch || contentMatch;
+        header.style.display = show ? '' : 'none';
+        rows.forEach(r => {
+            const rMatch = r.innerText.toLowerCase().includes(filter);
+            r.style.display = (filter === '' || headMatch || rMatch) ? '' : 'none';
+        });
+    }
+
+    function clearInput(e) {
+        const input = document.getElementById('searchInput');
+        input.value = '';
+        runFilter();
         input.focus();
+        if(e) spawnParticles(e.clientX, e.clientY);
     }
-    
-    if (clearBtn) {
-        clearBtn.style.display = 'none'; // Скрываем сам крестик
-    }
-}
 
-    // 2. Пасхалки
-    if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
-    if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
-
-    // 3. Логика фильтрации
-    let storyHeaderMatch = false; // Совпало ли название истории
-    let storyHasContentMatch = false; // Нашелся ли персонаж внутри истории
-    let currentStoryRows = []; // Буфер для строк текущей истории
-    let currentHeader = null;
-
-    rows.forEach((row) => {
-        if (row.classList.contains('story-row')) {
-            // Перед переходом к новой истории, решаем судьбу предыдущей
-            if (currentHeader) {
-                const shouldShowHeader = filter === '' || storyHeaderMatch || storyHasContentMatch;
-                currentHeader.style.display = shouldShowHeader ? '' : 'none';
-                
-                currentStoryRows.forEach(contentRow => {
-                    // Показываем контент, если совпала ИЛИ история, ИЛИ сам персонаж
-                    const rowMatch = contentRow.innerText.toLowerCase().includes(filter);
-                    contentRow.style.display = (filter === '' || storyHeaderMatch || rowMatch) ? '' : 'none';
-                });
-            }
-
-            // Сброс данных для новой истории
-            currentHeader = row;
-            currentStoryRows = [];
-            storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
-            storyHasContentMatch = false;
-        } else {
-            // Накапливаем строки персонажей
-            currentStoryRows.push(row);
-            if (row.innerText.toLowerCase().includes(filter)) {
-                storyHasContentMatch = true;
-            }
+    // 3. ЭФФЕКТЫ
+    function spawnParticles(x, y) {
+        if (!x || !y) return;
+        for (let i = 0; i < 10; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const color = getComputedStyle(document.documentElement).getPropertyValue('--magic-color');
+            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:${color}; box-shadow:0 0 10px ${color}; transition:0.6s;`;
+            document.body.appendChild(p);
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`;
+                p.style.opacity = '0';
+            });
+            setTimeout(() => p.remove(), 600);
         }
-    });
+    }
 
-    // Финализируем последнюю историю в таблице
-    if (currentHeader) {
-        const shouldShowHeader = filter === '' || storyHeaderMatch || storyHasContentMatch;
-        currentHeader.style.display = shouldShowHeader ? '' : 'none';
-        currentStoryRows.forEach(contentRow => {
-            const rowMatch = contentRow.innerText.toLowerCase().includes(filter);
-            contentRow.style.display = (filter === '' || storyHeaderMatch || rowMatch) ? '' : 'none';
+    function startConfetti() {
+        for (let i = 0; i < 40; i++) {
+            const d = document.createElement('div');
+            d.innerHTML = '💎';
+            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: transform ${(Math.random()*2+2)}s linear, opacity 2s;`;
+            document.body.appendChild(d);
+            requestAnimationFrame(() => { d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; d.style.opacity = '0'; });
+            setTimeout(() => d.remove(), 4000);
+        }
+    }
+
+    function showFullscreenText(msg) {
+        let overlay = document.getElementById('secret-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div'); overlay.id = 'secret-overlay';
+            overlay.innerHTML = `<div class="secret-text">${msg}</div>`;
+            document.body.appendChild(overlay);
+        }
+        overlay.classList.add('show');
+        setTimeout(() => overlay.classList.remove('show'), 3000);
+    }
+
+    // 4. КОПИРОВАНИЕ
+    function copy(btn) {
+        const text = btn.getAttribute('data-code') || btn.previousElementSibling?.innerText;
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(() => {
+            let t = document.getElementById('toast');
+            t.innerText = `Скопировано: ${text}`;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
         });
     }
-}
 
+    // 5. ИНИЦИАЛИЗАЦИЯ
+    function createStars() {
+        const container = document.getElementById('star-container');
+        for (let i = 0; i < 80; i++) {
+            const s = document.createElement('div'); s.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            s.style.width = size; s.style.height = size;
+            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
+            s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            s.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
+            container.appendChild(s);
+        }
+    }
 
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-/**
- * 3. КОПИРОВАНИЕ И TOAST
- */
-function copy(btn) {
-    const text = btn.getAttribute('data-code') || btn.previousElementSibling?.innerText;
-    if (!text) return;
-
-    navigator.clipboard.writeText(text).then(() => {
-        showToast(`Код ${text} скопирован!`);
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('backToTop');
+        btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
-}
 
-function showToast(msg) {
-    let toast = document.getElementById('toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'toast';
-        document.body.appendChild(toast);
-    }
-    toast.innerText = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-}
-
-/**
- * 4. ЭФФЕКТЫ (ИСКРЫ, КОНФЕТТИ, ТЕКСТ)
- */
-function spawnParticles(x, y) {
-    if (!x || !y) return;
-    for (let i = 0; i < 10; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        document.body.appendChild(p);
-        
-        // Позиция
-        p.style.left = x + 'px';
-        p.style.top = y + 'px';
-
-        requestAnimationFrame(() => {
-            const destX = (Math.random() - 0.5) * 120;
-            const destY = (Math.random() - 0.5) * 120;
-            p.style.transform = `translate(${destX}px, ${destY}px) scale(0)`;
-            p.style.opacity = '0';
+    document.addEventListener('DOMContentLoaded', () => {
+        reflectPreference();
+        createStars();
+        // Обработчик искр для всех кнопок
+        document.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn') || e.target.id === 'clearSearch') {
+                spawnParticles(e.clientX, e.clientY);
+            }
         });
-        setTimeout(() => p.remove(), 600);
-    }
-}
-
-function startConfetti() {
-    for (let i = 0; i < 40; i++) {
-        const d = document.createElement('div');
-        d.className = 'diamond-rain';
-        d.innerHTML = '💎';
-        d.style.left = Math.random() * 100 + 'vw';
-        d.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        document.body.appendChild(d);
-        setTimeout(() => d.remove(), 4000);
-    }
-}
-
-function showFullscreenText(message) {
-    let overlay = document.getElementById('secret-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'secret-overlay';
-        overlay.innerHTML = `<div class="secret-text">${message}</div>`;
-        document.body.appendChild(overlay);
-    }
-    overlay.classList.add('show');
-    setTimeout(() => overlay.classList.remove('show'), 3000);
-}
-
-/**
- * 5. ГЕНЕРАЦИЯ ЗВЕЗД
- */
-function createStars() {
-    const container = document.getElementById('star-container');
-    if (!container) return;
-    const count = 100;
-    for (let i = 0; i < count; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        const size = Math.random() * 3 + 'px';
-        star.style.width = size;
-        star.style.height = size;
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-        star.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
-        container.appendChild(star);
-    }
-}
-
-/**
- * 6. ИНИЦИАЛИЗАЦИЯ И СОБЫТИЯ
- */
-const handleInteraction = (e) => {
-    const x = e.clientX || (e.touches && e.touches[0].clientX);
-    const y = e.clientY || (e.touches && e.touches[0].clientY);
-    const target = e.target;
-
-    // Искры для кнопок
-    if (target.tagName === 'BUTTON' || target.closest('button') || target.classList.contains('copy-btn') || target.id === 'clearSearch' || target.id === 'backToTop') {
-        spawnParticles(x, y);
-    }
-    
-    // Клик по теме
-    if (target.id === 'theme-toggle' || target.closest('#theme-toggle')) {
-        toggleTheme(e);
-    }
-};
-
-document.addEventListener('click', handleInteraction);
-document.addEventListener('touchstart', handleInteraction, { passive: true });
-
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-window.addEventListener('scroll', () => {
-    const btn = document.getElementById('backToTop');
-    if (btn) {
-        if (window.scrollY > 300) btn.classList.add('show');
-        else btn.classList.remove('show');
-    }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    reflectPreference();
-    createStars();
-    runFilter();
-});
+    });
 </script>
+```
 
-
-    
-    
+</body>
