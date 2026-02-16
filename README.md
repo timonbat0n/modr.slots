@@ -633,6 +633,8 @@ reflectPreference();
 function runFilter() {
     const input = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearch');
+    if (!input) return;
+
     const filter = input.value.toLowerCase().trim();
     const rows = Array.from(document.querySelectorAll('tbody tr'));
 
@@ -646,40 +648,47 @@ function runFilter() {
     if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
 
     // 3. Логика фильтрации
-    let currentStoryRow = null;
-    let storyHasMatch = false;
-    let rowsToProcess = [];
+    let storyHeaderMatch = false; // Совпало ли название истории
+    let storyHasContentMatch = false; // Нашелся ли персонаж внутри истории
+    let currentStoryRows = []; // Буфер для строк текущей истории
+    let currentHeader = null;
 
     rows.forEach((row) => {
         if (row.classList.contains('story-row')) {
-            // Если мы дошли до нового заголовка, обрабатываем предыдущую группу
-            if (currentStoryRow) {
-                currentStoryRow.style.display = (filter === '' || storyHasMatch) ? '' : 'none';
+            // Перед переходом к новой истории, решаем судьбу предыдущей
+            if (currentHeader) {
+                const shouldShowHeader = filter === '' || storyHeaderMatch || storyHasContentMatch;
+                currentHeader.style.display = shouldShowHeader ? '' : 'none';
+                
+                currentStoryRows.forEach(contentRow => {
+                    // Показываем контент, если совпала ИЛИ история, ИЛИ сам персонаж
+                    const rowMatch = contentRow.innerText.toLowerCase().includes(filter);
+                    contentRow.style.display = (filter === '' || storyHeaderMatch || rowMatch) ? '' : 'none';
+                });
             }
-            currentStoryRow = row;
-            storyHasMatch = false;
-            // Если само название истории совпадает с поиском, помечаем, что история найдена
-            if (row.innerText.toLowerCase().includes(filter)) storyHasMatch = true;
+
+            // Сброс данных для новой истории
+            currentHeader = row;
+            currentStoryRows = [];
+            storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
+            storyHasContentMatch = false;
         } else {
-            const isMatch = row.innerText.toLowerCase().includes(filter);
-            row.style.display = isMatch ? '' : 'none';
-            if (isMatch) storyHasMatch = true;
+            // Накапливаем строки персонажей
+            currentStoryRows.push(row);
+            if (row.innerText.toLowerCase().includes(filter)) {
+                storyHasContentMatch = true;
+            }
         }
     });
 
-    // Не забываем обработать последнюю историю в списке
-    if (currentStoryRow) {
-        currentStoryRow.style.display = (filter === '' || storyHasMatch) ? '' : 'none';
-    }
-}
-
-// --- ФУНКЦИЯ ОЧИСТКИ ---
-function clearInput() {
-    const input = document.getElementById('searchInput');
-    if (input) {
-        input.value = '';
-        runFilter(); // Сбрасываем таблицу
-        input.focus();
+    // Финализируем последнюю историю в таблице
+    if (currentHeader) {
+        const shouldShowHeader = filter === '' || storyHeaderMatch || storyHasContentMatch;
+        currentHeader.style.display = shouldShowHeader ? '' : 'none';
+        currentStoryRows.forEach(contentRow => {
+            const rowMatch = contentRow.innerText.toLowerCase().includes(filter);
+            contentRow.style.display = (filter === '' || storyHeaderMatch || rowMatch) ? '' : 'none';
+        });
     }
 }
 
