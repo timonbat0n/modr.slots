@@ -281,6 +281,14 @@ tr:not(.story-row) td:nth-child(1) { font-size: 20px; font-weight: 900; color: v
 <tr><td>одиночка</td><td><span class="code-text">4c9152d8dca82cf40e92d29105979f34</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ангел</td></tr>
 <tr><td>Люцифер</td><td><span class="code-text">35afb2332ef908a54d3bf3cd7f619d40</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">демон</td></tr>
 <tr><td>Маль</td><td><span class="code-text">4dc308fcf83c68f1c040c7d9b35a0261</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">несущая равновесие</td></tr>
+<tr>
+    <td>Люцифер</td>
+    <td>
+        <span class="code-text">3288970cff71ed8783d44f94e8bbe79c</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>Несущая равновесие</td>
+</tr>
 
 <tr class="story-row"><td colspan="3">Секрет Небес: Реквием</td></tr>
 <tr><td>Дима</td><td><span class="code-text">27c666a4a26617b105b29ca465522beb</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог, милосердие, выс адаптация</td></tr>
@@ -298,6 +306,14 @@ tr:not(.story-row) td:nth-child(1) { font-size: 20px; font-weight: 900; color: v
 <tr><td>Астарот (2)</td><td><span class="code-text">1575dded56f6bcbf58cd5ab2b23e08d7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность, Война жив</td></tr>
 <tr><td>Мальбонте</td><td><span class="code-text">bf5acee0a34afd508f6f10d96904bcd5</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">не несущая равновесие, хладнокров, Война жив</td></tr>
 <tr><td>Война</td><td><span class="code-text">cb907d487948233617f4b61c2d5c985a</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность</td></tr>
+<tr>
+    <td>Люцифер</td>
+    <td>
+        <span class="code-text">b4bf04e47f284c96a8972ac347920855</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>метис, темпераментность, война жив</td>
+</tr>
 
 <tr class="story-row"><td colspan="3">Секрет небес 3</td></tr>
 <tr><td>Война+Грег+Кас</td><td><span class="code-text">7a433600d30678e35c6cfde3d3c752e9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, прокаченная тьма Шепфамалума</td></tr>
@@ -318,6 +334,14 @@ tr:not(.story-row) td:nth-child(1) { font-size: 20px; font-weight: 900; color: v
 <tr><td>Лоуренс+Дариус+Антонио</td><td><span class="code-text">ffe028bef20345275bf7db646331a4f7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">романтик, выс, энергия</td></tr>
 <tr><td>Фридрих+Джон</td><td><span class="code-text">3955bc8eecf8442602bc09d908c2ed9c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">начало 3го сезона, романтик</td></tr>
 <tr><td>Лоу+Марсель+Антонио</td><td><span class="code-text">8d6778c11a2fd7ae9f21706d3e65eec8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">романтик, выс энергия</td></tr>
+<tr>
+    <td>Люцифер+Каин+Давид</td>
+    <td>
+        <span class="code-text">6450f4c73dde3ba1d87fa582db4640ef</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>не прокачена тьма шм, милосердие</td>
+</tr>
 
 <tr class="story-row"><td colspan="3">Цветок из огня Тиамат</td></tr>
 <tr><td>Ниалл</td><td><span class="code-text">5dacddb30e3015a5475df5d6f6b3774c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">огонь</td></tr>
