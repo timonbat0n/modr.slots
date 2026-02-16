@@ -1,202 +1,174 @@
-<html lang="ru" data-theme="light">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modr Slots</title>
-<style>
-    /* ПЕРЕМЕННЫЕ */
-    :root {
-        --bg-color: #3b5984;        /* Основной фон */
-        --card-bg: #2a3d59;         /* Темный фон карточки персонажа */
-        --accent-pale: #7cb9e8;      /* Голубой акцент */
-        --text-white: #ffffff;
-        --text-gray: rgba(255, 255, 255, 0.7);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODR Slots</title>
+    <style>
+        :root {
+            --bg-color: #3b5984;
+            --card-bg: #2a3d59;
+            --accent-blue: #7cb9e8;
+            --text-white: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-        font-family: 'Inter', 'Segoe UI', sans-serif;
-        background-color: var(--bg-color);
-        color: var(--text-white);
-        padding: 40px 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    /* ЗАГОЛОВОК (Забудьте о...) */
-    .hero-title {
-        width: 100%;
-        max-width: 600px;
-        font-size: clamp(28px, 7vw, 42px);
-        font-weight: 900;
-        color: var(--accent-pale);
-        text-transform: uppercase;
-        line-height: 1.1;
-        margin-bottom: 25px;
-        text-align: left;
-    }
+        .container { width: 100%; max-width: 600px; }
 
-    /* ПОИСК */
-    .search-wrapper {
-        width: 100%;
-        max-width: 600px;
-        margin-bottom: 30px;
-    }
+        .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; letter-spacing: -1px; }
 
-    #searchInput {
-        width: 100%;
-        padding: 16px 20px;
-        border-radius: 12px;
-        border: none;
-        background: #ffffff;
-        color: #1a2a44;
-        font-size: 16px;
-        font-weight: 600;
-        outline: none;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
+        .hero-title {
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
 
-    /* ТАБЛИЦА КАК БЛОКИ */
-    .table-container {
-        width: 100%;
-        max-width: 600px;
-    }
+        .hero-desc {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 12px; /* Расстояние между блоками-карточками */
-    }
+        #searchInput {
+            width: 100%;
+            padding: 18px 20px;
+            border-radius: 15px;
+            border: none;
+            background: #ffffff;
+            color: #1a2a44;
+            font-size: 16px;
+            font-weight: 700;
+            outline: none;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
 
-    /* ХЕЙДЕР (Персонаж, Код...) */
-    thead th {
-        color: var(--accent-pale);
-        text-transform: uppercase;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1.5px;
-        padding: 5px 15px;
-        text-align: left;
-    }
+        .tg-btn {
+            display: block;
+            width: 100%;
+            background: var(--accent-blue);
+            color: #1a2a44 !important;
+            text-decoration: none;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            transition: 0.3s;
+        }
 
-    /* ЗАГОЛОВОК ИСТОРИИ (Story Row) */
-    .story-row td {
-        background: transparent !important; /* Убираем фон у заголовка истории */
-        color: var(--text-white) !important;
-        font-size: 18px !important;
-        font-weight: 900 !important;
-        padding: 20px 0 10px 5px !important;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
+        /* ПРЕВРАЩАЕМ ТАБЛИЦУ В КАРТОЧКИ */
+        table, tbody, tr, td { display: block; width: 100%; }
+        thead { display: none; }
 
-    /* КАРТОЧКА ПЕРСОНАЖА (Строка таблицы) */
-    tr:not(.story-row) td {
-        background-color: var(--card-bg) !important;
-        padding: 20px 15px;
-        border: none;
-        vertical-align: middle;
-    }
+        .story-row { margin: 30px 0 15px 5px; }
+        .story-row td {
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #fff;
+            border: none;
+        }
 
-    /* Скругления углов для каждого блока */
-    tr:not(.story-row) td:first-child {
-        border-radius: 15px 0 0 15px;
-        color: var(--accent-pale); /* Имя персонажа голубым */
-        font-weight: 700;
-        width: 35%;
-    }
+        tr:not(.story-row) {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
 
-    tr:not(.story-row) td:nth-child(2) {
-        font-family: 'Courier New', monospace;
-        font-size: 15px;
-        color: var(--text-white);
-        width: 40%;
-    }
+        /* Имя персонажа */
+        tr:not(.story-row) td:nth-child(1) {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 4px;
+        }
 
-    tr:not(.story-row) td:last-child {
-        border-radius: 0 15px 15px 0;
-        text-align: right;
-        width: 25%;
-    }
+        /* Описание (Инфо) */
+        tr:not(.story-row) td:nth-child(3) {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            order: 2;
+        }
 
-    /* КНОПКА КОПИРОВАТЬ */
-    .copy-btn {
-        background-color: var(--accent-pale);
-        color: #1a2a44;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 8px;
-        font-weight: 800;
-        font-size: 10px;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+        /* Код и кнопка */
+        tr:not(.story-row) td:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            order: 3;
+        }
 
-    .copy-btn:hover {
-        background-color: #ffffff;
-        transform: scale(1.05);
-    }
+        .code-text {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+            color: #fff;
+        }
 
-    /* КНОПКА ОТПРАВИТЬ СЛОТЫ */
-    .tg-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 600px;
-        background: var(--accent-pale);
-        color: #1a2a44 !important;
-        text-decoration: none;
-        padding: 20px;
-        border-radius: 15px;
-        font-weight: 900;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-        transition: 0.3s;
-    }
+        .copy-btn {
+            background: var(--accent-blue);
+            color: #1a2a44;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
 
-    .tg-btn:hover {
-        background: #ffffff;
-        box-shadow: 0 5px 20px rgba(124, 185, 232, 0.4);
-    }
-
-    /* ФИКС ДЛЯ МОБИЛОК */
-    @media (max-width: 480px) {
-        tr:not(.story-row) td { padding: 15px 10px; font-size: 13px; }
-        .copy-btn { padding: 8px 10px; font-size: 9px; }
-    }
-</style>
+        #backToTop {
+            position: fixed;
+            bottom: 25px; right: 25px;
+            width: 50px; height: 50px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
+<div class="container">
+    <div class="logo">modr.</div>
 
-<div class="hero-section">
-    <h1 class="hero-title">
-        ЗАБУДЬТЕ О<br>
-        НЕОБХОДИМОСТИ<br>
-        ИСКАТЬ СЛОТ <br>
-        ПО ЧАТУ
-    </h1>
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
     
 
+    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
 
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
-        <div id="clearSearch" onclick="clearInput()">×</div>
-    </div>
+    <a href="https://t.me/your_bot_link" target="_blank" class="tg-btn">Отправить слоты ⚡</a>
 
-    <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
-        ОТПРАВИТЬ СЛОТЫ
-    </a>
-</div>
-
-
-
-
-    <div class="table-container">
+   <div class="table-container">
     <table id="mainTable">
         <thead>
             <tr>
@@ -225,22 +197,6 @@
 <tr><td>Жанна</td><td><span class="code-text">8cacc44c76e75bf310a487b7f654a6ea</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">чувства, с финалом</td></tr>
 <tr class="story-row"><td colspan="3">Te amo 2 том</td></tr>
 <tr><td>Мэт</td><td><span class="code-text">cf48199c00acd80a0a96ad72fe8544dc</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рассуждение</td></tr>
-<tr>
-    <td>Кейт</td>
-    <td>
-        <span class="code-text">867aba9dd3bf0fe717a7c6e6105df80b</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td>интуиция</td>
-</tr>
-<tr>
-    <td>Генри</td>
-    <td>
-        <span class="code-text">f5d7e44835cdc081996d85f2d2391999</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td>рассуждение</td>
-</tr>
 
 <tr class="story-row"><td colspan="3">7Б</td></tr>
 <tr><td>Грант</td><td><span class="code-text">2437db5000468bea11082a9c22c91297</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм, милашка</td></tr>
@@ -277,6 +233,7 @@
     </td>
     <td>баланс</td>
 </tr>
+
 
 <tr class="story-row"><td colspan="3">И поглотит нас морок</td></tr>
 <tr><td>Драган</td><td><span class="code-text">2cd483f99137fd6da27f616d2b0b832a</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, явь, сострадание</td></tr>
@@ -368,6 +325,7 @@
     <td>ворон призыв</td>
 </tr>
 
+
 <tr class="story-row"><td colspan="3">Секрет Небес</td></tr>
 <tr><td>одиночка</td><td><span class="code-text">4c9152d8dca82cf40e92d29105979f34</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ангел</td></tr>
 <tr><td>Люцифер</td><td><span class="code-text">35afb2332ef908a54d3bf3cd7f619d40</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">демон</td></tr>
@@ -397,15 +355,6 @@
 
 <tr class="story-row"><td colspan="3">Сердце Треспии</td></tr>
 <tr><td>Рейнхольд</td><td><span class="code-text">a5e2ba6722aa3fe934a4b14a0a0aafd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рациональность</td></tr>
-<tr>
-    <td>Астарот+Дмитрий+Микаэль</td>
-    <td>
-        <span class="code-text">963ead5b753942aba96159697e8c3dde</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td>милосердие, тьма Шепфамалума</td>
-</tr>
-
 
 <tr class="story-row"><td colspan="3">Там, где любовь горит вечно</td></tr>
 <tr><td>Граф/Мессир/Шеда</td><td><span class="code-text">05362d9356139f6d50ddbc29585f5cdc</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жизнелюбие, баланс</td></tr>
@@ -444,6 +393,7 @@
     <td>чародейство / хол. сердце</td>
 </tr>
 
+
 <tr class="story-row"><td colspan="3">Эдемов Сад</td></tr>
 <tr><td>Одиночка</td><td><span class="code-text">1b196faa0f4649e8b3c98f50eace2b90</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">1 сезон, 8 серия на выборе ветки</td></tr>
 <tr><td>Минхёк</td><td><span class="code-text">4f03e11a86304a1fd884dfb12c7d827d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Амбиции, выс популярность</td></tr>
@@ -463,192 +413,44 @@
     </td>
     <td>логика, авторитет с финалом</td>
 </tr>
+</div>
 
-<tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
-<tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
-<tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
-<div id="backToTop" onclick="scrollToTop()">↑</div>
+<div id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
 
 <script>
-    const storageKey = 'theme-preference';
-
-    // 1. ТЕМА
-    function reflectPreference() {
-        const theme = localStorage.getItem(storageKey) || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-        document.getElementById('themeBtn').innerHTML = theme === 'light' ? '🌙' : '☀️';
+    function copyText(btn) {
+        const code = btn.previousElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const oldText = btn.innerText;
+            btn.innerText = 'СКОПИРОВАНО!';
+            setTimeout(() => btn.innerText = oldText, 1500);
+        });
     }
 
-    function toggleTheme(e) {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        localStorage.setItem(storageKey, next);
-        reflectPreference();
-        if(e) spawnParticles(e.clientX, e.clientY);
-    }
+    function filterTable() {
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const rows = document.querySelectorAll("#mainTable tr:not(.story-row)");
+        const headers = document.querySelectorAll(".story-row");
 
-    // 2. ПОИСК (УМНЫЙ)
-    function runFilter() {
-        const input = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearSearch');
-        const filter = input.value.toLowerCase().trim();
-        const rows = Array.from(document.querySelectorAll('tbody tr'));
+        rows.forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(input) ? "flex" : "none";
+        });
 
-        clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
-
-        if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
-        if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
-
-        let storyHeaderMatch = false;
-        let storyHasContentMatch = false;
-        let currentStoryRows = [];
-        let currentHeader = null;
-
-        rows.forEach((row) => {
-            if (row.classList.contains('story-row')) {
-                if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
-                currentHeader = row;
-                currentStoryRows = [];
-                storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
-                storyHasContentMatch = false;
-            } else {
-                currentStoryRows.push(row);
-                if (row.innerText.toLowerCase().includes(filter)) storyHasContentMatch = true;
+        headers.forEach(header => {
+            let next = header.nextElementSibling;
+            let visible = false;
+            while (next && !next.classList.contains('story-row')) {
+                if (next.style.display !== 'none') visible = true;
+                next = next.nextElementSibling;
             }
-        });
-        if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
-    }
-
-    function finalizeStory(header, rows, headMatch, contentMatch, filter) {
-        const show = filter === '' || headMatch || contentMatch;
-        header.style.display = show ? '' : 'none';
-        rows.forEach(r => {
-            const rMatch = r.innerText.toLowerCase().includes(filter);
-            r.style.display = (filter === '' || headMatch || rMatch) ? '' : 'none';
+            header.style.display = visible ? "block" : "none";
         });
     }
 
-    function clearInput(e) {
-        const input = document.getElementById('searchInput');
-        input.value = '';
-        runFilter();
-        input.focus();
-        if(e) spawnParticles(e.clientX, e.clientY);
-    }
-
-    // 3. ЭФФЕКТЫ
-    function spawnParticles(x, y) {
-        if (!x || !y) return;
-        for (let i = 0; i < 10; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            const color = getComputedStyle(document.documentElement).getPropertyValue('--magic-color');
-            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:${color}; box-shadow:0 0 10px ${color}; transition:0.6s;`;
-            document.body.appendChild(p);
-            requestAnimationFrame(() => {
-                p.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`;
-                p.style.opacity = '0';
-            });
-            setTimeout(() => p.remove(), 600);
-        }
-    }
-
-    function startConfetti() {
-        for (let i = 0; i < 40; i++) {
-            const d = document.createElement('div');
-            d.innerHTML = '💎';
-            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: transform ${(Math.random()*2+2)}s linear, opacity 2s;`;
-            document.body.appendChild(d);
-            requestAnimationFrame(() => { d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; d.style.opacity = '0'; });
-            setTimeout(() => d.remove(), 4000);
-        }
-    }
-
-    function showFullscreenText(msg) {
-        let overlay = document.getElementById('secret-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div'); overlay.id = 'secret-overlay';
-            overlay.innerHTML = `<div class="secret-text">${msg}</div>`;
-            document.body.appendChild(overlay);
-        }
-        overlay.classList.add('show');
-        setTimeout(() => overlay.classList.remove('show'), 3000);
-    }
-
-    // 4. КОПИРОВАНИЕ
-    function copy(btn) {
-        const text = btn.getAttribute('data-code') || btn.previousElementSibling?.innerText;
-        if (!text) return;
-        navigator.clipboard.writeText(text).then(() => {
-            let t = document.getElementById('toast');
-            t.innerText = `Скопировано: ${text}`;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2000);
-        });
-    }
-
-    // 5. ИНИЦИАЛИЗАЦИЯ
-    function createStars() {
-        const container = document.getElementById('star-container');
-        for (let i = 0; i < 80; i++) {
-            const s = document.createElement('div'); s.className = 'star';
-            const size = Math.random() * 3 + 'px';
-            s.style.width = size; s.style.height = size;
-            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
-            s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            s.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
-            container.appendChild(s);
-        }
-    }
-
-    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-    window.addEventListener('scroll', () => {
-        const btn = document.getElementById('backToTop');
-        btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
-    });
-// Функция применения темы
-function reflectPreference() {
-    // Проверяем сохраненную тему, если нет - берем системную
-    const theme = localStorage.getItem('theme-preference') || 
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    const btn = document.getElementById('themeBtn');
-    if (btn) {
-        btn.innerHTML = theme === 'light' ? '🌙' : '☀️';
-    }
-}
-
-// Функция клика по кнопке
-function toggleTheme(e) {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
-    
-    localStorage.setItem('theme-preference', next);
-    reflectPreference();
-    
-    // Искры при смене темы
-    if (e) {
-        const x = e.clientX || (e.touches && e.touches[0].clientX);
-        const y = e.clientY || (e.touches && e.touches[0].clientY);
-        spawnParticles(x, y);
-    }
-}
-
-// Вызываем сразу при загрузке скрипта
-reflectPreference();
-
-    document.addEventListener('DOMContentLoaded', () => {
-        reflectPreference();
-        createStars();
-        // Обработчик искр для всех кнопок
-        document.addEventListener('click', (e) => {
-            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn') || e.target.id === 'clearSearch') {
-                spawnParticles(e.clientX, e.clientY);
-            }
-        });
-    });
+    window.onscroll = () => {
+        document.getElementById("backToTop").style.display = window.scrollY > 400 ? "flex" : "none";
+    };
 </script>
 
+</body>
+</html>
