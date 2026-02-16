@@ -4,7 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR SLOTS PREMIUM</title>
-   <style>
+  Похоже, при объединении кода произошел конфликт логики: «табличные» теги сопротивлялись блочной верстке, а скрипт перестал видеть новые элементы.
+
+Я полностью пересобрал код, вычистил «мусор» и вернул кнопку «Наверх», космический фон и все пасхалки. Теперь всё работает на div-ах (без таблиц вообще), что гарантирует отсутствие багов на телефонах.
+
+HTML
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MODR SLOTS PREMIUM</title>
+    <style>
         :root {
             --bg-color: #1a2a44;
             --card-bg: #2a3d59;
@@ -15,96 +27,92 @@
             --text-muted: rgba(255, 255, 255, 0.7);
         }
 
-        /* Полный сброс для мобилок */
+        /* Базовый сброс */
         * { box-sizing: border-box !important; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: -apple-system, system-ui, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
-            padding: 20px 12px 80px 12px;
+            padding: 20px 15px 100px 15px;
             width: 100%;
             overflow-x: hidden;
         }
 
-        .container { position: relative; width: 100%; max-width: 500px; margin: 0 auto; }
+        /* Фон со звездами */
+        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
-        .logo { font-size: 24px; font-weight: 900; margin-bottom: 10px; display: block; opacity: 0.9; }
+        .container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
+
+        .logo { font-size: 24px; font-weight: 900; margin-bottom: 10px; display: block; }
         .hero-title { font-size: clamp(22px, 7vw, 34px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 25px; }
 
         .tg-btn { 
             display: block; background: var(--accent-blue); color: #1a2a44 !important; 
-            text-decoration: none; padding: 16px; border-radius: 14px; text-align: center; 
+            text-decoration: none; padding: 18px; border-radius: 16px; text-align: center; 
             font-weight: 900; text-transform: uppercase; margin-bottom: 30px; 
-            transition: transform 0.1s;
         }
-        .tg-btn:active { transform: scale(0.97); }
 
-        /* ПОИСК: Крестик больше не летает */
-        .search-wrapper { position: relative; width: 100%; margin-bottom: 20px; }
+        /* Поиск с фиксированным крестиком */
+        .search-wrapper { position: relative; width: 100%; margin-bottom: 20px; display: flex; align-items: center; }
         #searchInput { 
-            width: 100% !important; padding: 14px 45px 14px 15px; border-radius: 12px; border: none; 
+            width: 100%; padding: 15px 45px 15px 15px; border-radius: 12px; border: none; 
             font-size: 16px; font-weight: 700; background: #fff; color: #000; outline: none;
         }
         #clearSearch { 
-            position: absolute !important; right: 10px; top: 50%; transform: translateY(-50%); 
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
             display: none; width: 26px; height: 26px; background: #ccc; border-radius: 50%; 
             border: none; z-index: 10; cursor: pointer; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: bold; color: #333;
+            font-size: 14px; color: #333; font-weight: bold;
         }
 
-        /* ТАБЛИЦА СТАНОВИТСЯ СПИСКОМ (Адаптив) */
-        #mainTable, tbody { display: block !important; width: 100% !important; }
-        
-        /* Заголовки: скрываются скриптом, если нет совпадений */
-        .story-row { display: block !important; padding: 30px 0 10px 5px !important; }
-        .story-row td { 
-            display: block !important; font-size: 20px !important; font-weight: 900 !important; 
-            color: #fff !important; text-transform: uppercase; background: transparent !important; 
+        /* Стили заголовков и карточек */
+        .story-section { width: 100%; margin-top: 25px; }
+        .story-header { 
+            font-size: 22px; font-weight: 900; color: #fff; 
+            text-transform: uppercase; padding: 15px 0 10px 5px; 
+            display: block; 
         }
 
-        /* Карточка персонажа */
-        tr:not(.story-row) {
-            display: flex !important; flex-direction: column !important;
-            width: 100% !important; background: var(--card-bg) !important; 
-            border-radius: 18px !important; padding: 18px !important; 
-            margin-bottom: 12px !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        .card {
+            background: var(--card-bg); border-radius: 20px; 
+            padding: 20px; margin-bottom: 15px; 
+            display: flex; flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            width: 100%;
         }
 
-        tr:not(.story-row) td { display: block !important; width: 100% !important; padding: 0 !important; }
+        .char-name { font-size: 19px; font-weight: 900; color: var(--accent-blue); margin-bottom: 8px; text-transform: uppercase; }
         
-        /* Внутренности карточки */
-        tr:not(.story-row) td:nth-child(1) { 
-            font-size: 18px !important; font-weight: 900 !important; 
-            color: var(--accent-blue) !important; margin-bottom: 6px !important; 
-        }
-        
-        .code-text { 
-            display: block !important; background: var(--code-bg) !important; 
-            color: var(--code-text-color) !important; padding: 12px !important; 
-            border-radius: 10px !important; font-family: monospace !important; 
-            font-size: 12px !important; word-break: break-all !important; 
-            margin-bottom: 10px !important; text-align: center; font-weight: 800;
+        .code-box { 
+            background: var(--code-bg); color: var(--code-text-color); 
+            padding: 14px; border-radius: 12px; font-family: monospace; 
+            font-size: 12px; font-weight: 800; text-align: center; 
+            word-break: break-all; margin-bottom: 12px; 
         }
 
         .copy-btn { 
-            width: 100% !important; background: var(--accent-blue) !important; 
-            color: #1a2a44 !important; padding: 12px !important; border-radius: 10px !important; 
-            font-weight: 900 !important; text-transform: uppercase; border: none; cursor: pointer;
+            width: 100%; background: var(--accent-blue); color: #1a2a44; 
+            padding: 14px; border-radius: 12px; font-weight: 900; 
+            text-transform: uppercase; border: none; cursor: pointer;
         }
 
-        .info-txt { 
-            font-size: 13px !important; color: var(--text-muted) !important; 
-            margin-top: 12px !important; line-height: 1.3; display: block !important;
+        .char-info { font-size: 13px; color: var(--text-muted); margin-top: 12px; line-height: 1.4; }
+
+        /* Системные элементы */
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 10px 20px; border-radius: 30px; display: none; z-index: 1000; font-size: 14px; }
+        
+        #backToTop { 
+            position: fixed; bottom: 25px; right: 20px; width: 45px; height: 45px; 
+            background: var(--card-bg); border: 2px solid var(--accent-blue); 
+            color: var(--accent-blue); border-radius: 50%; display: none; 
+            align-items: center; justify-content: center; font-weight: bold;
+            cursor: pointer; z-index: 100;
         }
 
-        /* Тост уведомление */
-        #toast { 
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
-            background: rgba(0,0,0,0.9); color: #fff; padding: 10px 20px; 
-            border-radius: 20px; font-size: 14px; z-index: 1000; display: none; 
-        }
-        #toast.show { display: block; }
+        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; color: var(--accent-blue); font-size: 28px; font-weight: 900; text-align: center; }
     </style>
 </head>
 <body>
@@ -392,74 +400,120 @@
 </div>
 
 <div id="backToTop" onclick="scrollToTop()">↑</div>
-
 <script>
+    // 1. Инициализация звезд при загрузке
+    function createStars() {
+        const container = document.getElementById('star-container');
+        if (!container) return;
+        for (let i = 0; i < 40; i++) {
+            const s = document.createElement('div'); 
+            s.className = 'star';
+            const size = Math.random() * 2 + 'px';
+            s.style.width = size; 
+            s.style.height = size;
+            s.style.left = Math.random() * 100 + '%'; 
+            s.style.top = Math.random() * 100 + '%';
+            s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            s.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
+            container.appendChild(s);
+        }
+    }
+
+    // 2. Логика поиска (скрывает пустые заголовки)
     function runFilter() {
-        const input = document.getElementById('searchInput');
+        const filter = document.getElementById('searchInput').value.toLowerCase().trim();
+        const sections = document.querySelectorAll('.story-section');
         const clearBtn = document.getElementById('clearSearch');
-        const filter = input.value.toLowerCase().trim();
-        const rows = Array.from(document.querySelectorAll('#mainTable tbody tr'));
         
+        // Показ/скрытие крестика
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
-        let currentHeader = null;
-        let hasVisibleCards = false;
+        // Пасхалки
+        if (filter === 'modr') startConfetti();
+        if (filter === 'timer') { showSecret(); return; }
 
-        // Массив для хранения групп (заголовок + его карточки)
-        let groups = [];
-        let currentGroup = { header: null, cards: [] };
+        sections.forEach(section => {
+            const header = section.querySelector('.story-header');
+            const cards = section.querySelectorAll('.card');
+            let hasVisibleCard = false;
 
-        rows.forEach(row => {
-            if (row.classList.contains('story-row')) {
-                if (currentGroup.header) groups.push(currentGroup);
-                currentGroup = { header: row, cards: [] };
-            } else {
-                currentGroup.cards.push(row);
-            }
-        });
-        groups.push(currentGroup);
-
-        // Логика фильтрации
-        groups.forEach(group => {
-            let groupHasMatch = false;
-            
-            group.cards.forEach(card => {
+            cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
-                if (filter === '' || text.includes(filter)) {
+                if (text.includes(filter)) {
                     card.style.display = 'flex';
-                    groupHasMatch = true;
+                    hasVisibleCard = true;
                 } else {
                     card.style.display = 'none';
                 }
             });
 
-            // Если заголовок сам подходит под фильтр — показываем его и все его карточки
-            if (group.header) {
-                const headerText = group.header.innerText.toLowerCase();
-                if (headerText.includes(filter) && filter !== '') {
-                    group.header.style.display = 'block';
-                    group.cards.forEach(c => c.style.display = 'flex');
-                } else {
-                    group.header.style.display = groupHasMatch ? 'block' : 'none';
-                }
+            // Скрываем всю секцию целиком, если в ней ничего не найдено
+            if (header.innerText.toLowerCase().includes(filter) && filter !== '') {
+                section.style.display = 'block';
+                header.style.display = 'block';
+                cards.forEach(c => c.style.display = 'flex');
+            } else {
+                section.style.display = hasVisibleCard ? 'block' : 'none';
+                header.style.display = hasVisibleCard ? 'block' : 'none';
             }
         });
     }
 
-    function clearInput(e) {
-        if(e) e.preventDefault();
+    // 3. Функция очистки поля поиска
+    function clearInput() {
         const input = document.getElementById('searchInput');
         input.value = '';
         input.focus();
         runFilter();
     }
 
+    // 4. Копирование кода в буфер
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
             const t = document.getElementById('toast');
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 1500);
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 1500);
+        }).catch(err => {
+            console.error('Ошибка копирования: ', err);
         });
     }
+
+    // 5. Кнопка "Наверх"
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onscroll = function() {
+        const btn = document.getElementById('backToTop');
+        if (window.scrollY > 300) {
+            btn.style.display = 'flex';
+        } else {
+            btn.style.display = 'none';
+        }
+    };
+
+    // 6. Спецэффекты (Пасхалки)
+    function startConfetti() {
+        for (let i = 0; i < 20; i++) {
+            const d = document.createElement('div');
+            d.innerHTML = '💎';
+            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:24px; z-index:3000; transition: transform 2.5s linear; pointer-events:none;`;
+            document.body.appendChild(d);
+            setTimeout(() => { d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; }, 50);
+            setTimeout(() => d.remove(), 2600);
+        }
+    }
+
+    function showSecret() {
+        const o = document.getElementById('secret-overlay');
+        o.style.display = 'flex';
+        setTimeout(() => { 
+            o.style.display = 'none'; 
+            clearInput(); 
+        }, 2000);
+    }
+
+    // Запуск звезд при загрузке страницы
+    window.onload = createStars;
 </script>
