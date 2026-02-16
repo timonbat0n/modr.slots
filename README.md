@@ -4,13 +4,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modr Slots</title>
 <style>
+    /* 1. ОСНОВНЫЕ ПЕРЕМЕННЫЕ */
     :root {
-        --bg-color: #3b5984; /* Глубокий синий фон как на фото */
-        --accent-blue: #7cb9e8; /* Небесно-голубой для текста */
-        --text-white: #ffffff;
-        --table-row-bg: rgba(255, 255, 255, 0.05);
-        --input-bg: #ffffff;
-        --btn-tg: #56a3e2;
+        --bg-color: #3b5984;        /* Фон страницы */
+        --accent-pale: #7cb9e8;      /* Нежно-голубой (строки) */
+        --dark-blue: #1a2a44;       /* Темно-синий (заголовки) */
+        --text-dark: #1a2a44;       /* Темный текст для голубых строк */
+        --text-white: #ffffff;      /* Белый текст */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,179 +19,167 @@
         font-family: 'Inter', 'Segoe UI', sans-serif;
         background-color: var(--bg-color);
         color: var(--text-white);
-        line-height: 1.4;
-        padding: 40px 20px;
+        padding: 40px 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        min-height: 100vh;
     }
 
-    /* ЛОГОТИП */
-    .logo {
-        width: 100%;
-        max-width: 800px;
-        font-size: 28px;
-        font-weight: 900;
-        margin-bottom: 60px;
-        letter-spacing: -1px;
-    }
-
-    /* ГЛАВНЫЙ БЛОК */
-    .hero-section {
-        width: 100%;
-        max-width: 800px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .hero-title {
-        font-size: clamp(32px, 8vw, 48px); /* Адаптивный размер */
-        font-weight: 800;
-        line-height: 1.1;
-        color: var(--accent-blue);
-        text-transform: uppercase;
-    }
-
-    .hero-desc {
-        font-size: 16px;
-        color: rgba(255, 255, 255, 0.8);
-        max-width: 500px;
-        margin-bottom: 30px;
-    }
-
-    /* ПОИСК */
+    /* 2. ПОИСК (ЛУПА + КРЕСТИК) */
     .search-wrapper {
         position: relative;
         width: 100%;
         max-width: 500px;
-        margin-bottom: 15px;
+        margin: 20px 0 40px 0;
     }
 
     #searchInput {
         width: 100%;
-        padding: 16px 20px;
-        border-radius: 8px;
-        border: none;
-        background: var(--input-bg);
-        color: #333;
+        padding: 15px 45px 15px 45px;
+        border-radius: 12px;
+        border: 2px solid var(--dark-blue);
+        background-color: #ffffff;
+        color: var(--dark-blue);
         font-size: 16px;
         font-weight: 500;
+        outline: none;
+        /* Иконка лупы */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231a2a44' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: 15px center;
+        background-size: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
     #clearSearch {
         position: absolute;
-        right: 15px;
+        right: 12px;
         top: 50%;
         transform: translateY(-50%);
-        color: #999;
-        font-size: 24px;
-        cursor: pointer;
-        display: none;
-    }
-
-    /* КНОПКА ТЕЛЕГРАМ */
-    .tg-btn {
-        display: inline-flex;
+        width: 26px;
+        height: 26px;
+        background-color: #eee;
+        color: var(--dark-blue);
+        border-radius: 50%;
+        display: none; /* Управляется через JS */
         align-items: center;
         justify-content: center;
-        background: var(--btn-tg);
-        color: white;
-        text-decoration: none;
-        padding: 14px 28px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-size: 14px;
-        text-transform: uppercase;
-        width: fit-content;
-        margin-bottom: 40px;
-        transition: 0.3s ease;
-    }
-
-    .tg-btn:hover {
-        filter: brightness(1.1);
-        transform: translateY(-2px);
-    }
-
-  /* ТЕМНАЯ ТАБЛИЦА */
-td {
-    /* Делаем фон строк темнее и глубже */
-    background: rgba(0, 0, 0, 0.25) !important; 
-    padding: 18px 15px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important; /* Едва заметный разделитель */
-}
-
-.story-row td {
-    /* Заголовок истории — глубокий синий, выделяющийся */
-    background: rgba(20, 30, 48, 0.6) !important;
-    color: var(--accent-blue) !important;
-    font-size: 15px !important;
-    letter-spacing: 2px;
-}
-
-/* СТИЛЬ КНОПКИ НАВЕРХ */
-#backToTop {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.05); /* Прозрачный белый */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 50%; /* Круглая */
-    display: none; /* Управляется через JS */
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-blue);
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-#backToTop:hover {
-    background: var(--accent-blue);
-    color: #3b5984; /* Цвет фона при наведении */
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(124, 185, 232, 0.4);
-}
-
-/* Фикс для кода (сделаем его чуть ярче на темном фоне) */
-.code-text {
-    color: #ffffff;
-    opacity: 0.9;
-    font-weight: 500;
-}
-
-    /* КНОПКА КОПИРОВАТЬ */
-    .copy-btn {
-        background: transparent;
-        border: 1px solid var(--accent-blue);
-        color: var(--accent-blue);
-        padding: 8px 16px;
-        border-radius: 4px;
         cursor: pointer;
-        font-weight: 700;
-        font-size: 12px;
+        font-size: 16px;
+        font-weight: bold;
         transition: 0.2s;
     }
 
-    .copy-btn:hover {
-        background: var(--accent-blue);
-        color: var(--bg-color);
+    #clearSearch:hover {
+        background-color: var(--dark-blue);
+        color: #ffffff;
     }
 
-    /* ЭФФЕКТЫ */
-    .particle {
+    /* 3. ТАБЛИЦА */
+    .table-container {
+        width: 100%;
+        max-width: 800px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 6px;
+        table-layout: fixed; /* Чтобы ничего не ползло */
+    }
+
+    /* Темно-синие заголовки историй */
+    .story-row td {
+        background-color: var(--dark-blue) !important;
+        color: var(--accent-pale) !important;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        padding: 18px 20px !important;
+        border-radius: 12px !important;
+        border: none !important;
+        text-align: left !important;
+    }
+
+    /* Нежно-голубые строки персонажей */
+    td {
+        background-color: var(--accent-pale) !important;
+        color: var(--text-dark) !important;
+        padding: 15px 10px;
+        border: none !important;
+        font-weight: 600;
+        vertical-align: middle;
+        word-wrap: break-word;
+    }
+
+    /* Скругления для строк */
+    tr:not(.story-row) td:first-child { border-radius: 12px 0 0 12px; text-align: left; padding-left: 20px; }
+    tr:not(.story-row) td:last-child { border-radius: 0 12px 12px 0; text-align: center; }
+
+    /* Шапка (заголовки колонок) */
+    thead th {
+        color: var(--text-white);
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 1px;
+        padding: 10px;
+        opacity: 0.8;
+        text-align: center;
+    }
+    thead th:first-child { text-align: left; padding-left: 20px; }
+
+    /* 4. КНОПКИ */
+    .copy-btn {
+        background-color: var(--dark-blue);
+        color: #ffffff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: 0.2s;
+        width: 100%;
+        max-width: 100px;
+    }
+
+    .copy-btn:hover {
+        transform: scale(1.05);
+        filter: brightness(1.2);
+    }
+
+    /* Кнопка наверх */
+    #backToTop {
         position: fixed;
-        width: 6px;
-        height: 6px;
-        background: var(--accent-blue);
-        pointer-events: none;
+        bottom: 25px;
+        right: 25px;
+        width: 45px;
+        height: 45px;
+        background-color: var(--dark-blue);
+        color: var(--accent-pale);
+        border: 2px solid var(--accent-pale);
         border-radius: 50%;
-        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 9999;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    #backToTop:hover {
+        background-color: var(--accent-pale);
+        color: var(--dark-blue);
+    }
+
+    /* Адаптивность для мобилок */
+    @media (max-width: 480px) {
+        td { font-size: 13px; padding: 12px 8px; }
+        .copy-btn { font-size: 9px; padding: 6px; }
     }
 </style>
 
@@ -199,8 +187,6 @@ td {
 </head>
 <body>
 
-
-<div class="logo">modr.</div>
 
 <div class="hero-section">
     <h1 class="hero-title">
