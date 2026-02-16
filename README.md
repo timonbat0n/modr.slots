@@ -4,112 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR SLOTS PREMIUM</title>
-    <style>
-   :root {
-    --bg-color: #1a2a44;
-    --card-bg: #2a3d59;
-    --accent-blue: #7cb9e8;
-    --code-bg: #e1e8f0;
-    --code-text-color: #1a2a44;
-    --text-white: #ffffff;
-    --text-muted: rgba(255, 255, 255, 0.7);
-    --magic-color: #7cb9e8;
-}
+   <style>
+        :root {
+            --bg-color: #1a2a44;
+            --card-bg: #2a3d59;
+            --accent-blue: #7cb9e8;
+            --code-bg: #e1e8f0;
+            --code-text-color: #1a2a44;
+            --text-white: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+        }
 
-/* Базовые настройки для мобилок */
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-    -webkit-tap-highlight-color: transparent; 
-}
+        /* Полный сброс для мобилок */
+        * { box-sizing: border-box !important; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-white);
-    padding: 20px 15px 100px 15px; /* Уменьшил отступы для узких экранов */
-    overflow-x: hidden;
-    width: 100%;
-}
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            padding: 20px 12px 80px 12px;
+            width: 100%;
+            overflow-x: hidden;
+        }
 
-/* Космос на фоне */
-#star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-.star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
-@keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
+        .container { position: relative; width: 100%; max-width: 500px; margin: 0 auto; }
 
-.container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
+        .logo { font-size: 24px; font-weight: 900; margin-bottom: 10px; display: block; opacity: 0.9; }
+        .hero-title { font-size: clamp(22px, 7vw, 34px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 25px; }
 
-.logo { font-size: 26px; font-weight: 900; margin-bottom: 15px; display: block; }
-.hero-title { font-size: clamp(24px, 7vw, 36px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 30px; }
+        .tg-btn { 
+            display: block; background: var(--accent-blue); color: #1a2a44 !important; 
+            text-decoration: none; padding: 16px; border-radius: 14px; text-align: center; 
+            font-weight: 900; text-transform: uppercase; margin-bottom: 30px; 
+            transition: transform 0.1s;
+        }
+        .tg-btn:active { transform: scale(0.97); }
 
-.tg-btn { 
-    display: block; background: var(--accent-blue); color: #1a2a44 !important; 
-    text-decoration: none; padding: 18px; border-radius: 18px; text-align: center; 
-    font-weight: 900; text-transform: uppercase; margin-bottom: 35px; 
-    transition: transform 0.2s;
-}
-.tg-btn:active { transform: scale(0.96); }
+        /* ПОИСК: Крестик больше не летает */
+        .search-wrapper { position: relative; width: 100%; margin-bottom: 20px; }
+        #searchInput { 
+            width: 100% !important; padding: 14px 45px 14px 15px; border-radius: 12px; border: none; 
+            font-size: 16px; font-weight: 700; background: #fff; color: #000; outline: none;
+        }
+        #clearSearch { 
+            position: absolute !important; right: 10px; top: 50%; transform: translateY(-50%); 
+            display: none; width: 26px; height: 26px; background: #ccc; border-radius: 50%; 
+            border: none; z-index: 10; cursor: pointer; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: bold; color: #333;
+        }
 
-/* ПОИСК БЕЗ СКАЧУЩЕГО КРЕСТИКА */
-.search-wrapper { position: relative; width: 100%; margin-bottom: 30px; }
-#searchInput { 
-    width: 100%; padding: 16px 45px 16px 20px; border-radius: 16px; border: none; 
-    background: #ffffff; color: #1a2a44; font-size: 16px; font-weight: 700; outline: none; 
-}
-#clearSearch { 
-    position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
-    background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; 
-    display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 10;
-}
+        /* ТАБЛИЦА СТАНОВИТСЯ СПИСКОМ (Адаптив) */
+        #mainTable, tbody { display: block !important; width: 100% !important; }
+        
+        /* Заголовки: скрываются скриптом, если нет совпадений */
+        .story-row { display: block !important; padding: 30px 0 10px 5px !important; }
+        .story-row td { 
+            display: block !important; font-size: 20px !important; font-weight: 900 !important; 
+            color: #fff !important; text-transform: uppercase; background: transparent !important; 
+        }
 
-/* УБИРАЕМ ТАБЛИЧНЫЕ ОГРАНИЧЕНИЯ (Чтобы не резалось) */
-table, tbody, tr, td { 
-    display: block !important; 
-    width: 100% !important; 
-    border: none !important;
-    background: transparent !important;
-}
+        /* Карточка персонажа */
+        tr:not(.story-row) {
+            display: flex !important; flex-direction: column !important;
+            width: 100% !important; background: var(--card-bg) !important; 
+            border-radius: 18px !important; padding: 18px !important; 
+            margin-bottom: 12px !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
 
-/* ЗАГОЛОВКИ ИСТОРИЙ (Чистый текст) */
-.story-row { padding: 40px 0 10px 5px !important; }
-.story-row td { 
-    font-size: 24px !important; font-weight: 900 !important; 
-    color: #ffffff !important; text-transform: uppercase !important; 
-}
+        tr:not(.story-row) td { display: block !important; width: 100% !important; padding: 0 !important; }
+        
+        /* Внутренности карточки */
+        tr:not(.story-row) td:nth-child(1) { 
+            font-size: 18px !important; font-weight: 900 !important; 
+            color: var(--accent-blue) !important; margin-bottom: 6px !important; 
+        }
+        
+        .code-text { 
+            display: block !important; background: var(--code-bg) !important; 
+            color: var(--code-text-color) !important; padding: 12px !important; 
+            border-radius: 10px !important; font-family: monospace !important; 
+            font-size: 12px !important; word-break: break-all !important; 
+            margin-bottom: 10px !important; text-align: center; font-weight: 800;
+        }
 
-/* КАРТОЧКИ ПЕРСОНАЖЕЙ */
-tbody tr:not(.story-row) {
-    background: var(--card-bg) !important; 
-    border-radius: 22px; 
-    padding: 20px !important; 
-    margin-bottom: 20px !important;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
+        .copy-btn { 
+            width: 100% !important; background: var(--accent-blue) !important; 
+            color: #1a2a44 !important; padding: 12px !important; border-radius: 10px !important; 
+            font-weight: 900 !important; text-transform: uppercase; border: none; cursor: pointer;
+        }
 
-/* Имя */
-tr:not(.story-row) td:nth-child(1) { font-size: 20px; font-weight: 900; color: var(--accent-blue); margin-bottom: 6px; }
+        .info-txt { 
+            font-size: 13px !important; color: var(--text-muted) !important; 
+            margin-top: 12px !important; line-height: 1.3; display: block !important;
+        }
 
-/* Описание */
-.info-txt { font-size: 13px; color: var(--text-muted) !important; margin-bottom: 15px; line-height: 1.3; }
-
-/* Код и кнопка */
-.code-text { 
-    display: block; background: var(--code-bg); color: var(--code-text-color); 
-    padding: 14px; border-radius: 12px; font-family: monospace; 
-    font-size: 12px; font-weight: 800; text-align: center; 
-    word-break: break-all; margin-bottom: 10px; 
-}
-.copy-btn { 
-    width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; 
-    padding: 14px; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
-}
-
-/* Фишки */
-#toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 10000; font-size: 14px; }
-#toast.show { display: block; }
-#backToTop { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--card-bg); border: 1px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 100; }
-</style>
+        /* Тост уведомление */
+        #toast { 
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
+            background: rgba(0,0,0,0.9); color: #fff; padding: 10px 20px; 
+            border-radius: 20px; font-size: 14px; z-index: 1000; display: none; 
+        }
+        #toast.show { display: block; }
+    </style>
 </head>
 <body>
 
@@ -405,113 +401,65 @@ tr:not(.story-row) td:nth-child(1) { font-size: 20px; font-weight: 900; color: v
         const rows = Array.from(document.querySelectorAll('#mainTable tbody tr'));
         
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
-        
-        if (filter === 'modr') startConfetti();
-        if (filter === 'timer') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
 
-        let currentHeader = null; 
-        let currentStoryRows = []; 
-        let storyHeaderMatch = false; 
-        let storyHasContentMatch = false;
+        let currentHeader = null;
+        let hasVisibleCards = false;
 
-        rows.forEach((row) => {
+        // Массив для хранения групп (заголовок + его карточки)
+        let groups = [];
+        let currentGroup = { header: null, cards: [] };
+
+        rows.forEach(row => {
             if (row.classList.contains('story-row')) {
-                if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
-                currentHeader = row; 
-                currentStoryRows = [];
-                storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
-                storyHasContentMatch = false;
+                if (currentGroup.header) groups.push(currentGroup);
+                currentGroup = { header: row, cards: [] };
             } else {
-                currentStoryRows.push(row);
-                if (row.innerText.toLowerCase().includes(filter)) storyHasContentMatch = true;
+                currentGroup.cards.push(row);
             }
         });
-        if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
-    }
+        groups.push(currentGroup);
 
-    function finalizeStory(header, rows, headMatch, contentMatch, filter) {
-        const showStory = filter === '' || headMatch || contentMatch;
-        header.style.display = showStory ? 'block' : 'none';
-        rows.forEach(r => {
-            const rMatch = r.innerText.toLowerCase().includes(filter);
-            r.style.setProperty('display', (filter === '' || headMatch || rMatch) ? 'flex' : 'none', 'important');
+        // Логика фильтрации
+        groups.forEach(group => {
+            let groupHasMatch = false;
+            
+            group.cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (filter === '' || text.includes(filter)) {
+                    card.style.display = 'flex';
+                    groupHasMatch = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Если заголовок сам подходит под фильтр — показываем его и все его карточки
+            if (group.header) {
+                const headerText = group.header.innerText.toLowerCase();
+                if (headerText.includes(filter) && filter !== '') {
+                    group.header.style.display = 'block';
+                    group.cards.forEach(c => c.style.display = 'flex');
+                } else {
+                    group.header.style.display = groupHasMatch ? 'block' : 'none';
+                }
+            }
         });
     }
-function clearInput(e) { 
-    if (e) {
-        e.preventDefault();
-        e.stopPropagation();
+
+    function clearInput(e) {
+        if(e) e.preventDefault();
+        const input = document.getElementById('searchInput');
+        input.value = '';
+        input.focus();
+        runFilter();
     }
-    const input = document.getElementById('searchInput');
-    input.value = ''; 
-    input.focus(); // Возвращаем фокус в поле, чтобы клавиатура не прыгала
-    runFilter(); 
-}
+
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
             const t = document.getElementById('toast');
-            t.innerText = `Скопировано!`; t.classList.add('show');
+            t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 1500);
         });
     }
-
-    function createStars() {
-        const container = document.getElementById('star-container');
-        for (let i = 0; i < 50; i++) {
-            const s = document.createElement('div'); s.className = 'star';
-            const size = Math.random() * 2 + 'px';
-            s.style.width = size; s.style.height = size;
-            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
-            s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            s.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
-            container.appendChild(s);
-        }
-    }
-
-    function startConfetti() {
-        for (let i = 0; i < 30; i++) {
-            const d = document.createElement('div'); d.innerHTML = '💎';
-            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: transform 3s linear; pointer-events:none;`;
-            document.body.appendChild(d);
-            requestAnimationFrame(() => d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`);
-            setTimeout(() => d.remove(), 3500);
-        }
-    }
-
-    function spawnParticles(x, y) {
-        for (let i = 0; i < 8; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:var(--magic-color); transition:0.6s; position:fixed; pointer-events:none;`;
-            document.body.appendChild(p);
-            requestAnimationFrame(() => {
-                p.style.transform = `translate(${(Math.random()-0.5)*100}px, ${(Math.random()-0.5)*100}px) scale(0)`;
-                p.style.opacity = '0';
-            });
-            setTimeout(() => p.remove(), 600);
-        }
-    }
-
-    function showFullscreenText(msg) {
-        const overlay = document.getElementById('secret-overlay');
-        overlay.innerText = msg; overlay.classList.add('show');
-        setTimeout(() => overlay.classList.remove('show'), 2000);
-    }
-
-    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-    
-    window.addEventListener('scroll', () => {
-        const b = document.getElementById('backToTop');
-        if(b) b.style.display = window.scrollY > 300 ? 'flex' : 'none';
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        createStars();
-        document.addEventListener('click', (e) => {
-            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn')) {
-                spawnParticles(e.clientX, e.clientY);
-            }
-        });
-    });
 </script>
