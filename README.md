@@ -550,7 +550,7 @@
     <button id="backToTop" onclick="scrollToTop()">▲</button>
 
     <script>
-<script>
+
 /**
  * 1. УПРАВЛЕНИЕ ТЕМОЙ
  */
@@ -720,6 +720,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
     
-    </script>
-
-
+    
