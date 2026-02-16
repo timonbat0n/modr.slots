@@ -3,198 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODR Slots</title>
+    <title>MODR SLOTS PREMIUM</title>
     <style>
         :root {
-            --bg-color: #3b5984;
+            --bg-color: #1a2a44;
             --card-bg: #2a3d59;
             --accent-blue: #7cb9e8;
+            --code-bg: #e1e8f0;
+            --code-text-color: #1a2a44;
             --text-white: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.7);
+            --magic-color: #7cb9e8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
-            padding: 20px 15px 80px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 40px 15px 100px 15px;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 500px; }
+        /* ЗВЕЗДНЫЙ ФОН */
+        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
-        .logo { font-size: 22px; font-weight: 900; margin-bottom: 15px; align-self: flex-start; }
-        
+        .container { position: relative; z-index: 1; width: 100%; max-width: 550px; margin: 0 auto; }
+
+        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; }
+
         .hero-title {
-            font-size: 32px;
+            font-size: clamp(28px, 8vw, 42px);
             font-weight: 900;
             line-height: 1.1;
             color: var(--accent-blue);
             text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .hero-desc {
-            font-size: 14px;
-            line-height: 1.4;
-            color: var(--text-muted);
-            margin-bottom: 25px;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: none;
-            background: #fff;
-            color: #1a2a44;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            outline: none;
-        }
-
-        .tg-btn {
-            display: block;
-            background: var(--accent-blue);
-            color: #1a2a44 !important;
-            text-decoration: none;
-            padding: 16px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 900;
-            text-transform: uppercase;
             margin-bottom: 30px;
         }
 
-        /* ТАБЛИЦА БЕЗ БЕЛОГО ФОНА */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: transparent !important;
+        /* ПОИСК */
+        .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
+        #searchInput {
+            width: 100%; padding: 18px 50px 18px 25px; border-radius: 18px; border: none;
+            background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none;
+        }
+        #clearSearch {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            background: #eee; border: none; border-radius: 50%; width: 30px; height: 30px;
+            display: none; align-items: center; justify-content: center; cursor: pointer; color: #333;
         }
 
-        tbody { display: block; width: 100%; }
-
-        /* ЗАГОЛОВКИ ИСТОРИЙ */
-        .story-row {
-            display: block;
-            padding: 20px 0 10px 5px;
-            background: transparent !important;
+        .tg-btn {
+            display: block; background: var(--accent-blue); color: #1a2a44 !important;
+            text-decoration: none; padding: 20px; border-radius: 18px; text-align: center;
+            font-weight: 900; text-transform: uppercase; margin-bottom: 30px; font-size: 16px;
         }
 
-        .story-row td {
-            display: block;
-            background: transparent !important;
-            border: none !important;
-            color: #fff !important;
-            font-size: 20px;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
+        /* ТАБЛИЦА С МАГИЕЙ КАРТОЧЕК */
+        table { width: 100%; border-collapse: collapse; }
+        thead { display: none; }
 
-        /* КАРТОЧКА */
+        .story-row { display: block; padding: 80px 0 25px 0; }
+        .story-row td { display: block; font-size: 26px; font-weight: 900; color: #fff; text-transform: uppercase; }
+
         tr:not(.story-row) {
-            display: block;
-            background-color: var(--card-bg) !important;
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 20px;
-            border: none !important;
+            display: flex; /* Важно: flex для карточки */
+            flex-direction: column;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        tr:not(.story-row) td {
-            display: block;
-            width: 100%;
-            border: none !important;
-            background: transparent !important;
-            padding: 0 !important;
+        /* ПЕРСОНАЖ (1-я ячейка) */
+        tr:not(.story-row) td:nth-child(1) {
+            order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue);
+            text-transform: uppercase; margin-bottom: 6px;
         }
 
-        .char-name {
-            font-size: 19px;
-            font-weight: 800;
-            color: var(--accent-blue);
-            margin-bottom: 4px;
+        /* ИНФО (3-я ячейка) - перемещаем под имя */
+        tr:not(.story-row) td:nth-child(3) {
+            order: 2; font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;
         }
 
-        .char-info {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 15px;
+        /* КОД И КНОПКА (2-я ячейка) */
+        tr:not(.story-row) td:nth-child(2) {
+            order: 3; display: flex; flex-direction: column;
         }
 
         .code-text {
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 13px;
-            color: #fff;
-            text-align: center;
-            word-break: break-all;
-            margin-bottom: 10px; /* ОТСТУП ОТ КНОПКИ */
-            border: 1px solid rgba(255,255,255,0.05);
+            display: block; background: var(--code-bg); color: var(--code-text-color);
+            padding: 16px; border-radius: 14px; font-family: monospace;
+            font-size: 15px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px;
         }
 
         .copy-btn {
-            width: 100%;
-            background: var(--accent-blue);
-            color: #1a2a44;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
+            width: 100%; background: var(--accent-blue); color: #1a2a44; border: none;
+            padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase;
+            cursor: pointer; transition: 0.2s;
         }
 
-        /* КНОПКА НАВЕРХ */
-        #backToTop {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--card-bg);
-            border: 2px solid var(--accent-blue);
-            color: var(--accent-blue);
-            border-radius: 50%;
-            display: none; /* Включается скриптом */
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-            font-weight: bold;
-            font-size: 20px;
+        /* ЭФФЕКТЫ И ОВЕРЛЕИ */
+        .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
+        #toast {
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); color: white; padding: 12px 25px; border-radius: 50px;
+            display: none; z-index: 10000; font-weight: 600;
         }
+        #toast.show { display: block; animation: fadeInUp 0.3s; }
+
+        #secret-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center;
+            z-index: 10005; color: var(--accent-blue); font-size: 40px; font-weight: 900;
+        }
+        #secret-overlay.show { display: flex; }
+
+        #backToTop {
+            position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
+            background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue);
+            border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer;
+        }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
     </style>
 </head>
 <body>
 
+<div id="star-container"></div>
+
 <div class="container">
-    <div class="logo">modr.</div>
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>КОПИТЬ АЛМАЗЫ</h1>
-    <p class="hero-desc">Просто копируйте слоты и наслаждайтесь игрой.</p>
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>ПО ЧАТУ</h1>
 
-    <input type="text" id="searchInput" placeholder="Поиск персонажа...">
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
+        <button id="clearSearch" onclick="clearInput(event)">✕</button>
+    </div>
 
-    <a href="#" class="tg-btn">Отправить слоты ⚡</a>
+    <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
-      <div class="table-container">
     <table id="mainTable">
-        <thead>
-            <tr>
-                <th>Персонаж</th>
-                <th>Код Слота</th>
-                <th>Инфо</th>
-            </tr>
-        </thead>
-        <tbody>
+     <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
 <tr>
 <td>Оникс</td><td><span class="code-text">024d696ab878ff9cd37faa17ec1694b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
@@ -433,51 +388,145 @@
 
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
+<tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
+</div>
 
-<div id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</div>
+<div id="toast"></div>
+<div id="secret-overlay"></div>
+<div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-    // Починил поиск
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        const q = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#mainTable tr:not(.story-row)');
-        const heads = document.querySelectorAll('.story-row');
+    // 2. ПОИСК (УМНЫЙ) - Адаптирован под Flex-карточки
+    function runFilter() {
+        const input = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearch');
+        const filter = input.value.toLowerCase().trim();
+        const rows = Array.from(document.querySelectorAll('tbody tr'));
 
-        rows.forEach(row => {
-            const isVisible = row.innerText.toLowerCase().includes(q);
-            row.style.display = isVisible ? "block" : "none";
-        });
+        clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
-        heads.forEach(h => {
-            let next = h.nextElementSibling;
-            let show = false;
-            while(next && !next.classList.contains('story-row')) {
-                if(next.style.display !== 'none') show = true;
-                next = next.nextElementSibling;
+        if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
+        if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
+
+        let currentHeader = null;
+        let currentStoryRows = [];
+        let storyHeaderMatch = false;
+        let storyHasContentMatch = false;
+
+        rows.forEach((row) => {
+            if (row.classList.contains('story-row')) {
+                if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
+                currentHeader = row;
+                currentStoryRows = [];
+                storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
+                storyHasContentMatch = false;
+            } else {
+                currentStoryRows.push(row);
+                if (row.innerText.toLowerCase().includes(filter)) storyHasContentMatch = true;
             }
-            h.style.display = show ? "block" : "none";
         });
-    });
+        if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
+    }
 
-    // Починил копирование
-    function copyText(btn) {
-        const code = btn.previousElementSibling.innerText;
-        navigator.clipboard.writeText(code).then(() => {
-            const old = btn.innerText;
-            btn.innerText = 'СКОПИРОВАНО!';
-            setTimeout(() => btn.innerText = old, 1500);
+    function finalizeStory(header, rows, headMatch, contentMatch, filter) {
+        const showStory = filter === '' || headMatch || contentMatch;
+        header.style.display = showStory ? 'block' : 'none';
+        
+        rows.forEach(r => {
+            const rMatch = r.innerText.toLowerCase().includes(filter);
+            // Используем 'flex', так как карточки должны быть flex-блоками
+            r.style.display = (filter === '' || headMatch || rMatch) ? 'flex' : 'none';
         });
     }
 
-    // Починил кнопку наверх
-    window.onscroll = function() {
-        const btn = document.getElementById("backToTop");
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            btn.style.display = "flex";
-        } else {
-            btn.style.display = "none";
+    function clearInput(e) {
+        const input = document.getElementById('searchInput');
+        input.value = '';
+        runFilter();
+        input.focus();
+        if(e && e.clientX) spawnParticles(e.clientX, e.clientY);
+    }
+
+    // 3. ЭФФЕКТЫ (Частицы, Конфетти, Текст)
+    function spawnParticles(x, y) {
+        for (let i = 0; i < 10; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const color = getComputedStyle(document.documentElement).getPropertyValue('--magic-color').trim();
+            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:${color}; box-shadow:0 0 10px ${color}; transition:0.6s;`;
+            document.body.appendChild(p);
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`;
+                p.style.opacity = '0';
+            });
+            setTimeout(() => p.remove(), 600);
         }
-    };
+    }
+
+    function startConfetti() {
+        for (let i = 0; i < 40; i++) {
+            const d = document.createElement('div');
+            d.innerHTML = '💎';
+            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: transform ${(Math.random()*2+2)}s linear, opacity 2s; pointer-events:none;`;
+            document.body.appendChild(d);
+            requestAnimationFrame(() => { 
+                d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; 
+                d.style.opacity = '0'; 
+            });
+            setTimeout(() => d.remove(), 4000);
+        }
+    }
+
+    function showFullscreenText(msg) {
+        const overlay = document.getElementById('secret-overlay');
+        overlay.innerHTML = `<div class="secret-text">${msg}</div>`;
+        overlay.classList.add('show');
+        setTimeout(() => overlay.classList.remove('show'), 3000);
+    }
+
+    // 4. КОПИРОВАНИЕ
+    function copy(btn) {
+        const codeSpan = btn.previousElementSibling;
+        const text = codeSpan ? codeSpan.innerText : "";
+        if (!text) return;
+
+        navigator.clipboard.writeText(text).then(() => {
+            const t = document.getElementById('toast');
+            t.innerText = `Скопировано: ${text}`;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
+        });
+    }
+
+    // 5. ИНИЦИАЛИЗАЦИЯ
+    function createStars() {
+        const container = document.getElementById('star-container');
+        for (let i = 0; i < 80; i++) {
+            const s = document.createElement('div'); s.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            s.style.width = size; s.style.height = size;
+            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
+            s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            s.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
+            container.appendChild(s);
+        }
+    }
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('backToTop');
+        btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        createStars();
+        document.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn') || e.target.id === 'clearSearch') {
+                spawnParticles(e.clientX, e.clientY);
+            }
+        });
+    });
 </script>
 
 </body>
