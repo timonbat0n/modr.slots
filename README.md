@@ -4,161 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR Slots</title>
-  <style>
-    :root {
-        --bg-color: #3b5984;         /* Фон страницы */
-        --card-bg: #2a3d59;          /* Темно-синие карточки */
-        --accent-blue: #7cb9e8;      /* Голубой акцент */
-        --text-white: #ffffff;
-        --text-muted: rgba(255, 255, 255, 0.7);
-    }
+ <style>
+        :root {
+            --bg-color: #3b5984;         /* Общий фон страницы */
+            --card-bg: #2a3d59;          /* Темно-синий цвет карточки */
+            --accent-blue: #7cb9e8;      /* Голубой акцент */
+            --text-white: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-        font-family: 'Inter', -apple-system, sans-serif;
-        background-color: var(--bg-color);
-        color: var(--text-white);
-        padding: 40px 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            padding: 40px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .container { width: 100%; max-width: 600px; }
+        .container { width: 100%; max-width: 600px; }
 
-    /* ЛОГОТИП */
-    .logo { 
-        font-size: 24px; 
-        font-weight: 900; 
-        margin-bottom: 20px; 
-        align-self: flex-start;
-    }
+        /* ЛОГО И ЗАГОЛОВОК */
+        .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; align-self: flex-start; }
+        
+        .hero-title {
+            font-size: clamp(28px, 8vw, 42px);
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
 
-    /* ЗАГОЛОВОК (Тот самый крупный текст) */
-    .hero-title {
-        font-size: clamp(30px, 8vw, 48px);
-        font-weight: 900;
-        line-height: 1.1;
-        color: var(--accent-blue);
-        text-transform: uppercase;
-        margin-bottom: 15px;
-    }
+        .hero-desc {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
 
-    .hero-desc {
-        font-size: 15px;
-        line-height: 1.5;
-        color: var(--text-muted);
-        margin-bottom: 30px;
-    }
+        /* ПОИСК */
+        #searchInput {
+            width: 100%;
+            padding: 18px 20px;
+            border-radius: 15px;
+            border: none;
+            background: #ffffff;
+            color: #1a2a44;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            outline: none;
+        }
 
-    /* ПОИСК */
-    .search-wrapper { margin-bottom: 15px; width: 100%; }
+        /* КНОПКА ТГ */
+        .tg-btn {
+            display: block;
+            width: 100%;
+            background: var(--accent-blue);
+            color: #1a2a44 !important;
+            text-decoration: none;
+            padding: 18px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            transition: 0.2s;
+        }
 
-    #searchInput {
-        width: 100%;
-        padding: 18px 20px;
-        border-radius: 15px;
-        border: none;
-        background: #ffffff;
-        color: #1a2a44;
-        font-size: 16px;
-        font-weight: 700;
-        outline: none;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+        /* ТАБЛИЦА БЕЗ РАМОК (Карточная система) */
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Убираем все стандартные рамки */
+            background: transparent;   /* Никакой белой таблицы */
+        }
 
-    /* КНОПКА ТЕЛЕГРАМ (Яркая) */
-    .tg-btn {
-        display: block;
-        width: 100%;
-        background: var(--accent-blue);
-        color: #1a2a44 !important;
-        text-decoration: none;
-        padding: 20px;
-        border-radius: 15px;
-        text-align: center;
-        font-weight: 900;
-        text-transform: uppercase;
-        margin-bottom: 40px;
-        transition: 0.3s;
-        box-shadow: 0 4px 15px rgba(124, 185, 232, 0.3);
-    }
+        /* Заголовки историй */
+        .story-row td {
+            padding: 25px 5px 10px 5px;
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #fff;
+            border: none;
+        }
 
-    .tg-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        /* Каждая строка превращается в карточку */
+        tr:not(.story-row) {
+            display: flex;
+            flex-direction: column; /* Элементы внутри строки друг под другом */
+            background-color: var(--card-bg);
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
 
-    /* ТАБЛИЦА-КАРТОЧКИ */
-    table {
-        width: 100%;
-        border-collapse: separate; 
-        border-spacing: 0 15px; 
-    }
+        tr:not(.story-row) td {
+            display: block;
+            padding: 0;
+            width: 100%;
+            border: none;
+        }
 
-    .story-row td {
-        padding: 10px 5px;
-        font-size: 20px;
-        font-weight: 900;
-        text-transform: uppercase;
-        color: var(--text-white);
-    }
+        /* Блок с именем */
+        .char-name {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+        }
 
-    tr:not(.story-row) {
-        background-color: var(--card-bg);
-    }
+        /* Блок с инфо */
+        .char-info {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
 
-    tr:not(.story-row) td:first-child {
-        border-radius: 20px 0 0 20px;
-        padding-left: 20px;
-    }
+        /* Блок с кодом */
+        .code-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-    tr:not(.story-row) td:last-child {
-        border-radius: 0 20px 20px 0;
-        padding-right: 20px;
-    }
+        .code-text {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+            word-break: break-all;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
 
-    tr:not(.story-row) td {
-        padding: 20px 10px;
-        vertical-align: middle;
-    }
+        /* Кнопка копировать */
+        .copy-btn {
+            background: var(--accent-blue);
+            color: #1a2a44;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 12px;
+        }
 
-    /* Текст внутри таблицы */
-    .char-name { font-size: 18px; font-weight: 800; color: var(--accent-blue); }
-    .char-info { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
-
-    /* Код и кнопка в ячейке */
-    .code-wrapper { display: flex; flex-direction: column; gap: 8px; }
-
-    .code-text {
-        background: rgba(0,0,0,0.3);
-        padding: 10px;
-        border-radius: 10px;
-        font-family: monospace;
-        font-size: 13px;
-        text-align: center;
-        color: #fff;
-        border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .copy-btn {
-        background: var(--accent-blue);
-        color: #1a2a44;
-        border: none;
-        padding: 10px;
-        border-radius: 10px;
-        font-weight: 900;
-        text-transform: uppercase;
-        font-size: 11px;
-        cursor: pointer;
-    }
-
-    /* Мобильная версия */
-    @media (max-width: 600px) {
-        tr:not(.story-row) { display: flex; flex-direction: column; border-radius: 20px; }
-        tr:not(.story-row) td { display: block; width: 100% !important; padding: 10px 20px !important; text-align: center; }
-        tr:not(.story-row) td:first-child { border-radius: 20px 20px 0 0; }
-        tr:not(.story-row) td:last-child { border-radius: 0 0 20px 20px; }
-    }
-</style>
+        #backToTop {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            width: 50px; height: 50px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+        }
+    </style>
 </head>
 <body>
 
