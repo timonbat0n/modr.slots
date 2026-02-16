@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -27,6 +27,7 @@
             min-height: 100vh;
         }
 
+        /* Фон со звездами */
         #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
@@ -43,6 +44,7 @@
         }
         .tg-btn:active { transform: scale(0.95); }
 
+        /* Поиск */
         .search-wrapper { position: relative; width: 100%; margin-bottom: 50px !important; }
         #searchInput { 
             width: 100%; padding: 18px 25px; border-radius: 18px; border: none; 
@@ -54,32 +56,32 @@
             display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 10;
         }
 
-        table { width: 100%; border-collapse: collapse; border: none !important; }
+        /* Стили таблицы (карточки) */
+        table { width: 100%; border-collapse: collapse; }
         
-        .story-row { display: block; padding: 50px 0 20px 0; background: transparent !important; }
+        .story-row { display: block; padding: 50px 0 20px 0; }
         .story-row td { 
             display: block !important; width: 100% !important; font-size: 28px; 
             font-weight: 900; color: #ffffff !important; text-transform: uppercase; 
-            background: transparent !important; border: none !important;
         }
 
         tbody tr:not(.story-row) {
             display: flex !important; flex-direction: column !important;
             background: var(--card-bg) !important; border-radius: 24px; 
-            padding: 25px; margin-bottom: 25px; border: none !important;
+            padding: 25px; margin-bottom: 25px; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        tr:not(.story-row) td { display: block !important; width: 100% !important; background: transparent !important; border: none !important; }
+        tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; }
+        
+        /* Имя персонажа */
         tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
         
-        .info-txt { 
-            order: 2; font-size: 14px; color: var(--text-muted) !important; 
-            margin-bottom: 20px; line-height: 1.4; display: block;
-        }
+        /* Описание */
+        .info-txt { order: 2; font-size: 14px; color: var(--text-muted) !important; margin-bottom: 20px; line-height: 1.4; }
 
+        /* Код и кнопка */
         tr:not(.story-row) td:nth-child(2) { order: 3; display: flex !important; flex-direction: column; }
-
         .code-text { 
             display: block; background: var(--code-bg); color: var(--code-text-color); 
             padding: 16px; border-radius: 14px; font-family: monospace; 
@@ -90,30 +92,13 @@
             padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
         }
 
-        #toast { 
-            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); 
-            background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; 
-            display: none; z-index: 10000; 
-        }
+        /* Вспомогательные элементы */
+        #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000; }
         #toast.show { display: block; }
-
-        #secret-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); display: none; align-items: center; 
-            justify-content: center; z-index: 10005; color: var(--accent-blue); 
-            font-size: 35px; font-weight: 900; text-align: center; padding: 20px;
-            letter-spacing: 5px;
-        }
+        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10005; color: var(--accent-blue); font-size: 35px; font-weight: 900; text-align: center; padding: 20px; letter-spacing: 5px; }
         #secret-overlay.show { display: flex; }
-
         .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
-        
-        #backToTop { 
-            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; 
-            background: var(--card-bg); border: 2px solid var(--accent-blue); 
-            color: var(--accent-blue); border-radius: 50%; display: none; 
-            align-items: center; justify-content: center; cursor: pointer; z-index: 100;
-        }
+        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; }
     </style>
 </head>
 <body>
@@ -133,23 +118,6 @@
         <button id="clearSearch" onclick="clearInput(event)">✕</button>
     </div>
 
-    
-<div id="star-container">
-<div id="secret-overlay">
-<div id="toast">
-
-<div class="container">
- 
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
-
-    <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
-
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
-        <button id="clearSearch" onclick="clearInput(event)">✕</button>
-    </div>
-
-   
 <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
@@ -391,11 +359,12 @@
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
+
 </div>
+
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-    // ФИЛЬТР И ПАСХАЛКИ В ПОИСКЕ
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
@@ -404,8 +373,8 @@
         
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
         
-        // ПАСХАЛКИ
-        if (filter === 'modr') { startConfetti(); }
+        // Пасхалки
+        if (filter === 'modr') startConfetti();
         if (filter === 'timer') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
 
         let currentHeader = null; 
@@ -454,6 +423,7 @@
 
     function createStars() {
         const container = document.getElementById('star-container');
+        if(!container) return;
         for (let i = 0; i < 50; i++) {
             const s = document.createElement('div'); s.className = 'star';
             const size = Math.random() * 2 + 'px';
@@ -498,7 +468,8 @@
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     
     window.addEventListener('scroll', () => {
-        document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
+        const b = document.getElementById('backToTop');
+        if(b) b.style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -510,3 +481,5 @@
         });
     });
 </script>
+</body>
+</html>
