@@ -555,18 +555,30 @@
  * 1. УПРАВЛЕНИЕ ТЕМОЙ
  */
 const storageKey = 'theme-preference';
+
+// Функция, которая применяет тему
 const reflectPreference = () => {
     const theme = localStorage.getItem(storageKey) || 
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.setAttribute('data-theme', theme);
+    
+    // Обновляем иконку или текст на кнопке (опционально)
+    const themeBtn = document.querySelector('#theme-toggle');
+    if (themeBtn) {
+        themeBtn.innerText = theme === 'light' ? '🌙' : '☀️';
+    }
 };
 
-const onClickTheme = () => {
+// Функция переключения
+const toggleTheme = () => {
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'light' ? 'dark' : 'light';
     localStorage.setItem(storageKey, next);
     reflectPreference();
 };
+
+// Запускаем проверку темы немедленно (до загрузки DOM)
+reflectPreference();
 
 /**
  * 2. КОПИРОВАНИЕ И УВЕДОМЛЕНИЯ
@@ -639,35 +651,65 @@ function clearInput() {
 /**
  * 4. ЭФФЕКТЫ (ИСКРЫ, КОНФЕТТИ, ТЕКСТ)
  */
-function startConfetti() {
-    for (let i = 0; i < 40; i++) {
-        const d = document.createElement('div');
-        d.innerHTML = '💎';
-        d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; pointer-events:none; transition: transform ${Math.random()*2+2}s linear, opacity 2s;`;
-        document.body.appendChild(d);
-        requestAnimationFrame(() => {
-            d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`;
-            d.style.opacity = '0';
-        });
-        setTimeout(() => d.remove(), 4000);
-    }
+/**
+ * 4. ЭФФЕКТЫ (ИСКРЫ, КОНФЕТТИ, ТЕКСТ)
+ */
+
+// Обработка и клика, и тапа
+const interactionEvents = ['click', 'touchstart'];
+
+interactionEvents.forEach(eventType => {
+    document.addEventListener(eventType, (e) => {
+        // Определяем координаты (для тапа они в touches[0])
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+        const target = e.target;
+        const isButton = target.tagName === 'BUTTON' || 
+                         target.closest('button') || 
+                         target.classList.contains('copy-btn') || 
+                         target.id === 'clearSearch' ||
+                         target.id === 'backToTop';
+
+        if (isButton && clientX && clientY) {
+            for (let i = 0; i < 10; i++) {
+                createParticle(clientX, clientY);
+            }
+        }
+    }, { passive: true }); // passive для лучшей производительности на мобилках
+});
+
+function createParticle(x, y) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    document.body.appendChild(p);
+
+    // Случайный цвет между голубым и розовым
+    const color = Math.random() > 0.5 ? '#00f2ff' : '#ff00ff';
+    
+    // Стили через JS, чтобы точно работало
+    p.style.position = 'fixed';
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    p.style.width = '6px';
+    p.style.height = '6px';
+    p.style.backgroundColor = color;
+    p.style.borderRadius = '50%';
+    p.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+    p.style.zIndex = '10005';
+    p.style.pointerEvents = 'none';
+    p.style.transition = 'all 0.6s ease-out';
+
+    requestAnimationFrame(() => {
+        const destX = (Math.random() - 0.5) * 150;
+        const destY = (Math.random() - 0.5) * 150;
+        p.style.transform = `translate(${destX}px, ${destY}px) scale(0)`;
+        p.style.opacity = '0';
+    });
+
+    setTimeout(() => p.remove(), 600);
 }
 
-function showFullscreenText(message) {
-    let overlay = document.getElementById('secret-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'secret-overlay';
-        overlay.innerHTML = `<div class="secret-text">${message}</div>`;
-        document.body.appendChild(overlay);
-    }
-    overlay.classList.add('show');
-    setTimeout(() => overlay.classList.remove('show'), 3000);
-}
-
-// Искры при клике на кнопки
-document.addEventListener('click', (e) => {
-    const isButton = e.target.tagName === 'BUTTON' || 
                      e.target.closest('button') || 
                      e.target.classList.contains('copy-btn') || 
                      e.target.id === 'clearSearch';
