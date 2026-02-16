@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -16,27 +16,27 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
             padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 600px; }
+        .container { width: 100%; max-width: 800px; }
 
         .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; letter-spacing: -1px; }
 
         .hero-title {
-            font-size: clamp(32px, 8vw, 48px);
+            font-size: clamp(28px, 7vw, 44px);
             font-weight: 900;
             line-height: 1.1;
             color: var(--accent-blue);
             text-transform: uppercase;
             margin-bottom: 15px;
+            text-align: center;
         }
 
         .hero-desc {
@@ -44,18 +44,38 @@
             line-height: 1.5;
             color: var(--text-muted);
             margin-bottom: 30px;
+            text-align: center;
         }
 
+        /* КАРТОЧКИ ПРЕИМУЩЕСТВ */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card h3 { font-size: 16px; margin-bottom: 10px; color: var(--accent-blue); }
+        .feature-card p { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+
+        /* ПОИСК */
         #searchInput {
             width: 100%;
             padding: 18px 20px;
             border-radius: 15px;
             border: none;
-            background: #ffffff;
+            background: #fff;
             color: #1a2a44;
             font-size: 16px;
             font-weight: 700;
-            outline: none;
             margin-bottom: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
@@ -64,7 +84,7 @@
             display: block;
             width: 100%;
             background: var(--accent-blue);
-            color: #1a2a44 !important;
+            color: #1a2a44;
             text-decoration: none;
             padding: 20px;
             border-radius: 15px;
@@ -72,10 +92,9 @@
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 40px;
-            transition: 0.3s;
         }
 
-        /* ПРЕВРАЩАЕМ ТАБЛИЦУ В КАРТОЧКИ */
+        /* ТАБЛИЦА-КАРТОЧКИ */
         table, tbody, tr, td { display: block; width: 100%; }
         thead { display: none; }
 
@@ -85,7 +104,6 @@
             font-weight: 900;
             text-transform: uppercase;
             color: #fff;
-            border: none;
         }
 
         tr:not(.story-row) {
@@ -95,30 +113,29 @@
             margin-bottom: 15px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Имя персонажа */
+        /* Имя (1-я ячейка) */
         tr:not(.story-row) td:nth-child(1) {
             font-size: 18px;
             font-weight: 800;
             color: var(--accent-blue);
-            margin-bottom: 4px;
         }
 
-        /* Описание (Инфо) */
+        /* Описание (3-я ячейка) */
         tr:not(.story-row) td:nth-child(3) {
             font-size: 13px;
             color: var(--text-muted);
-            margin-bottom: 15px;
-            order: 2;
+            order: 2; /* Порядок: под именем */
         }
 
-        /* Код и кнопка */
+        /* Код и Кнопка (2-я ячейка) */
         tr:not(.story-row) td:nth-child(2) {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             order: 3;
         }
 
@@ -129,7 +146,7 @@
             font-family: monospace;
             font-size: 14px;
             word-break: break-all;
-            color: #fff;
+            text-align: center;
         }
 
         .copy-btn {
@@ -159,16 +176,30 @@
 <body>
 
 <div class="container">
-    <div class="logo">modr.</div>
+   
 
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
-    
+
+    <div class="features">
+        <div class="feature-card">
+            <h3>Неограниченно</h3>
+            <p>Играя с нашим модом, вы экономите время. Больше никакой рекламы.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Платные выборы</h3>
+            <p>Все сцены переведены. Вы точно ничего не пропустите в истории.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Низкая стоимость</h3>
+            <p>Доступ ко всем преимуществам всего за 69 рублей в месяц.</p>
+        </div>
+  
 
     <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Поиск персонажа или истории...">
 
-    <a href="https://t.me/your_bot_link" target="_blank" class="tg-btn">Отправить слоты ⚡</a>
+    <a href="#" class="tg-btn">Отправить слоты ⚡</a>
 
-   <div class="table-container">
+     <div class="table-container">
     <table id="mainTable">
         <thead>
             <tr>
@@ -451,6 +482,3 @@
         document.getElementById("backToTop").style.display = window.scrollY > 400 ? "flex" : "none";
     };
 </script>
-
-</body>
-</html>
