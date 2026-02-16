@@ -27,7 +27,7 @@
             min-height: 100vh;
         }
 
-        /* ЗВЕЗДЫ */
+        /* ЗВЕЗДНЫЙ ФОН */
         #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
@@ -36,11 +36,12 @@
         .logo { font-size: 26px; font-weight: 900; margin-bottom: 20px; display: block; }
         .hero-title { font-size: clamp(28px, 8vw, 42px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 35px; }
 
-        /* КНОПКА TG */
+        /* КНОПКА ТГ */
         .tg-btn { 
             display: block; background: var(--accent-blue); color: #1a2a44 !important; 
             text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; 
-            font-weight: 900; text-transform: uppercase; margin-bottom: 40px !important; 
+            font-weight: 900; text-transform: uppercase; margin-bottom: 45px !important; 
+            position: relative; z-index: 2;
         }
 
         /* ПОИСК */
@@ -55,35 +56,31 @@
             display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 10;
         }
 
-        /* ТАБЛИЦА -> КАРТОЧКИ */
-        table { width: 100%; border-collapse: collapse; border: none !important; background: transparent !important; }
+        /* ТАБЛИЦА */
+        table { width: 100%; border-collapse: collapse; border: none !important; }
         
-        /* Убираем любой фон со всех строк и ячеек по умолчанию */
-        tr, td { background: transparent !important; border: none !important; }
-
-        /* ЗАГОЛОВКИ ИСТОРИЙ */
-        .story-row { display: block; padding: 40px 0 20px 0; }
+        /* ЗАГОЛОВКИ ИСТОРИЙ - БЕЛЫЕ И БЕЗ ФОНА */
+        .story-row { display: block; padding: 50px 0 20px 0; background: transparent !important; }
         .story-row td { 
             display: block !important; width: 100% !important; font-size: 28px; 
             font-weight: 900; color: #ffffff !important; text-transform: uppercase; 
+            background: transparent !important; border: none !important;
         }
 
-        /* КАРТОЧКИ (ФИКС БЕЛЫХ СТРОК) */
+        /* КАРТОЧКИ - БЛОКИРУЕМ БЕЛЫЙ ЦВЕТ */
         tbody tr:not(.story-row) {
-            display: flex !important; 
-            flex-direction: column !important;
-            background: var(--card-bg) !important; /* Форсируем наш цвет для всех карточек */
-            border-radius: 24px; 
-            padding: 25px; 
-            margin-bottom: 25px; 
+            display: flex !important; flex-direction: column !important;
+            background: var(--card-bg) !important; border-radius: 24px; 
+            padding: 25px; margin-bottom: 25px; border: none !important;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        tr:not(.story-row) td { display: block !important; width: 100% !important; }
+        tr:not(.story-row) td { display: block !important; width: 100% !important; background: transparent !important; border: none !important; }
         tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
         tr:not(.story-row) td:nth-child(3) { order: 2; font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
         tr:not(.story-row) td:nth-child(2) { order: 3; display: flex !important; flex-direction: column; }
 
+        /* КОД И КНОПКА КОПИРОВАНИЯ */
         .code-text { 
             display: block; background: var(--code-bg); color: var(--code-text-color); 
             padding: 16px; border-radius: 14px; font-family: monospace; 
@@ -94,36 +91,39 @@
             padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
         }
 
-        /* ЭФФЕКТЫ */
+        /* ОВЕРЛЕИ */
         #toast { 
             position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); 
             background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; 
             display: none; z-index: 10000; 
         }
-        #toast.show { display: block; }
+        #toast.show { display: block; animation: fadeInUp 0.3s; }
         #secret-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); display: none; align-items: center; 
             justify-content: center; z-index: 10005; color: var(--accent-blue); 
-            font-size: 30px; font-weight: 900; text-align: center; 
+            font-size: 30px; font-weight: 900; text-align: center; padding: 20px;
         }
         #secret-overlay.show { display: flex; }
+        .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
+        
         #backToTop { 
             position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; 
             background: var(--card-bg); border: 2px solid var(--accent-blue); 
             color: var(--accent-blue); border-radius: 50%; display: none; 
-            align-items: center; justify-content: center; cursor: pointer; 
+            align-items: center; justify-content: center; cursor: pointer; z-index: 100;
         }
+        @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
     </style>
 </head>
 <body>
 
-<div id="star-container">
-<div id="secret-overlay">
-<div id="toast">
+<div id="star-container"></div>
+<div id="secret-overlay"></div>
+<div id="toast"></div>
 
 <div class="container">
- 
+    <div class="logo">modr.</div>
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
@@ -132,6 +132,7 @@
         <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
         <button id="clearSearch" onclick="clearInput(event)">✕</button>
     </div>
+
 
    
 <table id="mainTable">
@@ -381,20 +382,28 @@
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-    // Скрипты остаются без изменений, так как они работают корректно
+    // 1. ПОИСК И ПАСХАЛКИ
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = Array.from(document.querySelectorAll('#mainTable tbody tr'));
+
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
+
         if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
         if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
-        let currentHeader = null; let currentStoryRows = []; let storyHeaderMatch = false; let storyHasContentMatch = false;
+
+        let currentHeader = null;
+        let currentStoryRows = [];
+        let storyHeaderMatch = false;
+        let storyHasContentMatch = false;
+
         rows.forEach((row) => {
             if (row.classList.contains('story-row')) {
                 if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
-                currentHeader = row; currentStoryRows = [];
+                currentHeader = row;
+                currentStoryRows = [];
                 storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
                 storyHasContentMatch = false;
             } else {
@@ -404,6 +413,7 @@
         });
         if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
     }
+
     function finalizeStory(header, rows, headMatch, contentMatch, filter) {
         const showStory = filter === '' || headMatch || contentMatch;
         header.style.display = showStory ? 'block' : 'none';
@@ -412,33 +422,63 @@
             r.style.setProperty('display', (filter === '' || headMatch || rMatch) ? 'flex' : 'none', 'important');
         });
     }
-    function clearInput() { document.getElementById('searchInput').value = ''; runFilter(); }
+
+    function clearInput(e) {
+        const input = document.getElementById('searchInput');
+        input.value = '';
+        runFilter();
+        input.focus();
+        if(e && e.clientX) spawnParticles(e.clientX, e.clientY);
+    }
+
+    // 2. ЭФФЕКТЫ
+    function spawnParticles(x, y) {
+        for (let i = 0; i < 8; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:var(--magic-color); transition:0.6s; position:fixed;`;
+            document.body.appendChild(p);
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${(Math.random()-0.5)*100}px, ${(Math.random()-0.5)*100}px) scale(0)`;
+                p.style.opacity = '0';
+            });
+            setTimeout(() => p.remove(), 600);
+        }
+    }
+
     function startConfetti() {
         for (let i = 0; i < 30; i++) {
-            const d = document.createElement('div'); d.innerHTML = '💎';
+            const d = document.createElement('div');
+            d.innerHTML = '💎';
             d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: transform 3s linear;`;
             document.body.appendChild(d);
             requestAnimationFrame(() => d.style.transform = `translateY(110vh)`);
             setTimeout(() => d.remove(), 3500);
         }
     }
+
     function showFullscreenText(msg) {
         const overlay = document.getElementById('secret-overlay');
-        overlay.innerText = msg; overlay.classList.add('show');
+        overlay.innerText = msg;
+        overlay.classList.add('show');
         setTimeout(() => overlay.classList.remove('show'), 3000);
     }
+
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
             const t = document.getElementById('toast');
-            t.innerText = `Скопировано!`; t.classList.add('show');
+            t.innerText = `Скопировано!`;
+            t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 1500);
         });
     }
+
     function createStars() {
         const container = document.getElementById('star-container');
-        for (let i = 0; i < 50; i++) {
-            const s = document.createElement('div'); s.className = 'star';
+        for (let i = 0; i < 60; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
             const size = Math.random() * 2 + 'px';
             s.style.width = size; s.style.height = size;
             s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
@@ -447,11 +487,21 @@
             container.appendChild(s);
         }
     }
-    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
     window.addEventListener('scroll', () => {
         document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
-    document.addEventListener('DOMContentLoaded', createStars);
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        createStars();
+        document.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn')) {
+                spawnParticles(e.clientX, e.clientY);
+            }
+        });
+    });
 </script>
 </body>
 </html>
