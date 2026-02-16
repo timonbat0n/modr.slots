@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +19,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-white);
             padding: 40px 15px 100px 15px;
@@ -27,106 +27,105 @@
             min-height: 100vh;
         }
 
-        /* ФОН СО ЗВЕЗДАМИ */
+        /* ЗВЕЗДЫ */
         #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
         .container { position: relative; z-index: 1; width: 100%; max-width: 550px; margin: 0 auto; }
-        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; }
+        .logo { font-size: 26px; font-weight: 900; margin-bottom: 20px; display: block; }
         .hero-title { font-size: clamp(28px, 8vw, 42px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 35px; }
 
-        /* КНОПКА TG С ОТСТУПОМ */
+        /* КНОПКА TG */
         .tg-btn { 
-            display: block; 
-            background: var(--accent-blue); 
-            color: #1a2a44 !important; 
-            text-decoration: none; 
-            padding: 20px; 
-            border-radius: 18px; 
-            text-align: center; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            margin-bottom: 40px !important; 
-            position: relative; 
-            z-index: 2; 
+            display: block; background: var(--accent-blue); color: #1a2a44 !important; 
+            text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; 
+            font-weight: 900; text-transform: uppercase; margin-bottom: 40px !important; 
         }
 
-        /* ПОИСК С ОТСТУПОМ */
-        .search-wrapper { 
-            position: relative; 
-            width: 100%; 
-            margin-bottom: 50px !important; 
+        /* ПОИСК */
+        .search-wrapper { position: relative; width: 100%; margin-bottom: 50px !important; }
+        #searchInput { 
+            width: 100%; padding: 18px 25px; border-radius: 18px; border: none; 
+            background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; 
         }
-        #searchInput { width: 100%; padding: 18px 50px 18px 25px; border-radius: 18px; border: none; background: #ffffff; color: #1a2a44; font-size: 17px; font-weight: 700; outline: none; }
-        #clearSearch { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; z-index: 5; }
+        #clearSearch { 
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); 
+            background: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; 
+            display: none; align-items: center; justify-content: center; cursor: pointer; color: #333; 
+        }
 
-        /* ТАБЛИЦА */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        thead { display: none; }
-
-        /* ЗАГОЛОВКИ ИСТОРИЙ - ЧИСТЫЙ ТЕКСТ */
+        /* ТАБЛИЦА -> КАРТОЧКИ */
+        table { width: 100%; border-collapse: collapse; border: none; }
         .story-row { display: block; padding: 40px 0 20px 0; background: transparent !important; }
         .story-row td { 
-            display: block !important; 
-            width: 100% !important; 
-            font-size: 28px; 
-            font-weight: 900; 
-            color: #ffffff !important; 
-            text-transform: uppercase; 
-            border: none !important; 
-            background: none !important;
-            padding-left: 5px;
+            display: block !important; width: 100% !important; font-size: 28px; 
+            font-weight: 900; color: #ffffff !important; text-transform: uppercase; 
+            border: none !important; background: none !important;
         }
 
-        /* КАРТОЧКИ ПЕРСОНАЖЕЙ */
-        #mainTable tbody tr:not(.story-row) {
-            display: flex !important; 
-            flex-direction: column !important;
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            border: none !important;
+        tbody tr:not(.story-row) {
+            display: flex !important; flex-direction: column !important;
+            background: var(--card-bg); border-radius: 24px; padding: 25px; 
+            margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: none !important;
         }
 
-        #mainTable tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; min-width: 0; }
+        tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; }
         tr:not(.story-row) td:nth-child(1) { order: 1; font-size: 24px; font-weight: 900; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 8px; }
         tr:not(.story-row) td:nth-child(3) { order: 2; font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
         tr:not(.story-row) td:nth-child(2) { order: 3; display: flex !important; flex-direction: column; }
 
-        .code-text { display: block; background: var(--code-bg); color: var(--code-text-color); padding: 16px; border-radius: 14px; font-family: monospace; font-size: 14px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px; }
-        .copy-btn { width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
-        .copy-btn:active { transform: scale(0.96); }
+        .code-text { 
+            display: block; background: var(--code-bg); color: var(--code-text-color); 
+            padding: 16px; border-radius: 14px; font-family: monospace; 
+            font-size: 14px; font-weight: 800; text-align: center; word-break: break-all; margin-bottom: 15px; 
+        }
+        .copy-btn { 
+            width: 100%; background: var(--accent-blue); color: #1a2a44; border: none; 
+            padding: 15px; border-radius: 14px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
+        }
 
-        /* ОВЕРЛЕИ И ЭФФЕКТЫ */
+        /* ЭФФЕКТЫ */
         .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 10001; }
-        #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        #toast.show { display: block; animation: fadeInUp 0.3s; }
-        #secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10005; color: var(--accent-blue); font-size: 30px; font-weight: 900; text-align: center; }
+        #toast { 
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); 
+            background: rgba(0,0,0,0.9); color: white; padding: 12px 25px; border-radius: 50px; 
+            display: none; z-index: 10000; 
+        }
+        #toast.show { display: block; }
+        #secret-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); display: none; align-items: center; 
+            justify-content: center; z-index: 10005; color: var(--accent-blue); 
+            font-size: 30px; font-weight: 900; text-align: center; 
+        }
         #secret-overlay.show { display: flex; }
-        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        #backToTop { 
+            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; 
+            background: var(--card-bg); border: 2px solid var(--accent-blue); 
+            color: var(--accent-blue); border-radius: 50%; display: none; 
+            align-items: center; justify-content: center; cursor: pointer; 
+        }
     </style>
 </head>
 <body>
 
-<div id="star-container">
-<div id="secret-overlay">
-<div id="toast">
+<div id="star-container"></div>
+<div id="secret-overlay"></div>
+<div id="toast"></div>
 
 <div class="container">
     <div class="logo">modr.</div>
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ<br>В ЧАТЕ</h1>
+    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
     <div class="search-wrapper">
         <input type="text" id="searchInput" placeholder="Поиск истории или персонажа..." oninput="runFilter()">
         <button id="clearSearch" onclick="clearInput(event)">✕</button>
-    </div>
+   
 
+  
 <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
@@ -368,12 +367,11 @@
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
-</div>
+
 
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-    // 1. ПОИСК + ПАСХАЛКИ
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
@@ -383,7 +381,7 @@
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
         if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
-        if (filter === 'timer' || filter === 'таймер') { showFullscreenText("ДАЙТЕ ТАЙМЕР АДМИНКУ"); clearInput(); return; }
+        if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
 
         let currentHeader = null;
         let currentStoryRows = [];
@@ -422,83 +420,4 @@
         if(e && e.clientX) spawnParticles(e.clientX, e.clientY);
     }
 
-    // 2. ЭФФЕКТЫ
-    function spawnParticles(x, y) {
-        for (let i = 0; i < 8; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:var(--magic-color); box-shadow:0 0 10px var(--magic-color); transition:0.6s; position:fixed; pointer-events:none;`;
-            document.body.appendChild(p);
-            requestAnimationFrame(() => {
-                p.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`;
-                p.style.opacity = '0';
-            });
-            setTimeout(() => p.remove(), 600);
-        }
-    }
-
-    function startConfetti() {
-        for (let i = 0; i < 40; i++) {
-            const d = document.createElement('div');
-            d.innerHTML = '💎';
-            d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:25px; z-index:10002; transition: transform ${(Math.random()*2+2)}s linear, opacity 2s; pointer-events:none;`;
-            document.body.appendChild(d);
-            requestAnimationFrame(() => {
-                d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`;
-                d.style.opacity = '0';
-            });
-            setTimeout(() => d.remove(), 4000);
-        }
-    }
-
-    function showFullscreenText(msg) {
-        const overlay = document.getElementById('secret-overlay');
-        overlay.innerHTML = msg;
-        overlay.classList.add('show');
-        setTimeout(() => overlay.classList.remove('show'), 3000);
-    }
-
-    // 3. КОПИРОВАНИЕ
-    function copy(btn) {
-        const text = btn.previousElementSibling.innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            const t = document.getElementById('toast');
-            t.innerText = `Скопировано!`;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 1500);
-        });
-    }
-
-    // 4. ИНИЦИАЛИЗАЦИЯ
-    function createStars() {
-        const container = document.getElementById('star-container');
-        for (let i = 0; i < 60; i++) {
-            const s = document.createElement('div'); s.className = 'star';
-            const size = Math.random() * 2 + 'px';
-            s.style.width = size; s.style.height = size;
-            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
-            s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            s.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
-            container.appendChild(s);
-        }
-    }
-
-    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-    window.addEventListener('scroll', () => {
-        document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        createStars();
-        document.addEventListener('click', (e) => {
-            if(e.target.tagName === 'BUTTON' || e.target.closest('.tg-btn')) {
-                spawnParticles(e.clientX, e.clientY);
-            }
-        });
-    });
-</script>
-
-
-<div id="backToTop" onclick="scrollToTop()">↑</div>
-
+    function spawnParticles(x
