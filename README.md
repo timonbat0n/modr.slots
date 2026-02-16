@@ -135,10 +135,62 @@
     }
 
     /* ТАБЛИЦА СТИЛИЗАЦИЯ */
-    .table-container { width: 100%; max-width: 600px; }
-    table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
-    th, td { background: var(--table-bg); color: var(--text-main); padding: 12px 8px; text-align: center; border-radius: 4px; backdrop-filter: blur(5px); }
-    .story-row td { background: var(--story-header) !important; color: var(--accent-blue) !important; font-weight: 800; text-align: left; padding-left: 20px; border-radius: 12px !important; }
+/* КОНТЕЙНЕР ТАБЛИЦЫ */
+.table-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    overflow-x: visible; /* Убираем обрезку */
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px; /* Отступы между строками */
+    margin: 0;
+    table-layout: auto; /* Позволяет колонкам адаптироваться */
+    border: none !important;
+}
+
+/* СТИЛИ ЯЧЕЕК */
+th, td {
+    background: var(--table-bg);
+    color: var(--text-main);
+    padding: 12px 10px;
+    border: none !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Колонки: задаем примерные пропорции, чтобы не обрезалось */
+th:nth-child(1), td:nth-child(1) { width: 30%; text-align: left; padding-left: 15px; } /* Персонаж */
+th:nth-child(2), td:nth-child(2) { width: 40%; font-family: monospace; } /* Код */
+th:nth-child(3), td:nth-child(3) { width: 30%; } /* Кнопка */
+
+/* Скругляем края для эффекта карточек */
+tr td:first-child {
+    border-radius: 15px 0 0 15px !important;
+}
+tr td:last-child {
+    border-radius: 0 15px 15px 0 !important;
+}
+
+/* ЗАГОЛОВКИ ИСТОРИЙ */
+.story-row td {
+    background: var(--story-header) !important;
+    color: var(--accent-blue) !important;
+    font-weight: 800;
+    text-align: left !important;
+    padding: 15px 20px !important;
+    border-radius: 15px !important; /* Заголовок — цельная капсула */
+}
+
+/* Чтобы на мобилках текст не слипался */
+@media (max-width: 480px) {
+    th, td { padding: 10px 5px; font-size: 13px; }
+    .copy-btn { font-size: 10px; padding: 6px; }
+}
+
 
     /* ПАСХАЛКИ */
     #secret-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10001; opacity: 0; pointer-events: none; transition: 0.5s; backdrop-filter: blur(3px); }
