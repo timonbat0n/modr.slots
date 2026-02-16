@@ -6,11 +6,11 @@
 <style>
     /* ПЕРЕМЕННЫЕ */
     :root {
-        --bg-color: #3b5984;        /* Фон страницы */
-        --accent-pale: #7cb9e8;      /* Голубой (текст заголовка и строки) */
-        --dark-blue: #1a2a44;       /* Темно-синий (шапки и кнопки) */
-        --text-dark: #1a2a44;       /* Текст внутри голубых строк */
-        --text-white: #ffffff;      
+        --bg-color: #3b5984;        /* Основной фон */
+        --card-bg: #2a3d59;         /* Темный фон карточки персонажа */
+        --accent-pale: #7cb9e8;      /* Голубой акцент */
+        --text-white: #ffffff;
+        --text-gray: rgba(255, 255, 255, 0.7);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,190 +19,156 @@
         font-family: 'Inter', 'Segoe UI', sans-serif;
         background-color: var(--bg-color);
         color: var(--text-white);
-        padding: 40px 20px;
+        padding: 40px 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 100vh;
     }
 
-    /* ЛОГОТИП */
-    .logo {
-        width: 100%;
-        max-width: 800px;
-        font-size: 28px;
-        font-weight: 900;
-        margin-bottom: 30px;
-        text-align: left;
-    }
-
-    /* ГЛАВНЫЙ ЗАГОЛОВОК */
+    /* ЗАГОЛОВОК (Забудьте о...) */
     .hero-title {
         width: 100%;
-        max-width: 800px;
-        font-size: clamp(32px, 8vw, 52px);
-        font-weight: 900; /* Очень жирный */
-        line-height: 1.1;
-        color: var(--accent-pale); /* Голубой текст */
+        max-width: 600px;
+        font-size: clamp(28px, 7vw, 42px);
+        font-weight: 900;
+        color: var(--accent-pale);
         text-transform: uppercase;
-        margin-bottom: 15px;
+        line-height: 1.1;
+        margin-bottom: 25px;
         text-align: left;
     }
 
-    .hero-desc {
-        width: 100%;
-        max-width: 550px;
-        font-size: 16px;
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 30px;
-        align-self: flex-start;
-    }
-
-    /* ПОИСК БЕЗ ОБВОДКИ */
+    /* ПОИСК */
     .search-wrapper {
-        position: relative;
         width: 100%;
-        max-width: 500px;
-        margin-bottom: 15px;
-        align-self: flex-start;
+        max-width: 600px;
+        margin-bottom: 30px;
     }
 
     #searchInput {
         width: 100%;
-        padding: 16px 45px;
+        padding: 16px 20px;
         border-radius: 12px;
-        border: none !important;
-        background-color: #ffffff;
-        color: var(--dark-blue);
+        border: none;
+        background: #ffffff;
+        color: #1a2a44;
         font-size: 16px;
         font-weight: 600;
         outline: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231a2a44' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z' /%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: 15px center;
-        background-size: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
 
-    #clearSearch {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 26px;
-        height: 26px;
-        background-color: #eee;
-        color: var(--dark-blue);
-        border-radius: 50%;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    /* КНОПКА ОТПРАВИТЬ */
-    .tg-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 500px;
-        background-color: var(--dark-blue);
-        color: var(--accent-pale) !important;
-        text-decoration: none;
-        padding: 18px;
-        border-radius: 12px;
-        font-weight: 800;
-        text-transform: uppercase;
-        margin-bottom: 40px;
-        border: 2px solid var(--accent-pale);
-        align-self: flex-start;
-        transition: 0.3s;
-    }
-
-    .tg-btn:hover {
-        background-color: var(--accent-pale);
-        color: var(--dark-blue) !important;
-    }
-
-    /* ТАБЛИЦА */
+    /* ТАБЛИЦА КАК БЛОКИ */
     .table-container {
         width: 100%;
-        max-width: 800px;
+        max-width: 600px;
     }
 
     table {
         width: 100%;
         border-collapse: separate;
-        border-spacing: 0 6px;
+        border-spacing: 0 12px; /* Расстояние между блоками-карточками */
     }
 
-    /* Хедер таблицы (темный/прозрачный) */
+    /* ХЕЙДЕР (Персонаж, Код...) */
     thead th {
-        background: transparent;
         color: var(--accent-pale);
         text-transform: uppercase;
-        font-size: 12px;
-        padding: 10px;
-        text-align: center;
-    }
-    thead th:first-child { text-align: left; padding-left: 20px; }
-
-    /* Темные заголовки историй */
-    .story-row td {
-        background-color: var(--dark-blue) !important;
-        color: var(--accent-pale) !important;
+        font-size: 11px;
         font-weight: 800;
-        padding: 18px 20px !important;
-        border-radius: 12px !important;
-        text-align: left !important;
+        letter-spacing: 1.5px;
+        padding: 5px 15px;
+        text-align: left;
     }
 
-    /* Голубые строки персонажей */
-    td {
-        background-color: var(--accent-pale) !important;
-        color: var(--text-dark) !important;
-        padding: 15px;
-        font-weight: 700;
-        border: none !important;
-    }
-
-    tr:not(.story-row) td:first-child { border-radius: 12px 0 0 12px; text-align: left; padding-left: 20px; }
-    tr:not(.story-row) td:last-child { border-radius: 0 12px 12px 0; text-align: center; }
-
-    /* Кнопка Копировать */
-    .copy-btn {
-        background-color: var(--dark-blue);
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 6px;
-        font-weight: 700;
-        cursor: pointer;
+    /* ЗАГОЛОВОК ИСТОРИИ (Story Row) */
+    .story-row td {
+        background: transparent !important; /* Убираем фон у заголовка истории */
+        color: var(--text-white) !important;
+        font-size: 18px !important;
+        font-weight: 900 !important;
+        padding: 20px 0 10px 5px !important;
         text-transform: uppercase;
-        font-size: 10px;
+        letter-spacing: 2px;
     }
 
-    /* Кнопка Наверх */
-    #backToTop {
-        position: fixed;
-        bottom: 25px;
-        right: 25px;
-        width: 50px;
-        height: 50px;
-        background: var(--dark-blue);
-        color: var(--accent-pale);
-        border: 2px solid var(--accent-pale);
-        border-radius: 50%;
-        display: none;
+    /* КАРТОЧКА ПЕРСОНАЖА (Строка таблицы) */
+    tr:not(.story-row) td {
+        background-color: var(--card-bg) !important;
+        padding: 20px 15px;
+        border: none;
+        vertical-align: middle;
+    }
+
+    /* Скругления углов для каждого блока */
+    tr:not(.story-row) td:first-child {
+        border-radius: 15px 0 0 15px;
+        color: var(--accent-pale); /* Имя персонажа голубым */
+        font-weight: 700;
+        width: 35%;
+    }
+
+    tr:not(.story-row) td:nth-child(2) {
+        font-family: 'Courier New', monospace;
+        font-size: 15px;
+        color: var(--text-white);
+        width: 40%;
+    }
+
+    tr:not(.story-row) td:last-child {
+        border-radius: 0 15px 15px 0;
+        text-align: right;
+        width: 25%;
+    }
+
+    /* КНОПКА КОПИРОВАТЬ */
+    .copy-btn {
+        background-color: var(--accent-pale);
+        color: #1a2a44;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 10px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .copy-btn:hover {
+        background-color: #ffffff;
+        transform: scale(1.05);
+    }
+
+    /* КНОПКА ОТПРАВИТЬ СЛОТЫ */
+    .tg-btn {
+        display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        z-index: 1000;
+        width: 100%;
+        max-width: 600px;
+        background: var(--accent-pale);
+        color: #1a2a44 !important;
+        text-decoration: none;
+        padding: 20px;
+        border-radius: 15px;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        transition: 0.3s;
+    }
+
+    .tg-btn:hover {
+        background: #ffffff;
+        box-shadow: 0 5px 20px rgba(124, 185, 232, 0.4);
+    }
+
+    /* ФИКС ДЛЯ МОБИЛОК */
+    @media (max-width: 480px) {
+        tr:not(.story-row) td { padding: 15px 10px; font-size: 13px; }
+        .copy-btn { padding: 8px 10px; font-size: 9px; }
     }
 </style>
-
 </head>
 <body>
 
