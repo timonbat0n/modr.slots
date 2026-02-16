@@ -111,7 +111,7 @@
 <div id="toast"></div>
 
 <div class="container">
-    <div class="logo">modr.</div>
+    
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
 
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
@@ -357,7 +357,7 @@
     </td>
     <td>логика, авторитет с финалом</td>
 </tr>
-</div>
+
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
