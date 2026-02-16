@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -32,7 +31,7 @@
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
 
         .container { position: relative; z-index: 1; width: 100%; max-width: 550px; margin: 0 auto; }
-        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; }
+        .logo { font-size: 26px; font-weight: 900; margin-bottom: 25px; color: var(--text-white); }
         .hero-title { font-size: clamp(28px, 8vw, 42px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 30px; }
 
         .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
@@ -41,14 +40,28 @@
 
         .tg-btn { display: block; background: var(--accent-blue); color: #1a2a44 !important; text-decoration: none; padding: 20px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; }
 
-        /* ТАБЛИЦА С МАГИЕЙ КАРТОЧЕК */
+        /* ТАБЛИЦА */
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         thead { display: none; }
 
-        .story-row { display: block; padding: 80px 0 25px 0; }
-        .story-row td { display: block !important; width: 100% !important; font-size: 26px; font-weight: 900; color: #fff; text-transform: uppercase; border: none; }
+        /* ОБНОВЛЕННЫЕ БЕЛЫЕ ЗАГОЛОВКИ */
+        .story-row { display: block; padding: 80px 0 30px 0; }
+        .story-row:first-child { padding-top: 10px; }
+        .story-row td { 
+            display: block !important; 
+            width: 100% !important; 
+            font-size: 28px; 
+            font-weight: 900; 
+            color: #ffffff !important; /* Яркий белый */
+            text-transform: uppercase; 
+            border: none;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1); /* Тонкая линия */
+            padding-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
 
-        /* ГЛАВНЫЙ ФИКС ДЛЯ GITHUB */
+        /* КАРТОЧКИ */
         #mainTable tbody tr:not(.story-row) {
             display: flex !important; 
             flex-direction: column !important;
@@ -343,27 +356,20 @@
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
+    /* Скрипты остаются без изменений, так как они уже оптимизированы под GitHub */
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const rows = Array.from(document.querySelectorAll('#mainTable tbody tr'));
-
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
-
         if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
         if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
-
-        let currentHeader = null;
-        let currentStoryRows = [];
-        let storyHeaderMatch = false;
-        let storyHasContentMatch = false;
-
+        let currentHeader = null; let currentStoryRows = []; let storyHeaderMatch = false; let storyHasContentMatch = false;
         rows.forEach((row) => {
             if (row.classList.contains('story-row')) {
                 if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
-                currentHeader = row;
-                currentStoryRows = [];
+                currentHeader = row; currentStoryRows = [];
                 storyHeaderMatch = row.innerText.toLowerCase().includes(filter);
                 storyHasContentMatch = false;
             } else {
@@ -373,29 +379,22 @@
         });
         if (currentHeader) finalizeStory(currentHeader, currentStoryRows, storyHeaderMatch, storyHasContentMatch, filter);
     }
-
     function finalizeStory(header, rows, headMatch, contentMatch, filter) {
         const showStory = filter === '' || headMatch || contentMatch;
         header.style.display = showStory ? 'block' : 'none';
         rows.forEach(r => {
             const rMatch = r.innerText.toLowerCase().includes(filter);
-            // Принудительно ставим flex для найденных строк
             r.style.setProperty('display', (filter === '' || headMatch || rMatch) ? 'flex' : 'none', 'important');
         });
     }
-
     function clearInput(e) {
         const input = document.getElementById('searchInput');
-        input.value = '';
-        runFilter();
-        input.focus();
+        input.value = ''; runFilter(); input.focus();
         if(e && e.clientX) spawnParticles(e.clientX, e.clientY);
     }
-
     function spawnParticles(x, y) {
         for (let i = 0; i < 8; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
+            const p = document.createElement('div'); p.className = 'particle';
             p.style.cssText = `left:${x}px; top:${y}px; width:6px; height:6px; background:var(--magic-color); transition:0.6s;`;
             document.body.appendChild(p);
             requestAnimationFrame(() => {
@@ -405,35 +404,28 @@
             setTimeout(() => p.remove(), 600);
         }
     }
-
     function startConfetti() {
         for (let i = 0; i < 30; i++) {
-            const d = document.createElement('div');
-            d.innerHTML = '💎';
+            const d = document.createElement('div'); d.innerHTML = '💎';
             d.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:20px; z-index:10002; transition: transform ${(Math.random()*2+2)}s linear, opacity 2s;`;
             document.body.appendChild(d);
             requestAnimationFrame(() => { d.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`; d.style.opacity = '0'; });
             setTimeout(() => d.remove(), 4000);
         }
     }
-
     function showFullscreenText(msg) {
         const overlay = document.getElementById('secret-overlay');
-        overlay.innerHTML = msg;
-        overlay.classList.add('show');
+        overlay.innerHTML = msg; overlay.classList.add('show');
         setTimeout(() => overlay.classList.remove('show'), 2500);
     }
-
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
             const t = document.getElementById('toast');
-            t.innerText = `Скопировано!`;
-            t.classList.add('show');
+            t.innerText = `Скопировано!`; t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 1500);
         });
     }
-
     function createStars() {
         const container = document.getElementById('star-container');
         for (let i = 0; i < 50; i++) {
@@ -446,12 +438,9 @@
             container.appendChild(s);
         }
     }
-
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     window.addEventListener('scroll', () => {
         document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
     document.addEventListener('DOMContentLoaded', createStars);
 </script>
-</body>
-</html>
