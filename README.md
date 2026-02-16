@@ -4,162 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MODR Slots</title>
-    <style>
-        :root {
-            --bg-color: #3b5984;
-            --accent-blue: #7cb9e8;
-            --table-bg: #2a3d59;
-            --text-white: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.6);
-        }
+   <style>
+    :root {
+        --bg-color: #3b5984;         /* Основной фон страницы */
+        --table-bg: #1a2a44;         /* Глубокий темно-синий для таблицы */
+        --accent-blue: #7cb9e8;      /* Голубой для имен и кнопок */
+        --text-white: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.5);
+        --border-color: rgba(255, 255, 255, 0.08);
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Общий контейнер таблицы */
+    .table-wrapper {
+        width: 100%;
+        max-width: 800px;
+        background: var(--table-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        margin: 20px auto;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            padding: 40px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
 
-        .container { width: 100%; max-width: 800px; }
+    /* Строка-заголовок истории (W: Ловчая и т.д.) */
+    .story-row td {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 18px 24px;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: var(--text-white);
+        letter-spacing: 1px;
+        font-size: 14px;
+        border-bottom: 2px solid var(--border-color);
+    }
 
-        .logo { font-size: 24px; font-weight: 900; margin-bottom: 20px; }
+    /* Обычная ячейка */
+    td {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+    }
 
-        .hero-title {
-            font-size: clamp(26px, 6vw, 42px);
-            font-weight: 900;
-            line-height: 1.1;
-            color: var(--accent-blue);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+    /* Стили текста внутри ячеек */
+    .char-name {
+        font-weight: 800;
+        color: var(--accent-blue);
+        font-size: 16px;
+        display: block;
+    }
 
-        .hero-desc {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            max-width: 500px;
-        }
+    .char-info {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 4px;
+        display: block;
+    }
 
-        /* ПОИСК */
-        #searchInput {
-            width: 100%;
-            padding: 16px 20px;
-            border-radius: 12px;
-            border: none;
-            background: #fff;
-            color: #1a2a44;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            outline: none;
-        }
+    /* Контейнер для кода и кнопки */
+    .code-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(0, 0, 0, 0.25);
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-        .tg-btn {
-            display: inline-block;
-            width: 100%;
-            background: var(--accent-blue);
-            color: #1a2a44 !important;
-            text-decoration: none;
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 40px;
-        }
+    .code-text {
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-grow: 1;
+    }
 
-        /* ТАБЛИЦА */
-        .table-wrapper {
-            background: var(--table-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+    /* Кнопка Копировать */
+    .copy-btn {
+        background: var(--accent-blue);
+        color: #1a2a44;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+    .copy-btn:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+    }
 
-        /* Строка с названием истории */
-        .story-row td {
-            background: rgba(0,0,0,0.2);
-            padding: 15px 20px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #fff;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+    .copy-btn:active {
+        transform: translateY(0);
+    }
 
-        /* Обычные ячейки */
+    /* Адаптивность для мобилок */
+    @media (max-width: 600px) {
         td {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            vertical-align: middle;
+            padding: 12px 16px;
         }
-
-        .char-name { font-weight: 800; color: var(--accent-blue); font-size: 16px; }
-        .char-info { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-
-        /* Контейнер кода и кнопки */
-        .code-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(0,0,0,0.2);
-            padding: 8px 12px;
-            border-radius: 8px;
-            justify-content: space-between;
+        .code-container {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+            text-align: center;
         }
-
         .code-text {
-            font-family: monospace;
-            font-size: 13px;
-            color: #fff;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            text-overflow: clip;
+            white-space: normal;
+            word-break: break-all;
         }
-
-        .copy-btn {
-            background: var(--accent-blue);
-            color: #1a2a44;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .copy-btn:hover { opacity: 0.9; }
-
-        #backToTop {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            width: 45px; height: 45px;
-            background: var(--table-bg);
-            border: 2px solid var(--accent-blue);
-            color: var(--accent-blue);
-            border-radius: 50%;
-            display: none; align-items: center; justify-content: center;
-            cursor: pointer;
-        }
-
-        @media (max-width: 600px) {
-            td { padding: 12px 15px; }
-            .code-cell { flex-direction: column; align-items: stretch; }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
