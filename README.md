@@ -322,9 +322,11 @@ tr td:last-child { border-radius: 0 12px 12px 0; }
     
     <button id="themeBtn" onclick="toggleTheme()">🌙</button>
 
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
-        <div id="clearSearch" onclick="clearInput()">×</div>
+   <div class="search-wrapper">
+    <input type="text" id="searchInput" oninput="runFilter()" placeholder="Поиск персонажа или истории...">
+    <div id="clearSearch" onclick="clearInput()">×</div>
+</div>
+
     </div>
     <div class="tg-wrapper">
         <a href="https://t.me/modr_slots_bot" target="_blank" class="tg-btn">
@@ -633,7 +635,78 @@ function runFilter() {
     if (!input) return;
 
     const filter = input.value.toLowerCase().trim();
-    const rows = document.querySelectorAll('tbody tr');
+    
+    // Показываем крестик только если в поле что-то есть
+    if (clearBtn) {
+        clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
+    }
+    
+    // ... остальной код фильтрации (тот, что с заголовками
+
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    if (!input) return;
+
+    const filter = input.value.toLowerCase().trim();
+    const rows = Array.from(document.querySelectorAll('tbody tr'));
+
+    // Управление крестиком
+    if (clearBtn) clearBtn.style.display = input.value.length > 0 ? 'block' : 'none';
+
+    // ПАСХАЛКИ
+    if (filter === 'modr' || filter === 'ирина') { startConfetti(); clearInput(); return; }
+    if (filter === 'timer' || filter === 'таймер') { showFullscreenText("SYSTEM OVERRIDE"); clearInput(); return; }
+
+    // ЛОГИКА УМНОГО ПОИСКА
+    let lastStoryRow = null;
+    let hasVisibleContentInStory = false;
+
+    rows.forEach((row, index) => {
+        if (row.classList.contains('story-row')) {
+            // Если это заголовок истории, сначала скрываем его
+            // и готовимся проверять следующие за ним строки
+            if (lastStoryRow && !hasVisibleContentInStory && filter !== '') {
+                lastStoryRow.style.display = 'none';
+            }
+            lastStoryRow = row;
+            hasVisibleContentInStory = false; 
+            row.style.display = ''; // По умолчанию показываем, дальше скроем если надо
+        } else {
+            // Если это обычная строка с персонажем
+            const text = row.innerText.toLowerCase();
+            const isMatch = text.includes(filter);
+            
+            if (isMatch) {
+                row.style.display = '';
+                hasVisibleContentInStory = true;
+            } else {
+                row.style.display = 'none';
+            }
+        }
+
+        // Финальная проверка для последней группы строк
+        if (index === rows.length - 1 && lastStoryRow && !hasVisibleContentInStory && filter !== '') {
+            lastStoryRow.style.display = 'none';
+        }
+    });
+
+    // Дополнительный проход, чтобы скрыть заголовки без контента
+    if (filter !== '') {
+        let currentHeader = null;
+        let contentFound = false;
+        
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].classList.contains('story-row')) {
+                if (currentHeader && !contentFound) currentHeader.style.display = 'none';
+                currentHeader = rows[i];
+                contentFound = false;
+            } else if (rows[i].style.display !== 'none') {
+                contentFound = true;
+            }
+        }
+        if (currentHeader && !contentFound) currentHeader.style.display = 'none';
+    }
+}
 
     // Управление крестиком
     if (clearBtn) clearBtn.style.display = input.value.length > 0 ? 'flex' : 'none';
@@ -664,12 +737,19 @@ function runFilter() {
 
 function clearInput() {
     const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    
     if (input) {
-        input.value = '';
-        runFilter();
-        input.focus();
+        input.value = ''; // Стираем текст
+        if (clearBtn) clearBtn.style.display = 'none'; // Скрываем крестик сразу
+        
+        // ВАЖНО: вызываем runFilter(), чтобы таблица вернулась в исходное состояние
+        runFilter(); 
+        
+        input.focus(); // Возвращаем курсор в поле (удобно для мобилок)
     }
 }
+
 
 /**
  * 3. КОПИРОВАНИЕ И TOAST
