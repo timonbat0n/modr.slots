@@ -396,41 +396,71 @@
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-    // Поиск
     function runFilter() {
-        const filter = document.getElementById('searchInput').value.toLowerCase().trim();
+        const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
+        const filter = input.value.toLowerCase().trim();
         const table = document.getElementById('mainTable');
         const rows = Array.from(table.querySelectorAll('tbody tr'));
         
         clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
-        let currentHeader = null;
-        let hasVisibleCards = false;
+        let currentStoryRow = null;
+        let storyHasMatch = false;
+        let storyCards = [];
 
-        // Логика: скрываем заголовок, если в группе нет совпадений
-        rows.forEach(row => {
+        // Группируем строки по историям и фильтруем
+        rows.forEach((row, index) => {
             if (row.classList.contains('story-row')) {
-                if (currentHeader && !hasVisibleCards && filter !== '') {
-                    currentHeader.style.setProperty('display', 'none', 'important');
+                // Перед тем как перейти к новой истории, обрабатываем видимость предыдущей
+                if (currentStoryRow) {
+                    finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
                 }
-                currentHeader = row;
-                hasVisibleCards = false;
-                row.style.setProperty('display', 'block', 'important');
+                
+                // Начинаем новую секцию
+                currentStoryRow = row;
+                storyCards = [];
+                storyHasMatch = row.innerText.toLowerCase().includes(filter);
             } else {
-                const match = row.innerText.toLowerCase().includes(filter);
-                if (filter === '' || match) {
-                    row.style.setProperty('display', 'flex', 'important');
-                    hasVisibleCards = true;
-                } else {
-                    row.style.setProperty('display', 'none', 'important');
+                // Собираем карточки, относящиеся к текущему заголовку
+                storyCards.push(row);
+                if (row.innerText.toLowerCase().includes(filter)) {
+                    storyHasMatch = true;
                 }
             }
         });
-        
-        // Проверка для последнего заголовка
-        if (currentHeader && !hasVisibleCards && filter !== '') {
-            currentHeader.style.setProperty('display', 'none', 'important');
+
+        // Финализируем последнюю секцию в таблице
+        if (currentStoryRow) {
+            finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
+        }
+    }
+
+    // Вспомогательная функция для скрытия/показа целых секций
+    function finalizeSection(header, cards, isMatch, filter) {
+        if (filter === '') {
+            header.style.setProperty('display', 'block', 'important');
+            cards.forEach(card => card.style.setProperty('display', 'flex', 'important'));
+            return;
+        }
+
+        if (isMatch) {
+            header.style.setProperty('display', 'block', 'important');
+            cards.forEach(card => {
+                // Если поиск совпал с заголовком истории — показываем всех героев
+                // Если ищем конкретного героя — показываем только его
+                const cardMatch = card.innerText.toLowerCase().includes(filter);
+                const headerMatch = header.innerText.toLowerCase().includes(filter);
+                
+                if (headerMatch || cardMatch) {
+                    card.style.setProperty('display', 'flex', 'important');
+                } else {
+                    card.style.setProperty('display', 'none', 'important');
+                }
+            });
+        } else {
+            header.style.setProperty('display', 'none', 'important');
+            cards.forEach(card => card.style.setProperty('display', 'none', 'important'));
         }
     }
 
@@ -453,11 +483,13 @@
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
     window.onscroll = function() {
-        document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'flex' : 'none';
+        const btn = document.getElementById('backToTop');
+        if (btn) btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
     };
 
     function createStars() {
         const container = document.getElementById('star-container');
+        if(!container) return;
         for (let i = 0; i < 40; i++) {
             const s = document.createElement('div'); s.className = 'star';
             const size = Math.random() * 2 + 'px';
