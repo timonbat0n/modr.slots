@@ -1,0 +1,145 @@
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Инструкция | modr.</title>
+    <style>
+        :root {
+            --bg-color: #1a2a44;
+            --card-bg: #2a3d59;
+            --accent-blue: #7cb9e8;
+            --accent-green: #a8e6cf;
+            --text-white: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            padding: 20px 15px 50px 15px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Звездный фон */
+        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
+
+        .container { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+
+        nav { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        nav a { color: var(--accent-blue); text-decoration: none; font-size: 14px; font-weight: bold; }
+
+        header { text-align: center; margin-bottom: 30px; }
+        .logo { font-size: 28px; font-weight: 900; color: var(--text-white); text-decoration: none; }
+
+        h1 { font-size: 24px; color: var(--accent-blue); margin-bottom: 20px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+
+        .instruction-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        ol { list-style: none; counter-reset: item; }
+        li { 
+            position: relative; 
+            margin-bottom: 18px; 
+            padding-left: 45px; 
+            font-size: 15px;
+        }
+        li::before {
+            content: counter(item);
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: var(--accent-blue);
+            color: var(--bg-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .important-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(168, 230, 207, 0.1);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--accent-green);
+        }
+
+        .btn-link {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div id="star-container"></div>
+    
+    <div class="container">
+        <nav><a href="cabinet.html">← В кабинет</a></nav>
+        
+        <header><div class="logo">modr.</div></header>
+
+        <h1>Менеджер слотов</h1>
+
+        <div class="instruction-card">
+            <ol>
+                <li>Закройте игру полностью, нажав на <strong>«Выход»</strong> в левом нижнем углу.</li>
+                <li>Перейдите в свой <a href="index.html" class="btn-link">личный кабинет</a>.</li>
+                <li>Прокрутите в самый низ страницы, нажмите на строку <strong>«Менеджер слотов»</strong> и выберите нужную историю.</li>
+                <li>Создайте слот и дайте ему любое название.</li>
+                <li>Нажмите <strong>«Скопировать в слот»</strong>. Так вы сохраните ваш нынешний прогресс.</li>
+                <li>Создайте второй слот и проделайте те же действия.</li>
+                <li>Зайдите в игру и отредактируйте прохождение так, как вам нужно.</li>
+                <li>После окончания снова зайдите во второй слот и нажмите <strong>«Скопировать в слот»</strong>, чтобы обновить его.</li>
+                <li>Для переключения выберите нужный слот и нажмите кнопку <strong>«Вставить из слота»</strong>.</li>
+                <li>Подождите <strong>10-15 минут</strong> и заходите в игру.</li>
+            </ol>
+
+            <div class="important-box">
+                <strong>Важно:</strong> При переключении должен совпадать сезон. Если в одном слоте прогресс намного больше, он может "перетянуть" данные на другой слот при частом переключении.
+            </div>
+        </div>
+
+        <footer>
+            ООО "Хостинг-Провайдер" · 2026
+        </footer>
+    </div>
+
+    <script>
+        function createStars() {
+            const container = document.getElementById('star-container');
+            for (let i = 0; i < 40; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                const size = Math.random() * 2 + 'px';
+                s.style.cssText = `
+                    width: ${size}; height: ${size}; 
+                    left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; 
+                    --duration: ${Math.random() * 3 + 2}s; 
+                    --max-opacity: ${Math.random() * 0.7 + 0.3};
+                `;
+                container.appendChild(s);
+            }
+        }
+        createStars();
+    </script>
