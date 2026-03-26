@@ -4,198 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MODR SLOTS </title>
-    <style>
-        :root {
-            --bg-color: #1a2a44;
-            --card-bg: #2a3d59;
-            --accent-blue: #7cb9e8;
-            --code-bg: #e1e8f0;
-            --code-text-color: #1a2a44;
-            --text-white: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-        }
+   <style>
+    :root {
+        /* Палитра Цветущего Сада */
+        --bg-color: #f8fff9;         /* Белоснежный с мятным оттенком (фон) */
+        --card-bg: #e8f5e9;          /* Нежно-зеленый (пастель) */
+        --accent-green: #4caf50;     /* Яркая зелень для кнопок и акцентов */
+        --copy-btn-bg: #43a047;      /* Насыщенный зеленый для копирования */
+        --text-dark: #2e3d33;        /* Глубокий хвойный для основного текста */
+        --code-bg: #fdfaf5;          /* Теплый кремовый для поля кода */
+        --text-muted: #6d5d4b;       /* Текст описания в рамочке */
+        --border-color: #c8e6c9;     /* Границы рамочек */
+    }
 
-        /* Убираем все лишнее, чтобы не резалось по краям */
-        * { box-sizing: border-box !important; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    /* Общие сбросы */
+    * { 
+        box-sizing: border-box !important; 
+        margin: 0; 
+        padding: 0; 
+        -webkit-tap-highlight-color: transparent; 
+    }
 
-        body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            padding: 20px 15px 100px 15px;
-            overflow-x: hidden;
-            width: 100%;
-        }
+    body {
+        font-family: -apple-system, system-ui, sans-serif;
+        background-color: var(--bg-color);
+        /* Мягкий градиент */
+        background-image: linear-gradient(180deg, #f8fff9 0%, #f1f8e9 100%);
+        background-attachment: fixed;
+        color: var(--text-dark);
+        padding: 20px 15px 120px 15px;
+        overflow-x: hidden;
+        width: 100%;
+    }
 
-        /* Звездный фон */
-        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
-        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
+    /* === ЦВЕТОЧНЫЙ ФОН === */
+    /* Мы создаем его через псевдоэлемент, чтобы он не мешал скроллу */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.15; /* Делаем цветы полупрозрачными */
+        /* Используем SVG или символы для цветов */
+        background-image: 
+            radial-gradient(circle at 10% 20%, #f8bbd0 3px, transparent 4px), /* Розовый */
+            radial-gradient(circle at 90% 80%, #fff9c4 4px, transparent 5px), /* Желтый */
+            radial-gradient(circle at 50% 50%, #e1f5fe 2px, transparent 3px); /* Голубой */
+        background-size: 60px 60px; /* Размер "узора" */
+    }
 
-        .container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
-        .logo { font-size: 24px; font-weight: 900; margin-bottom: 10px; display: block; }
-        .hero-title { font-size: clamp(22px, 7vw, 34px); font-weight: 900; line-height: 1.1; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 25px; }
+    /* Убираем старый star-container */
+    #star-container { display: none; }
 
-        .tg-btn { 
-            display: block; background: var(--accent-blue); color: #1a2a44 !important; 
-            text-decoration: none; padding: 18px; border-radius: 16px; text-align: center; 
-            font-weight: 900; text-transform: uppercase; margin-bottom: 30px; 
-        }
+    .container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
+    
+    .logo { 
+        font-size: 24px; font-weight: 900; color: var(--accent-green); 
+        text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; 
+    }
+    
+    .hero-title { 
+        font-size: clamp(22px, 7vw, 34px); font-weight: 900; 
+        line-height: 1.1; margin-bottom: 25px; color: var(--text-dark);
+    }
 
-        /* ПОИСК */
-        .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
-        #searchInput { 
-            width: 100% !important; padding: 15px 45px 15px 15px; border-radius: 12px; border: none; 
-            font-size: 16px; font-weight: 700; background: #fff; color: #000; outline: none;
-        }
-        #clearSearch { 
-            position: absolute !important; right: 12px; top: 50%; transform: translateY(-50%); 
-            display: none; width: 26px; height: 26px; background: #ccc; border-radius: 50%; 
-            border: none; cursor: pointer; align-items: center; justify-content: center;
-            font-size: 14px; color: #333; font-weight: bold; z-index: 10;
-        }
+    /* Кнопки управления */
+    .tg-btn { 
+        display: block; background: var(--accent-green); color: #fff !important; 
+        text-decoration: none; padding: 18px; border-radius: 20px; text-align: center; 
+        font-weight: 900; text-transform: uppercase; margin-bottom: 12px; 
+        box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
+    }
 
-        /* МАГИЯ ТАБЛИЦЫ: превращаем строки в карты */
-        table, tbody { display: block !important; width: 100% !important; }
+    .instr-btn {
+        display: block; background: #fff;
+        color: var(--accent-green) !important; border: 2px solid var(--accent-green);
+        padding: 16px; border-radius: 20px; text-align: center;
+        font-weight: 800; text-transform: uppercase; margin-bottom: 30px;
+        text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
 
-        /* Заголовки (story-row) — чистый текст */
-        .story-row { display: block !important; padding: 35px 0 10px 5px !important; background: transparent !important; }
-        .story-row td { 
-            display: block !important; font-size: 22px !important; font-weight: 900 !important; 
-            color: #fff !important; text-transform: uppercase; border: none !important;
-        }
+    /* Поиск */
+    .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
+    #searchInput { 
+        width: 100% !important; padding: 18px; border-radius: 20px; border: 1px solid var(--border-color); 
+        font-size: 16px; font-weight: 700; background: #ffffff; 
+        color: #000; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
 
-        /* Обычные строки (персонажи) — превращаем в КАРТЫ */
-        tr:not(.story-row) {
-            display: flex !important; flex-direction: column !important;
-            background: var(--card-bg) !important; border-radius: 20px !important; 
-            padding: 20px !important; margin-bottom: 15px !important; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            width: 100% !important;
-        }
+    /* Карточки */
+    table, tbody { display: block !important; width: 100% !important; }
 
-        tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; padding: 0 !important; }
+    .story-row { display: block !important; padding: 30px 0 10px 10px !important; }
+    .story-row td { 
+        display: block !important; font-size: 22px !important; font-weight: 900 !important; 
+        color: var(--accent-green) !important; text-transform: uppercase;
+    }
 
-        /* Имя (первая ячейка) */
-        tr:not(.story-row) td:nth-child(1) { 
-            font-size: 19px !important; font-weight: 900 !important; 
-            color: var(--accent-blue) !important; margin-bottom: 8px !important; 
-            order: 1;
-        }
+    tr:not(.story-row) {
+        display: flex !important; flex-direction: column !important;
+        background: var(--card-bg) !important; 
+        border-radius: 28px !important; 
+        padding: 25px !important; margin-bottom: 20px !important; 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        width: 100% !important;
+        border: 1px solid var(--border-color);
+        position: relative;
+    }
 
-        /* Код и кнопка (вторая ячейка) */
-        tr:not(.story-row) td:nth-child(2) { order: 2; margin-bottom: 10px; }
+    tr:not(.story-row) td { display: block !important; width: 100% !important; border: none !important; padding: 0 !important; }
 
-        /* Описание (третья ячейка) */
-        tr:not(.story-row) td:nth-child(3) { order: 3; }
+    /* Имя персонажа */
+    tr:not(.story-row) td:nth-child(1) { 
+        font-size: 21px !important; font-weight: 900 !important; 
+        color: var(--text-dark) !important; margin-bottom: 12px !important; 
+    }
 
-        .code-text { 
-            display: block !important; background: var(--code-bg) !important; 
-            color: var(--code-text-color) !important; padding: 14px !important; 
-            border-radius: 12px !important; font-family: monospace !important; 
-            font-size: 12px !important; word-break: break-all !important; 
-            margin-bottom: 10px !important; text-align: center; font-weight: 800;
-        }
+    .code-text { 
+        display: block !important; background: var(--code-bg) !important; 
+        color: var(--text-dark) !important; padding: 15px !important; 
+        border-radius: 18px !important; font-family: monospace !important; 
+        font-size: 14px !important; margin-bottom: 15px !important; 
+        text-align: center; font-weight: 700; border: 1px solid rgba(0,0,0,0.05);
+    }
 
-        .copy-btn { 
-            width: 100% !important; background: var(--accent-blue) !important; 
-            color: #1a2a44 !important; padding: 14px !important; border-radius: 12px !important; 
-            font-weight: 900 !important; text-transform: uppercase; border: none; cursor: pointer;
-        }
+    /* ЗЕЛЕНАЯ КНОПКА КОПИРОВАТЬ */
+    .copy-btn { 
+        width: 100% !important; background: var(--copy-btn-bg) !important; 
+        color: #fff !important; padding: 18px !important; border-radius: 18px !important; 
+        font-weight: 900 !important; text-transform: uppercase; border: none; cursor: pointer;
+        box-shadow: 0 5px 15px rgba(67, 160, 71, 0.3); transition: 0.2s;
+    }
+    .copy-btn:active { transform: scale(0.97); background: #388e3c !important; }
 
-        .info-txt { font-size: 13px !important; color: var(--text-muted) !important; line-height: 1.4; display: block !important; }
+    /* === ОПИСАНИЕ В РАМОЧКЕ (Новое) === */
+    .info-txt { 
+        display: block !important;
+        margin-top: 15px; /* Отступ от кнопки копировать */
+        font-size: 13px !important; 
+        color: var(--text-muted) !important; 
+        line-height: 1.5; 
+        padding: 12px;
+        background: rgba(255,255,255,0.5); /* Полупрозрачный фон рамочки */
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+    }
 
-        /* Доп элементы */
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 10px 20px; border-radius: 30px; display: none; z-index: 1000; }
-        #backToTop { position: fixed; bottom: 25px; right: 20px; width: 45px; height: 45px; background: var(--card-bg); border: 2px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; font-weight: bold; }
+    /* Уведомление (Toast) */
+    #toast { 
+        position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); 
+        background: var(--text-dark); 
+        color: #fff; padding: 15px 30px; border-radius: 50px; 
+        font-weight: 800; font-size: 13px; text-transform: uppercase;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; z-index: 9999; 
+        animation: slideUp 0.3s ease-out;
+    }
 
-        /* Кнопка инструкции в стиле проекта */
-.instr-btn {
-    display: block;
-    background: rgba(255, 255, 255, 0.05); /* Полупрозрачный фон */
-    color: var(--accent-blue) !important;
-    text-decoration: none;
-    padding: 16px;
-    border-radius: 16px;
-    text-align: center;
-    font-weight: 800;
-    text-transform: uppercase;
-    margin-bottom: 30px;
-    border: 2px solid var(--accent-blue); /* Контур в цвет акцента */
-    transition: all 0.2s ease;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
+    @keyframes slideUp { from { bottom: 0; opacity: 0; } to { bottom: 40px; opacity: 1; } }
 
-.instr-btn:active {
-    transform: scale(0.97);
-    background: rgba(124, 185, 232, 0.1);
-}
-        /* Стиль плашки "В разработке" */
-.dev-status-plate {
-    display: flex;
-    align-items: center;
-    background: var(--card-bg);
-    border: 1px solid rgba(124, 185, 232, 0.3);
-    border-radius: 18px;
-    padding: 16px 20px;
-    margin: 20px 0;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Эффект свечения по краям */
-.dev-status-plate::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(124, 185, 232, 0.05), transparent);
-}
-
-.dev-icon {
-    margin-right: 15px;
-    flex-shrink: 0;
-}
-
-/* Анимированный спиннер (иконка загрузки) */
-.spinner {
-    width: 22px;
-    height: 22px;
-    border: 3px solid rgba(124, 185, 232, 0.2);
-    border-top: 3px solid var(--accent-blue);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.dev-text {
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.4;
-    color: var(--text-white);
-}
-
-.dev-text span {
-    color: var(--accent-blue);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Адаптив для мобилок */
-@media (max-width: 400px) {
+    /* Плашка В РАЗРАБОТКЕ */
     .dev-status-plate {
-        padding: 12px 15px;
+        display: flex; align-items: center; background: #fff;
+        border: 1px dashed var(--accent-green); border-radius: 25px; 
+        padding: 20px; margin-top: 60px;
     }
-    .dev-text {
-        font-size: 13px;
+    .spinner { 
+        width: 22px; height: 22px; border: 3px solid #e8f5e9; 
+        border-top: 3px solid var(--accent-green); border-radius: 50%; 
+        animation: spin 1s linear infinite; margin-right: 15px;
     }
-}
-    </style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .dev-text { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+
+    /* Кнопка ВВЕРХ */
+    #backToTop { 
+        position: fixed; bottom: 25px; right: 20px; 
+        width: 54px; height: 54px; background: var(--accent-green); 
+        color: #fff; border-radius: 50%; display: none; 
+        align-items: center; justify-content: center; 
+        cursor: pointer; z-index: 998; border: none;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        font-size: 26px; font-weight: bold;
+    }
+
+    @media (max-width: 400px) {
+        tr:not(.story-row) { padding: 20px !important; }
+        .hero-title { font-size: 26px; }
+    }
+</style>
 </head>
 <body>
 
