@@ -6,14 +6,15 @@
     <title>MODR SLOTS </title>
 <style>
     :root {
-        --bg-color: #f8fff9;         
-        --card-bg: #e8f5e9;          
-        --accent-green: #4caf50;     
-        --copy-btn-bg: #43a047;      
-        --text-dark: #2e3d33;        
-        --code-bg: #fdfaf5;          
-        --text-muted: #6d5d4b;       
-        --border-color: #c8e6c9;     
+        /* Палитра "Клубничное суфле" (максимальная нежность) */
+        --bg-color: #fff9fa;         /* Молочно-розовый (фон) */
+        --card-bg: #fff0f3;          /* Цвет лепестков сакуры (карточки) */
+        --accent-pink: #f48fb1;      /* Мягкий пудровый для заголовков */
+        --copy-btn-bg: #ec407a;      /* Вишнево-розовый для кнопки копирования */
+        --text-dark: #4a2c34;        /* Темно-шоколадный с розовым подтоном */
+        --code-bg: #ffffff;          /* Белый фон для кода */
+        --text-muted: #9e847c;       /* Текст описания */
+        --border-color: #ffc1e3;     /* Нежно-розовые границы */
     }
 
     * { 
@@ -25,7 +26,7 @@
     body {
         font-family: -apple-system, system-ui, sans-serif;
         background-color: var(--bg-color);
-        background-image: linear-gradient(180deg, #f8fff9 0%, #f1f8e9 100%);
+        background-image: linear-gradient(180deg, #fff9fa 0%, #ffebee 100%);
         background-attachment: fixed;
         color: var(--text-dark);
         padding: 20px 15px 120px 15px;
@@ -34,28 +35,40 @@
         position: relative;
     }
 
-    /* === ЖИВЫЕ ЦВЕТОЧКИ И ЛЕПЕСТКИ НА ФОНЕ === */
+    /* === АНИМИРОВАННЫЙ ДОЖДЬ ИЗ ЦВЕТОВ === */
+    /* Мы используем псевдоэлемент, чтобы создать "слой" с падающими цветами */
     body::before {
-        content: "🌸 🍃 🌸 🌸 🍃 🌸 🍃 🌸"; /* Набор символов */
+        content: "";
         position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
+        top: -150%; /* Начинаем за пределами экрана */
+        left: 0;
+        width: 100%;
+        height: 300%; /* Делаем слой длиннее, чтобы дождь был бесконечным */
         z-index: 0;
         pointer-events: none;
-        opacity: 0.12; /* Очень легкая прозрачность, чтобы не мешать тексту */
-        font-size: 40px;
-        word-spacing: 80px;
-        line-height: 150px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        padding: 40px;
-        filter: blur(1px); /* Легкое размытие для глубины */
+        opacity: 0.20; /* Легкая прозрачность */
+        font-size: 30px;
+        
+        /* Генерируем "паттерн" из РАЗНЫХ цветов */
+        background-image: 
+            radial-gradient(circle at 10% 10%, rgba(255,255,255,0) 0, rgba(255,255,255,0) 10px, rgba(255,255,255,0.01) 11px), /* Пустышка для структуры */
+            url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><text x="10%" y="10%" font-size="25">🌸</text><text x="40%" y="15%" font-size="20">💮</text><text x="70%" y="12%" font-size="30">🏵️</text><text x="25%" y="30%" font-size="22">🌸</text><text x="55%" y="35%" font-size="28">🍃</text><text x="85%" y="32%" font-size="20">🌸</text><text x="15%" y="55%" font-size="25">💮</text><text x="45%" y="60%" font-size="30">🏵️</text><text x="75%" y="58%" font-size="22">🍃</text></svg>');
+        background-size: 300px 600px; /* Размер "узора" */
+        
+        /* Запускаем CSS-анимацию */
+        animation: flowerRain 20s linear infinite; 
+    }
+
+    /* Анимация: смещение фона вниз */
+    @keyframes flowerRain {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(50%); } /* Смещаем на половину длины слоя */
     }
 
     .container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
     
     .logo { 
-        font-size: 24px; font-weight: 900; color: var(--accent-green); 
+        font-size: 24px; font-weight: 900; color: var(--accent-pink); 
         text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; 
     }
     
@@ -64,63 +77,45 @@
         line-height: 1.1; margin-bottom: 25px; color: var(--text-dark);
     }
 
+    /* Кнопки управления (Розовые) */
     .tg-btn { 
-        display: block; background: var(--accent-green); color: #fff !important; 
+        display: block; background: var(--accent-pink); color: #fff !important; 
         text-decoration: none; padding: 18px; border-radius: 20px; text-align: center; 
         font-weight: 900; text-transform: uppercase; margin-bottom: 12px; 
-        box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
+        box-shadow: 0 6px 15px rgba(244, 143, 177, 0.4);
     }
 
     .instr-btn {
         display: block; background: #fff;
-        color: var(--accent-green) !important; border: 2px solid var(--accent-green);
+        color: var(--accent-pink) !important; border: 2px solid var(--accent-pink);
         padding: 16px; border-radius: 20px; text-align: center;
         font-weight: 800; text-transform: uppercase; margin-bottom: 30px;
-        text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        text-decoration: none;
     }
 
-    /* ПОИСК И КРЕСТИК */
+    /* Поиск */
     .search-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
-    
     #searchInput { 
-        width: 100% !important; 
-        padding: 18px 50px 18px 20px; 
-        border-radius: 20px; 
-        border: 1px solid var(--border-color); 
-        font-size: 16px; font-weight: 700; 
-        background: #ffffff; 
-        color: #000; outline: none; 
+        width: 100% !important; padding: 18px; border-radius: 20px; 
+        border: 1px solid var(--border-color); font-size: 16px; font-weight: 700; 
+        background: #ffffff; color: #000; outline: none; 
         box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
 
     #clearSearch { 
-        position: absolute !important; 
-        right: 15px; 
-        top: 50%; 
-        transform: translateY(-50%); 
-        display: none; 
-        width: 30px; 
-        height: 30px; 
-        background: var(--card-bg); 
-        border-radius: 50%; 
-        border: 1px solid var(--border-color); 
-        cursor: pointer; 
-        display: flex; /* Чтобы видеть сразу при редактировании */
-        align-items: center; 
-        justify-content: center;
-        font-size: 16px; 
-        color: var(--accent-green); 
-        font-weight: bold; 
-        z-index: 10;
+        position: absolute; right: 15px; top: 50%; transform: translateY(-50%); 
+        width: 30px; height: 30px; background: var(--card-bg); border-radius: 50%; 
+        border: 1px solid var(--border-color); display: flex; align-items: center; 
+        justify-content: center; color: var(--accent-pink); font-weight: bold; z-index: 10;
     }
 
-    /* КАРТОЧКИ */
+    /* Карточки */
     table, tbody { display: block !important; width: 100% !important; }
 
-    .story-row { display: block !important; padding: 30px 0 10px 10px !important; }
     .story-row td { 
-        display: block !important; font-size: 22px !important; font-weight: 900 !important; 
-        color: var(--accent-green) !important; text-transform: uppercase;
+        display: block !important; padding: 30px 0 10px 10px !important; 
+        font-size: 22px !important; font-weight: 900 !important; 
+        color: var(--accent-pink) !important; text-transform: uppercase;
     }
 
     tr:not(.story-row) {
@@ -128,31 +123,42 @@
         background: var(--card-bg) !important; 
         border-radius: 28px !important; 
         padding: 25px !important; margin-bottom: 20px !important; 
-        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        box-shadow: 0 10px 25px rgba(244,143,177,0.1);
         width: 100% !important;
         border: 1px solid var(--border-color);
-        backdrop-filter: blur(5px); /* Легкий эффект стекла поверх цветов */
+        backdrop-filter: blur(5px);
     }
 
-    tr:not(.story-row) td:nth-child(1) { font-size: 21px; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; }
+    tr:not(.story-row) td:nth-child(1) { 
+        font-size: 21px !important; font-weight: 900 !important; 
+        color: var(--text-dark) !important; margin-bottom: 12px !important; 
+    }
 
     .code-text { 
         display: block; background: var(--code-bg); color: var(--text-dark); 
         padding: 15px; border-radius: 18px; font-family: monospace; 
         font-size: 14px; margin-bottom: 15px; text-align: center; font-weight: 700;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid var(--border-color);
     }
 
+    /* === РОЗОВАЯ КНОПКА (Нежность) === */
     .copy-btn { 
-        width: 100%; background: var(--copy-btn-bg); color: #fff; 
-        padding: 18px; border-radius: 18px; font-weight: 900; 
-        text-transform: uppercase; border: none; cursor: pointer;
+        width: 100%; 
+        background: var(--copy-btn-bg) !important; /* Убрали зеленый! */
+        color: #fff !important; 
+        padding: 18px; 
+        border-radius: 18px; 
+        font-weight: 900; 
+        text-transform: uppercase; 
+        border: none; 
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3);
     }
 
     /* ОПИСАНИЕ В РАМОЧКЕ */
     .info-txt { 
         display: block; margin-top: 15px; padding: 12px; font-size: 13px; 
-        color: var(--text-muted); line-height: 1.5; background: rgba(255,255,255,0.6); 
+        color: var(--text-muted); line-height: 1.5; background: rgba(255,255,255,0.7); 
         border: 1px solid var(--border-color); border-radius: 12px;
     }
 
@@ -164,13 +170,13 @@
 
     .dev-status-plate {
         display: flex; align-items: center; background: #fff;
-        border: 1px dashed var(--accent-green); border-radius: 25px; 
+        border: 1px dashed var(--accent-pink); border-radius: 25px; 
         padding: 20px; margin-top: 60px;
     }
 
     #backToTop { 
         position: fixed; bottom: 25px; right: 20px; 
-        width: 54px; height: 54px; background: var(--accent-green); 
+        width: 54px; height: 54px; background: var(--accent-pink); 
         color: #fff; border-radius: 50%; display: none; 
         align-items: center; justify-content: center; 
         cursor: pointer; z-index: 998; border: none; font-size: 26px;
