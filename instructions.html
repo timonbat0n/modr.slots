@@ -4,92 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Инструкция | modr.</title>
-    <style>
-        :root {
-            --bg-color: #1a2a44;
-            --card-bg: #2a3d59;
-            --accent-blue: #7cb9e8;
-            --accent-green: #a8e6cf;
-            --text-white: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-        }
+ <style>
+    :root {
+        /* Палитра Цветущего Сада */
+        --bg-color: #f8fff9;         /* Светлый мятный фон */
+        --card-bg: #e8f5e9;          /* Нежно-зеленый (пастель) */
+        --accent-green: #4caf50;     /* Яркая зелень */
+        --accent-blue: #5fb8e4;      /* Небесно-голубой для ссылок */
+        --text-dark: #2e3d33;        /* Глубокий хвойный для текста */
+        --text-muted: #6d5d4b;       /* Текст для футера */
+        --border-color: #c8e6c9;     /* Границы */
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            padding: 20px 15px 50px 15px;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+    body {
+        font-family: -apple-system, system-ui, sans-serif;
+        background-color: var(--bg-color);
+        background-image: linear-gradient(180deg, #f8fff9 0%, #f1f8e9 100%);
+        background-attachment: fixed;
+        color: var(--text-dark);
+        padding: 20px 15px 50px 15px;
+        line-height: 1.6;
+        overflow-x: hidden;
+        width: 100%;
+    }
 
-        /* Звездный фон */
-        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle var(--duration) infinite ease-in-out; }
-        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--max-opacity); } }
+    /* === ЦВЕТОЧНЫЙ ФОН === */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.15;
+        background-image: 
+            radial-gradient(circle at 10% 20%, #f8bbd0 3px, transparent 4px),
+            radial-gradient(circle at 90% 80%, #fff9c4 4px, transparent 5px),
+            radial-gradient(circle at 50% 50%, #e1f5fe 2px, transparent 3px);
+        background-size: 60px 60px;
+    }
 
-        .container { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+    /* Убираем звезды из старого стиля */
+    #star-container { display: none; }
 
-        nav { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-        nav a { color: var(--accent-blue); text-decoration: none; font-size: 14px; font-weight: bold; }
+    .container { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 
-        header { text-align: center; margin-bottom: 30px; }
-        .logo { font-size: 28px; font-weight: 900; color: var(--text-white); text-decoration: none; }
+    nav { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+    nav a { 
+        color: var(--accent-green); 
+        text-decoration: none; 
+        font-size: 14px; 
+        font-weight: 800; 
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        h1 { font-size: 24px; color: var(--accent-blue); margin-bottom: 20px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+    header { text-align: center; margin-bottom: 30px; }
+    .logo { 
+        font-size: 28px; 
+        font-weight: 900; 
+        color: var(--accent-green); 
+        text-decoration: none; 
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
 
-        .instruction-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+    h1 { 
+        font-size: 24px; 
+        color: var(--text-dark); 
+        margin-bottom: 25px; 
+        text-align: center; 
+        text-transform: uppercase; 
+        letter-spacing: 1px;
+        font-weight: 900;
+    }
 
-        ol { list-style: none; counter-reset: item; }
-        li { 
-            position: relative; 
-            margin-bottom: 18px; 
-            padding-left: 45px; 
-            font-size: 15px;
-        }
-        li::before {
-            content: counter(item);
-            counter-increment: item;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 30px;
-            height: 30px;
-            background: var(--accent-blue);
-            color: var(--bg-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 14px;
-        }
+    /* КАРТОЧКА ИНСТРУКЦИИ (Нежно-зеленая) */
+    .instruction-card {
+        background: var(--card-bg);
+        border-radius: 28px;
+        padding: 25px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
 
-        .important-box {
-            margin-top: 25px;
-            padding: 15px;
-            background: rgba(168, 230, 207, 0.1);
-            border-left: 4px solid var(--accent-green);
-            border-radius: 12px;
-            font-size: 14px;
-            color: var(--accent-green);
-        }
+    ol { list-style: none; counter-reset: item; }
+    
+    li { 
+        position: relative; 
+        margin-bottom: 20px; 
+        padding-left: 50px; 
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+    
+    /* Цифры в зеленых кружочках */
+    li::before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 0;
+        top: -2px;
+        width: 34px;
+        height: 34px;
+        background: var(--accent-green);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+    }
 
-        .btn-link {
-            color: var(--accent-blue);
-            text-decoration: underline;
-        }
+    /* РАМОЧКА ДЛЯ ВАЖНОГО (как описание персонажа) */
+    .important-box {
+        margin-top: 25px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid var(--border-color);
+        border-left: 5px solid var(--accent-green);
+        border-radius: 16px;
+        font-size: 14px;
+        color: var(--text-dark);
+        font-weight: 600;
+    }
 
-        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-muted); }
-    </style>
+    .btn-link {
+        color: var(--accent-blue);
+        text-decoration: none;
+        font-weight: 800;
+        border-bottom: 2px solid var(--accent-blue);
+    }
+
+    footer { 
+        margin-top: 50px; 
+        text-align: center; 
+        font-size: 12px; 
+        color: var(--text-muted); 
+        font-weight: 600;
+    }
+</style>
 </head>
 <body>
     <div id="star-container"></div>
