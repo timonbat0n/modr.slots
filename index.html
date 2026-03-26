@@ -131,6 +131,70 @@
     transform: scale(0.97);
     background: rgba(124, 185, 232, 0.1);
 }
+        /* Стиль плашки "В разработке" */
+.dev-status-plate {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    border: 1px solid rgba(124, 185, 232, 0.3);
+    border-radius: 18px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффект свечения по краям */
+.dev-status-plate::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(124, 185, 232, 0.05), transparent);
+}
+
+.dev-icon {
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+/* Анимированный спиннер (иконка загрузки) */
+.spinner {
+    width: 22px;
+    height: 22px;
+    border: 3px solid rgba(124, 185, 232, 0.2);
+    border-top: 3px solid var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.dev-text {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text-white);
+}
+
+.dev-text span {
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Адаптив для мобилок */
+@media (max-width: 400px) {
+    .dev-status-plate {
+        padding: 12px 15px;
+    }
+    .dev-text {
+        font-size: 13px;
+    }
+}
     </style>
 </head>
 <body>
@@ -146,7 +210,14 @@
 
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
  
-    <tr class="story-row"><td colspan="3">Если написана история,а слотов к ней нет-слоты в разработке</td></tr>
+    <div class="dev-status-plate">
+    <div class="dev-icon">
+        <div class="spinner"></div>
+    </div>
+    <div class="dev-text">
+        Если история есть, а слотов нет — <span>слоты в разработке</span>
+    </div>
+</div>
     
     <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
