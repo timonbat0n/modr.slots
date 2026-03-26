@@ -6,14 +6,15 @@
     <title>Инструкция | modr.</title>
  <style>
     :root {
-        /* Палитра Цветущего Сада */
-        --bg-color: #f8fff9;         /* Светлый мятный фон */
-        --card-bg: #e8f5e9;          /* Нежно-зеленый (пастель) */
-        --accent-green: #4caf50;     /* Яркая зелень */
-        --accent-blue: #5fb8e4;      /* Небесно-голубой для ссылок */
-        --text-dark: #2e3d33;        /* Глубокий хвойный для текста */
-        --text-muted: #6d5d4b;       /* Текст для футера */
-        --border-color: #c8e6c9;     /* Границы */
+        /* Палитра "Клубничное суфле" (максимальная нежность) */
+        --bg-color: #fff9fa;         /* Молочно-розовый (фон) */
+        --card-bg: #fff0f3;          /* Цвет лепестков сакуры (карточка) */
+        --accent-pink: #f48fb1;      /* Мягкий пудровый для заголовков */
+        --accent-blue: #5fb8e4;      /* Оставляем голубой для ссылок для контраста */
+        --text-dark: #4a2c34;        /* Темно-шоколадный с розовым подтоном */
+        --text-muted: #9e847c;       /* Текст описания и футера */
+        --border-color: #ffc1e3;     /* Нежно-розовые границы */
+        --accent-copy: #ec407a;      /* Вишневый акцент (как кнопка копирования) */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -21,38 +22,45 @@
     body {
         font-family: -apple-system, system-ui, sans-serif;
         background-color: var(--bg-color);
-        background-image: linear-gradient(180deg, #f8fff9 0%, #f1f8e9 100%);
+        background-image: linear-gradient(180deg, #fff9fa 0%, #ffebee 100%);
         background-attachment: fixed;
         color: var(--text-dark);
         padding: 20px 15px 50px 15px;
         line-height: 1.6;
         overflow-x: hidden;
         width: 100%;
+        position: relative;
     }
 
-    /* === ЦВЕТОЧНЫЙ ФОН === */
+    /* === АНИМИРОВАННЫЙ ДОЖДЬ ИЗ ЦВЕТОВ (Как на главной) === */
     body::before {
-        content: '';
+        content: "";
         position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
+        top: -150%;
+        left: 0;
+        width: 100%;
+        height: 300%;
         z-index: 0;
         pointer-events: none;
-        opacity: 0.15;
+        opacity: 0.18; /* Чуть приглушеннее, чтобы не мешать читать */
+        
         background-image: 
-            radial-gradient(circle at 10% 20%, #f8bbd0 3px, transparent 4px),
-            radial-gradient(circle at 90% 80%, #fff9c4 4px, transparent 5px),
-            radial-gradient(circle at 50% 50%, #e1f5fe 2px, transparent 3px);
-        background-size: 60px 60px;
+            radial-gradient(circle at 10% 10%, rgba(255,255,255,0) 0, rgba(255,255,255,0) 10px, rgba(255,255,255,0.01) 11px),
+            url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><text x="10%" y="10%" font-size="25">🌸</text><text x="40%" y="15%" font-size="20">💮</text><text x="70%" y="12%" font-size="30">🏵️</text><text x="25%" y="30%" font-size="22">🌸</text><text x="55%" y="35%" font-size="28">🍃</text><text x="85%" y="32%" font-size="20">🌸</text><text x="15%" y="55%" font-size="25">💮</text><text x="45%" y="60%" font-size="30">🏵️</text><text x="75%" y="58%" font-size="22">🍃</text></svg>');
+        background-size: 300px 600px;
+        animation: flowerRain 25s linear infinite; /* Чуть медленнее для спокойствия */
     }
 
-    /* Убираем звезды из старого стиля */
-    #star-container { display: none; }
+    @keyframes flowerRain {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(50%); }
+    }
 
     .container { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 
     nav { display: flex; justify-content: flex-start; margin-bottom: 25px; }
     nav a { 
-        color: var(--accent-green); 
+        color: var(--accent-copy); /* Яркий акцент для навигации */
         text-decoration: none; 
         font-size: 14px; 
         font-weight: 800; 
@@ -64,7 +72,7 @@
     .logo { 
         font-size: 28px; 
         font-weight: 900; 
-        color: var(--accent-green); 
+        color: var(--accent-pink); 
         text-decoration: none; 
         text-transform: uppercase;
         letter-spacing: 2px;
@@ -80,13 +88,14 @@
         font-weight: 900;
     }
 
-    /* КАРТОЧКА ИНСТРУКЦИИ (Нежно-зеленая) */
+    /* === КАРТОЧКА ИНСТРУКЦИИ (Розовое облако) === */
     .instruction-card {
         background: var(--card-bg);
         border-radius: 28px;
         padding: 25px;
         border: 1px solid var(--border-color);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        box-shadow: 0 10px 30px rgba(244,143,177,0.1);
+        backdrop-filter: blur(5px); /* Легкий эффект стекла поверх цветов */
     }
 
     ol { list-style: none; counter-reset: item; }
@@ -100,16 +109,16 @@
         color: var(--text-dark);
     }
     
-    /* Цифры в зеленых кружочках */
+    /* Цифры в пудровых кружочках */
     li::before {
         content: counter(item);
         counter-increment: item;
         position: absolute;
         left: 0;
         top: -2px;
-        width: 34px;
-        height: 34px;
-        background: var(--accent-green);
+        width: 36px;
+        height: 36px;
+        background: var(--accent-pink);
         color: #fff;
         border-radius: 50%;
         display: flex;
@@ -117,16 +126,16 @@
         justify-content: center;
         font-weight: 900;
         font-size: 14px;
-        box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+        box-shadow: 0 4px 10px rgba(244, 143, 177, 0.2);
     }
 
-    /* РАМОЧКА ДЛЯ ВАЖНОГО (как описание персонажа) */
+    /* ВАЖНЫЙ БЛОК (как описание персонажа) */
     .important-box {
         margin-top: 25px;
         padding: 18px;
-        background: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.7); /* Белое стекло */
         border: 1px solid var(--border-color);
-        border-left: 5px solid var(--accent-green);
+        border-left: 5px solid var(--accent-pink); /* Акцент слева */
         border-radius: 16px;
         font-size: 14px;
         color: var(--text-dark);
@@ -137,7 +146,7 @@
         color: var(--accent-blue);
         text-decoration: none;
         font-weight: 800;
-        border-bottom: 2px solid var(--accent-blue);
+        border-bottom: 2px solid rgba(95, 184, 228, 0.2);
     }
 
     footer { 
