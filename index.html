@@ -138,13 +138,93 @@
         background: var(--text-dark); color: #fff; padding: 15px 30px; 
         border-radius: 50px; font-weight: 800; font-size: 13px; display: none; z-index: 9999; 
     }
-        #backToTop { 
-        position: fixed; bottom: 25px; right: 20px; 
-        width: 54px; height: 54px; background: var(--accent-pink); 
-        color: #fff; border-radius: 50%; display: none; 
-        align-items: center; justify-content: center; 
-        cursor: pointer; z-index: 998; border: none; font-size: 26px;
+       
+    /* КНОПКИ УПРАВЛЕНИЯ (Верхняя часть) */
+    .tg-btn { 
+        display: block; 
+        background: var(--copy-btn-bg); /* Насыщенный розовый */
+        color: #fff !important; 
+        text-decoration: none; 
+        padding: 18px; 
+        border-radius: 20px; 
+        text-align: center; 
+        font-weight: 900; 
+        text-transform: uppercase; 
+        margin-bottom: 12px; 
+        box-shadow: 0 6px 15px rgba(236, 64, 122, 0.3);
+        transition: 0.3s;
     }
+    .tg-btn:active { transform: scale(0.98); }
+
+    .instr-btn {
+        display: block; 
+        background: #fff;
+        color: var(--accent-pink) !important; 
+        border: 2px solid var(--border-color);
+        padding: 16px; 
+        border-radius: 20px; 
+        text-align: center;
+        font-weight: 800; 
+        text-transform: uppercase; 
+        margin-bottom: 30px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    .instr-btn:hover { background: var(--card-bg); }
+
+    /* ПЛАШКА "В РАЗРАБОТКЕ" (Если нет слотов) */
+    .dev-status-plate {
+        display: flex; 
+        align-items: center; 
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px dashed var(--border-color); 
+        border-radius: 25px; 
+        padding: 20px; 
+        margin-top: 40px;
+        backdrop-filter: blur(5px);
+    }
+
+    /* Анимированный цветочек-спиннер */
+    .spinner { 
+        width: 30px; 
+        height: 30px; 
+        margin-right: 15px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: spin 3s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .dev-text { 
+        font-size: 14px; 
+        font-weight: 700; 
+        color: var(--text-dark); 
+        line-height: 1.4;
+    }
+
+    /* КНОПКА ВОЗВРАТА НАВЕРХ (Лепесток) */
+    #backToTop { 
+        position: fixed; 
+        bottom: 25px; 
+        right: 20px; 
+        width: 54px; 
+        height: 54px; 
+        background: var(--accent-pink); 
+        color: #fff; 
+        border-radius: 50% 0 50% 50%; /* Форма лепестка */
+        display: none; /* Появляется при скролле через JS */
+        align-items: center; 
+        justify-content: center; 
+        cursor: pointer; 
+        z-index: 998; 
+        border: none;
+        box-shadow: 0 8px 20px rgba(244, 143, 177, 0.4);
+        font-size: 24px;
+        transition: 0.3s;
+    }
+    #backToTop:active { transform: scale(0.9); }
 </style>
 </head>
 <body>
@@ -159,21 +239,19 @@
     </header>
 
     <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
- 
+ <div class="container">
+    <a href="t.me/modr_slots_bot" class="tg-btn">Отправить слоты 🌸</a>
+    <a href="instruction.html" class="instr-btn">Инструкция</a>
+
     <div class="dev-status-plate">
-    <div class="dev-icon">
-        <div class="spinner"></div>
-    </div>
-    <div class="dev-text">
-        Если история есть, а слотов нет — <span>слоты в разработке</span>
+        <div class="spinner">🌸</div>
+        <div class="dev-text">
+            Если история есть , а персонажнет - слоты в разработке.Скоро добавим!
+        </div>
     </div>
 </div>
-     <h1 class="hero-title"> </h1>
-    <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ⚡</a>
 
-<a href="instructions.html" class="instr-btn">
-    📖 Инструкция по слотам
-</a>
+<button id="backToTop" onclick="scrollToTop()">↑</button>
 
     <div class="search-wrapper">
         <input type="text" id="searchInput" placeholder="Поиск..." oninput="runFilter()">
@@ -453,6 +531,21 @@
     </td>
     <td>жестокость, тьма прокачана</td>
 </tr>
+           <td>Астарот+Давид+Ян </td>
+    <td>
+        <span class="code-text">2288edec39cb7e1f2e3483639f497b95</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>Милосердие, высокая адаптация, прокачанная тьма</td>
+</tr>  
+     <td>Астарот+Малек+Каин </td>
+    <td>
+        <span class="code-text">e0271bc0c06e3eb1fe0040c718b2368f</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>Милосердие, высокая адаптация, прокачанная тьма</td>
+</tr>    
+
 
 <tr class="story-row"><td colspan="3">Сердце Треспии</td></tr>
 <tr><td>Рейнхольд</td><td><span class="code-text">a5e2ba6722aa3fe934a4b14a0a0aafd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рациональность</td></tr>
