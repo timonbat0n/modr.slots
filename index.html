@@ -108,23 +108,23 @@
     }
 
     /* ТАБЛИЦА И СТРУКТУРА */
-    table { 
-        display: block !important; 
-        width: 100% !important; 
-        border-collapse: collapse;
-        table-layout: fixed;
-    }
+table { 
+    display: block; /* УБРАЛИ !important */
+    width: 100% !important; 
+    border-collapse: collapse;
+    table-layout: fixed;
+}
 
-    tbody { display: block !important; width: 100% !important; }
+   tbody { display: block; width: 100% !important; }
 
     /* ЗАГОЛОВКИ ИСТОРИЙ */
-    .story-row { 
-        display: block !important; 
-        width: 100% !important;
-        padding: 40px 0 15px 0 !important;
-        text-align: center;
-    }
-
+ .story-row { 
+    display: block; /* УБРАЛИ !important */
+    width: 100% !important;
+    padding: 40px 0 15px 0 !important;
+    text-align: center;
+}
+    
     .story-row td { 
         display: block !important; 
         font-size: clamp(28px, 8vw, 38px) !important; 
@@ -136,7 +136,9 @@
     }
 
     /* КАРТОЧКИ ФАВОРИТОВ */
-    tr:not(.story-row) {
+   tr:not(.story-row) {
+    display: flex; /* УБРАЛИ !important */
+    flex-direction: column !important;
         display: flex !important; 
         flex-direction: column !important;
         align-items: center !important;
@@ -668,30 +670,24 @@
     // 1. Функция фильтрации и поиска
 function runFilter() {
     const input = document.getElementById('searchInput');
-    const table = document.getElementById('mainTable');
-    if (!input || !table) {
-        console.error("Ошибка: Поле поиска или таблица не найдены!");
-        return;
-    }
-
+    const clearBtn = document.getElementById('clearSearch');
     const filter = input.value.toLowerCase().trim();
+    const table = document.getElementById('mainTable');
+    if (!table) return;
+    
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     
-    // Кнопка очистки (если она есть)
-    const clearBtn = document.getElementById('clearSearch');
     if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
     let currentStoryRow = null;
-    let storyCards = [];
     let storyHasMatch = false;
+    let storyCards = [];
 
     rows.forEach((row) => {
         if (row.classList.contains('story-row')) {
-            // Завершаем предыдущую секцию
             if (currentStoryRow) {
-                applyVisibility(currentStoryRow, storyCards, storyHasMatch, filter);
+                finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
             }
-            // Начинаем новую
             currentStoryRow = row;
             storyCards = [];
             storyHasMatch = row.innerText.toLowerCase().includes(filter);
@@ -703,40 +699,41 @@ function runFilter() {
         }
     });
 
-    // Обработка последней секции
     if (currentStoryRow) {
-        applyVisibility(currentStoryRow, storyCards, storyHasMatch, filter);
+        finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
     }
 }
 
-function applyVisibility(header, cards, isMatch, filter) {
+function finalizeSection(header, cards, isMatch, filter) {
     if (filter === '') {
-        header.style.display = '';
-        cards.forEach(card => card.style.display = '');
+        header.style.setProperty('display', 'block', 'important');
+        cards.forEach(card => {
+            card.style.setProperty('display', 'flex', 'important');
+            card.classList.add('fade-in');
+        });
         return;
     }
 
     if (isMatch) {
-        header.style.display = '';
-        // Если сам заголовок совпал, показываем все карточки внутри.
-        // Если нет — только те карточки, которые содержат текст.
+        // Если заголовок или карточка совпали
+        header.style.setProperty('display', 'block', 'important');
+        
         const headerMatch = header.innerText.toLowerCase().includes(filter);
+        
         cards.forEach(card => {
             const cardMatch = card.innerText.toLowerCase().includes(filter);
-            card.style.display = (headerMatch || cardMatch) ? '' : 'none';
+            if (headerMatch || cardMatch) {
+                card.style.setProperty('display', 'flex', 'important');
+            } else {
+                card.style.setProperty('display', 'none', 'important');
+            }
         });
     } else {
-        header.style.display = 'none';
-        cards.forEach(card => card.style.display = 'none');
-    }
-}
-
-// Добавьте эту функцию для кнопки "X"
-function clearInput() {
-    const input = document.getElementById('searchInput');
-    if (input) {
-        input.value = '';
-        runFilter();
+        // Скрываем всю секцию
+        header.style.setProperty('display', 'none', 'important');
+        cards.forEach(card => {
+            card.style.setProperty('display', 'none', 'important');
+        });
     }
 }
     // 2. Очистка поиска
