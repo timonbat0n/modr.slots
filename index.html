@@ -105,7 +105,26 @@
         z-index: 5 !important;
     }
 
+.story-row { 
+        display: block !important; 
+        width: 100% !important;
+        padding: 40px 0 20px 0 !important; /* Больше пространства сверху и снизу */
+    }
 
+    .story-row td { 
+        display: block !important; 
+        font-size: 38px !important; /* ПРЯМ КРУПНО! */
+        font-weight: 1000 !important; /* Максимальная жирность */
+        color: var(--copy-btn-bg) !important; /* Сочный вишневый цвет */
+        text-transform: uppercase; 
+        letter-spacing: 4px; /* Раздвигаем буквы для пафоса */
+        text-shadow: 2px 2px 0px rgba(255, 255, 255, 1), 
+                     4px 4px 10px rgba(236, 64, 122, 0.2); /* Эффект объема */
+        border-bottom: 3px double var(--border-color); /* Двойная линия снизу */
+        margin: 0 auto;
+        display: inline-block !important; /* Чтобы линия была по ширине текста */
+        padding-bottom: 5px;
+    }
     /* КАРТОЧКИ ФАВОРИТОВ */
     tr:not(.story-row) {
         display: flex !important; flex-direction: column !important;
@@ -279,7 +298,7 @@
             Если история есть , а персонажей нет - слоты в разработке.Скоро добавим!
         </div>
     </div>
-        <h1 class="hero-title">  </h1>
+        <h1 class="hero-title">  <br>  </h1>
     <a href="t.me/modr_slots_bot" class="tg-btn">Отправить слоты 🌸</a>
     <a href="instructions.html" class="instr-btn">Инструкция</a>
     
