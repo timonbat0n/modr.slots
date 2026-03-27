@@ -775,6 +775,17 @@ table {
         }
     };
 
+
+    window.onscroll = function() {
+        const backBtn = document.getElementById('backToTop');
+        if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+            backBtn.style.display = "flex";
+        } else {
+            backBtn.style.display = "none";
+        }
+    };
+
+    // Плавный скролл вверх
     function scrollToTop() {
         window.scrollTo({
             top: 0,
@@ -782,29 +793,14 @@ table {
         });
     }
 
-    function createStars() {
-        const container = document.getElementById('star-container');
-        if(!container) return;
-        for (let i = 0; i < 40; i++) {
-            const s = document.createElement('div'); s.className = 'star';
-            const size = Math.random() * 2 + 'px';
-            s.style.cssText = `width:${size}; height:${size}; left:${Math.random()*100}%; top:${Math.random()*100}%; --duration:${Math.random()*3+2}s; --max-opacity:${Math.random()*0.7+0.3}`;
-            container.appendChild(s);
-        }
-    }
-    
-// === ФУНКЦИЯ ПЛАВНОГО ПОЯВЛЕНИЯ КАРТОЧЕК (fade-in) ===
-    function startFadeInAnimation() {
-        // Находим все строки таблицы, которые НЕ являются заголовками историй
+    // Инициализация анимации появления карточек
+    document.addEventListener('DOMContentLoaded', () => {
         const cards = document.querySelectorAll('tr:not(.story-row)');
-        
         cards.forEach((card, index) => {
-            // Используем setTimeout, чтобы добавить задержку для каждой следующей карточки
             setTimeout(() => {
                 card.classList.add('fade-in');
-            }, index * 100); // 100мс задержка между карточками (чем меньше число, тем быстрее появятся все)
+            }, index * 100);
         });
-    }
-// Запускаем анимацию сразу после загрузки DOM
-    document.addEventListener('DOMContentLoaded', startFadeInAnimation);
+    });
 </script>
+
