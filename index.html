@@ -133,20 +133,18 @@ table {
         letter-spacing: 2px;
         word-wrap: break-word; /* Чтобы длинные названия не ломали верстку */
     }
-    /* КАРТОЧКИ ФАВОРИТОВ */
+  /* КАРТОЧКИ ФАВОРИТОВ */
     tr:not(.story-row) {
-        display: flex !important; 
-        flex-direction: column !important;
-        width: 100% !important; /* Строго на всю ширину контейнера */
+        display: flex !important; flex-direction: column !important;
         background: var(--card-bg) !important; 
         border-radius: 28px !important; 
-        padding: 20px !important; 
-        margin-bottom: 20px !important; 
+        padding: 25px !important; margin-bottom: 20px !important; 
         box-shadow: 0 10px 25px rgba(244,143,177,0.1);
         border: 1px solid var(--border-color);
-        box-sizing: border-box !important;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     }
-
 
     tr.fade-in { opacity: 1 !important; transform: translateY(0) !important; }
 
@@ -158,9 +156,7 @@ table {
         margin-bottom: 15px !important; 
         text-transform: uppercase !important; /* Сделали КАПСОМ */
         letter-spacing: 1px; /* Немного раздвинули буквы для эстетики */
-        width: 100% !important;
-    }
-
+        text-align: center; /* Центрируем имя для симметрии с кодом */
     }
 
     /* РАМОЧКА ДЛЯ КОДА: По центру */
@@ -168,10 +164,10 @@ table {
         display: block; 
         background: var(--code-bg); 
         color: var(--text-dark); 
-        padding: 18px; 
+        padding: 15px; 
         border-radius: 18px; 
         font-family: 'Courier New', monospace; 
-        font-size: 13px; /* Чуть крупнее сам код */
+        font-size: 18px; /* Чуть крупнее сам код */
         margin: 0 auto 15px auto; /* Центрируем саму рамочку */
         text-align: center; /* Текст внутри рамочки по центру */
         font-weight: 800;
@@ -179,7 +175,6 @@ table {
         width: 100%; /* Рамка на всю ширину карточки */
         max-width: 300px; /* Но не слишком широкая */
     }
-
 
 
 
