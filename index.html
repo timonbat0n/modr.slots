@@ -503,7 +503,7 @@
 <tr><td>Ян</td><td><span class="code-text">fbc509aa35f9955b1939e8f398b7d37e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог, милосердие, выс адаптация</td></tr>
 <tr><td>Каин</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">бог, милосердие, выс адаптация</td></tr>
 <tr><td>Каин+Авель</td><td><span class="code-text">8aa3af17bddb8304f8d06365fb038698</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дьявол, жесткость, выс адаптация</td></tr>
-<tr><td>Каин</td><td><span class="code-text">2c30b39060ee94b301471b9ae6c1bb04</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Шепот дьявола Высокая адаптация/td></tr>
+<tr><td>Каин</td><td><span class="code-text">2c30b39060ee94b301471b9ae6c1bb04</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Шепот дьявола Высокая адаптация</td></tr>
 <tr><td>Борис</td><td><span class="code-text">a0d2993286217cf643ce1ad1b6446cf0</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог Высокая адаптация/td></tr>
 
 <tr class="story-row"><td colspan="3">Секрет Небес 2</td></tr>
@@ -665,33 +665,31 @@
 <div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
+    // 1. Функция фильтрации и поиска
     function runFilter() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearch');
         const filter = input.value.toLowerCase().trim();
         const table = document.getElementById('mainTable');
+        if (!table) return;
+        
         const rows = Array.from(table.querySelectorAll('tbody tr'));
         
-        clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
+        if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
         let currentStoryRow = null;
         let storyHasMatch = false;
         let storyCards = [];
 
-        // Группируем строки по историям и фильтруем
-        rows.forEach((row, index) => {
+        rows.forEach((row) => {
             if (row.classList.contains('story-row')) {
-                // Перед тем как перейти к новой истории, обрабатываем видимость предыдущей
                 if (currentStoryRow) {
                     finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
                 }
-                
-                // Начинаем новую секцию
                 currentStoryRow = row;
                 storyCards = [];
                 storyHasMatch = row.innerText.toLowerCase().includes(filter);
             } else {
-                // Собираем карточки, относящиеся к текущему заголовку
                 storyCards.push(row);
                 if (row.innerText.toLowerCase().includes(filter)) {
                     storyHasMatch = true;
@@ -699,92 +697,82 @@
             }
         });
 
-        // Финализируем последнюю секцию в таблице
         if (currentStoryRow) {
             finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
         }
     }
 
-    // Вспомогательная функция для скрытия/показа целых секций
     function finalizeSection(header, cards, isMatch, filter) {
         if (filter === '') {
-            header.style.setProperty('display', 'block', 'important');
-            cards.forEach(card => card.style.setProperty('display', 'flex', 'important'));
+            header.style.display = 'block';
+            cards.forEach(card => {
+                card.style.display = 'flex';
+                card.classList.add('fade-in'); // Убеждаемся, что они видны
+            });
             return;
         }
 
         if (isMatch) {
-            header.style.setProperty('display', 'block', 'important');
+            header.style.display = 'block';
+            const headerMatch = header.innerText.toLowerCase().includes(filter);
             cards.forEach(card => {
-                // Если поиск совпал с заголовком истории — показываем всех героев
-                // Если ищем конкретного героя — показываем только его
                 const cardMatch = card.innerText.toLowerCase().includes(filter);
-                const headerMatch = header.innerText.toLowerCase().includes(filter);
-                
-                if (headerMatch || cardMatch) {
-                    card.style.setProperty('display', 'flex', 'important');
-                } else {
-                    card.style.setProperty('display', 'none', 'important');
-                }
+                card.style.display = (headerMatch || cardMatch) ? 'flex' : 'none';
             });
         } else {
-            header.style.setProperty('display', 'none', 'important');
-            cards.forEach(card => card.style.setProperty('display', 'none', 'important'));
+            header.style.display = 'none';
+            cards.forEach(card => card.style.display = 'none');
         }
     }
 
+    // 2. Очистка поиска
     function clearInput() {
         const input = document.getElementById('searchInput');
-        input.value = '';
-        input.focus();
-        runFilter();
+        if (input) {
+            input.value = '';
+            input.focus();
+            runFilter();
+        }
     }
 
+    // 3. Копирование кода
     function copy(btn) {
         const text = btn.previousElementSibling.innerText;
         navigator.clipboard.writeText(text).then(() => {
             const t = document.getElementById('toast');
-            t.style.display = 'block';
-            setTimeout(() => { t.style.display = 'none'; }, 1500);
+            if (t) {
+                t.style.display = 'block';
+                setTimeout(() => { t.style.display = 'none'; }, 1500);
+            }
         });
     }
 
-    fconst backBtn = document.getElementById('backToTop');
-
-    window.onscroll = function() {
-        if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
-            backBtn.style.display = "flex";
-        } else {
-            backBtn.style.display = "none";
-        }
-    };
-
-
+    // 4. Кнопка "Вверх"
     window.onscroll = function() {
         const backBtn = document.getElementById('backToTop');
-        if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
-            backBtn.style.display = "flex";
-        } else {
-            backBtn.style.display = "none";
+        if (backBtn) {
+            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+                backBtn.style.display = "flex";
+            } else {
+                backBtn.style.display = "none";
+            }
         }
     };
 
-    // Плавный скролл вверх
     function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Инициализация анимации появления карточек
+    // 5. Появление карточек при загрузке (ИСПРАВЛЕНО)
     document.addEventListener('DOMContentLoaded', () => {
         const cards = document.querySelectorAll('tr:not(.story-row)');
         cards.forEach((card, index) => {
             setTimeout(() => {
                 card.classList.add('fade-in');
-            }, index * 100);
+                // Принудительно ставим opacity, если CSS забагался
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            }, index * 50); // Ускорил до 50мс для плавности
         });
     });
 </script>
-
