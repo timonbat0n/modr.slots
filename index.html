@@ -666,65 +666,70 @@
 
 <script>
     // 1. Функция фильтрации и поиска
-    function runFilter() {
-        const input = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearSearch');
-        const filter = input.value.toLowerCase().trim();
-        const table = document.getElementById('mainTable');
-        if (!table) return;
-        
-        const rows = Array.from(table.querySelectorAll('tbody tr'));
-        
-        if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
+function runFilter() {
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    const filter = input.value.toLowerCase().trim();
+    const table = document.getElementById('mainTable');
+    
+    if (!table) return;
+    
+    // Показываем/скрываем кнопку очистки
+    if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
 
-        let currentStoryRow = null;
-        let storyHasMatch = false;
-        let storyCards = [];
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+    
+    let currentStoryRow = null;
+    let storyCards = [];
+    let storyHasMatch = false;
 
-        rows.forEach((row) => {
-            if (row.classList.contains('story-row')) {
-                if (currentStoryRow) {
-                    finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
-                }
-                currentStoryRow = row;
-                storyCards = [];
-                storyHasMatch = row.innerText.toLowerCase().includes(filter);
-            } else {
-                storyCards.push(row);
-                if (row.innerText.toLowerCase().includes(filter)) {
-                    storyHasMatch = true;
-                }
+    rows.forEach((row) => {
+        if (row.classList.contains('story-row')) {
+            // Перед переходом к новой секции, обрабатываем предыдущую
+            if (currentStoryRow) {
+                finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
             }
-        });
-
-        if (currentStoryRow) {
-            finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
-        }
-    }
-
-    function finalizeSection(header, cards, isMatch, filter) {
-        if (filter === '') {
-            header.style.display = 'block';
-            cards.forEach(card => {
-                card.style.display = 'flex';
-                card.classList.add('fade-in'); // Убеждаемся, что они видны
-            });
-            return;
-        }
-
-        if (isMatch) {
-            header.style.display = 'block';
-            const headerMatch = header.innerText.toLowerCase().includes(filter);
-            cards.forEach(card => {
-                const cardMatch = card.innerText.toLowerCase().includes(filter);
-                card.style.display = (headerMatch || cardMatch) ? 'flex' : 'none';
-            });
+            currentStoryRow = row;
+            storyCards = [];
+            // Проверяем, подходит ли сам заголовок под фильтр
+            storyHasMatch = row.innerText.toLowerCase().includes(filter);
         } else {
-            header.style.display = 'none';
-            cards.forEach(card => card.style.display = 'none');
+            storyCards.push(row);
+            // Если хоть одна строка в секции подходит, помечаем всю секцию
+            if (row.innerText.toLowerCase().includes(filter)) {
+                storyHasMatch = true;
+            }
         }
+    });
+
+    // Не забываем обработать последнюю секцию
+    if (currentStoryRow) {
+        finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
+    }
+}
+
+function finalizeSection(header, cards, isMatch, filter) {
+    if (filter === '') {
+        header.style.display = ''; // Сброс к default (table-row)
+        cards.forEach(card => card.style.display = '');
+        return;
     }
 
+    if (isMatch) {
+        header.style.display = ''; 
+        const headerMatch = header.innerText.toLowerCase().includes(filter);
+        
+        cards.forEach(card => {
+            const cardMatch = card.innerText.toLowerCase().includes(filter);
+            // Если заголовок совпал — показываем все в секции. 
+            // Если нет — только подходящие карточки.
+            card.style.display = (headerMatch || cardMatch) ? '' : 'none';
+        });
+    } else {
+        header.style.display = 'none';
+        cards.forEach(card => card.style.display = 'none');
+    }
+}
     // 2. Очистка поиска
     function clearInput() {
         const input = document.getElementById('searchInput');
