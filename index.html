@@ -105,7 +105,8 @@
         z-index: 5 !important;
     }
 
-    /* Карточки и анимация появления */
+
+    /* КАРТОЧКИ ФАВОРИТОВ */
     tr:not(.story-row) {
         display: flex !important; flex-direction: column !important;
         background: var(--card-bg) !important; 
@@ -119,6 +120,37 @@
     }
 
     tr.fade-in { opacity: 1 !important; transform: translateY(0) !important; }
+
+    /* ИМЯ ФАВОРИТА: Капс, больше размер и выделение цветом */
+    tr:not(.story-row) td:nth-child(1) { 
+        font-size: 26px !important; /* Увеличили размер */
+        font-weight: 900 !important; 
+        color: var(--accent-copy) !important; /* Выделили более ярким розовым */
+        margin-bottom: 15px !important; 
+        text-transform: uppercase !important; /* Сделали КАПСОМ */
+        letter-spacing: 1px; /* Немного раздвинули буквы для эстетики */
+        text-align: center; /* Центрируем имя для симметрии с кодом */
+    }
+
+    /* РАМОЧКА ДЛЯ КОДА: По центру */
+    .code-text { 
+        display: block; 
+        background: var(--code-bg); 
+        color: var(--text-dark); 
+        padding: 15px; 
+        border-radius: 18px; 
+        font-family: 'Courier New', monospace; 
+        font-size: 18px; /* Чуть крупнее сам код */
+        margin: 0 auto 15px auto; /* Центрируем саму рамочку */
+        text-align: center; /* Текст внутри рамочки по центру */
+        font-weight: 800;
+        border: 2px solid var(--border-color);
+        width: 100%; /* Рамка на всю ширину карточки */
+        max-width: 300px; /* Но не слишком широкая */
+    }
+
+
+
 
     .copy-btn { 
         width: 100%; background: var(--copy-btn-bg) !important; color: #fff !important; 
@@ -247,11 +279,10 @@
         <div class="dev-text">
             Если история есть , а персонажей нет - слоты в разработке.Скоро добавим!
         </div>
-    </div>
-        <h1 class="hero-title"> </h1>
+        <h1 class="hero-title">  </h1>
     <a href="t.me/modr_slots_bot" class="tg-btn">Отправить слоты 🌸</a>
     <a href="instruction.html" class="instr-btn">Инструкция</a>
-
+    </div>
 </div>
 
 <button id="backToTop" onclick="scrollToTop()">↑</button>
