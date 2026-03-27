@@ -14,6 +14,7 @@
         --code-bg: #ffffff;          
         --text-muted: #9e847c;       
         --border-color: #ffc1e3;     
+        --accent-copy: #ec407a; /* Добавил переменную для выделения имен */
     }
 
     * { 
@@ -28,12 +29,11 @@
         background-image: linear-gradient(180deg, #fff9fa 0%, #ffebee 100%);
         background-attachment: fixed;
         color: var(--text-dark);
-        padding: 20px 15px 120px 15px;
-        position: relative;
-        padding: 10px 10px 100px 10px; /* Уменьшил боковые отступы для мобилок */
+        padding: 10px 10px 100px 10px;
         width: 100%;
         min-height: 100vh;
-    }
+        position: relative;
+        overflow-x: hidden;
     }
 
     /* Анимированный дождь из цветов */
@@ -51,7 +51,7 @@
 
     .container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
 
-    /* === ОБНОВЛЕННЫЙ ПОИСК С ЦВЕТОЧКОМ === */
+    /* ПОИСК */
     .search-wrapper { 
         position: relative; 
         width: 100%; 
@@ -60,7 +60,6 @@
         align-items: center;
     }
 
-    /* Иконка цветочка слева */
     .search-wrapper::after {
         content: "🌸";
         position: absolute;
@@ -71,7 +70,7 @@
 
     #searchInput { 
         width: 100% !important; 
-        padding: 18px 45px 18px 48px !important; /* Отступы: 48px слева под цветок, 45px справа под крестик */
+        padding: 18px 45px 18px 48px !important; 
         border-radius: 20px; 
         border: 2px solid var(--border-color); 
         font-size: 16px; 
@@ -88,7 +87,6 @@
         box-shadow: 0 8px 25px rgba(244,143,177,0.3);
     }
 
-    /* Крестик очистки (вернули домой) */
     #clearSearch { 
         position: absolute !important; 
         right: 12px !important; 
@@ -99,7 +97,7 @@
         background: var(--card-bg) !important; 
         border: 1px solid var(--border-color) !important; 
         border-radius: 50% !important; 
-        display: none; /* Показывается скриптом */
+        display: none; 
         align-items: center; 
         justify-content: center; 
         cursor: pointer; 
@@ -108,16 +106,19 @@
         font-weight: 900 !important;
         z-index: 5 !important;
     }
-table { 
+
+    /* ТАБЛИЦА И СТРУКТУРА */
+    table { 
         display: block !important; 
         width: 100% !important; 
         border-collapse: collapse;
-        table-layout: fixed; /* Жестко фиксируем ширину */
+        table-layout: fixed;
     }
 
     tbody { display: block !important; width: 100% !important; }
-    
-.story-row { 
+
+    /* ЗАГОЛОВКИ ИСТОРИЙ */
+    .story-row { 
         display: block !important; 
         width: 100% !important;
         padding: 40px 0 15px 0 !important;
@@ -126,144 +127,125 @@ table {
 
     .story-row td { 
         display: block !important; 
-        font-size: clamp(28px, 8vw, 38px) !important; /* На мобилках будет 28px, на ПК 38px */
+        font-size: clamp(28px, 8vw, 38px) !important; 
         font-weight: 1000 !important; 
         color: var(--copy-btn-bg) !important;
         text-transform: uppercase; 
         letter-spacing: 2px;
-        word-wrap: break-word; /* Чтобы длинные названия не ломали верстку */
+        word-wrap: break-word;
     }
-  /* КАРТОЧКИ ФАВОРИТОВ */
+
+    /* КАРТОЧКИ ФАВОРИТОВ */
     tr:not(.story-row) {
-        display: flex !important; flex-direction: column !important;
+        display: flex !important; 
+        flex-direction: column !important;
+        align-items: center !important;
         background: var(--card-bg) !important; 
         border-radius: 28px !important; 
-        padding: 25px !important; margin-bottom: 20px !important; 
+        padding: 25px !important; 
+        margin-bottom: 20px !important; 
         box-shadow: 0 10px 25px rgba(244,143,177,0.1);
         border: 1px solid var(--border-color);
         opacity: 0;
         transform: translateY(20px);
         transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        width: 100% !important;
     }
 
     tr.fade-in { opacity: 1 !important; transform: translateY(0) !important; }
 
-    /* ИМЯ ФАВОРИТА: Капс, больше размер и выделение цветом */
+    /* ИМЯ ФАВОРИТА */
     tr:not(.story-row) td:nth-child(1) { 
-        font-size: 26px !important; /* Увеличили размер */
+        display: block !important;
+        width: 100% !important;
+        font-size: clamp(22px, 6vw, 28px) !important; 
         font-weight: 900 !important; 
-        color: var(--accent-copy) !important; /* Выделили более ярким розовым */
+        color: var(--accent-copy) !important; 
         margin-bottom: 15px !important; 
-        text-transform: uppercase !important; /* Сделали КАПСОМ */
-        letter-spacing: 1px; /* Немного раздвинули буквы для эстетики */
-        text-align: center; /* Центрируем имя для симметрии с кодом */
+        text-transform: uppercase !important; 
+        letter-spacing: 1.5px; 
+        text-align: center !important;
     }
 
-    /* РАМОЧКА ДЛЯ КОДА: По центру */
+    /* РАМОЧКА ДЛЯ КОДА */
     .code-text { 
-        display: block; 
-        background: var(--code-bg); 
-        color: var(--text-dark); 
-        padding: 15px; 
-        border-radius: 18px; 
-        font-family: 'Courier New', monospace; 
-        font-size: 18px; /* Чуть крупнее сам код */
-        margin: 0 auto 15px auto; /* Центрируем саму рамочку */
-        text-align: center; /* Текст внутри рамочки по центру */
-        font-weight: 800;
-        border: 2px solid var(--border-color);
-        width: 100%; /* Рамка на всю ширину карточки */
-        max-width: 300px; /* Но не слишком широкая */
+        display: block !important; 
+        background: var(--code-bg) !important; 
+        color: var(--text-dark) !important; 
+        padding: 15px !important; 
+        border-radius: 18px !important; 
+        font-family: 'Courier New', monospace !important; 
+        font-size: clamp(16px, 5vw, 19px) !important; 
+        margin: 0 auto 15px auto !important; 
+        text-align: center !important; 
+        font-weight: 800 !important;
+        border: 2px solid var(--border-color) !important;
+        width: 100% !important; 
+        max-width: 320px !important; 
     }
 
-
-
+    /* КНОПКА КОПИРОВАТЬ */
     .copy-btn { 
-        width: 100%; background: var(--copy-btn-bg) !important; color: #fff !important; 
-        padding: 18px; border-radius: 18px; font-weight: 900; 
-        text-transform: uppercase; border: none; cursor: pointer;
+        width: 100%; 
+        background: var(--copy-btn-bg) !important; 
+        color: #fff !important; 
+        padding: 18px; 
+        border-radius: 18px; 
+        font-weight: 900; 
+        text-transform: uppercase; 
+        border: none; 
+        cursor: pointer;
         box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3);
+        transition: 0.3s;
     }
+    .copy-btn:active { transform: scale(0.96); }
 
     .info-txt { 
         display: block; margin-top: 15px; padding: 12px; font-size: 13px; 
         color: var(--text-muted); line-height: 1.5; background: rgba(255,255,255,0.7); 
         border: 1px solid var(--border-color); border-radius: 12px;
+        text-align: center;
     }
 
+    /* УВЕДОМЛЕНИЕ */
     #toast { 
         position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); 
         background: var(--text-dark); color: #fff; padding: 15px 30px; 
         border-radius: 50px; font-weight: 800; font-size: 13px; display: none; z-index: 9999; 
     }
-       
-    /* КНОПКИ УПРАВЛЕНИЯ (Верхняя часть) */
+
+    /* ВЕРХНИЕ КНОПКИ */
     .tg-btn { 
-        display: block; 
-        background: var(--copy-btn-bg); /* Насыщенный розовый */
-        color: #fff !important; 
-        text-decoration: none; 
-        padding: 18px; 
-        border-radius: 20px; 
-        text-align: center; 
-        font-weight: 900; 
-        text-transform: uppercase; 
-        margin-bottom: 12px; 
-        box-shadow: 0 6px 15px rgba(236, 64, 122, 0.3);
-        transition: 0.3s;
+        display: block; background: var(--copy-btn-bg); color: #fff !important; 
+        text-decoration: none; padding: 18px; border-radius: 20px; text-align: center; 
+        font-weight: 900; text-transform: uppercase; margin-bottom: 12px; 
+        box-shadow: 0 6px 15px rgba(236, 64, 122, 0.3); transition: 0.3s;
     }
-    .tg-btn:active { transform: scale(0.98); }
 
     .instr-btn {
-        display: block; 
-        background: #fff;
-        color: var(--accent-pink) !important; 
-        border: 2px solid var(--border-color);
-        padding: 16px; 
-        border-radius: 20px; 
-        text-align: center;
-        font-weight: 800; 
-        text-transform: uppercase; 
-        margin-bottom: 30px;
-        text-decoration: none;
-        transition: 0.3s;
+        display: block; background: #fff; color: var(--accent-pink) !important; 
+        border: 2px solid var(--border-color); padding: 16px; border-radius: 20px; 
+        text-align: center; font-weight: 800; text-transform: uppercase; 
+        margin-bottom: 30px; text-decoration: none; transition: 0.3s;
     }
-    .instr-btn:hover { background: var(--card-bg); }
 
-    /* ПЛАШКА "В РАЗРАБОТКЕ" (Если нет слотов) */
+    /* ПЛАШКА РАЗРАБОТКИ */
     .dev-status-plate {
-        display: flex; 
-        align-items: center; 
-        background: rgba(255, 255, 255, 0.8);
-        border: 2px dashed var(--border-color); 
-        border-radius: 25px; 
-        padding: 20px; 
-        margin-top: 40px;
-        backdrop-filter: blur(5px);
+        display: flex; align-items: center; background: rgba(255, 255, 255, 0.8);
+        border: 2px dashed var(--border-color); border-radius: 25px; 
+        padding: 20px; margin-top: 40px; backdrop-filter: blur(5px);
     }
 
-    /* Анимированный цветочек-спиннер */
     .spinner { 
-        width: 30px; 
-        height: 30px; 
-        margin-right: 15px;
-        font-size: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: 30px; height: 30px; margin-right: 15px; font-size: 24px;
+        display: flex; align-items: center; justify-content: center;
         animation: spin 3s linear infinite;
     }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    .dev-text { 
-        font-size: 14px; 
-        font-weight: 700; 
-        color: var(--text-dark); 
-        line-height: 1.4;
-    }
+    .dev-text { font-size: 14px; font-weight: 700; color: var(--text-dark); line-height: 1.4; }
 
-    /* КНОПКА ВОЗВРАТА НАВЕРХ (Лепесток) */
-/* КНОПКА ВВЕРХ (Фикс позиции) */
+    /* КНОПКА ВВЕРХ */
     #backToTop { 
         position: fixed !important; 
         bottom: 30px !important; 
@@ -273,13 +255,15 @@ table {
         background: var(--accent-pink); 
         color: #fff; 
         border-radius: 50% 0 50% 50%;
-        display: none; /* Управляется через JS */
+        display: none; 
         align-items: center; 
         justify-content: center; 
-        z-index: 10000 !important; /* Выше всех элементов */
+        z-index: 10000 !important; 
         border: none;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         cursor: pointer;
+        font-size: 20px;
+        transition: 0.3s;
     }
     #backToTop:active { transform: scale(0.9); }
 </style>
