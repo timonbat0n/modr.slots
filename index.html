@@ -30,6 +30,10 @@
         color: var(--text-dark);
         padding: 20px 15px 120px 15px;
         position: relative;
+        padding: 10px 10px 100px 10px; /* Уменьшил боковые отступы для мобилок */
+        width: 100%;
+        min-height: 100vh;
+    }
     }
 
     /* Анимированный дождь из цветов */
@@ -104,39 +108,45 @@
         font-weight: 900 !important;
         z-index: 5 !important;
     }
+table { 
+        display: block !important; 
+        width: 100% !important; 
+        border-collapse: collapse;
+        table-layout: fixed; /* Жестко фиксируем ширину */
+    }
 
+    tbody { display: block !important; width: 100% !important; }
+    
 .story-row { 
         display: block !important; 
         width: 100% !important;
-        padding: 40px 0 20px 0 !important; /* Больше пространства сверху и снизу */
+        padding: 40px 0 15px 0 !important;
+        text-align: center;
     }
 
     .story-row td { 
         display: block !important; 
-        font-size: 38px !important; /* ПРЯМ КРУПНО! */
-        font-weight: 1000 !important; /* Максимальная жирность */
-        color: var(--copy-btn-bg) !important; /* Сочный вишневый цвет */
+        font-size: clamp(28px, 8vw, 38px) !important; /* На мобилках будет 28px, на ПК 38px */
+        font-weight: 1000 !important; 
+        color: var(--copy-btn-bg) !important;
         text-transform: uppercase; 
-        letter-spacing: 2px; /* Раздвигаем буквы для пафоса */
-        text-shadow: 2px 2px 0px rgba(255, 255, 255, 1), 
-                     4px 4px 10px rgba(236, 64, 122, 0.2); /* Эффект объема */
-        border-bottom: 3px double var(--border-color); /* Двойная линия снизу */
-        margin: 0 auto;
-        display: inline-block !important; /* Чтобы линия была по ширине текста */
-        padding-bottom: 5px;
+        letter-spacing: 2px;
+        word-wrap: break-word; /* Чтобы длинные названия не ломали верстку */
     }
     /* КАРТОЧКИ ФАВОРИТОВ */
     tr:not(.story-row) {
-        display: flex !important; flex-direction: column !important;
+        display: flex !important; 
+        flex-direction: column !important;
+        width: 100% !important; /* Строго на всю ширину контейнера */
         background: var(--card-bg) !important; 
         border-radius: 28px !important; 
-        padding: 25px !important; margin-bottom: 20px !important; 
+        padding: 20px !important; 
+        margin-bottom: 20px !important; 
         box-shadow: 0 10px 25px rgba(244,143,177,0.1);
         border: 1px solid var(--border-color);
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        box-sizing: border-box !important;
     }
+
 
     tr.fade-in { opacity: 1 !important; transform: translateY(0) !important; }
 
@@ -148,7 +158,9 @@
         margin-bottom: 15px !important; 
         text-transform: uppercase !important; /* Сделали КАПСОМ */
         letter-spacing: 1px; /* Немного раздвинули буквы для эстетики */
-        text-align: center; /* Центрируем имя для симметрии с кодом */
+        width: 100% !important;
+    }
+
     }
 
     /* РАМОЧКА ДЛЯ КОДА: По центру */
@@ -256,24 +268,23 @@
     }
 
     /* КНОПКА ВОЗВРАТА НАВЕРХ (Лепесток) */
+/* КНОПКА ВВЕРХ (Фикс позиции) */
     #backToTop { 
-        position: fixed; 
-        bottom: 25px; 
-        right: 20px; 
-        width: 54px; 
-        height: 54px; 
+        position: fixed !important; 
+        bottom: 30px !important; 
+        right: 20px !important; 
+        width: 50px; 
+        height: 50px; 
         background: var(--accent-pink); 
         color: #fff; 
-        border-radius: 50% 0 50% 50%; /* Форма лепестка */
-        display: none; /* Появляется при скролле через JS */
+        border-radius: 50% 0 50% 50%;
+        display: none; /* Управляется через JS */
         align-items: center; 
         justify-content: center; 
-        cursor: pointer; 
-        z-index: 998; 
+        z-index: 10000 !important; /* Выше всех элементов */
         border: none;
-        box-shadow: 0 8px 20px rgba(244, 143, 177, 0.4);
-        font-size: 24px;
-        transition: 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        cursor: pointer;
     }
     #backToTop:active { transform: scale(0.9); }
 </style>
@@ -759,12 +770,22 @@
         });
     }
 
-    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    fconst backBtn = document.getElementById('backToTop');
 
     window.onscroll = function() {
-        const btn = document.getElementById('backToTop');
-        if (btn) btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+        if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+            backBtn.style.display = "flex";
+        } else {
+            backBtn.style.display = "none";
+        }
     };
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
 
     function createStars() {
         const container = document.getElementById('star-container');
