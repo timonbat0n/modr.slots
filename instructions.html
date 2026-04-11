@@ -1,209 +1,229 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Инструкция | modr.</title>
- <style>
-    :root {
-        /* Палитра "Клубничное суфле" (максимальная нежность) */
-        --bg-color: #fff9fa;         /* Молочно-розовый (фон) */
-        --card-bg: #fff0f3;          /* Цвет лепестков сакуры (карточка) */
-        --accent-pink: #f48fb1;      /* Мягкий пудровый для заголовков */
-        --accent-blue: #5fb8e4;      /* Оставляем голубой для ссылок для контраста */
-        --text-dark: #4a2c34;        /* Темно-шоколадный с розовым подтоном */
-        --text-muted: #9e847c;       /* Текст описания и футера */
-        --border-color: #ffc1e3;     /* Нежно-розовые границы */
-        --accent-copy: #ec407a;      /* Вишневый акцент (как кнопка копирования) */
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Менеджер слотов | modr.</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
+    <style>
+        :root {
+            --background: #fff9fa;
+            --background-alt: #fff0f3;
+            --text-main: #4a2c34;
+            --links: #5fb8e4;
+            --border: #ffc1e3;
+            --accent-pink: #f48fb1;
+            --accent-copy: #ec407a;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-image: linear-gradient(180deg, #fff9fa 0%, #ffebee 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
 
-    body {
-        font-family: -apple-system, system-ui, sans-serif;
-        background-color: var(--bg-color);
-        background-image: linear-gradient(180deg, #fff9fa 0%, #ffebee 100%);
-        background-attachment: fixed;
-        color: var(--text-dark);
-        padding: 20px 15px 50px 15px;
-        line-height: 1.6;
-        overflow-x: hidden;
-        width: 100%;
-        position: relative;
-    }
+        .spa-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
 
-    /* === АНИМИРОВАННЫЙ ДОЖДЬ ИЗ ЦВЕТОВ (Как на главной) === */
-    body::before {
-        content: "";
-        position: fixed;
-        top: -150%;
-        left: 0;
-        width: 100%;
-        height: 300%;
-        z-index: 0;
-        pointer-events: none;
-        opacity: 0.18; /* Чуть приглушеннее, чтобы не мешать читать */
-        
-        background-image: 
-            radial-gradient(circle at 10% 10%, rgba(255,255,255,0) 0, rgba(255,255,255,0) 10px, rgba(255,255,255,0.01) 11px),
-            url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><text x="10%" y="10%" font-size="25">🌸</text><text x="40%" y="15%" font-size="20">💮</text><text x="70%" y="12%" font-size="30">🏵️</text><text x="25%" y="30%" font-size="22">🌸</text><text x="55%" y="35%" font-size="28">🍃</text><text x="85%" y="32%" font-size="20">🌸</text><text x="15%" y="55%" font-size="25">💮</text><text x="45%" y="60%" font-size="30">🏵️</text><text x="75%" y="58%" font-size="22">🍃</text></svg>');
-        background-size: 300px 600px;
-        animation: flowerRain 25s linear infinite; /* Чуть медленнее для спокойствия */
-    }
+        .spa-nav button {
+            background: var(--background-alt);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: 0.3s;
+            border-radius: 12px;
+            font-size: 13px;
+        }
 
-    @keyframes flowerRain {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(50%); }
-    }
+        .spa-nav button.active {
+            background: var(--accent-pink);
+            color: white;
+            box-shadow: 0 4px 12px rgba(244, 143, 177, 0.3);
+        }
 
-    .container { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+        .page-section { display: none; animation: fadeIn 0.4s ease; }
+        .page-section.active { display: block; }
 
-    nav { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-    nav a { 
-        color: var(--accent-copy); /* Яркий акцент для навигации */
-        text-decoration: none; 
-        font-size: 14px; 
-        font-weight: 800; 
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    header { text-align: center; margin-bottom: 30px; }
-    .logo { 
-        font-size: 28px; 
-        font-weight: 900; 
-        color: var(--accent-pink); 
-        text-decoration: none; 
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
+        .card {
+            background: var(--background-alt);
+            padding: 25px;
+            border-radius: 28px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(244,143,177,0.1);
+            margin-bottom: 20px;
+        }
 
-    h1 { 
-        font-size: 24px; 
-        color: var(--text-dark); 
-        margin-bottom: 25px; 
-        text-align: center; 
-        text-transform: uppercase; 
-        letter-spacing: 1px;
-        font-weight: 900;
-    }
+        .custom-list { list-style: none; counter-reset: item; padding: 0; }
+        .custom-list li { 
+            position: relative; margin-bottom: 18px; padding-left: 50px; font-weight: 600;
+        }
+        .custom-list li::before {
+            content: counter(item); counter-increment: item;
+            position: absolute; left: 0; top: -2px;
+            width: 36px; height: 36px; background: var(--accent-pink);
+            color: #fff; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-weight: 900;
+        }
 
-    /* === КАРТОЧКА ИНСТРУКЦИИ (Розовое облако) === */
-    .instruction-card {
-        background: var(--card-bg);
-        border-radius: 28px;
-        padding: 25px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 10px 30px rgba(244,143,177,0.1);
-        backdrop-filter: blur(5px); /* Легкий эффект стекла поверх цветов */
-    }
+        .story-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+        }
+        .story-table { width: 100%; border-collapse: collapse; }
+        .story-table td { 
+            padding: 12px; 
+            border-bottom: 1px solid #fff0f3; 
+            font-size: 15px; 
+            font-weight: 600;
+            color: var(--text-main);
+        }
 
-    ol { list-style: none; counter-reset: item; }
-    
-    li { 
-        position: relative; 
-        margin-bottom: 20px; 
-        padding-left: 50px; 
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--text-dark);
-    }
-    
-    /* Цифры в пудровых кружочках */
-    li::before {
-        content: counter(item);
-        counter-increment: item;
-        position: absolute;
-        left: 0;
-        top: -2px;
-        width: 36px;
-        height: 36px;
-        background: var(--accent-pink);
-        color: #fff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 900;
-        font-size: 14px;
-        box-shadow: 0 4px 10px rgba(244, 143, 177, 0.2);
-    }
-
-    /* ВАЖНЫЙ БЛОК (как описание персонажа) */
-    .important-box {
-        margin-top: 25px;
-        padding: 18px;
-        background: rgba(255, 255, 255, 0.7); /* Белое стекло */
-        border: 1px solid var(--border-color);
-        border-left: 5px solid var(--accent-pink); /* Акцент слева */
-        border-radius: 16px;
-        font-size: 14px;
-        color: var(--text-dark);
-        font-weight: 600;
-    }
-
-    .btn-link {
-        color: var(--accent-blue);
-        text-decoration: none;
-        font-weight: 800;
-        border-bottom: 2px solid rgba(95, 184, 228, 0.2);
-    }
-
-    footer { 
-        margin-top: 50px; 
-        text-align: center; 
-        font-size: 12px; 
-        color: var(--text-muted); 
-        font-weight: 600;
-    }
-</style>
+        #loader {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); z-index: 1000;
+            background: white; padding: 40px; border-radius: 30px;
+            border: 1px solid var(--border); text-align: center;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid var(--accent-pink);
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; margin: 0 auto 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-    <div id="star-container"></div>
-    
-    <div class="container">
-        <nav><a href="index.html">← К слотам</a></nav>
-        
-        <header><div class="logo">modr.</div></header>
 
-        <h1>Менеджер слотов</h1>
+    <header style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 26px; font-weight: 900; color: var(--accent-pink); letter-spacing: 2px;">MODR. MANAGER</div>
+    </header>
 
-        <div class="instruction-card">
-            <ol>
-                <li>Закройте игру полностью, нажав на <strong>«Выход»</strong> в левом нижнем углу.</li>
-                <li>Перейдите в свой <a href="index.html" class="btn-link">личный кабинет</a>.</li>
-                <li>Прокрутите в самый низ страницы, нажмите на строку <strong>«Менеджер слотов»</strong> и выберите нужную историю.</li>
+    <div class="spa-nav">
+        <button onclick="showPage('slots')" id="btn-slots" class="active">ИНСТРУКЦИЯ</button>
+        <button onclick="showPage('stories')" id="btn-stories">ИСТОРИИ</button>
+        <button onclick="showPage('methods')" id="btn-methods">СПОСОБЫ ЗАГРУЗКИ</button>
+    </div>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <p style="font-weight: 800;">Обработка...</p>
+    </div>
+
+    <section id="slots" class="page-section active">
+        <div class="card">
+            <h2 style="text-align: center; margin-bottom: 25px; font-weight: 900;">МЕНЕДЖЕР СЛОТОВ</h2>
+            <ol class="custom-list">
+                <li>Закройте игру полностью, нажав на <strong>«Выход»</strong>.</li>
+                <li>Перейдите в свой <strong>личный кабинет</strong>.</li>
+                <li>Нажмите на <strong>«Менеджер слотов»</strong> и выберите историю.</li>
                 <li>Создайте слот и дайте ему любое название.</li>
-                <li>Нажмите <strong>«Скопировать в слот»</strong>. Так вы сохраните ваш нынешний прогресс.</li>
+                <li>Нажмите <strong>«Скопировать в слот»</strong>.</li>
                 <li>Создайте второй слот и проделайте те же действия.</li>
                 <li>Зайдите в игру и отредактируйте прохождение так, как вам нужно.</li>
                 <li>После окончания снова зайдите во второй слот и нажмите <strong>«Скопировать в слот»</strong>, чтобы обновить его.</li>
                 <li>Для переключения выберите нужный слот и нажмите кнопку <strong>«Вставить из слота»</strong>.</li>
                 <li>Подождите <strong>10-15 минут</strong> и заходите в игру.</li>
             </ol>
-
-            <div class="important-box">
+            <div style="margin-top:20px; padding:15px; background:rgba(255,255,255,0.6); border-left:4px solid var(--accent-pink); border-radius:10px; font-size:14px;">
                 <strong>Важно:</strong> При переключении должен совпадать сезон. Если в одном слоте прогресс намного больше, он может "перетянуть" данные на другой слот при частом переключении.
             </div>
         </div>
+    </section>
 
-    </div>
+    <section id="stories" class="page-section">
+        <h2 style="text-align: center; color: var(--accent-copy);">СПИСОК ИСТОРИЙ</h2>
+        <div class="story-container">
+            <h3 style="color: var(--accent-pink);">✅ Завершенные</h3>
+            <table class="story-table" id="finishedTable"></table>
+        </div>
+        <div class="story-container">
+            <h3 style="color: #5fb8e4;">⏳ Незавершенные</h3>
+            <table class="story-table" id="unfinishedTable"></table>
+        </div>
+    </section>
+
+    <section id="methods" class="page-section">
+        <div class="card">
+            <h2 style="text-align: center; margin-bottom: 25px; font-weight: 900; color: var(--accent-copy);">ПРОБЛЕМЫ С ЗАГРУЗКОЙ?</h2>
+            <ol class="custom-list">
+                <li>Подождать довольно долго;</li>
+                <li>Очистить кэш (в настройках игры);</li>
+                <li>Свернуть приложение на пару минут, затем снова развернуть;</li>
+                <li>Поменять сеть с мобильной на Wi-Fi (или попробовать через VPN);</li>
+                <li>Отключить "Полный режим" в настройках игры — наверняка поможет, но функциональность историй сократится;</li>
+                <li>Заново заходить в игру, если начинается долгая загрузка.</li>
+            </ol>
+        </div>
+    </section>
 
     <script>
-        function createStars() {
-            const container = document.getElementById('star-container');
-            for (let i = 0; i < 40; i++) {
-                const s = document.createElement('div');
-                s.className = 'star';
-                const size = Math.random() * 2 + 'px';
-                s.style.cssText = `
-                    width: ${size}; height: ${size}; 
-                    left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; 
-                    --duration: ${Math.random() * 3 + 2}s; 
-                    --max-opacity: ${Math.random() * 0.7 + 0.3};
-                `;
-                container.appendChild(s);
-            }
+        // Данные без смайликов
+        const finishedStories = [
+            "1. Паруса в тумане", "2. Рожденная луной", "3. Моя Голливудская история", "4. Королева за 30 дней", 
+            "5. Тени Сентфора", "6. Высокий прибой", "7. В ритме страсти", "8. Я охочусь на тебя", 
+            "9. Секрет небес", "10. Легенда Ивы", "11. Дракула: История любви", "13. Путь Валькирии", 
+            "14. Ярость Титанов", "15. Десять желаний Софи", "16. Грешный Лондон", "17. По тонкому льду", 
+            "18. Арканум", "19. Хроники Гладиаторов", "20. Сердце Треспии", "21. Кали зов тьмы", 
+            "22. Цветок из огня Тиамат", "23. Теодора", "24. Сквозь бурю и пламя", "25. Идеал Том 1", 
+            "26. ПСИ", "27. Покоряя Версаль", "28. Роза Пустыни", "29. Секрет небес 2", 
+            "30. Игра в ТЭГ", "32. Я охочусь на тебя 2", "34. Ловчая времени", "35. Эдемов Сад", 
+            "38. Идеал Том 2", "39. Разбитое сердце Астреи", "40. Секрет небес Реквием", 
+            "41. 7 братьев", "42. И поглотит нас Морок", "45. Бюро параллельных миров Том 1"
+        ];
+
+        const unfinishedStories = [
+            "12. Любовь со звезд", "33. Любовь Грех и Зло Том 1", "31. Песнь о красном Ниле", 
+            "34. Кали Пламя Сансары", "37. Бездушная", "43. Сага о грозах", "44. Шифр Шекспира", 
+            "46. Пропавшие", "47. Пришествие номер 3", "48. Те Amo: Том 1 Залив Надежды", 
+            "49. Код синий", "50. Там где любовь горит вечно", "51. Секрет небес 3: Конец Вечности", 
+            "52. Бюро параллельных миров Том 2", "53. Те amo: Том 2 Хрустальная мечта", 
+            "54. Аверрис: Дитя разлома", "55. Грехи просящие возмездия", "56. Тени Сентфора 2", 
+            "57. Водяная Лилия"
+        ];
+
+        function populateTables() {
+            const finishedBody = document.getElementById('finishedTable');
+            const unfinishedBody = document.getElementById('unfinishedTable');
+            
+            finishedBody.innerHTML = finishedStories.map(story => 
+                `<tr><td>${story}</td></tr>`
+            ).join('');
+
+            unfinishedBody.innerHTML = unfinishedStories.map(story => 
+                `<tr><td>${story}</td></tr>`
+            ).join('');
         }
-        createStars();
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.spa-nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.getElementById('btn-' + pageId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        populateTables();
     </script>
+</body>
+</html>
