@@ -25,6 +25,32 @@
             min-height: 100vh;
         }
 
+        /* Кнопка "Назад к слотам" */
+        .back-nav {
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--accent-copy);
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            transition: 0.3s;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
+            transform: translateX(-5px);
+        }
+
         .spa-nav {
             display: flex;
             justify-content: center;
@@ -96,39 +122,24 @@
             border-bottom: 1px solid #fff0f3; 
             font-size: 15px; 
             font-weight: 600;
-            color: var(--text-main);
         }
 
-        #loader {
-            display: none; position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); z-index: 1000;
-            background: white; padding: 40px; border-radius: 30px;
-            border: 1px solid var(--border); text-align: center;
-        }
-        .spinner {
-            border: 4px solid #f3f3f3; border-top: 4px solid var(--accent-pink);
-            border-radius: 50%; width: 40px; height: 40px;
-            animation: spin 1s linear infinite; margin: 0 auto 15px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+
+    <nav class="back-nav">
+        <button class="back-link" onclick="showPage('slots')">← К слотам</button>
+    </nav>
 
     <header style="text-align: center; margin-bottom: 20px;">
         <div style="font-size: 26px; font-weight: 900; color: var(--accent-pink); letter-spacing: 2px;">MODR. MANAGER</div>
     </header>
 
     <div class="spa-nav">
-        <button href = "index.html" id="btn-methods">К СЛОТАМ</button>
         <button onclick="showPage('slots')" id="btn-slots" class="active">ИНСТРУКЦИЯ</button>
         <button onclick="showPage('stories')" id="btn-stories">ИСТОРИИ</button>
         <button onclick="showPage('methods')" id="btn-methods">СПОСОБЫ ЗАГРУЗКИ</button>
-    </div>
-
-    <div id="loader">
-        <div class="spinner"></div>
-        <p style="font-weight: 800;">Обработка...</p>
     </div>
 
     <section id="slots" class="page-section active">
@@ -179,7 +190,6 @@
     </section>
 
     <script>
-        // Данные без смайликов
         const finishedStories = [
             "1. Паруса в тумане", "2. Рожденная луной", "3. Моя Голливудская история", "4. Королева за 30 дней", 
             "5. Тени Сентфора", "6. Высокий прибой", "7. В ритме страсти", "8. Я охочусь на тебя", 
@@ -204,16 +214,8 @@
         ];
 
         function populateTables() {
-            const finishedBody = document.getElementById('finishedTable');
-            const unfinishedBody = document.getElementById('unfinishedTable');
-            
-            finishedBody.innerHTML = finishedStories.map(story => 
-                `<tr><td>${story}</td></tr>`
-            ).join('');
-
-            unfinishedBody.innerHTML = unfinishedStories.map(story => 
-                `<tr><td>${story}</td></tr>`
-            ).join('');
+            document.getElementById('finishedTable').innerHTML = finishedStories.map(s => `<tr><td>${s}</td></tr>`).join('');
+            document.getElementById('unfinishedTable').innerHTML = unfinishedStories.map(s => `<tr><td>${s}</td></tr>`).join('');
         }
 
         function showPage(pageId) {
