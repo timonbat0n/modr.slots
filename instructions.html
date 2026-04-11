@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Менеджер слотов | modr.</title>
+    <title>Инструкция | modr.</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
     <style>
         :root {
             --background: #fff9fa;
             --background-alt: #fff0f3;
             --text-main: #4a2c34;
-            --links: #5fb8e4;
             --border: #ffc1e3;
             --accent-pink: #f48fb1;
             --accent-copy: #ec407a;
@@ -25,9 +24,9 @@
             min-height: 100vh;
         }
 
-        /* Кнопка "Назад к слотам" */
+        /* Кнопка-ссылка на главную */
         .back-nav {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .back-link {
@@ -39,18 +38,15 @@
             letter-spacing: 1px;
             display: inline-flex;
             align-items: center;
-            transition: 0.3s;
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
+            transition: 0.3s ease;
         }
 
         .back-link:hover {
-            opacity: 0.7;
-            transform: translateX(-5px);
+            opacity: 0.6;
+            transform: translateX(-4px);
         }
 
+        /* SPA Навигация */
         .spa-nav {
             display: flex;
             justify-content: center;
@@ -117,23 +113,18 @@
             margin-bottom: 25px;
         }
         .story-table { width: 100%; border-collapse: collapse; }
-        .story-table td { 
-            padding: 12px; 
-            border-bottom: 1px solid #fff0f3; 
-            font-size: 15px; 
-            font-weight: 600;
-        }
+        .story-table td { padding: 12px; border-bottom: 1px solid #fff0f3; font-size: 15px; font-weight: 600; }
 
     </style>
 </head>
 <body>
 
     <nav class="back-nav">
-        <button class="back-link" onclick="showPage('slots')">← К слотам</button>
+        <a href="index.html" class="back-link">← К слотам</a>
     </nav>
 
     <header style="text-align: center; margin-bottom: 20px;">
-        <div style="font-size: 26px; font-weight: 900; color: var(--accent-pink); letter-spacing: 2px;">MODR. MANAGER</div>
+        <div style="font-size: 26px; font-weight: 900; color: var(--accent-pink); letter-spacing: 2px;">modr. | instructions </div>
     </header>
 
     <div class="spa-nav">
