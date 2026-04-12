@@ -49,6 +49,58 @@ tr:not(.story-row) {
     border: 1px solid var(--border-soft) !important;
     box-shadow: 0 8px 20px rgba(0, 149, 255, 0.05);
 }
+/* ПЛАШКА РАЗРАБОТКИ — теперь как info-txt */
+.dev-status-plate {
+    display: flex !important;
+    align-items: center !important;
+    background: rgba(0, 149, 255, 0.08) !important;
+    border-radius: 20px !important;
+    border: none !important;
+    border-left: 5px solid var(--accent-blue) !important;
+    padding: 15px 20px !important;
+    margin: 20px 0 !important;
+    box-shadow: var(--shadow);
+}
+
+.dev-text {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: var(--text-dark) !important;
+    line-height: 1.4 !important;
+}
+
+.spinner {
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+/* КНОПКА ИНСТРУКЦИИ — делаем её "стеклянной" и аккуратной */
+.instr-btn {
+    display: block !important;
+    width: 100% !important;
+    background: #fff !important;
+    color: var(--accent-blue) !important;
+    border: 2px solid var(--border-soft) !important;
+    border-left: 5px solid var(--accent-blue) !important; /* Та же линия для стиля */
+    padding: 16px !important;
+    border-radius: 20px !important;
+    text-align: center !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    margin-bottom: 30px !important;
+    transition: 0.3s;
+}
+
+.instr-btn:hover {
+    background: var(--bg-color) !important;
+    transform: translateY(-2px);
+}
+
+/* Эмодзи для инструкции (через псевдоэлемент, чтобы не лезть в HTML) */
+.instr-btn::before {
+    content: "📖 ";
+}
 
 /* 4. ПЛАШКИ (Имя, Код, Инфо) */
 tr:not(.story-row) td:first-child, .code-text, .info-txt {
