@@ -73,6 +73,15 @@ tr:not(.story-row) {
     margin-right: 12px;
     font-size: 20px;
 }
+.story-row td { 
+    display: block !important; 
+    font-size: 1.6rem !important; 
+    font-weight: 900 !important; 
+    color: var(--accent-blue) !important;
+    text-transform: none !important; /* УБИРАЕМ КАПС */
+    letter-spacing: 0.5px;
+    padding: 10px 0 !important;
+}
 
 /* КНОПКА ИНСТРУКЦИИ — делаем её "стеклянной" и аккуратной */
 .instr-btn {
@@ -124,7 +133,21 @@ tr:not(.story-row) td:first-child::before { content: "👤 "; }
 .code-text { font-family: monospace; color: var(--text-dark); border-left-color: #5fb8e4 !important; }
 .code-text::before { content: "🔑 "; font-family: sans-serif; }
 
-.info-txt { font-size: 13px; color: var(--text-muted); font-style: italic; border-left-color: #bcdfff !important; }
+.info-txt {
+    display: block !important;
+    margin-top: 20px !important; /* УВЕЛИЧИЛИ ОТСТУП, чтобы не липло к кнопке */
+    padding: 12px 15px !important;
+    background: rgba(0, 149, 255, 0.05) !important;
+    border-radius: 12px !important;
+    border-left: 4px solid #bcdfff !important; 
+    
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    font-style: italic;
+    line-height: 1.4 !important;
+}
+
 .info-txt::before { content: "✨ "; }
 
 /* 5. КНОПКИ */
