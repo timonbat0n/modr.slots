@@ -5,158 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MODR SLOTS </title>
 <style>
- :root {
+:root {
     --bg-color: #f4f9ff;
     --card-bg: #ffffff;
     --accent-blue: #0095ff;
     --text-dark: #1a2b3c;
     --text-muted: #64748b;
     --border-soft: #e1f0ff;
-    --shadow: 0 8px 20px rgba(0, 149, 255, 0.05);
 }
 
-/* ОБЩИЙ СТИЛЬ ПЛАШЕК (Единый стандарт) */
-.info-txt, tr:not(.story-row) td:first-child, .code-text {
-    display: block !important;
-    background: rgba(0, 149, 255, 0.04) !important;
-    border-radius: 16px !important;
-    border-left: 5px solid var(--accent-blue) !important;
-    padding: 12px 18px !important;
-    margin-bottom: 12px !important;
-    font-weight: 600;
-    line-height: 1.4;
-    text-align: left !important;
+/* 1. БАЗОВЫЙ СБРОС (Чтобы ничего не слетало) */
+* { 
+    box-sizing: border-box !important; 
+    margin: 0; padding: 0; 
 }
 
-/* ИМЯ ПЕРСОНАЖА */
-tr:not(.story-row) td:first-child {
-    font-size: 1.2rem !important;
-    font-weight: 800 !important;
-    color: var(--accent-blue) !important;
-    background: rgba(0, 149, 255, 0.08) !important;
-}
-tr:not(.story-row) td:first-child::before { content: "👤 "; }
-
-/* КОД СЛОТА */
-.code-text {
-    font-family: monospace !important;
-    color: var(--text-dark) !important;
-    border-left-color: #5fb8e4 !important; /* Чуть другой оттенок для разнообразия */
-}
-.code-text::before { content: "🔑 "; font-family: sans-serif; }
-
-/* ИНФО-ТЕКСТ (Статы) */
-.info-txt {
-    color: var(--text-muted) !important;
-    font-size: 13px !important;
-    font-style: italic;
-    border-left-color: #bcdfff !important;
-}
-.info-txt::before { content: "✨ "; }
-
-/* ФИКС ПОИСКА И КРЕСТИКА */
-.search-wrapper {
-    position: relative !important;
-    width: 100%;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
+body {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    padding: 20px 15px 100px;
+    line-height: 1.5;
 }
 
-#searchInput {
-    width: 100% !important;
-    padding: 16px 45px 16px 20px !important; /* Запас справа под крестик */
-    border-radius: 18px !important;
-    border: 2px solid var(--border-soft) !important;
-    background: white !important;
-    outline: none;
-    font-size: 16px;
-    font-weight: 600;
-    transition: 0.3s;
+.container { max-width: 500px; margin: 0 auto; }
+
+/* 2. ТЕКСТ И ЗАГОЛОВКИ */
+.hero-title {
+    font-size: 28px; font-weight: 900; text-align: center;
+    text-transform: uppercase; margin: 20px 0; color: var(--text-dark);
 }
 
-#searchInput:focus { border-color: var(--accent-blue); }
+/* 3. КАРТОЧКИ (СТОЛБИКИ) — ТЕПЕРЬ НЕ СЛЕТЯТ */
+table, tbody { display: block; width: 100%; }
 
-#clearSearch {
-    position: absolute !important;
-    right: 15px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    background: none !important;
-    border: none !important;
-    color: var(--accent-blue) !important;
-    font-size: 20px !important;
-    font-weight: 900 !important;
-    cursor: pointer !important;
-    z-index: 5 !important;
-    padding: 5px !important;
-    line-height: 1 !important;
-}
-
-/* КАРТОЧКА И КНОПКИ */
 tr:not(.story-row) {
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: column !important; /* Строго в столбик */
     background: var(--card-bg) !important;
     border-radius: 24px !important;
     padding: 20px !important;
-    margin-bottom: 25px !important;
-    box-shadow: var(--shadow);
-}
-/* ПЛАШКА "СКОПИРОВАНО" */
-#toast { 
-    position: fixed; 
-    bottom: 40px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    background: var(--text-dark); /* Темная, чтобы выделялась на голубом */
-    color: #fff; 
-    padding: 12px 30px; 
-    border-radius: 50px; 
-    font-weight: 700; 
-    font-size: 14px; 
-    display: none; /* Скрыта по умолчанию */
-    z-index: 10000; 
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    animation: slideUp 0.3s ease;
+    margin-bottom: 20px !important;
+    border: 1px solid var(--border-soft) !important;
+    box-shadow: 0 8px 20px rgba(0, 149, 255, 0.05);
 }
 
-@keyframes slideUp {
-    from { bottom: 0; opacity: 0; }
-    to { bottom: 40px; opacity: 1; }
+/* 4. ПЛАШКИ (Имя, Код, Инфо) */
+tr:not(.story-row) td:first-child, .code-text, .info-txt {
+    display: block !important;
+    width: 100% !important;
+    background: rgba(0, 149, 255, 0.04) !important;
+    border-radius: 16px !important;
+    border: none !important;
+    border-left: 5px solid var(--accent-blue) !important;
+    padding: 12px 15px !important;
+    margin-bottom: 10px !important;
+    font-weight: 600;
 }
 
-.copy-btn {
-    width: 100%;
-    background: var(--accent-blue) !important;
-    color: white !important;
-    padding: 15px;
-    border-radius: 16px;
-    font-weight: 800;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    margin-top: 5px;
+/* Индивидуальные настройки для каждой плашки */
+tr:not(.story-row) td:first-child { 
+    font-size: 1.2rem; color: var(--accent-blue); background: rgba(0, 149, 255, 0.08) !important;
+}
+tr:not(.story-row) td:first-child::before { content: "👤 "; }
+
+.code-text { font-family: monospace; color: var(--text-dark); border-left-color: #5fb8e4 !important; }
+.code-text::before { content: "🔑 "; font-family: sans-serif; }
+
+.info-txt { font-size: 13px; color: var(--text-muted); font-style: italic; border-left-color: #bcdfff !important; }
+.info-txt::before { content: "✨ "; }
+
+/* 5. КНОПКИ */
+.copy-btn, .tg-btn {
+    width: 100%; padding: 16px; border-radius: 16px;
+    border: none; font-weight: 800; text-transform: uppercase;
+    cursor: pointer; transition: 0.2s;
+}
+.copy-btn { background: var(--accent-blue); color: white; margin-top: 5px; }
+.tg-btn { background: var(--accent-blue); color: white !important; text-decoration: none; display: block; margin-bottom: 10px; text-align: center; }
+
+/* 6. ПОИСК И КРЕСТИК */
+.search-wrapper { position: relative; margin: 20px 0; display: flex; align-items: center; }
+#searchInput {
+    width: 100% !important; padding: 16px 45px 16px 20px !important;
+    border-radius: 18px; border: 2px solid var(--border-soft);
+    background: white; outline: none; font-size: 16px;
+}
+#clearSearch {
+    position: absolute !important; right: 15px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--accent-blue);
+    font-size: 20px; font-weight: 900; cursor: pointer; display: none;
 }
 
-/* КНОПКА НАВЕРХ (КРУГЛАЯ) */
+/* 7. ТОСТ И КНОПКА ВВЕРХ */
+#toast {
+    position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+    background: var(--text-dark); color: white; padding: 12px 25px;
+    border-radius: 50px; z-index: 10000; display: none;
+}
 #backToTop {
-    position: fixed !important;
-    bottom: 30px;
-    right: 20px;
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 50% !important;
-    background: var(--accent-blue);
-    color: white;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    border: none;
-    box-shadow: 0 5px 15px rgba(0,149,255,0.3);
-    z-index: 1000;
+    position: fixed; bottom: 30px; right: 20px; width: 60px; height: 60px;
+    border-radius: 50%; background: var(--accent-blue); color: white;
+    border: none; display: none; align-items: center; justify-content: center;
+    font-size: 24px; z-index: 999; box-shadow: 0 5px 15px rgba(0,149,255,0.3);
 }
+
 
 </style>
 </head>
