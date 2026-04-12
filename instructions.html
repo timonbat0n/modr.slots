@@ -68,22 +68,74 @@ body {
 }
 
 /* Карточки и списки */
+/* КАРТОЧКА (уменьшаем паддинги для мобил) */
 .card {
     background: var(--card-bg);
-    padding: 25px;
-    border-radius: 24px;
+    padding: 15px; /* Было 25 */
+    border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 149, 255, 0.05);
     border: 1px solid var(--border-soft);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
-h2 {
-    font-weight: 900;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 20px;
+/* СПИСКИ (фиксим цифры и отступы) */
+.custom-list { 
+    list-style: none; 
+    counter-reset: my-counter; /* Создаем свой счетчик */
 }
+
+.custom-list li { 
+    position: relative; 
+    margin-bottom: 10px; 
+    padding: 10px 12px 10px 45px; /* Уменьшили отступы */
+    background: rgba(0, 149, 255, 0.04);
+    border-radius: 12px;
+    border-left: 4px solid var(--accent-blue);
+    font-weight: 600;
+    font-size: 13px; /* Чуть меньше шрифт */
+    line-height: 1.3;
+}
+
+/* ЦИФРЫ (теперь идут по порядку) */
+.custom-list li::before {
+    counter-increment: my-counter; /* Увеличиваем счетчик для каждого li */
+    content: counter(my-counter); /* Выводим число */
+    position: absolute; 
+    left: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px; /* Уменьшили кружок */
+    height: 26px; 
+    background: var(--accent-blue);
+    color: #fff; 
+    border-radius: 50%; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    font-weight: 900;
+    font-size: 11px;
+}
+
+/* ТАБЛИЦЫ ИСТОРИЙ (компактнее) */
+.story-table tr td {
+    display: block;
+    background: #fff;
+    margin-bottom: 6px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    border: 1px solid var(--border-soft);
+}
+
+/* ЗАГОЛОВОК (уменьшаем) */
+h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+
+
 
 /* Списки в стиле info-txt */
 .custom-list { list-style: none; }
