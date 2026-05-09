@@ -11,92 +11,167 @@
     --card-bg: #151921;
     --accent-blue: #7c5cfc;
     --rose: #e879a0;
-    --text-main: #ffffff;       /* Основной текст — белый */
-    --text-muted: #94a3b8;      /* Вспомогательный текст */
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
     --border-soft: rgba(124, 92, 252, 0.15);
     --grad: linear-gradient(115deg, #a78bfa 20%, #e879a0 80%);
 }
 
-/* 1. ОБЩИЕ ПРАВИЛА */
+* { 
+    box-sizing: border-box !important; 
+    margin: 0; padding: 0; 
+}
+
 body {
+    font-family: -apple-system, system-ui, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
-    font-family: -apple-system, system-ui, sans-serif;
+    padding: 20px 15px 50px;
+    line-height: 1.5;
 }
 
-/* 2. КАРТОЧКИ (Убираем лишние градиенты и неоднородность) */
-.card {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+/* --- ЛОГИКА SPA (НЕ ТРОГАТЬ) --- */
+.page-section { 
+    display: none !important; 
 }
 
-/* 3. СПИСКИ (Единый фон без чередования) */
-.custom-list li { 
-    background: rgba(255, 255, 255, 0.03) !important; /* Фиксированный тон */
-    color: var(--text-muted) !important;
-    border-left: 4px solid var(--accent-blue) !important;
-    margin-bottom: 10px;
-    padding: 12px 15px 12px 50px;
-    border-radius: 12px;
-    font-size: 14px;
+.page-section.active { 
+    display: block !important; 
+    animation: fadeIn 0.4s ease forwards;
 }
 
-/* Цифры в списках */
-.custom-list li::before {
-    background: var(--accent-blue) !important;
-    color: #fff !important;
-    box-shadow: none !important;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* 4. ТАБЛИЦЫ ИСТОРИЙ (Убираем шахматку/разнобой) */
-.story-table tr td {
-    display: block;
-    background: rgba(255, 255, 255, 0.03) !important; /* Тот же тон, что и у списков */
-    color: var(--text-main) !important;
-    border: 1px solid var(--border-soft) !important;
-    margin-bottom: 8px;
-    padding: 14px;
-    border-radius: 14px;
-    font-weight: 600;
+/* --- НАВИГАЦИЯ --- */
+.back-nav { margin-bottom: 20px; }
+.back-link {
+    text-decoration: none;
+    color: var(--accent-blue);
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* 5. НАВИГАЦИЯ */
+.spa-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
 .spa-nav button {
     background: rgba(255, 255, 255, 0.05);
-    color: var(--text-muted) !important;
+    color: var(--text-muted);
     border: 1px solid var(--border-soft);
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 800;
+    border-radius: 15px;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: 0.3s;
 }
 
 .spa-nav button.active {
     background: var(--accent-blue) !important;
-    color: #fff !important;
+    color: white !important;
     border-color: var(--accent-blue);
+    box-shadow: 0 5px 15px rgba(124, 92, 252, 0.3);
 }
 
-/* 6. ТЕКСТОВЫЕ АКЦЕНТЫ */
-h2, h3 {
-    color: var(--text-main) !important;
+/* --- КАРТОЧКИ И СПИСКИ --- */
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    margin-bottom: 15px;
 }
 
-.back-link {
-    color: var(--accent-blue) !important;
+/* Убираем шахматку: все li одинаковые */
+.custom-list { 
+    list-style: none; 
+    counter-reset: my-counter; 
 }
 
+.custom-list li { 
+    position: relative; 
+    margin-bottom: 10px; 
+    padding: 12px 15px 12px 50px; 
+    background: rgba(255, 255, 255, 0.03); /* Единый фон */
+    border-radius: 12px;
+    border-left: 4px solid var(--accent-blue);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-muted); /* Читаемый серый */
+}
+
+.custom-list li::before {
+    counter-increment: my-counter;
+    content: counter(my-counter);
+    position: absolute; 
+    left: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px; height: 28px; 
+    background: var(--accent-blue);
+    color: #fff; 
+    border-radius: 50%; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    font-weight: 900;
+    font-size: 11px;
+}
+
+/* --- ТАБЛИЦЫ ИСТОРИЙ --- */
+.story-container h3 {
+    font-weight: 900;
+    font-size: 18px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-left: 4px solid var(--accent-blue);
+    color: var(--text-main);
+}
+
+.story-table tr td {
+    display: block;
+    background: rgba(255, 255, 255, 0.03); /* Убрана шахматка */
+    margin-bottom: 8px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-weight: 700;
+    border: 1px solid var(--border-soft);
+    color: var(--text-main); /* Яркий белый для названий */
+}
+
+.story-table tr td::before {
+    content: "📘 ";
+    opacity: 0.7;
+}
+
+/* Важное сообщение */
 .important-box {
-    background: rgba(124, 92, 252, 0.05) !important;
-    color: var(--text-main) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-left: 4px solid var(--rose) !important;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(124, 92, 252, 0.05);
+    border-left: 4px solid var(--rose);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
 }
 
-/* Убираем любые системные рамки таблиц */
-table, tr, td {
-    border-collapse: collapse;
-    border: none;
+h2 {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 15px;
+    color: var(--text-main);
 }
     </style>
 </head>
