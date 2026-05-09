@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MODR SLOTS </title>
-<style>
+    <style>
 :root {
-    --bg-color: #f4f9ff;
-    --card-bg: #ffffff;
-    --accent-blue: #0095ff;
-    --text-dark: #1a2b3c;
-    --text-muted: #64748b;
-    --border-soft: #e1f0ff;
+    --bg-color: #0b0e14;        /* Глубокий темный фон */
+    --card-bg: #151921;         /* Цвет карточек */
+    --accent-blue: #7c5cfc;     /* Фиолетово-синий неон */
+    --rose: #e879a0;            /* Розовый акцент для градиентов */
+    --text-dark: #ffffff;       /* Белый текст */
+    --text-muted: #94a3b8;      /* Приглушенный текст */
+    --border-soft: rgba(124, 92, 252, 0.2);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --grad: linear-gradient(115deg, #a78bfa 20%, #e879a0 80%);
 }
 
-/* 1. БАЗОВЫЙ СБРОС (Чтобы ничего не слетало) */
+/* 1. БАЗОВЫЙ СБРОС */
 * { 
     box-sizing: border-box !important; 
     margin: 0; padding: 0; 
@@ -23,169 +26,179 @@
 body {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-color);
+    background-image: radial-gradient(circle at 50% 0%, rgba(124, 92, 252, 0.15) 0%, transparent 50%);
     color: var(--text-dark);
     padding: 20px 15px 100px;
     line-height: 1.5;
 }
 
-.container { max-width: 500px; margin: 0 auto; }
+.container { max-width: 600px; margin: 0 auto; }
 
-/* 2. ТЕКСТ И ЗАГОЛОВКИ */
+/* 2. ГЕРОЙСКИЙ ЗАГОЛОВОК (Hero Style) */
 .hero-title {
-    font-size: 28px; font-weight: 900; text-align: center;
-    text-transform: uppercase; margin: 20px 0; color: var(--text-dark);
+    font-size: clamp(28px, 5vw, 42px); 
+    font-weight: 900; 
+    text-align: center;
+    letter-spacing: -1.5px;
+    margin: 40px 0 20px; 
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* 3. КАРТОЧКИ (СТОЛБИКИ) — ТЕПЕРЬ НЕ СЛЕТЯТ */
+/* 3. КАРТОЧКИ (СТОЛБИКИ) — ТЕМНЫЙ SaaS СТИЛЬ */
 table, tbody { display: block; width: 100%; }
 
 tr:not(.story-row) {
     display: flex !important;
-    flex-direction: column !important; /* Строго в столбик */
+    flex-direction: column !important;
     background: var(--card-bg) !important;
     border-radius: 24px !important;
-    padding: 20px !important;
+    padding: 24px !important;
     margin-bottom: 20px !important;
     border: 1px solid var(--border-soft) !important;
-    box-shadow: 0 8px 20px rgba(0, 149, 255, 0.05);
-}
-/* ПЛАШКА РАЗРАБОТКИ — теперь как info-txt */
-.dev-status-plate {
-    display: flex !important;
-    align-items: center !important;
-    background: rgba(0, 149, 255, 0.08) !important;
-    border-radius: 20px !important;
-    border: none !important;
-    border-left: 5px solid var(--accent-blue) !important;
-    padding: 15px 20px !important;
-    margin: 20px 0 !important;
     box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
 }
 
-.dev-text {
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    color: var(--text-dark) !important;
-    line-height: 1.4 !important;
+/* Эффект свечения для карточки */
+tr:not(.story-row)::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    opacity: 0.5;
 }
 
-.spinner {
-    margin-right: 12px;
-    font-size: 20px;
-}
 .story-row td { 
     display: block !important; 
-    font-size: 1.6rem !important; 
-    font-weight: 900 !important; 
-    color: var(--accent-blue) !important;
-    text-transform: none !important; /* УБИРАЕМ КАПС */
-    letter-spacing: 0.5px;
-    padding: 10px 0 !important;
+    font-size: 14px !important; 
+    font-weight: 800 !important; 
+    color: var(--rose) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px;
+    padding: 10px 5px !important;
+    opacity: 0.9;
 }
 
-/* КНОПКА ИНСТРУКЦИИ — делаем её "стеклянной" и аккуратной */
-.instr-btn {
+/* 4. ПЛАШКИ (Имя, Код, Инфо) */
+tr:not(.story-row) td:first-child, .code-text, .info-txt, .dev-status-plate {
     display: block !important;
     width: 100% !important;
-    background: #fff !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-left: 4px solid var(--accent-blue) !important;
+    padding: 14px 18px !important;
+    margin-bottom: 12px !important;
+    font-weight: 600;
+}
+
+tr:not(.story-row) td:first-child { 
+    font-size: 1.1rem; color: #fff; 
+}
+.code-text { 
+    font-family: 'JetBrains Mono', monospace; 
+    color: var(--accent-blue); 
+    background: rgba(124, 92, 252, 0.1) !important;
+}
+.info-txt {
+    font-size: 13px !important;
+    color: var(--text-muted) !important;
+    border-left-color: var(--rose) !important;
+    font-style: italic;
+}
+
+/* 5. КНОПКИ (Glassmorphism + Glow) */
+.instr-btn {
+    display: block !important;
+    background: rgba(124, 92, 252, 0.1) !important;
     color: var(--accent-blue) !important;
-    border: 2px solid var(--border-soft) !important;
-    border-left: 5px solid var(--accent-blue) !important; /* Та же линия для стиля */
+    border: 1px solid var(--border-soft) !important;
     padding: 16px !important;
-    border-radius: 20px !important;
+    border-radius: 18px !important;
     text-align: center !important;
     font-weight: 800 !important;
-    text-transform: uppercase !important;
+    text-transform: uppercase;
     text-decoration: none !important;
     margin-bottom: 30px !important;
     transition: 0.3s;
 }
 
-.instr-btn:hover {
-    background: var(--bg-color) !important;
-    transform: translateY(-2px);
-}
-
-/* Эмодзи для инструкции (через псевдоэлемент, чтобы не лезть в HTML) */
-.instr-btn::before {
-    content: "📖 ";
-}
-
-/* 4. ПЛАШКИ (Имя, Код, Инфо) */
-tr:not(.story-row) td:first-child, .code-text, .info-txt {
-    display: block !important;
-    width: 100% !important;
-    background: rgba(0, 149, 255, 0.04) !important;
-    border-radius: 16px !important;
-    border: none !important;
-    border-left: 5px solid var(--accent-blue) !important;
-    padding: 12px 15px !important;
-    margin-bottom: 10px !important;
-    font-weight: 600;
-}
-
-/* Индивидуальные настройки для каждой плашки */
-tr:not(.story-row) td:first-child { 
-    font-size: 1.2rem; color: var(--accent-blue); background: rgba(0, 149, 255, 0.08) !important;
-}
-tr:not(.story-row) td:first-child::before { content: "👤 "; }
-
-.code-text { font-family: monospace; color: var(--text-dark); border-left-color: #5fb8e4 !important; }
-.code-text::before { content: "🔑 "; font-family: sans-serif; }
-
-.info-txt {
-    display: block !important;
-    margin-top: 20px !important; /* УВЕЛИЧИЛИ ОТСТУП, чтобы не липло к кнопке */
-    padding: 12px 15px !important;
-    background: rgba(0, 149, 255, 0.05) !important;
-    border-radius: 12px !important;
-    border-left: 4px solid #bcdfff !important; 
-    
-    color: var(--text-muted) !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    font-style: italic;
-    line-height: 1.4 !important;
-}
-
-.info-txt::before { content: "✨ "; }
-
-/* 5. КНОПКИ */
 .copy-btn, .tg-btn {
-    width: 100%; padding: 16px; border-radius: 16px;
+    width: 100%; padding: 16px; border-radius: 14px;
     border: none; font-weight: 800; text-transform: uppercase;
-    cursor: pointer; transition: 0.2s;
+    cursor: pointer; transition: 0.3s; margin-bottom: 8px;
 }
-.copy-btn { background: var(--accent-blue); color: white; margin-top: 5px; }
-.tg-btn { background: var(--accent-blue); color: white !important; text-decoration: none; display: block; margin-bottom: 10px; text-align: center; }
+.copy-btn { 
+    background: var(--accent-blue); 
+    color: white; 
+    box-shadow: 0 4px 15px rgba(124, 92, 252, 0.3);
+}
+.copy-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124, 92, 252, 0.5); }
 
-/* 6. ПОИСК И КРЕСТИК */
-.search-wrapper { position: relative; margin: 20px 0; display: flex; align-items: center; }
+.tg-btn { 
+    background: rgba(255, 255, 255, 0.05); 
+    color: white !important; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none; display: block; text-align: center; 
+}
+
+/* 6. ПОИСК И КРЕСТИК (FIXED) */
+.search-wrapper { 
+    position: relative !important; /* Чтобы крестик не улетал */
+    margin: 20px 0; 
+    display: flex; 
+    align-items: center; 
+}
+
 #searchInput {
-    width: 100% !important; padding: 16px 45px 16px 20px !important;
-    border-radius: 18px; border: 2px solid var(--border-soft);
-    background: white; outline: none; font-size: 16px;
-}
-#clearSearch {
-    position: absolute !important; right: 15px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; color: var(--accent-blue);
-    font-size: 20px; font-weight: 900; cursor: pointer; display: none;
+    width: 100% !important; 
+    padding: 16px 45px 16px 20px !important; /* Отступ справа под крестик */
+    border-radius: 18px; 
+    border: 1px solid var(--border-soft);
+    background: rgba(255, 255, 255, 0.03); 
+    color: white; 
+    outline: none; 
+    font-size: 16px;
+    transition: 0.3s;
 }
 
+#searchInput:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 20px rgba(124, 92, 252, 0.15);
+}
+
+#clearSearch {
+    position: absolute !important; 
+    right: 15px !important; 
+    top: 50% !important; 
+    transform: translateY(-50%) !important;
+    background: none !important; 
+    border: none !important; 
+    color: var(--accent-blue) !important; /* Яркий синий/фиолетовый */
+    font-size: 22px !important; 
+    font-weight: 900 !important; 
+    cursor: pointer; 
+    display: none; /* Появляется через JS при вводе текста */
+    z-index: 10;
+    line-height: 1;
+}
+
+#clearSearch:hover {
+    color: var(--rose) !important; /* Меняет цвет при наведении */
+}
 /* 7. ТОСТ И КНОПКА ВВЕРХ */
 #toast {
     position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-    background: var(--text-dark); color: white; padding: 12px 25px;
-    border-radius: 50px; z-index: 10000; display: none;
+    background: var(--accent-blue); color: white; padding: 12px 25px;
+    border-radius: 50px; z-index: 10000; display: none; font-weight: 700;
 }
 #backToTop {
-    position: fixed; bottom: 30px; right: 20px; width: 60px; height: 60px;
-    border-radius: 50%; background: var(--accent-blue); color: white;
+    position: fixed; bottom: 30px; right: 20px; width: 56px; height: 56px;
+    border-radius: 50%; background: var(--grad); color: white;
     border: none; display: none; align-items: center; justify-content: center;
-    font-size: 24px; z-index: 999; box-shadow: 0 5px 15px rgba(0,149,255,0.3);
+    box-shadow: 0 10px 25px rgba(232, 121, 160, 0.3);
 }
-
-
 </style>
 </head>
 <body>
