@@ -6,13 +6,15 @@
     <title>Инструкция | modr.</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
     <style>
-  :root {
-    --bg-color: #f4f9ff;
-    --card-bg: #ffffff;
-    --accent-blue: #0095ff;
-    --text-dark: #1a2b3c;
-    --text-muted: #64748b;
-    --border-soft: #e1f0ff;
+:root {
+    --bg-color: #0b0e14;
+    --card-bg: #151921;
+    --accent-blue: #7c5cfc;
+    --rose: #e879a0;
+    --text-dark: #ffffff;
+    --text-muted: #94a3b8;
+    --border-soft: rgba(124, 92, 252, 0.2);
+    --grad: linear-gradient(115deg, #a78bfa 20%, #e879a0 80%);
 }
 
 * { 
@@ -23,144 +25,110 @@
 body {
     font-family: -apple-system, system-ui, sans-serif;
     background-color: var(--bg-color);
+    background-image: radial-gradient(circle at 50% 0%, rgba(124, 92, 252, 0.1) 0%, transparent 50%);
     color: var(--text-dark);
     padding: 20px 15px 50px;
     line-height: 1.5;
 }
 
-/* Кнопка назад */
-.back-nav { margin-bottom: 20px; }
+/* 1. НАВИГАЦИЯ (Back link) */
+.back-nav { margin-bottom: 25px; }
 .back-link {
     text-decoration: none;
-    color: var(--accent-blue);
+    color: var(--rose); /* Выделяем розовым */
     font-weight: 800;
-    font-size: 14px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.back-link::before { content: "←"; }
+
+/* 2. SPA НАВИГАЦИЯ (Кнопки-табы) */
+.spa-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none; /* Скрываем скроллбар */
+}
+.spa-nav::-webkit-scrollbar { display: none; }
+
+.spa-nav button {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px solid var(--border-soft);
+    padding: 12px 22px;
+    cursor: pointer;
+    font-weight: 800;
+    border-radius: 16px;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: 0.3s ease;
     text-transform: uppercase;
 }
 
-/* SPA Навигация (кнопки как в главном меню) */
-.spa-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 30px;
-    overflow-x: auto; /* Чтобы на мобилках можно было листать */
-    padding-bottom: 10px;
-}
-
-.spa-nav button {
-    background: #fff;
-    color: var(--text-dark);
-    border: 2px solid var(--border-soft);
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: 800;
-    border-radius: 15px;
-    font-size: 12px;
-    white-space: nowrap;
-    transition: 0.3s;
-}
-
 .spa-nav button.active {
-    background: var(--accent-blue);
-    color: white;
+    background: var(--accent-blue) !important;
+    color: white !important;
     border-color: var(--accent-blue);
-    box-shadow: 0 5px 15px rgba(0, 149, 255, 0.2);
+    box-shadow: 0 8px 20px rgba(124, 92, 252, 0.3);
+    transform: translateY(-2px);
 }
 
-/* Карточки и списки */
-/* КАРТОЧКА (уменьшаем паддинги для мобил) */
+/* 3. КАРТОЧКИ (Секции) */
 .card {
     background: var(--card-bg);
-    padding: 15px; /* Было 25 */
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0, 149, 255, 0.05);
+    padding: 20px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     border: 1px solid var(--border-soft);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
 }
 
-/* СПИСКИ (фиксим цифры и отступы) */
+.card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: var(--grad); opacity: 0.4;
+}
+
+/* 4. СПИСКИ (Инструкции с цифрами) */
 .custom-list { 
     list-style: none; 
-    counter-reset: my-counter; /* Создаем свой счетчик */
+    counter-reset: my-counter; 
 }
 
 .custom-list li { 
     position: relative; 
-    margin-bottom: 10px; 
-    padding: 10px 12px 10px 45px; /* Уменьшили отступы */
-    background: rgba(0, 149, 255, 0.04);
-    border-radius: 12px;
+    margin-bottom: 12px; 
+    padding: 15px 15px 15px 55px; 
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
     border-left: 4px solid var(--accent-blue);
     font-weight: 600;
-    font-size: 13px; /* Чуть меньше шрифт */
-    line-height: 1.3;
-}
-
-/* ЦИФРЫ (теперь идут по порядку) */
-.custom-list li::before {
-    counter-increment: my-counter; /* Увеличиваем счетчик для каждого li */
-    content: counter(my-counter); /* Выводим число */
-    position: absolute; 
-    left: 10px; 
-    top: 50%;
-    transform: translateY(-50%);
-    width: 26px; /* Уменьшили кружок */
-    height: 26px; 
-    background: var(--accent-blue);
-    color: #fff; 
-    border-radius: 50%; 
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-    font-weight: 900;
-    font-size: 11px;
-}
-
-/* ТАБЛИЦЫ ИСТОРИЙ (компактнее) */
-.story-table tr td {
-    display: block;
-    background: #fff;
-    margin-bottom: 6px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-weight: 700;
     font-size: 14px;
-    border: 1px solid var(--border-soft);
+    color: var(--text-muted);
+    transition: 0.2s;
 }
 
-/* ЗАГОЛОВОК (уменьшаем) */
-h2 {
-    font-size: 18px;
-    margin-bottom: 15px;
+.custom-list li:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
 }
 
-
-
-
-/* Списки в стиле info-txt */
-.custom-list { list-style: none; }
-.custom-list li { 
-    position: relative; 
-    margin-bottom: 15px; 
-    padding: 12px 15px 12px 55px; 
-    background: rgba(0, 149, 255, 0.04);
-    border-radius: 16px;
-    border-left: 5px solid var(--accent-blue);
-    font-weight: 600;
-    font-size: 14px;
-}
-
-/* Цифры в кружочках */
 .custom-list li::before {
-    content: counter(item); 
-    counter-increment: item;
+    counter-increment: my-counter;
+    content: counter(my-counter);
     position: absolute; 
     left: 12px; 
     top: 50%;
     transform: translateY(-50%);
-    width: 30px; 
-    height: 30px; 
-    background: var(--accent-blue);
+    width: 30px; height: 30px; 
+    background: var(--grad); /* Цифры теперь в градиенте */
     color: #fff; 
     border-radius: 50%; 
     display: flex;
@@ -168,54 +136,73 @@ h2 {
     justify-content: center; 
     font-weight: 900;
     font-size: 12px;
+    box-shadow: 0 4px 10px rgba(124, 92, 252, 0.3);
 }
 
-/* Важное сообщение */
+/* 5. ВАЖНОЕ СООБЩЕНИЕ */
 .important-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: #fff;
-    border-left: 5px solid #ffca28; /* Желтый акцент для внимания */
-    border-radius: 12px;
+    margin-top: 25px;
+    padding: 18px;
+    background: rgba(232, 121, 160, 0.05); /* Легкий розовый оттенок */
+    border-left: 4px solid var(--rose);
+    border-radius: 16px;
     font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    color: var(--rose);
+    border: 1px solid rgba(232, 121, 160, 0.1);
 }
 
-/* Списки историй */
-.story-container { margin-bottom: 30px; }
+/* 6. ТАБЛИЦЫ ИСТОРИЙ */
 .story-container h3 {
+    font-size: 18px;
     font-weight: 900;
-    margin-bottom: 15px;
-    padding-left: 10px;
-    border-left: 4px solid var(--accent-blue);
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 4px solid var(--rose);
+    color: #fff;
 }
 
-.story-table { width: 100%; }
 .story-table tr td {
     display: block;
-    background: #fff;
-    margin-bottom: 8px;
-    padding: 12px 18px;
-    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    margin-bottom: 10px;
+    padding: 15px 18px;
+    border-radius: 16px;
     font-weight: 700;
+    font-size: 14px;
     border: 1px solid var(--border-soft);
-    color: var(--text-dark);
+    color: #fff;
+    transition: 0.3s;
+}
+
+.story-table tr td:hover {
+    border-color: var(--accent-blue);
+    background: rgba(124, 92, 252, 0.05);
 }
 
 .story-table tr td::before {
-    content: "📖 ";
-    opacity: 0.6;
+    content: "📘 ";
+    margin-right: 8px;
 }
 
-/* Анимация секций */
-.page-section { display: none; animation: fadeIn 0.4s ease; }
+/* 7. АНИМАЦИЯ */
+.page-section { display: none; animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 .page-section.active { display: block; }
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* ЗАГОЛОВКИ */
+h2 {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
     </style>
 </head>
 <body>
