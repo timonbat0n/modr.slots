@@ -10,13 +10,13 @@
             --red: #ff0000;
             --black: #111111;
             --white: #ffffff;
-            --grey: #f0f0f0;
+            --grey: #f4f4f4;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--black); font-family: 'Inter', sans-serif; color: var(--white); overflow-x: hidden; }
 
-        /* ПАРАЛЛАКС */
+        /* ПАРАЛЛАКС ФОН */
         .parallax-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             font-family: 'Bodoni Moda', serif; font-size: 35vw;
@@ -29,66 +29,67 @@
 
         /* ЛЕВАЯ ПАНЕЛЬ */
         .left-panel {
-            width: 40%; height: 100vh; position: sticky; top: 0;
+            width: 40%; min-height: 100vh; position: sticky; top: 0;
             padding: 60px; display: flex; flex-direction: column;
             background: linear-gradient(to right, rgba(0,0,0,1), transparent);
-            z-index: 100;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .left-panel h1 { 
             font-family: 'Bodoni Moda', serif; 
             font-size: clamp(40px, 5vw, 80px); 
-            line-height: 0.9; text-transform: uppercase; 
-            cursor: pointer; /* Для моб версии */
+            line-height: 0.9; text-transform: uppercase;
         }
 
-        /* ИНСТРУКЦИЯ (УВЕЛИЧЕННАЯ) */
-        .instruction-content { margin-top: 30px; transition: all 0.5s ease; }
+        /* ИНСТРУКЦИЯ */
+        .instruction-content { 
+            overflow: hidden; 
+            transition: all 0.5s ease-in-out;
+            opacity: 1;
+        }
         
         .instruction-box {
-            padding: 25px; border-left: 3px solid var(--red);
-            background: rgba(255,255,255,0.03); margin-bottom: 30px;
+            padding: 25px; border-left: 4px solid var(--red);
+            background: rgba(255,255,255,0.03); margin: 30px 0;
         }
         
         .instruction-box h3 { 
             font-size: 14px; letter-spacing: 4px; color: var(--red); 
-            margin-bottom: 20px; text-transform: uppercase; font-weight: 900;
+            margin-bottom: 25px; text-transform: uppercase; font-weight: 900;
         }
 
         .custom-list { list-style: none; counter-reset: my-counter; }
         .custom-list li { 
-            counter-increment: my-counter; margin-bottom: 12px; 
-            font-size: 15px; line-height: 1.6; opacity: 0.8; 
+            counter-increment: my-counter; margin-bottom: 18px; 
+            font-size: 16px; line-height: 1.6; opacity: 0.9; 
             display: flex; gap: 15px;
         }
         .custom-list li::before {
             content: counter(my-counter); color: var(--red);
-            font-weight: 900; font-family: 'Bodoni Moda';
+            font-weight: 900; font-family: 'Bodoni Moda'; font-size: 20px;
         }
 
         .important-note {
-            margin-top: 20px; padding: 15px; background: rgba(255,0,0,0.1);
-            border-radius: 4px; font-size: 13px; line-height: 1.5; border: 1px solid rgba(255,0,0,0.2);
+            margin-top: 25px; padding: 15px; background: rgba(255,0,0,0.15);
+            font-size: 14px; line-height: 1.6; border: 1px solid rgba(255,0,0,0.3);
         }
 
-        /* КНОПКА */
         .submit-btn {
-            display: block; width: 100%; max-width: 300px;
+            display: block; width: 100%; max-width: 320px;
             background: var(--white); color: var(--black);
-            padding: 20px; font-weight: 900; text-transform: uppercase;
-            font-size: 13px; letter-spacing: 3px; text-decoration: none;
-            text-align: center; transition: 0.3s; border: 1px solid var(--white);
+            padding: 22px; font-weight: 900; text-transform: uppercase;
+            font-size: 14px; letter-spacing: 3px; text-decoration: none;
+            text-align: center; transition: 0.3s; margin-top: 20px;
         }
-        .submit-btn:hover { background: transparent; color: var(--white); border-color: var(--red); }
 
         /* ПРАВАЯ ПАНЕЛЬ */
         .right-panel { width: 60%; background: var(--white); color: var(--black); padding: 80px 5%; min-height: 100vh; }
 
-        .search-container { margin-bottom: 60px; position: sticky; top: 20px; background: var(--white); z-index: 10; }
+        .search-container { margin-bottom: 60px; position: sticky; top: 20px; background: var(--white); z-index: 10; padding: 10px 0; }
         .search-container input {
-            width: 100%; border: none; border-bottom: 4px solid var(--black);
+            width: 100%; border: none; border-bottom: 5px solid var(--black);
             padding: 15px 0; font-family: 'Playfair Display', serif;
-            font-size: 32px; font-style: italic; outline: none;
+            font-size: 36px; font-style: italic; outline: none;
         }
 
         /* ТАБЛИЦА */
@@ -96,42 +97,53 @@
         #mainTable tbody { display: block; }
         
         .story-row td {
-            display: block; font-family: 'Bodoni Moda', serif; font-size: clamp(30px, 4vw, 48px);
-            text-transform: uppercase; border-bottom: 2px solid var(--black);
-            padding: 60px 0 10px 0 !important;
+            display: block; font-family: 'Bodoni Moda', serif; font-size: clamp(35px, 4.5vw, 52px);
+            text-transform: uppercase; border-bottom: 3px solid var(--black);
+            padding: 70px 0 15px 0 !important;
         }
 
-        tr:not(.story-row) { display: flex; flex-direction: column; padding: 35px 0; border-bottom: 1px solid #eee; }
-        tr:not(.story-row) td:first-child { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 15px; }
-        tr:not(.story-row) td:last-child { order: -1; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        tr:not(.story-row) { display: flex; flex-direction: column; padding: 40px 0; border-bottom: 1px solid #eee; }
+        
+        tr:not(.story-row) td:first-child { 
+            font-family: 'Playfair Display', serif; font-size: 32px; 
+            font-weight: 700; margin-bottom: 15px; display: block;
+        }
+        
+        tr:not(.story-row) td:last-child { 
+            order: -1; font-size: 13px; color: #777; 
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 10px;
+        }
 
-        .code-container { display: flex; width: 100%; background: var(--grey); border-left: 5px solid var(--red); align-items: center; }
-        .code-text { flex: 1; padding: 15px; font-family: monospace; font-size: 15px; font-weight: 700; }
-        .copy-btn { background: var(--black); color: var(--white); border: none; padding: 15px 25px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
+        .code-container { display: flex; width: 100%; background: var(--grey); border-left: 6px solid var(--red); align-items: center; }
+        .code-text { flex: 1; padding: 18px 20px; font-family: monospace; font-size: 16px; font-weight: 700; color: #222; }
+        .copy-btn { background: var(--black); color: var(--white); border: none; padding: 18px 30px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
         /* МОБИЛЬНАЯ ВЕРСТКА */
         @media (max-width: 900px) {
             .spread { flex-direction: column; }
             .left-panel { 
-                width: 100%; height: auto; position: sticky; top: 0; 
-                padding: 20px; background: var(--black); border-bottom: 1px solid var(--red);
+                width: 100%; min-height: auto; position: relative; 
+                padding: 30px 20px; background: var(--black);
             }
-            .left-panel h1 { font-size: 30px; text-align: center; }
-            .left-panel h1::after { content: ' ▼'; font-size: 12px; vertical-align: middle; color: var(--red); }
+            .left-panel h1 { font-size: 32px; text-align: center; cursor: pointer; }
+            .left-panel h1::after { content: ' ▼'; font-size: 14px; color: var(--red); }
             
             .instruction-content { 
-                max-height: 0; overflow: hidden; margin-top: 0;
+                max-height: 0; 
+                opacity: 0;
             }
-            /* Класс для разворота */
+            
             .left-panel.active .instruction-content { 
-                max-height: 2000px; margin-top: 20px; padding-bottom: 20px;
+                max-height: 1500px; /* Достаточно большое число, чтобы влез контент */
+                opacity: 1;
+                margin-top: 30px;
             }
             .left-panel.active h1::after { content: ' ▲'; }
 
-            .right-panel { width: 100%; padding: 30px 15px; }
+            .right-panel { width: 100%; padding: 40px 20px; }
         }
 
-        #toast { position: fixed; top: 0; left: 0; width: 100%; background: var(--red); color: white; padding: 15px; text-align: center; font-weight: 900; display: none; z-index: 10000; }
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; padding: 15px 40px; font-weight: 900; display: none; z-index: 10000; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -440,67 +452,52 @@
 
 
 <script>
-    // Разворот меню на мобилках
-    function toggleMobileMenu() {
+    function toggleMenu() {
         if (window.innerWidth <= 900) {
-            document.querySelector('.left-panel').classList.toggle('active');
+            document.getElementById('mobileMenu').classList.toggle('active');
         }
     }
 
-    // Параллакс
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        document.getElementById('bgText').style.transform = `translateY(${scrolled * 0.3}px) rotate(${scrolled * 0.01}deg)`;
-    });
+    function filter() {
+        let val = document.getElementById('search').value.toLowerCase();
+        let storyRows = document.querySelectorAll('.story-row');
 
-   function filter() {
-    let val = document.getElementById('search').value.toLowerCase();
-    let table = document.getElementById('mainTable');
-    let storyRows = table.querySelectorAll('.story-row');
+        storyRows.forEach(story => {
+            let hasVisibleSlots = false;
+            let sibling = story.nextElementSibling;
+            let slots = [];
 
-    storyRows.forEach(story => {
-        let hasVisibleSlots = false;
-        let nextRows = [];
-        let sibling = story.nextElementSibling;
-
-        // Собираем все строки слотов, которые относятся к текущей истории
-        while (sibling && !sibling.classList.contains('story-row')) {
-            nextRows.push(sibling);
-            sibling = sibling.nextElementSibling;
-        }
-
-        // Проверяем: совпадает ли название истории ИЛИ имя персонажа в слоте
-        let storyTitle = story.innerText.toLowerCase();
-        let isStoryMatch = storyTitle.includes(val);
-
-        nextRows.forEach(row => {
-            // Ищем только по первой ячейке (Имя персонажа)
-            let charName = row.cells[0].innerText.toLowerCase();
-            
-            // Слот виден, если в поиске имя персонажа ИЛИ если мы ищем по названию всей истории
-            if (charName.includes(val) || isStoryMatch) {
-                row.style.display = 'flex';
-                hasVisibleSlots = true;
-            } else {
-                row.style.display = 'none';
+            while (sibling && !sibling.classList.contains('story-row')) {
+                slots.push(sibling);
+                sibling = sibling.nextElementSibling;
             }
-        });
 
-        // Скрываем заголовок истории, если в ней нет подходящих слотов 
-        // (и если само название истории не совпадает с поиском)
-        if (hasVisibleSlots || isStoryMatch) {
-            story.style.display = 'block';
-        } else {
-            story.style.display = 'none';
-        }
-    });
-}
+            let storyTitle = story.innerText.toLowerCase();
+            let isStoryMatch = storyTitle.includes(val);
+
+            slots.forEach(row => {
+                let charName = row.cells[0].innerText.toLowerCase();
+                if (charName.includes(val) || isStoryMatch) {
+                    row.style.display = 'flex';
+                    hasVisibleSlots = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            story.style.display = (hasVisibleSlots || isStoryMatch) ? 'block' : 'none';
+        });
+    }
 
     function copy(text) {
-        event.stopPropagation(); // Чтобы не срабатывал клик по меню на мобилках
         navigator.clipboard.writeText(text);
         const t = document.getElementById('toast');
         t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 1500);
     }
+
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        document.getElementById('bgText').style.transform = `translateY(${scrolled * 0.3}px)`;
+    });
 </script>
