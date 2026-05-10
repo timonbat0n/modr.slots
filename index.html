@@ -152,26 +152,22 @@
 <div class="parallax-bg" id="bgText">MODR</div>
 
 <div class="spread">
-    <div class="left-panel" onclick="toggleMobileMenu()">
-        <h1>The<br>Modr<br><span style="color:var(--red)">Slots...</span></h1>
+    <div class="left-panel" id="mobileMenu">
+        <h1 onclick="toggleMenu()">The<br>modr<br><span style="color:var(--red)">slots</span></h1>
         
         <div class="instruction-content">
             <div class="instruction-box">
                 <h3>МЕНЕДЖЕР СЛОТОВ</h3>
                 <ol class="custom-list">
-                    <li>Закройте игру полностью через <strong>«Выход»</strong>.</li>
-                    <li>Зайдите в <strong>личный кабинет</strong>.</li>
-                    <li>В <strong>«Менеджере слотов»</strong> выберите историю.</li>
-                    <li>Создайте слот с любым названием.</li>
-                    <li>Нажмите <strong>«Скопировать в слот»</strong>.</li>
+                    <li>Закройте игру полностью.</li>
+                    <li>В <strong>личном кабинете</strong> выберите историю.</li>
+                    <li>Создайте слот и нажмите <strong>«Скопировать»</strong>.</li>
                     <li>Повторите для второго слота.</li>
-                    <li>В игре отредактируйте прохождение.</li>
-                    <li>Обновите второй слот кнопкой <strong>«Скопировать»</strong>.</li>
-                    <li>Для переключения жмите <strong>«Вставить из слота»</strong>.</li>
-                    <li>Входите в игру через <strong>10-15 минут</strong>.</li>
+                    <li>Обновите второй слот после правок в игре.</li>
+                    <li>Переключайтесь через <strong>«Вставить из слота»</strong>.</li>
                 </ol>
                 <div class="important-note">
-                    <strong>Важно:</strong> Сезоны должны совпадать. При большой разнице в прогрессе данные могут синхронизироваться некорректно.
+                    <strong>Важно:</strong> При переключении сезоны должны совпадать. Подождите 10 минут перед входом.
                 </div>
             </div>
             <a href="#" class="submit-btn">Отправить слоты</a>
@@ -180,10 +176,10 @@
 
     <div class="right-panel">
         <div class="search-container">
-            <input type="text" id="search" placeholder="Поиск..." oninput="filter()">
+            <input type="text" id="search" placeholder="Поиск по архиву..." oninput="filter()">
         </div>
 
-     <table id="mainTable">
+        <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
 <tr>
