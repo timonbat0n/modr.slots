@@ -1,240 +1,177 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MODR SLOTS </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-:root {
-    --bg-color: #0b0e14;        /* Глубокий темный фон */
-    --card-bg: #151921;         /* Цвет карточек */
-    --accent-blue: #7c5cfc;     /* Фиолетово-синий неон */
-    --rose: #e879a0;            /* Розовый акцент для градиентов */
-    --text-dark: #ffffff;       /* Белый текст */
-    --text-muted: #94a3b8;      /* Приглушенный текст */
-    --border-soft: rgba(124, 92, 252, 0.2);
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    --grad: linear-gradient(115deg, #a78bfa 20%, #e879a0 80%);
-}
+        @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,900;1,900&family=Playfair+Display:ital,wght@0,400;1,700&family=Inter:wght@100;400;900&display=swap');
 
-/* 1. БАЗОВЫЙ СБРОС */
-* { 
-    box-sizing: border-box !important; 
-    margin: 0; padding: 0; 
-}
+        :root {
+            --red: #ff0000;
+            --black: #111111;
+            --white: #ffffff;
+            --grey: #f0f0f0;
+        }
 
-body {
-    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-color);
-    background-image: radial-gradient(circle at 50% 0%, rgba(124, 92, 252, 0.15) 0%, transparent 50%);
-    color: var(--text-dark);
-    padding: 20px 15px 100px;
-    line-height: 1.5;
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--black); font-family: 'Inter', sans-serif; color: var(--white); overflow-x: hidden; }
 
-.container { max-width: 600px; margin: 0 auto; }
+        /* ПАРАЛЛАКС */
+        .parallax-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            font-family: 'Bodoni Moda', serif; font-size: 35vw;
+            color: var(--red); opacity: 0.08; z-index: 0;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none; text-transform: uppercase; font-style: italic;
+        }
 
-/* 2. ГЕРОЙСКИЙ ЗАГОЛОВОК (Hero Style) */
-.hero-title {
-    font-size: clamp(28px, 5vw, 42px); 
-    font-weight: 900; 
-    text-align: center;
-    letter-spacing: -1.5px;
-    margin: 40px 0 20px; 
-    background: var(--grad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        .spread { display: flex; position: relative; z-index: 1; }
 
-/* 3. КАРТОЧКИ (СТОЛБИКИ) — ТЕМНЫЙ SaaS СТИЛЬ */
-table, tbody { display: block; width: 100%; }
+        /* ЛЕВАЯ ПАНЕЛЬ */
+        .left-panel {
+            width: 40%; height: 100vh; position: sticky; top: 0;
+            padding: 60px; display: flex; flex-direction: column;
+            background: linear-gradient(to right, rgba(0,0,0,1), transparent);
+            z-index: 100;
+        }
 
-tr:not(.story-row) {
-    display: flex !important;
-    flex-direction: column !important;
-    background: var(--card-bg) !important;
-    border-radius: 24px !important;
-    padding: 24px !important;
-    margin-bottom: 20px !important;
-    border: 1px solid var(--border-soft) !important;
-    box-shadow: var(--shadow);
-    position: relative;
-    overflow: hidden;
-}
+        .left-panel h1 { 
+            font-family: 'Bodoni Moda', serif; 
+            font-size: clamp(40px, 5vw, 80px); 
+            line-height: 0.9; text-transform: uppercase; 
+            cursor: pointer; /* Для моб версии */
+        }
 
-/* Эффект свечения для карточки */
-tr:not(.story-row)::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
-    opacity: 0.5;
-}
+        /* ИНСТРУКЦИЯ (УВЕЛИЧЕННАЯ) */
+        .instruction-content { margin-top: 30px; transition: all 0.5s ease; }
+        
+        .instruction-box {
+            padding: 25px; border-left: 3px solid var(--red);
+            background: rgba(255,255,255,0.03); margin-bottom: 30px;
+        }
+        
+        .instruction-box h3 { 
+            font-size: 14px; letter-spacing: 4px; color: var(--red); 
+            margin-bottom: 20px; text-transform: uppercase; font-weight: 900;
+        }
 
-.story-row td { 
-    display: block !important; 
-    font-size: 14px !important; 
-    font-weight: 800 !important; 
-    color: var(--rose) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.5px;
-    padding: 10px 5px !important;
-    opacity: 0.9;
-}
+        .custom-list { list-style: none; counter-reset: my-counter; }
+        .custom-list li { 
+            counter-increment: my-counter; margin-bottom: 12px; 
+            font-size: 15px; line-height: 1.6; opacity: 0.8; 
+            display: flex; gap: 15px;
+        }
+        .custom-list li::before {
+            content: counter(my-counter); color: var(--red);
+            font-weight: 900; font-family: 'Bodoni Moda';
+        }
 
-/* 4. ПЛАШКИ (Имя, Код, Инфо) */
-tr:not(.story-row) td:first-child, .code-text, .info-txt, .dev-status-plate {
-    display: block !important;
-    width: 100% !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-    border-radius: 14px !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    border-left: 4px solid var(--accent-blue) !important;
-    padding: 14px 18px !important;
-    margin-bottom: 12px !important;
-    font-weight: 600;
-}
+        .important-note {
+            margin-top: 20px; padding: 15px; background: rgba(255,0,0,0.1);
+            border-radius: 4px; font-size: 13px; line-height: 1.5; border: 1px solid rgba(255,0,0,0.2);
+        }
 
-tr:not(.story-row) td:first-child { 
-    font-size: 1.1rem; color: #fff; 
-}
-.code-text { 
-    font-family: 'JetBrains Mono', monospace; 
-    color: var(--accent-blue); 
-    background: rgba(124, 92, 252, 0.1) !important;
-}
-.info-txt {
-    font-size: 13px !important;
-    color: var(--text-muted) !important;
-    border-left-color: var(--rose) !important;
-    font-style: italic;
-}
+        /* КНОПКА */
+        .submit-btn {
+            display: block; width: 100%; max-width: 300px;
+            background: var(--white); color: var(--black);
+            padding: 20px; font-weight: 900; text-transform: uppercase;
+            font-size: 13px; letter-spacing: 3px; text-decoration: none;
+            text-align: center; transition: 0.3s; border: 1px solid var(--white);
+        }
+        .submit-btn:hover { background: transparent; color: var(--white); border-color: var(--red); }
 
-/* 5. КНОПКИ (Glassmorphism + Glow) */
-.instr-btn {
-    display: block !important;
-    background: rgba(124, 92, 252, 0.1) !important;
-    color: var(--accent-blue) !important;
-    border: 1px solid var(--border-soft) !important;
-    padding: 16px !important;
-    border-radius: 18px !important;
-    text-align: center !important;
-    font-weight: 800 !important;
-    text-transform: uppercase;
-    text-decoration: none !important;
-    margin-bottom: 30px !important;
-    transition: 0.3s;
-}
+        /* ПРАВАЯ ПАНЕЛЬ */
+        .right-panel { width: 60%; background: var(--white); color: var(--black); padding: 80px 5%; min-height: 100vh; }
 
-.copy-btn, .tg-btn {
-    width: 100%; padding: 16px; border-radius: 14px;
-    border: none; font-weight: 800; text-transform: uppercase;
-    cursor: pointer; transition: 0.3s; margin-bottom: 8px;
-}
-.copy-btn { 
-    background: var(--accent-blue); 
-    color: white; 
-    box-shadow: 0 4px 15px rgba(124, 92, 252, 0.3);
-}
-.copy-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124, 92, 252, 0.5); }
+        .search-container { margin-bottom: 60px; position: sticky; top: 20px; background: var(--white); z-index: 10; }
+        .search-container input {
+            width: 100%; border: none; border-bottom: 4px solid var(--black);
+            padding: 15px 0; font-family: 'Playfair Display', serif;
+            font-size: 32px; font-style: italic; outline: none;
+        }
 
-.tg-btn { 
-    background: rgba(255, 255, 255, 0.05); 
-    color: white !important; 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    text-decoration: none; display: block; text-align: center; 
-}
+        /* ТАБЛИЦА */
+        #mainTable { width: 100%; border-collapse: collapse; }
+        #mainTable tbody { display: block; }
+        
+        .story-row td {
+            display: block; font-family: 'Bodoni Moda', serif; font-size: clamp(30px, 4vw, 48px);
+            text-transform: uppercase; border-bottom: 2px solid var(--black);
+            padding: 60px 0 10px 0 !important;
+        }
 
-/* 6. ПОИСК И КРЕСТИК (FIXED) */
-.search-wrapper { 
-    position: relative !important; /* Чтобы крестик не улетал */
-    margin: 20px 0; 
-    display: flex; 
-    align-items: center; 
-}
+        tr:not(.story-row) { display: flex; flex-direction: column; padding: 35px 0; border-bottom: 1px solid #eee; }
+        tr:not(.story-row) td:first-child { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 15px; }
+        tr:not(.story-row) td:last-child { order: -1; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 
-#searchInput {
-    width: 100% !important; 
-    padding: 16px 45px 16px 20px !important; /* Отступ справа под крестик */
-    border-radius: 18px; 
-    border: 1px solid var(--border-soft);
-    background: rgba(255, 255, 255, 0.03); 
-    color: white; 
-    outline: none; 
-    font-size: 16px;
-    transition: 0.3s;
-}
+        .code-container { display: flex; width: 100%; background: var(--grey); border-left: 5px solid var(--red); align-items: center; }
+        .code-text { flex: 1; padding: 15px; font-family: monospace; font-size: 15px; font-weight: 700; }
+        .copy-btn { background: var(--black); color: var(--white); border: none; padding: 15px 25px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
-#searchInput:focus {
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 20px rgba(124, 92, 252, 0.15);
-}
+        /* МОБИЛЬНАЯ ВЕРСТКА */
+        @media (max-width: 900px) {
+            .spread { flex-direction: column; }
+            .left-panel { 
+                width: 100%; height: auto; position: sticky; top: 0; 
+                padding: 20px; background: var(--black); border-bottom: 1px solid var(--red);
+            }
+            .left-panel h1 { font-size: 30px; text-align: center; }
+            .left-panel h1::after { content: ' ▼'; font-size: 12px; vertical-align: middle; color: var(--red); }
+            
+            .instruction-content { 
+                max-height: 0; overflow: hidden; margin-top: 0;
+            }
+            /* Класс для разворота */
+            .left-panel.active .instruction-content { 
+                max-height: 2000px; margin-top: 20px; padding-bottom: 20px;
+            }
+            .left-panel.active h1::after { content: ' ▲'; }
 
-#clearSearch {
-    position: absolute !important; 
-    right: 15px !important; 
-    top: 50% !important; 
-    transform: translateY(-50%) !important;
-    background: none !important; 
-    border: none !important; 
-    color: var(--accent-blue) !important; /* Яркий синий/фиолетовый */
-    font-size: 22px !important; 
-    font-weight: 900 !important; 
-    cursor: pointer; 
-    display: none; /* Появляется через JS при вводе текста */
-    z-index: 10;
-    line-height: 1;
-}
+            .right-panel { width: 100%; padding: 30px 15px; }
+        }
 
-#clearSearch:hover {
-    color: var(--rose) !important; /* Меняет цвет при наведении */
-}
-/* 7. ТОСТ И КНОПКА ВВЕРХ */
-#toast {
-    position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-    background: var(--accent-blue); color: white; padding: 12px 25px;
-    border-radius: 50px; z-index: 10000; display: none; font-weight: 700;
-}
-#backToTop {
-    position: fixed; bottom: 30px; right: 20px; width: 56px; height: 56px;
-    border-radius: 50%; background: var(--grad); color: white;
-    border: none; display: none; align-items: center; justify-content: center;
-    box-shadow: 0 10px 25px rgba(232, 121, 160, 0.3);
-}
-</style>
+        #toast { position: fixed; top: 0; left: 0; width: 100%; background: var(--red); color: white; padding: 15px; text-align: center; font-weight: 900; display: none; z-index: 10000; }
+    </style>
 </head>
 <body>
 
-       
-<div id="toast">Скопировано!</div>
+<div id="toast">COPIED</div>
+<div class="parallax-bg" id="bgText">MODR</div>
 
-<div class="container">
-    <header>
-         <h1 class="hero-title">modr.slots</h1>
-    </header>
-
-    <h1 class="hero-title">ЗАБУДЬТЕ О<br>НЕОБХОДИМОСТИ<br>ИСКАТЬ СЛОТЫ</h1>
- <div class="container">
-     <h1 class="hero-title"> </h1>
-     
-    <div class="dev-status-plate">
-        <div class="spinner">❤️</div>
-        <div class="dev-text">
-            Если история есть , а персонажей нет - слоты в разработке.Скоро добавим!
+<div class="spread">
+    <div class="left-panel" onclick="toggleMobileMenu()">
+        <h1>The<br>Modr<br><span style="color:var(--red)">Slots...</span></h1>
+        
+        <div class="instruction-content">
+            <div class="instruction-box">
+                <h3>МЕНЕДЖЕР СЛОТОВ</h3>
+                <ol class="custom-list">
+                    <li>Закройте игру полностью через <strong>«Выход»</strong>.</li>
+                    <li>Зайдите в <strong>личный кабинет</strong>.</li>
+                    <li>В <strong>«Менеджере слотов»</strong> выберите историю.</li>
+                    <li>Создайте слот с любым названием.</li>
+                    <li>Нажмите <strong>«Скопировать в слот»</strong>.</li>
+                    <li>Повторите для второго слота.</li>
+                    <li>В игре отредактируйте прохождение.</li>
+                    <li>Обновите второй слот кнопкой <strong>«Скопировать»</strong>.</li>
+                    <li>Для переключения жмите <strong>«Вставить из слота»</strong>.</li>
+                    <li>Входите в игру через <strong>10-15 минут</strong>.</li>
+                </ol>
+                <div class="important-note">
+                    <strong>Важно:</strong> Сезоны должны совпадать. При большой разнице в прогрессе данные могут синхронизироваться некорректно.
+                </div>
+            </div>
+            <a href="#" class="submit-btn">Отправить слоты</a>
         </div>
     </div>
-        <h1 class="hero-title">  <br>  </h1>
-    <a href="https://t.me/modr_slots_bot" class="tg-btn">Отправить слоты ✈️</a>
-    <a href="instructions.html" class="instr-btn">Инструкция</a>
-    
-</div>
 
-<button id="backToTop" onclick="scrollToTop()">↑</button>
+    <div class="right-panel">
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Поиск..." oninput="filter()">
+        </div>
 
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Поиск..." oninput="runFilter()">
-        <button id="clearSearch" onclick="clearInput()">✕</button>
-    </div>
-
-<table id="mainTable">
+     <table id="mainTable">
      <tbody>
                     <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
 <tr>
@@ -365,172 +302,64 @@ tr:not(.story-row) td:first-child {
  <tr><td>Мария</td><td><span class="code-text">16d092b8bbff9d49e0e90735fb099a03</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">догман, напор</td></tr>
 
                  
-<tr class="story-row"><td colspan="3">Пропавшие</td></tr>
-<tr><td>Мадс</td><td><span class="code-text">2c783eaf342ad2d4991746bb5041d2ed</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рассуждение</td></tr>
-<tr><td>Ясин</td><td><span class="code-text">1a5d43b5329e3d65a596c04f241bcbd4</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рассуждение</td></tr>
-<tr><td>Куно</td><td><span class="code-text">7871a06e74362c9da48a0724eb5eb037</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рассуждение</td></tr>
-<tr><td>Сафаа</td><td><span class="code-text">81af63c32d7f28afda433d45cff32ea7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">восприятие</td></tr>
-<tr><td>Один</td><td><span class="code-text">850dcb6e585c3a5a81d6e5bbb4b22cf9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">восприятие(весь февраль)</td></tr>
-
-
-
-<tr class="story-row"><td colspan="3">Разбитое сердце Астреи</td></tr>
-<tr><td>Микаэль</td><td><span class="code-text">c6b2d6fda60b786cbb61b7f6443163c2</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">вера</td></tr>
-<tr><td>Рафаил</td><td><span class="code-text">d219c6d4627b72d67381773d4b866e5e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">вера</td></tr>
-<tr><td>Кас</td><td><span class="code-text">4ab7ade6839cc30b6168df5b62f75349</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">вера</td></tr>
-<tr><td>Давид</td><td><span class="code-text">ff367761332a352cb36e5e5a0bb1bcea</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">вера</td></tr>
-<tr><td>Малек</td><td><span class="code-text">ea0602a00c8bedc52bb5aaaa54c4435f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">скептицизм</td></tr>
-<tr><td>Давид</td><td><span class="code-text">74d99b334219b8e8d762475c91f0acb0</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">скептицизм</td></tr>
-
-<tr class="story-row"><td colspan="3">Роза Пустыни</td></tr>
-<tr><td>Адиль</td><td><span class="code-text">fe7933dfe668439263d6139f367c3601</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мечтательность, баланс пустыни и дитя, без 3го сезона</td></tr>
-<tr><td>Зейн</td><td><span class="code-text">a3c176918bd0734ad23e9e570c96f7fe</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">мечтательность, баланс пустыни и дитя города</td></tr>
-
-<tr class="story-row"><td colspan="3">Сага о Грозах</td></tr>
-<tr><td>Ша'арнез</td><td><span class="code-text">0c1e8e898fa04d809817115fb3d09cf9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Ворон, призыв</td></tr>
-<tr><td>Велора</td><td><span class="code-text">af2c8064bd9b338eca5286db66a567ff</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ворон, изменения, конец 1го сезона</td></tr>
-<tr><td>Тай</td><td><span class="code-text">d41eb664fd102d5cf9df87d00ca88e80</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ворон, изменения, середина 2го сезона</td></tr>
-<tr><td>Гриаран</td><td><span class="code-text">5b90b322cb696c25c5d7250f05b6f380</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ворон, изменения, середина 3го сезона</td></tr>
-<tr>
-    <td>Эльф</td>
+    <td>Люцифер+Каин+Малек</td>
     <td>
-        <span class="code-text">c817f98c8c1371cb4a972e4701f24e47</span>
+        <span class="code-text">1b58e22fb08524f1b94ede707999e7f2</span>
         <button class="copy-btn" onclick="copy(this)">Копировать</button>
     </td>
-    <td class="info-txt">ворон призыв</td>
-</tr>
-<tr>
-    <td>Тай</td>
-    <td>
-        <span class="code-text">a6d02fe0caeeb63fa1830d4eac04c979</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td>1 серия 3 сезона, природа</td>
-</tr>
-<tr>
-    <td class="info-txt">Тай</td>
-    <td>
-        <span class="code-text">a6d02fe0caeeb63fa1830d4eac04c979</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">природа,3 сезон</td>
-</tr>
-<tr><td>Альдир</td><td><span class="code-text">9561d820c0125a132d6fbeb5ca203d81</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Сокол, природа, горная Тисс, 3с10с, перед выбором с поцелуем</td></tr>
-
-
-
-
-<tr class="story-row"><td colspan="3">Секрет Небес</td></tr>
-<tr><td>одиночка</td><td><span class="code-text">4c9152d8dca82cf40e92d29105979f34</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">ангел</td></tr>
-<tr><td>Люцифер</td><td><span class="code-text">35afb2332ef908a54d3bf3cd7f619d40</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">демон</td></tr>
-<tr><td>Маль</td><td><span class="code-text">4dc308fcf83c68f1c040c7d9b35a0261</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">несущая равновесие</td></tr>
-<tr>
-    <td>Люцифер</td>
-    <td>
-        <span class="code-text">3288970cff71ed8783d44f94e8bbe79c</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">Несущая равновесие</td>
-</tr>
-
-<tr class="story-row"><td colspan="3">Секрет Небес: Реквием</td></tr>
-<tr><td>Дима</td><td><span class="code-text">27c666a4a26617b105b29ca465522beb</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог, милосердие, выс адаптация</td></tr>
-<tr><td>Грег</td><td><span class="code-text">baba1f6920e63dbe595047ea4a64d5eb</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог, милосердие, выс адаптация</td></tr>
-<tr><td>Ян</td><td><span class="code-text">fbc509aa35f9955b1939e8f398b7d37e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог, милосердие, выс адаптация</td></tr>
-<tr><td>Каин</td><td><span class="code-text">ac6bb94dc93ff03670242dcf0790d53d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">бог, милосердие, выс адаптация</td></tr>
-<tr><td>Каин+Авель</td><td><span class="code-text">8aa3af17bddb8304f8d06365fb038698</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">дьявол, жесткость, выс адаптация</td></tr>
-<tr><td>Каин</td><td><span class="code-text">2c30b39060ee94b301471b9ae6c1bb04</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Шепот дьявола Высокая адаптация</td></tr>
-<tr><td>Борис</td><td><span class="code-text">a0d2993286217cf643ce1ad1b6446cf0</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Бог Высокая адаптация/td></tr>
-
-<tr class="story-row"><td colspan="3">Секрет Небес 2</td></tr>
-<tr><td>Голод</td><td><span class="code-text">b1af411532cdba680e5a35e18a39a4d7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность, Война мёртв</td></tr>
-<tr><td>Люцифер</td><td><span class="code-text">5691325191392ca26f8098be0819b783</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Темпераментность, концовка, Война жив</td></tr>
-<tr><td>Астарот (1)</td><td><span class="code-text">8dd4fbc94766a9ef4314e2f960388e6f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность, Война мёртв</td></tr>
-<tr><td>Астарот (2)</td><td><span class="code-text">1575dded56f6bcbf58cd5ab2b23e08d7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность, Война жив</td></tr>
-<tr><td>Мальбонте</td><td><span class="code-text">bf5acee0a34afd508f6f10d96904bcd5</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">не несущая равновесие, хладнокров, Война жив</td></tr>
-<tr><td>Война</td><td><span class="code-text">cb907d487948233617f4b61c2d5c985a</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность</td></tr>
-<tr>
-    <td>Люцифер</td>
-    <td>
-        <span class="code-text">b4bf04e47f284c96a8972ac347920855</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">метис, темпераментность, война жив</td>
-</tr>
-<tr><td>Голод</td><td><span class="code-text">b71aa57fa8dbdfdd3f1ca8bea06ba3ae</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">хладнокровность, Война жив</td></tr>
-
-
-<tr class="story-row"><td colspan="3">Секрет небес 3</td></tr>
-<tr><td>Война+Грег+Кас</td><td><span class="code-text">7a433600d30678e35c6cfde3d3c752e9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, прокаченная тьма Шепфамалума</td></tr>
-<tr><td>Люц+Грег+Кас</td><td><span class="code-text">d5acbc5eb7ee4173109afdbd7ab5a24c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, прокачен. тьма Шепфамалума</td></tr>
-<tr><td>Маль+Каин+Мика</td><td><span class="code-text">1f82e3e2cb055a7b87bf449e4f2b6d8e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, прокачен. тьма Шепфамалума</td></tr>
-<tr>
-    <td>Люцифер+Каин+Давид</td>
-    <td>
-        <span class="code-text">6450f4c73dde3ba1d87fa582db4640ef</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">не прокачена тьма шм, милосердие</td>
-</tr>
-    <tr>
-    <td>Люцифер+Каин+Малек</td>
-    <td>
-        <span class="code-text">1b58e22fb08524f1b94ede707999e7f2</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">не прокачена тьма</td>
+    <td class="info-txt">не прокачена тьма</td>
      </tr>
     <tr>
-    <td>Люцифер+Каин+Малек(2)</td>
-    <td>
-        <span class="code-text">0c48866944870ac98971748bf8b68b8a</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">не прокачена тьма</td>
+    <td>Люцифер+Каин+Малек(2)</td>
+    <td>
+        <span class="code-text">0c48866944870ac98971748bf8b68b8a</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td class="info-txt">не прокачена тьма</td>
 </tr>
 <tr>
-     <td>Мальбонте+Малек+Каин и Авель </td>
-    <td>
-        <span class="code-text">eda04d1d8c95240965f626b305d2f56c</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td>жестокость, тьма прокачана</td>
+     <td>Мальбонте+Малек+Каин и Авель </td>
+    <td>
+        <span class="code-text">eda04d1d8c95240965f626b305d2f56c</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td>жестокость, тьма прокачана</td>
 </tr>
 
-   <td>Астарот+Давид+Борис </td>
-    <td>
-        <span class="code-text">c78ebc5551c215eca5508a75701e4f0e</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">милосердие, тьма прокачана</td>
+   <td>Астарот+Давид+Борис </td>
+    <td>
+        <span class="code-text">c78ebc5551c215eca5508a75701e4f0e</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td class="info-txt">милосердие, тьма прокачана</td>
 </tr>
          <td>Голод+Рафаил+Ян </td>
-    <td>
-        <span class="code-text">87ebd8610217aa536c0ff963290a65ad</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">милосердие, тьма прокачана</td>
+    <td>
+        <span class="code-text">87ebd8610217aa536c0ff963290a65ad</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td class="info-txt">милосердие, тьма прокачана</td>
 </tr>
            <td>Люцифер+Микаэль+Дмитрий </td>
-    <td>
-        <span class="code-text">a4d2afdb8aa642da3c2a8c7d18f1181f</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">жестокость, тьма прокачана</td>
+    <td>
+        <span class="code-text">a4d2afdb8aa642da3c2a8c7d18f1181f</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td class="info-txt">жестокость, тьма прокачана</td>
 </tr>
            <td>Астарот+Давид+Ян </td>
-    <td>
-        <span class="code-text">2288edec39cb7e1f2e3483639f497b95</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">Милосердие, высокая адаптация, прокачанная тьма</td>
+    <td>
+        <span class="code-text">2288edec39cb7e1f2e3483639f497b95</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td class="info-txt">Милосердие, высокая адаптация, прокачанная тьма</td>
 </tr>  
      <td>Астарот+Малек+Каин </td>
-    <td>
-        <span class="code-text">e0271bc0c06e3eb1fe0040c718b2368f</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">Милосердие, высокая адаптация, прокачанная тьма</td>
+    <td>
+        <span class="code-text">e0271bc0c06e3eb1fe0040c718b2368f</span>
+        <button class="copy-btn" onclick="copy(this)">Копировать</button>
+    </td>
+    <td class="info-txt">Милосердие, высокая адаптация, прокачанная тьма</td>
 </tr>    
 <tr><td>Голод,Ян,Кас</td><td><span class="code-text">ff9aedade35b07b7897848f6e9ed9809</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">,прокачен тьма, милосердие, высокая адаптация</td></tr>
 
@@ -609,126 +438,69 @@ tr:not(.story-row) td:first-child {
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
 
 
-<div id="backToTop" onclick="scrollToTop()">↑</div>
 
 <script>
-    // 1. Функция фильтрации и поиска
-function runFilter() {
-    const input = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('clearSearch');
-    const filter = input.value.toLowerCase().trim();
-    const table = document.getElementById('mainTable');
-    if (!table) return;
-    
-    const rows = Array.from(table.querySelectorAll('tbody tr'));
-    
-    if (clearBtn) clearBtn.style.display = filter.length > 0 ? 'flex' : 'none';
+    // Разворот меню на мобилках
+    function toggleMobileMenu() {
+        if (window.innerWidth <= 900) {
+            document.querySelector('.left-panel').classList.toggle('active');
+        }
+    }
 
-    let currentStoryRow = null;
-    let storyHasMatch = false;
-    let storyCards = [];
+    // Параллакс
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        document.getElementById('bgText').style.transform = `translateY(${scrolled * 0.3}px) rotate(${scrolled * 0.01}deg)`;
+    });
 
-    rows.forEach((row) => {
-        if (row.classList.contains('story-row')) {
-            if (currentStoryRow) {
-                finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
+   function filter() {
+    let val = document.getElementById('search').value.toLowerCase();
+    let table = document.getElementById('mainTable');
+    let storyRows = table.querySelectorAll('.story-row');
+
+    storyRows.forEach(story => {
+        let hasVisibleSlots = false;
+        let nextRows = [];
+        let sibling = story.nextElementSibling;
+
+        // Собираем все строки слотов, которые относятся к текущей истории
+        while (sibling && !sibling.classList.contains('story-row')) {
+            nextRows.push(sibling);
+            sibling = sibling.nextElementSibling;
+        }
+
+        // Проверяем: совпадает ли название истории ИЛИ имя персонажа в слоте
+        let storyTitle = story.innerText.toLowerCase();
+        let isStoryMatch = storyTitle.includes(val);
+
+        nextRows.forEach(row => {
+            // Ищем только по первой ячейке (Имя персонажа)
+            let charName = row.cells[0].innerText.toLowerCase();
+            
+            // Слот виден, если в поиске имя персонажа ИЛИ если мы ищем по названию всей истории
+            if (charName.includes(val) || isStoryMatch) {
+                row.style.display = 'flex';
+                hasVisibleSlots = true;
+            } else {
+                row.style.display = 'none';
             }
-            currentStoryRow = row;
-            storyCards = [];
-            storyHasMatch = row.innerText.toLowerCase().includes(filter);
+        });
+
+        // Скрываем заголовок истории, если в ней нет подходящих слотов 
+        // (и если само название истории не совпадает с поиском)
+        if (hasVisibleSlots || isStoryMatch) {
+            story.style.display = 'block';
         } else {
-            storyCards.push(row);
-            if (row.innerText.toLowerCase().includes(filter)) {
-                storyHasMatch = true;
-            }
+            story.style.display = 'none';
         }
     });
-
-    if (currentStoryRow) {
-        finalizeSection(currentStoryRow, storyCards, storyHasMatch, filter);
-    }
 }
 
-function finalizeSection(header, cards, isMatch, filter) {
-    if (filter === '') {
-        header.style.setProperty('display', 'block', 'important');
-        cards.forEach(card => {
-            card.style.setProperty('display', 'flex', 'important');
-            card.classList.add('fade-in');
-        });
-        return;
+    function copy(text) {
+        event.stopPropagation(); // Чтобы не срабатывал клик по меню на мобилках
+        navigator.clipboard.writeText(text);
+        const t = document.getElementById('toast');
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 1500);
     }
-
-    if (isMatch) {
-        // Если заголовок или карточка совпали
-        header.style.setProperty('display', 'block', 'important');
-        
-        const headerMatch = header.innerText.toLowerCase().includes(filter);
-        
-        cards.forEach(card => {
-            const cardMatch = card.innerText.toLowerCase().includes(filter);
-            if (headerMatch || cardMatch) {
-                card.style.setProperty('display', 'flex', 'important');
-            } else {
-                card.style.setProperty('display', 'none', 'important');
-            }
-        });
-    } else {
-        // Скрываем всю секцию
-        header.style.setProperty('display', 'none', 'important');
-        cards.forEach(card => {
-            card.style.setProperty('display', 'none', 'important');
-        });
-    }
-}
-    // 2. Очистка поиска
-    function clearInput() {
-        const input = document.getElementById('searchInput');
-        if (input) {
-            input.value = '';
-            input.focus();
-            runFilter();
-        }
-    }
-
-    // 3. Копирование кода
-    function copy(btn) {
-        const text = btn.previousElementSibling.innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            const t = document.getElementById('toast');
-            if (t) {
-                t.style.display = 'block';
-                setTimeout(() => { t.style.display = 'none'; }, 1500);
-            }
-        });
-    }
-
-    // 4. Кнопка "Вверх"
-    window.onscroll = function() {
-        const backBtn = document.getElementById('backToTop');
-        if (backBtn) {
-            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
-                backBtn.style.display = "flex";
-            } else {
-                backBtn.style.display = "none";
-            }
-        }
-    };
-
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // 5. Появление карточек при загрузке (ИСПРАВЛЕНО)
-    document.addEventListener('DOMContentLoaded', () => {
-        const cards = document.querySelectorAll('tr:not(.story-row)');
-        cards.forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('fade-in');
-                // Принудительно ставим opacity, если CSS забагался
-                card.style.opacity = "1";
-                card.style.transform = "translateY(0)";
-            }, index * 50); // Ускорил до 50мс для плавности
-        });
-    });
 </script>
