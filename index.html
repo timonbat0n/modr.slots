@@ -564,52 +564,16 @@
             story.style.display = (hasVisibleSlots || isStoryMatch) ? 'block' : 'none';
         });
     }
-
   function copy(btn) {
-    // 1. Останавливаем всплытие события, чтобы не закрывалось меню
-    if (window.event) {
-        window.event.stopPropagation();
-    }
-
-    // 2. Находим текст кода. Он лежит в том же контейнере, в элементе .code-text
-    const container = btn.closest('.code-container');
-    const textToCopy = container.querySelector('.code-text').innerText;
-
-    // 3. Копируем
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            showToast();
-        }).catch(err => {
-            fallbackCopy(textToCopy);
+        const text = btn.previousElementSibling.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const t = document.getElementById('toast');
+            if (t) {
+                t.style.display = 'block';
+                setTimeout(() => { t.style.display = 'none'; }, 1500);
+            }
         });
-    } else {
-        fallbackCopy(textToCopy);
     }
-}
-
-// Запасной метод для старых браузеров / HTTP
-function fallbackCopy(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-9999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-        document.execCommand('copy');
-        showToast();
-    } catch (err) {
-        console.error('Ошибка копирования', err);
-    }
-    document.body.removeChild(textArea);
-}
-
-function showToast() {
-    const t = document.getElementById('toast');
-    t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 1500);
-}
 
     window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;
