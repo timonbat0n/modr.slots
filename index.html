@@ -83,7 +83,14 @@
         }
 
         /* ПРАВАЯ ПАНЕЛЬ */
-        .right-panel { width: 60%; background: var(--white); color: var(--black); padding: 80px 5%; min-height: 100vh; }
+     .right-panel { 
+    flex-grow: 1; /* Занимает всё оставшееся место */
+    background: var(--white); 
+    color: var(--black); 
+    padding: 80px 6%; /* Увеличил боковой отступ для воздуха */
+    min-height: 100vh;
+    box-shadow: -20px 0 50px rgba(0,0,0,0.3); /* Глубокая тень для отделения */
+}
 
         .search-container { margin-bottom: 60px; position: sticky; top: 20px; background: var(--white); z-index: 10; padding: 10px 0; }
         .search-container input {
