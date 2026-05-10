@@ -119,29 +119,94 @@
         .copy-btn { background: var(--black); color: var(--white); border: none; padding: 18px 30px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
         /* МОБИЛЬНАЯ ВЕРСТКА */
-        @media (max-width: 900px) {
-            .spread { flex-direction: column; }
-            .left-panel { 
-                width: 100%; min-height: auto; position: relative; 
-                padding: 30px 20px; background: var(--black);
-            }
-            .left-panel h1 { font-size: 32px; text-align: center; cursor: pointer; }
-            .left-panel h1::after { content: ' ▼'; font-size: 14px; color: var(--red); }
-            
-            .instruction-content { 
-                max-height: 0; 
-                opacity: 0;
-            }
-            
-            .left-panel.active .instruction-content { 
-                max-height: 1500px; /* Достаточно большое число, чтобы влез контент */
-                opacity: 1;
-                margin-top: 30px;
-            }
-            .left-panel.active h1::after { content: ' ▲'; }
+       /* МОБИЛЬНАЯ ВЕРСТКА: МАКСИМАЛЬНАЯ АДАПТИВНОСТЬ */
+@media (max-width: 900px) {
+    .spread { 
+        flex-direction: column; 
+    }
 
-            .right-panel { width: 180%; padding: 20px 10px; }
-        }
+    .left-panel { 
+        width: 100%; 
+        min-height: auto; 
+        position: relative; /* Теперь он толкает контент, а не висит сверху */
+        padding: 20px 5%; 
+        background: var(--black);
+        border-bottom: 2px solid rgba(255, 0, 0, 0.2);
+    }
+
+    .left-panel h1 { 
+        font-size: clamp(24px, 8vw, 32px); /* Текст не вылезет за границы */
+        text-align: center; 
+        cursor: pointer;
+        padding: 10px 0;
+    }
+
+    .left-panel h1::after { 
+        content: ' ▼'; 
+        font-size: 0.5em; 
+        color: var(--red); 
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    /* Содержимое инструкции */
+    .instruction-content { 
+        display: none; /* Скрываем полностью, чтобы не занимало место */
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Когда меню активно */
+    .left-panel.active .instruction-content { 
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+        padding-bottom: 20px;
+    }
+
+    .left-panel.active h1::after { 
+        transform: rotate(180deg); /* Красивый переворот стрелочки */
+    }
+
+    /* Кнопка на мобилке во всю ширину */
+    .submit-btn {
+        max-width: 100%;
+        margin: 20px auto 0;
+    }
+
+    /* Правая панель (контент) */
+    .right-panel { 
+        width: 100%; 
+        padding: 20px 4%; /* Уменьшил отступы, чтобы было больше места для кодов */
+    }
+
+    /* Поиск на мобилке */
+    .search-container input {
+        font-size: 24px;
+        padding: 10px 0;
+    }
+
+    /* Слоты на мобилке */
+    tr:not(.story-row) {
+        padding: 25px 0;
+    }
+
+    tr:not(.story-row) td:first-child {
+        font-size: 24px; /* Чуть меньше для мобилок */
+    }
+
+    /* Код на мобилке: делаем его более компактным */
+    .code-text {
+        font-size: 13px;
+        padding: 12px;
+    }
+    
+    .copy-btn {
+        padding: 12px 15px;
+        font-size: 10px;
+    }
+}
 
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; padding: 15px 40px; font-weight: 900; display: none; z-index: 10000; letter-spacing: 2px; }
     </style>
@@ -448,11 +513,19 @@
 
 
 <script>
-    function toggleMenu() {
-        if (window.innerWidth <= 900) {
-            document.getElementById('mobileMenu').classList.toggle('active');
+  function toggleMenu() {
+    if (window.innerWidth <= 900) {
+        const panel = document.getElementById('mobileMenu');
+        panel.classList.toggle('active');
+        
+        // Авто-скролл к началу инструкции при открытии, чтобы пользователь не потерялся
+        if (panel.classList.contains('active')) {
+            setTimeout(() => {
+                panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
         }
     }
+}
 
     function filter() {
         let val = document.getElementById('search').value.toLowerCase();
