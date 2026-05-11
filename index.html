@@ -3,278 +3,667 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODR SLOTS</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,900;1,900&family=Playfair+Display:ital,wght@0,400;1,700&family=Inter:wght@100;400;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,900;1,900&family=Playfair+Display:ital,wght@0,400;1,700&family=Inter:wght@100;400;600;900&display=swap');
 
         :root {
             --red: #ff0000;
-            --black: #111111;
+            --red-dim: rgba(255,0,0,0.08);
+            --red-glow: rgba(255,0,0,0.18);
+            --black: #0e0e0e;
+            --black-soft: #161616;
             --white: #ffffff;
-            --grey: #f4f4f4;
+            --grey: #f0f0f0;
+            --border: rgba(255,255,255,0.07);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--black); font-family: 'Inter', sans-serif; color: var(--white); overflow-x: hidden; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* ПАРАЛЛАКС ФОН */
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--black);
+            font-family: 'Inter', sans-serif;
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ══════════════════════════════════
+           ПАРАЛЛАКС ФОН
+        ══════════════════════════════════ */
         .parallax-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            font-family: 'Bodoni Moda', serif; font-size: 35vw;
-            color: var(--red); opacity: 0.08; z-index: 0;
-            display: flex; align-items: center; justify-content: center;
-            pointer-events: none; text-transform: uppercase; font-style: italic;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            font-family: 'Bodoni Moda', serif;
+            font-size: clamp(120px, 28vw, 35vw);
+            color: var(--red);
+            opacity: 0.05;
+            z-index: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            text-transform: uppercase;
+            font-style: italic;
+            will-change: transform;
+            transition: transform 0.1s linear;
+            letter-spacing: -0.05em;
+            user-select: none;
         }
 
-        .spread { display: flex; position: relative; z-index: 1; }
+        /* Декоративные линии фона */
+        .bg-lines {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bg-lines::before,
+        .bg-lines::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255,0,0,0.12), transparent);
+            animation: linePulse 4s ease-in-out infinite;
+        }
+        .bg-lines::before { left: 20%; animation-delay: 0s; }
+        .bg-lines::after  { right: 20%; animation-delay: 2s; }
 
-        /* ЛЕВАЯ ПАНЕЛЬ */
+        @keyframes linePulse {
+            0%, 100% { opacity: 0.4; }
+            50%       { opacity: 1; }
+        }
+
+        /* ══════════════════════════════════
+           LAYOUT
+        ══════════════════════════════════ */
+        .spread {
+            display: flex;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        /* ══════════════════════════════════
+           ЛЕВАЯ ПАНЕЛЬ
+        ══════════════════════════════════ */
         .left-panel {
-            width: 40%; min-height: 100vh; position: sticky; top: 0;
-            padding: 60px; display: flex; flex-direction: column;
-            background: linear-gradient(to right, rgba(0,0,0,1), transparent);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 38%;
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(105deg, rgba(10,10,10,0.98) 60%, transparent);
+            border-right: 1px solid var(--border);
+            overflow: hidden;
         }
 
-        .left-panel h1 { 
-            font-family: 'Bodoni Moda', serif; 
-            font-size: clamp(40px, 5vw, 80px); 
-            line-height: 0.9; text-transform: uppercase;
+        /* Анимированный красный блик */
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -20%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(ellipse, var(--red-glow) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: glowPulse 5s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        /* ИНСТРУКЦИЯ */
-        .instruction-content { 
-            overflow: hidden; 
-            transition: all 0.5s ease-in-out;
+        @keyframes glowPulse {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50%       { transform: translateY(20px) scale(1.1); opacity: 1; }
+        }
+
+        .left-panel h1 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: clamp(36px, 4vw, 72px);
+            line-height: 0.88;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            animation: slideInLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .left-panel h1 .accent { color: var(--red); }
+
+        /* ── БЛОК ИНСТРУКЦИИ ── */
+        .instruction-content {
+            overflow: hidden;
+            transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s ease;
             opacity: 1;
-        }
-        
-        .instruction-box {
-            padding: 25px; border-left: 4px solid var(--red);
-            background: rgba(255,255,255,0.03); margin: 30px 0;
-        }
-        
-        .instruction-box h3 { 
-            font-size: 14px; letter-spacing: 4px; color: var(--red); 
-            margin-bottom: 25px; text-transform: uppercase; font-weight: 900;
+            position: relative;
+            z-index: 1;
         }
 
-        .custom-list { list-style: none; counter-reset: my-counter; }
-        .custom-list li { 
-            counter-increment: my-counter; margin-bottom: 18px; 
-            font-size: 16px; line-height: 1.6; opacity: 0.9; 
-            display: flex; gap: 15px;
+        .instruction-box {
+            padding: 22px 20px;
+            border-left: 3px solid var(--red);
+            background: rgba(255,255,255,0.028);
+            margin: 28px 0 20px;
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
         }
+
+        .instruction-box::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(to right, var(--red), transparent);
+        }
+
+        .instruction-box h3 {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--red);
+            margin-bottom: 22px;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .custom-list {
+            list-style: none;
+            counter-reset: my-counter;
+        }
+
+        .custom-list li {
+            counter-increment: my-counter;
+            margin-bottom: 14px;
+            font-size: 14px;
+            line-height: 1.65;
+            opacity: 0.85;
+            display: flex;
+            gap: 14px;
+            transition: opacity 0.2s;
+        }
+
+        .custom-list li:hover { opacity: 1; }
+
         .custom-list li::before {
-            content: counter(my-counter); color: var(--red);
-            font-weight: 900; font-family: 'Bodoni Moda'; font-size: 20px;
+            content: counter(my-counter);
+            color: var(--red);
+            font-weight: 900;
+            font-family: 'Bodoni Moda';
+            font-size: 18px;
+            min-width: 18px;
+            line-height: 1.3;
         }
 
         .important-note {
-            margin-top: 25px; padding: 15px; background: rgba(255,0,0,0.15);
-            font-size: 14px; line-height: 1.6; border: 1px solid rgba(255,0,0,0.3);
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: rgba(255,0,0,0.1);
+            font-size: 13px;
+            line-height: 1.6;
+            border: 1px solid rgba(255,0,0,0.25);
+            border-radius: 2px;
         }
 
         .submit-btn {
-            display: block; width: 100%; max-width: 320px;
-            background: var(--white); color: var(--black);
-            padding: 22px; font-weight: 900; text-transform: uppercase;
-            font-size: 14px; letter-spacing: 3px; text-decoration: none;
-            text-align: center; transition: 0.3s; margin-top: 20px;
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            background: var(--white);
+            color: var(--black);
+            padding: 18px 22px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+            margin-top: 18px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* ПРАВАЯ ПАНЕЛЬ */
-     .right-panel { 
-    flex-grow: 1; /* Занимает всё оставшееся место */
-    background: var(--white); 
-    color: var(--black); 
-    padding: 80px 6%; /* Увеличил боковой отступ для воздуха */
-    min-height: 100vh;
-    box-shadow: -20px 0 50px rgba(0,0,0,0.3); /* Глубокая тень для отделения */
-}
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--red);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        .search-container { margin-bottom: 60px; position: sticky; top: 20px; background: var(--white); z-index: 10; padding: 10px 0; }
+        .submit-btn:hover::before  { transform: scaleX(1); }
+        .submit-btn:hover          { color: var(--white); transform: translateY(-2px); box-shadow: 0 8px 30px var(--red-glow); }
+        .submit-btn span           { position: relative; z-index: 1; }
+
+        /* ══════════════════════════════════
+           ПРАВАЯ ПАНЕЛЬ
+        ══════════════════════════════════ */
+        .right-panel {
+            flex-grow: 1;
+            background: var(--white);
+            color: var(--black);
+            padding: 60px 5%;
+            min-height: 100vh;
+            box-shadow: -20px 0 60px rgba(0,0,0,0.4);
+        }
+
+        /* ── ПОИСК ── */
+        .search-container {
+            margin-bottom: 50px;
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 10;
+            padding: 16px 0 6px;
+        }
+
+        .search-container::after {
+            content: '';
+            display: block;
+            height: 20px;
+            background: linear-gradient(to bottom, var(--white), transparent);
+            position: absolute;
+            bottom: -20px;
+            left: 0; right: 0;
+            pointer-events: none;
+        }
+
         .search-container input {
-            width: 100%; border: none; border-bottom: 5px solid var(--black);
-            padding: 15px 0; font-family: 'Playfair Display', serif;
-            font-size: 36px; font-style: italic; outline: none;
+            width: 100%;
+            border: none;
+            border-bottom: 4px solid var(--black);
+            padding: 12px 0;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 4vw, 36px);
+            font-style: italic;
+            outline: none;
+            background: transparent;
+            transition: border-color 0.3s;
+            caret-color: var(--red);
         }
 
-        /* ТАБЛИЦА */
+        .search-container input:focus {
+            border-color: var(--red);
+        }
+
+        .search-container input::placeholder {
+            color: #aaa;
+        }
+
+        /* ── ТАБЛИЦА ── */
         #mainTable { width: 100%; border-collapse: collapse; }
         #mainTable tbody { display: block; }
-        
+
+        /* История (заголовки) */
+        .story-row {
+            animation: fadeUp 0.4s ease both;
+        }
+
         .story-row td {
-            display: block; font-family: 'Bodoni Moda', serif; font-size: clamp(35px, 4.5vw, 52px);
-            text-transform: uppercase; border-bottom: 3px solid var(--black);
-            padding: 70px 0 15px 0 !important;
+            display: block;
+            font-family: 'Bodoni Moda', serif;
+            font-size: clamp(28px, 4.5vw, 52px);
+            text-transform: uppercase;
+            border-bottom: 3px solid var(--black);
+            padding: 60px 0 12px 0 !important;
+            line-height: 0.95;
         }
 
-        tr:not(.story-row) { display: flex; flex-direction: column; padding: 40px 0; border-bottom: 1px solid #eee; }
-        
-        tr:not(.story-row) td:first-child { 
-            font-family: 'Playfair Display', serif; font-size: 32px; 
-            font-weight: 700; margin-bottom: 15px; display: block;
-        }
-        
-        tr:not(.story-row) td:last-child { 
-            order: -1; font-size: 13px; color: #777; 
-            text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 10px;
+        /* Слоты */
+        tr:not(.story-row) {
+            display: flex;
+            flex-direction: column;
+            padding: 28px 0;
+            border-bottom: 1px solid #e5e5e5;
+            transition: background 0.25s;
+            animation: fadeUp 0.35s ease both;
         }
 
-        .code-container { display: flex; width: 100%; background: var(--grey); border-left: 6px solid var(--red); align-items: center; }
-        .code-text { flex: 1; padding: 18px 20px; font-family: monospace; font-size: 16px; font-weight: 700; color: #222; }
-        .copy-btn { background: var(--black); color: var(--white); border: none; padding: 18px 30px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
+        tr:not(.story-row):hover {
+            background: rgba(255,0,0,0.025);
+        }
 
-        /* МОБИЛЬНАЯ ВЕРСТКА */
-       /* МОБИЛЬНАЯ ВЕРСТКА: МАКСИМАЛЬНАЯ АДАПТИВНОСТЬ */
-@media (max-width: 900px) {
-    .spread { 
-        flex-direction: column; 
-    }
+        tr:not(.story-row) td:first-child {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 3.5vw, 32px);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+        }
 
-    .left-panel { 
-        width: 100%; 
-        min-height: auto; 
-        position: relative; /* Теперь он толкает контент, а не висит сверху */
-        padding: 20px 5%; 
-        background: var(--black);
-        border-bottom: 2px solid rgba(255, 0, 0, 0.2);
-    }
+        tr:not(.story-row) td:last-child {
+            order: -1;
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
 
-    .left-panel h1 { 
-        font-size: clamp(24px, 8vw, 32px); /* Текст не вылезет за границы */
-        text-align: center; 
-        cursor: pointer;
-        padding: 10px 0;
-    }
+        /* Код */
+        .code-container {
+            display: flex;
+            width: 100%;
+            background: var(--grey);
+            border-left: 5px solid var(--red);
+            align-items: stretch;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
 
-    .left-panel h1::after { 
-        content: ' ▼'; 
-        font-size: 0.5em; 
-        color: var(--red); 
-        transition: 0.3s;
-        display: inline-block;
-    }
+        .code-container:hover {
+            box-shadow: 0 4px 20px rgba(255,0,0,0.12);
+        }
 
-    /* Содержимое инструкции */
-    .instruction-content { 
-        display: none; /* Скрываем полностью, чтобы не занимало место */
-        opacity: 0;
-        transform: translateY(-10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
+        .code-text {
+            flex: 1;
+            padding: 15px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(11px, 1.5vw, 15px);
+            font-weight: 700;
+            color: #222;
+            word-break: break-all;
+            user-select: all;
+        }
 
-    /* Когда меню активно */
-    .left-panel.active .instruction-content { 
-        display: block;
-        opacity: 1;
-        transform: translateY(0);
-        padding-bottom: 20px;
-    }
+        .copy-btn {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 15px 22px;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.25s, transform 0.1s;
+            flex-shrink: 0;
+        }
 
-    .left-panel.active h1::after { 
-        transform: rotate(180deg); /* Красивый переворот стрелочки */
-    }
+        .copy-btn:hover  { background: var(--red); }
+        .copy-btn:active { transform: scale(0.95); }
 
-    /* Кнопка на мобилке во всю ширину */
-    .submit-btn {
-        max-width: 100%;
-        margin: 20px auto 0;
-    }
+        /* ══════════════════════════════════
+           TOAST
+        ══════════════════════════════════ */
+        #toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--red);
+            color: white;
+            padding: 14px 38px;
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 3px;
+            z-index: 10000;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    /* Правая панель (контент) */
-    .right-panel { 
-        width: 110%; 
-        padding: 20px 4%; /* Уменьшил отступы, чтобы было больше места для кодов */
-    }
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
 
-    /* Поиск на мобилке */
-    .search-container input {
-        font-size: 24px;
-        padding: 10px 0;
-    }
+        /* ══════════════════════════════════
+           АНИМАЦИИ
+        ══════════════════════════════════ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    /* Слоты на мобилке */
-    tr:not(.story-row) {
-        padding: 25px 0;
-    }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    tr:not(.story-row) td:first-child {
-        font-size: 24px; /* Чуть меньше для мобилок */
-    }
+        /* Stagger для строк */
+        tr:nth-child(1)  { animation-delay: 0.00s; }
+        tr:nth-child(2)  { animation-delay: 0.03s; }
+        tr:nth-child(3)  { animation-delay: 0.06s; }
+        tr:nth-child(4)  { animation-delay: 0.09s; }
+        tr:nth-child(5)  { animation-delay: 0.12s; }
+        tr:nth-child(6)  { animation-delay: 0.15s; }
+        tr:nth-child(7)  { animation-delay: 0.18s; }
+        tr:nth-child(8)  { animation-delay: 0.21s; }
+        tr:nth-child(9)  { animation-delay: 0.24s; }
+        tr:nth-child(10) { animation-delay: 0.27s; }
 
-    /* Код на мобилке: делаем его более компактным */
-    .code-text {
-        font-size: 13px;
-        padding: 12px;
-    }
-    
-    .copy-btn {
-        padding: 12px 15px;
-        font-size: 10px;
-    }
-}
+        /* ══════════════════════════════════
+           MOBILE ≤ 900px
+        ══════════════════════════════════ */
+        @media (max-width: 900px) {
 
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; padding: 15px 40px; font-weight: 900; display: none; z-index: 10000; letter-spacing: 2px; }
+            /* Параллакс чуть меньше на мобилках */
+            .parallax-bg {
+                font-size: clamp(80px, 40vw, 160px);
+                opacity: 0.06;
+            }
+
+            .spread { flex-direction: column; }
+
+            /* ── Левая панель: аккордеон ── */
+            .left-panel {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+                padding: 24px 5% 0;
+                background: var(--black-soft);
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .left-panel::before {
+                top: -60%;
+                left: -30%;
+                width: 100%;
+                height: 120%;
+            }
+
+            .left-panel h1 {
+                font-size: clamp(32px, 11vw, 52px);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 14px 0 18px;
+                width: 100%;
+            }
+
+            .left-panel h1::after {
+                content: '▾';
+                font-family: 'Inter', sans-serif;
+                font-size: 0.42em;
+                color: var(--red);
+                transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                display: inline-block;
+                flex-shrink: 0;
+            }
+
+            .left-panel.active h1::after {
+                transform: rotate(180deg);
+            }
+
+            /* Аккордеон: скрываем */
+            .instruction-content {
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                            opacity 0.35s ease;
+            }
+
+            .left-panel.active .instruction-content {
+                max-height: 900px;
+                opacity: 1;
+                padding-bottom: 24px;
+            }
+
+            .submit-btn { max-width: 100%; }
+
+            /* ── Правая панель ── */
+            .right-panel {
+                padding: 24px 4% 60px;
+            }
+
+            /* Поиск */
+            .search-container {
+                margin-bottom: 32px;
+                padding-top: 10px;
+            }
+
+            .search-container input {
+                font-size: clamp(20px, 6vw, 28px);
+                padding: 10px 0;
+                border-bottom-width: 3px;
+            }
+
+            /* История */
+            .story-row td {
+                font-size: clamp(22px, 7vw, 36px);
+                padding: 40px 0 10px 0 !important;
+            }
+
+            /* Слоты */
+            tr:not(.story-row) { padding: 20px 0; }
+
+            tr:not(.story-row) td:first-child {
+                font-size: clamp(18px, 5vw, 24px);
+            }
+
+            /* Код адаптив */
+            .code-text {
+                font-size: 10px;
+                padding: 12px 10px;
+                letter-spacing: -0.02em;
+            }
+
+            .copy-btn {
+                padding: 12px 14px;
+                font-size: 9px;
+            }
+
+            /* Инструкция компактнее */
+            .custom-list li { font-size: 13px; }
+            .instruction-box { padding: 18px 14px; margin: 16px 0 14px; }
+        }
+
+        /* ══════════════════════════════════
+           SMALL ≤ 420px
+        ══════════════════════════════════ */
+        @media (max-width: 420px) {
+            .parallax-bg { font-size: 50vw; }
+
+            .left-panel h1 { font-size: clamp(26px, 10vw, 42px); }
+
+            .story-row td { font-size: 20px; }
+
+            .code-text {
+                font-size: 9px;
+                padding: 10px 8px;
+            }
+
+            .copy-btn {
+                padding: 10px 10px;
+                font-size: 8px;
+            }
+        }
+
+        /* Скролл-индикатор (десктоп) */
+        .scroll-indicator {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            background: var(--red);
+            z-index: 9999;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
     </style>
 </head>
 <body>
 
+<div class="scroll-indicator" id="scrollIndicator"></div>
 <div id="toast">COPIED</div>
+<div class="bg-lines"></div>
 <div class="parallax-bg" id="bgText">MODR</div>
 
 <div class="spread">
+
+    <!-- ═══════════════════ ЛЕВАЯ ПАНЕЛЬ ═══════════════════ -->
     <div class="left-panel" id="mobileMenu">
-        <h1 onclick="toggleMenu()">The<br>modr<br><span style="color:var(--red)">slots</span></h1>
-        
+        <h1 onclick="toggleMenu()">
+            The<br>modr<br><span class="accent">slots</span>
+        </h1>
+
         <div class="instruction-content">
             <div class="instruction-box">
-                <h3>МЕНЕДЖЕР СЛОТОВ</h3>
+                <h3>Менеджер слотов</h3>
                 <ol class="custom-list">
-                      <li>Закройте игру полностью, нажав на <strong>«Выход»</strong>.</li>
-                <li>Перейдите в свой <strong>личный кабинет</strong>.</li>
-                <li>Нажмите на <strong>«Менеджер слотов»</strong> и выберите историю.</li>
-                <li>Создайте слот и дайте ему любое название.</li>
-                <li>Нажмите <strong>«Скопировать в слот»</strong>.</li>
-                <li>Создайте второй слот и проделайте те же действия.</li>
-                <li>Зайдите в игру и отредактируйте прохождение так, как вам нужно.</li>
-                <li>После окончания снова зайдите во второй слот и нажмите <strong>«Скопировать в слот»</strong>, чтобы обновить его.</li>
-                <li>Для переключения выберите нужный слот и нажмите кнопку <strong>«Вставить из слота»</strong>.</li>
-                <li>Подождите <strong>10-15 минут</strong> и заходите в игру.</li>
-            </ol></li>
-               
+                    <li>Закройте игру полностью, нажав на <strong>«Выход»</strong>.</li>
+                    <li>Перейдите в свой <strong>личный кабинет</strong>.</li>
+                    <li>Нажмите на <strong>«Менеджер слотов»</strong> и выберите историю.</li>
+                    <li>Создайте слот и дайте ему любое название.</li>
+                    <li>Нажмите <strong>«Скопировать в слот»</strong>.</li>
+                    <li>Создайте второй слот и проделайте те же действия.</li>
+                    <li>Зайдите в игру и отредактируйте прохождение так, как вам нужно.</li>
+                    <li>После окончания снова зайдите во второй слот и нажмите <strong>«Скопировать в слот»</strong>, чтобы обновить его.</li>
+                    <li>Для переключения выберите нужный слот и нажмите кнопку <strong>«Вставить из слота»</strong>.</li>
+                    <li>Подождите <strong>10–15 минут</strong> и заходите в игру.</li>
+                </ol>
                 <div class="important-note">
                     <strong>Важно:</strong> При переключении сезоны должны совпадать. Подождите 10 минут перед входом.
                 </div>
             </div>
-            <a href="https://t.me/modr_slots_bot" class="submit-btn">Отправить слоты</a>
+            <a href="https://t.me/modr_slots_bot" class="submit-btn"><span>Отправить слоты</span></a>
         </div>
     </div>
 
+    <!-- ═══════════════════ ПРАВАЯ ПАНЕЛЬ ═══════════════════ -->
     <div class="right-panel">
         <div class="search-container">
-            <input type="text" id="search" placeholder="Поиск по архиву..." oninput="filter()">
+            <input type="text" id="search" placeholder="Поиск по архиву..." oninput="filter()" autocomplete="off" spellcheck="false">
         </div>
 
         <table id="mainTable">
-     <tbody>
-                    <tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
-<tr>
-<td>Оникс</td><td><span class="code-text">024d696ab878ff9cd37faa17ec1694b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
-<tr>
-<td>Шен</td><td><span class="code-text">eb50c06aca17d42410b89351df99c25b</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
-<tr>
-<td>Льюсен</td><td><span class="code-text">91a15cc20674e465f65b0d2b8171c129</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
-<tr>
-<td>Ренато</td><td><span class="code-text">e66581e63fde0a21d95f75ecc213a107</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
-<tr>
-<td>Веспер</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, без финала</td></tr>
+         <tbody>
+
+<tr class="story-row"><td colspan="3">W: Ловчая Времени</td></tr>
+<tr><td>Оникс</td><td><span class="code-text">024d696ab878ff9cd37faa17ec1694b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
+<tr><td>Шен</td><td><span class="code-text">eb50c06aca17d42410b89351df99c25b</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
+<tr><td>Льюсен</td><td><span class="code-text">91a15cc20674e465f65b0d2b8171c129</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, с финалом</td></tr>
+<tr><td>Ренато</td><td><span class="code-text">e66581e63fde0a21d95f75ecc213a107</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">солнце, выс. статус, сила присутствия, без финала</td></tr>
+<tr><td>Веспер</td><td><span class="code-text">eff25e263104797a0fb1796ff4771f4e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">луна, выс. статус, сила присутствия, без финала</td></tr>
 
 <tr class="story-row"><td colspan="3">Te amo 1 том</td></tr>
 <tr><td>Майкл</td><td><span class="code-text">d82650d204cd6817204797033fca7e00</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">восприятие, с финалом</td></tr>
 <tr><td>Томас</td><td><span class="code-text">13a2ca74e39b641db42db6369d6e8725</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рассуждение, с финалом</td></tr>
 <tr><td>Ли</td><td><span class="code-text">f7db94fbabcd3b41b2af6d8ba20628f1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">чувства, с финалом</td></tr>
 <tr><td>Жанна</td><td><span class="code-text">8cacc44c76e75bf310a487b7f654a6ea</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">чувства, с финалом</td></tr>
+
 <tr class="story-row"><td colspan="3">Te amo 2 том</td></tr>
 <tr><td>Мэт</td><td><span class="code-text">cf48199c00acd80a0a96ad72fe8544dc</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рассуждение</td></tr>
 
@@ -283,20 +672,17 @@
 <tr><td>Саймон</td><td><span class="code-text">31b9101b1eda80857c3e10d178cdce09</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм, милашка</td></tr>
 <tr><td>Джаспер</td><td><span class="code-text">a51a6814eecd12487a2b65bb67563914</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">капитализм, милашка</td></tr>
 <tr><td>Тристан</td><td><span class="code-text">2c52220dd1a790c67fe7a3e1cb0a6035</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">антикапитализм</td></tr>
+
 <tr class="story-row"><td colspan="3">Авверис</td></tr>
 <tr><td>Аши</td><td><span class="code-text">365a71d10df45dbc2368135630db129c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">система</td></tr>
-<tr><td>Раэль</td><td><span class="code-text">fda06e1875b85a77253c5636c16c0a85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">система,выс аномалия</td></tr>
+<tr><td>Раэль</td><td><span class="code-text">fda06e1875b85a77253c5636c16c0a85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">система, выс аномалия</td></tr>
 <tr><td>Сайлен</td><td><span class="code-text">c9c8d1ae9e97d3d871dc0a78bcd084c4</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">система, низ аномалия</td></tr>
 
-
-
-         
 <tr class="story-row"><td colspan="3">Арканум</td></tr>
 <tr><td>Лиам</td><td><span class="code-text">c050f3a89e9130f3b7eeb90a8f63c8aa</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">2 сезон 7 серия, жрица, искупление</td></tr>
 <tr><td>Деймон</td><td><span class="code-text">b7f66b3ace303b21f5111101662041c6</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жрица, искупление, все арканы, финал</td></tr>
 <tr><td>Роб</td><td><span class="code-text">f411139513014a04593d49a2fbeb6f04</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жрица, искупление, все арканы, финал</td></tr>
 
-         
 <tr class="story-row"><td colspan="3">Бездушная</td></tr>
 <tr><td>Винсент</td><td><span class="code-text">64c35738c74fa1c47a6bb77c8d037694</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">путь баланса</td></tr>
 <tr><td>Уолтер</td><td><span class="code-text">ab6f6189c4de352bc47d927c29aa56b9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">путь баланса</td></tr>
@@ -304,14 +690,13 @@
 <tr><td>Трексио</td><td><span class="code-text">d451d86fcd41910efba62d216d323f07</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">путь баланса</td></tr>
 
 <tr class="story-row"><td colspan="3">Водная лилия</td></tr>
-    <tr><td>Деклан</td><td><span class="code-text">968ba1a69dc2c825b3ea6be5d969a4e8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Контроль</td></tr>
-         
+<tr><td>Деклан</td><td><span class="code-text">968ba1a69dc2c825b3ea6be5d969a4e8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Контроль</td></tr>
+
 <tr class="story-row"><td colspan="3">Высокий прибой</td></tr>
 <tr><td>Джейк</td><td><span class="code-text">8af31a9c52257f0c085ea5ffdc1cf3d3</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Отвага</td></tr>
 
-
 <tr class="story-row"><td colspan="3">Грехи просящие возмездия</td></tr>
-         
+
 <tr class="story-row"><td colspan="3">Дракула: История любви</td></tr>
 <tr><td>Ноэ</td><td><span class="code-text">5544e1ef9352878265d67cb8b4f1035d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">конец 3го сезона, баланс</td></tr>
 <tr><td>Влад</td><td><span class="code-text">5ef89c04eb5fe0084c7bc0c98ffe5b23</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">начало 3го сезона, баланс</td></tr>
@@ -319,17 +704,13 @@
 <tr><td>Лео</td><td><span class="code-text">3b443ca263066aaa1caef0f9ef433b93</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">баланс, финал по человеку</td></tr>
 <tr><td>Мехмед</td><td><span class="code-text">30b7c5c70f9ccab85e0e9ec8e4fa7d44</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">баланс</td></tr>
 
-
-
 <tr class="story-row"><td colspan="3">И поглотит нас морок</td></tr>
 <tr><td>Драган</td><td><span class="code-text">2cd483f99137fd6da27f616d2b0b832a</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, явь, сострадание</td></tr>
 <tr><td>Волот</td><td><span class="code-text">482f96035041ffa5ba2a86ba4c6c6d7d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, явь, сострадание</td></tr>
 <tr><td>Озар</td><td><span class="code-text">5b2ae942e42b7f7e3dfa307a92da6412</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, явь, сострадание</td></tr>
 <tr><td>Сирин</td><td><span class="code-text">9e5ae173528a15c6a70633431d5b73e0</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, явь, сострадание</td></tr>
 <tr><td>Новак</td><td><span class="code-text">17c10046c34b928a54e042c492114ad2</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, морок, сострадание</td></tr>
-<tr><td>Новак</td><td><span class="code-text">b74de921b78c08852a414a53c3206ab4</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Высокая связь, морок, упрямство</td></tr>
-
-
+<tr><td>Новак</td><td><span class="code-text">b74de921b78c08852a414a53c3206ab4</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">высокая связь, морок, упрямство</td></tr>
 
 <tr class="story-row"><td colspan="3">Идеал</td></tr>
 <tr><td>Мона</td><td><span class="code-text">5533f4140c8373e74845b76002e57eab</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">разум, без финала</td></tr>
@@ -340,12 +721,12 @@
 <tr><td>Доран (2)</td><td><span class="code-text">139c6dcd24978160016ef6d842081063</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">свобода, гордость</td></tr>
 <tr><td>Кристиан</td><td><span class="code-text">fc0df0d7263064c4e7fdf459954876bf</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">наследие, гордость, конец 2го сезона</td></tr>
 <tr><td>Рам</td><td><span class="code-text">ab3f19bcfa164fc1b641231b631540f8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">наследие, гордость</td></tr>
-<tr><td>Сара</td><td><span class="code-text">eb7401a112bb8bffd554c25121a24ab6</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">наследие, гордость, 2 сезон 7серия</td></tr>
+<tr><td>Сара</td><td><span class="code-text">eb7401a112bb8bffd554c25121a24ab6</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">наследие, гордость, 2 сезон 7 серия</td></tr>
 <tr><td>Камал</td><td><span class="code-text">f162bdce98c6e34bf9b28d9b3502dfe8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">наследие, гордость</td></tr>
 
 <tr class="story-row"><td colspan="3">Кали: Зов Тьмы</td></tr>
 <tr><td>Рейтан</td><td><span class="code-text">6d3b4356a3b5816ccbc5f5c95715a6d9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">3 сезон, 5 серия, гнев</td></tr>
-<tr><td>Килиан</td><td><span class="code-text">2bfa38fa2b11a412b15ae5e3f488ac58</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Гнев, концовка</td></tr>
+<tr><td>Килиан</td><td><span class="code-text">2bfa38fa2b11a412b15ae5e3f488ac58</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">гнев, концовка</td></tr>
 <tr><td>Амрит</td><td><span class="code-text">1520ec77e59ed379751d2f150f50a736</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">лояльность, милость</td></tr>
 
 <tr class="story-row"><td colspan="3">Код синий</td></tr>
@@ -368,7 +749,6 @@
 <tr class="story-row"><td colspan="3">По тонкому льду</td></tr>
 <tr><td>Ходж</td><td><span class="code-text">93475beb0b556f2e6fc3c18551edb6fa</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Баланс</td></tr>
 <tr><td>Доминик</td><td><span class="code-text">be193c57d8b586f4fb8878795cc675f9</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Баланс</td></tr>
-         
 
 <tr class="story-row"><td colspan="3">Пси Ψ</td></tr>
 <tr><td>Иво</td><td><span class="code-text">2cdd74cc1251b961aba59029430d775c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">импульс, вектор</td></tr>
@@ -384,70 +764,16 @@
 <tr><td>Ксандр</td><td><span class="code-text">420d05f34ce854f98ed46ee525e2a526</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">отречение, напор (возможны баги)</td></tr>
 <tr><td>Октавиан</td><td><span class="code-text">a6be010fa0116965bbf359def68699f8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">догман, коварство</td></tr>
 <tr><td>Адриана</td><td><span class="code-text">a6be010fa0116965bbf359def68699f8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">догман, напор</td></tr>
- <tr><td>Мария</td><td><span class="code-text">16d092b8bbff9d49e0e90735fb099a03</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">догман, напор</td></tr>
-
-                 
-    <td>Люцифер+Каин+Малек</td>
-    <td>
-        <span class="code-text">1b58e22fb08524f1b94ede707999e7f2</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">не прокачена тьма</td>
-     </tr>
-    <tr>
-    <td>Люцифер+Каин+Малек(2)</td>
-    <td>
-        <span class="code-text">0c48866944870ac98971748bf8b68b8a</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">не прокачена тьма</td>
-</tr>
-<tr>
-     <td>Мальбонте+Малек+Каин и Авель </td>
-    <td>
-        <span class="code-text">eda04d1d8c95240965f626b305d2f56c</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td>жестокость, тьма прокачана</td>
-</tr>
-
-   <td>Астарот+Давид+Борис </td>
-    <td>
-        <span class="code-text">c78ebc5551c215eca5508a75701e4f0e</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">милосердие, тьма прокачана</td>
-</tr>
-         <td>Голод+Рафаил+Ян </td>
-    <td>
-        <span class="code-text">87ebd8610217aa536c0ff963290a65ad</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">милосердие, тьма прокачана</td>
-</tr>
-           <td>Люцифер+Микаэль+Дмитрий </td>
-    <td>
-        <span class="code-text">a4d2afdb8aa642da3c2a8c7d18f1181f</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">жестокость, тьма прокачана</td>
-</tr>
-           <td>Астарот+Давид+Ян </td>
-    <td>
-        <span class="code-text">2288edec39cb7e1f2e3483639f497b95</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">Милосердие, высокая адаптация, прокачанная тьма</td>
-</tr>  
-     <td>Астарот+Малек+Каин </td>
-    <td>
-        <span class="code-text">e0271bc0c06e3eb1fe0040c718b2368f</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">Милосердие, высокая адаптация, прокачанная тьма</td>
-</tr>    
-<tr><td>Голод,Ян,Кас</td><td><span class="code-text">ff9aedade35b07b7897848f6e9ed9809</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">,прокачен тьма, милосердие, высокая адаптация</td></tr>
-
+<tr><td>Мария</td><td><span class="code-text">16d092b8bbff9d49e0e90735fb099a03</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">догман, напор</td></tr>
+<tr><td>Люцифер+Каин+Малек</td><td><span class="code-text">1b58e22fb08524f1b94ede707999e7f2</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">не прокачена тьма</td></tr>
+<tr><td>Люцифер+Каин+Малек (2)</td><td><span class="code-text">0c48866944870ac98971748bf8b68b8a</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">не прокачена тьма</td></tr>
+<tr><td>Мальбонте+Малек+Каин и Авель</td><td><span class="code-text">eda04d1d8c95240965f626b305d2f56c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жестокость, тьма прокачана</td></tr>
+<tr><td>Астарот+Давид+Борис</td><td><span class="code-text">c78ebc5551c215eca5508a75701e4f0e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, тьма прокачана</td></tr>
+<tr><td>Голод+Рафаил+Ян</td><td><span class="code-text">87ebd8610217aa536c0ff963290a65ad</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, тьма прокачана</td></tr>
+<tr><td>Люцифер+Микаэль+Дмитрий</td><td><span class="code-text">a4d2afdb8aa642da3c2a8c7d18f1181f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жестокость, тьма прокачана</td></tr>
+<tr><td>Астарот+Давид+Ян</td><td><span class="code-text">2288edec39cb7e1f2e3483639f497b95</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, высокая адаптация, прокачанная тьма</td></tr>
+<tr><td>Астарот+Малек+Каин</td><td><span class="code-text">e0271bc0c06e3eb1fe0040c718b2368f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">милосердие, высокая адаптация, прокачанная тьма</td></tr>
+<tr><td>Голод, Ян, Кас</td><td><span class="code-text">ff9aedade35b07b7897848f6e9ed9809</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">прокачена тьма, милосердие, высокая адаптация</td></tr>
 
 <tr class="story-row"><td colspan="3">Сердце Треспии</td></tr>
 <tr><td>Рейнхольд</td><td><span class="code-text">a5e2ba6722aa3fe934a4b14a0a0aafd1</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">рациональность</td></tr>
@@ -457,7 +783,6 @@
 <tr><td>Эйдо</td><td><span class="code-text">d7406da3a4d5fc1e46fd73a05e6551c2</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жизнелюбие, баланс</td></tr>
 <tr><td>Матео</td><td><span class="code-text">c2b8113248d06d5f90ab6ad35d8be473</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">жизнелюбие, баланс</td></tr>
 
-         
 <tr class="story-row"><td colspan="3">Тени Сентфора</td></tr>
 <tr><td>Вишня</td><td><span class="code-text">f50408871d7f1ca307939bcfc177aab0</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">осторожность</td></tr>
 <tr><td>Майкл</td><td><span class="code-text">b1c0024ca68aa77be6c6586a28cad08f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">осторожность</td></tr>
@@ -465,123 +790,137 @@
 <tr class="story-row"><td colspan="3">Тени Сентфора 2</td></tr>
 <tr><td>Руди</td><td><span class="code-text">99e3692abd57d30b92b072fa8291a157</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">осторожность</td></tr>
 <tr><td>Декс</td><td><span class="code-text">2b421b58fe96803dc4641ce4ba4d703c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">осторожность</td></tr>
-    
-<tr class="story-row"><td colspan="3">Теодора</td></tr>
-<tr><td>Лоуренс+Дариус+Антонио</td><td><span class="code-text">ffe028bef20345275bf7db646331a4f7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">романтик, выс, энергия</td></tr>
-<tr><td>Фридрих+Джон</td><td><span class="code-text">3955bc8eecf8442602bc09d908c2ed9c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">начало 3го сезона, романтик</td></tr>
-<tr><td>Лоу+Марсель+Антонио</td><td><span class="code-text">8d6778c11a2fd7ae9f21706d3e65eec8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">романтик, выс энергия</td></tr>
 
+<tr class="story-row"><td colspan="3">Теодора</td></tr>
+<tr><td>Лоуренс+Дариус+Антонио</td><td><span class="code-text">ffe028bef20345275bf7db646331a4f7</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">романтик, выс. энергия</td></tr>
+<tr><td>Фридрих+Джон</td><td><span class="code-text">3955bc8eecf8442602bc09d908c2ed9c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">начало 3го сезона, романтик</td></tr>
+<tr><td>Лоу+Марсель+Антонио</td><td><span class="code-text">8d6778c11a2fd7ae9f21706d3e65eec8</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">романтик, выс. энергия</td></tr>
 
 <tr class="story-row"><td colspan="3">Цветок из огня Тиамат</td></tr>
 <tr><td>Ниалл</td><td><span class="code-text">5dacddb30e3015a5475df5d6f6b3774c</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">огонь</td></tr>
-<tr>
-    <td>Кингу</td>
-    <td>
-        <span class="code-text">2f85a2203ae6ec2ba83bc6f5a5c2c95e</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">огонь</td>
-</tr>
+<tr><td>Кингу</td><td><span class="code-text">2f85a2203ae6ec2ba83bc6f5a5c2c95e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">огонь</td></tr>
 
 <tr class="story-row"><td colspan="3">Шифр Шекспира</td></tr>
 <tr><td>Эдвард</td><td><span class="code-text">7ce633d7d01a54b4caa4557e1600fbcc</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">без греха + хс</td></tr>
 <tr><td>Эдмунд</td><td><span class="code-text">df0f71ee75e866439ea95692d8c6729b</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">грех Реджины + хс</td></tr>
 <tr><td>Хобелло</td><td><span class="code-text">a8504347c17547f2f47ca047dd3d927e</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">без греха + хс</td></tr>
 <tr><td>Ральф</td><td><span class="code-text">bb76420474a8f2c702610505ba99de5f</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">без греха + хс</td></tr>
-<tr>
-    <td>Абрахам</td>
-    <td>
-        <span class="code-text">6b74d66458d59e4ed0492bc0f90325db</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">чародейство / хол. сердце</td>
-</tr>
-
+<tr><td>Абрахам</td><td><span class="code-text">6b74d66458d59e4ed0492bc0f90325db</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">чародейство / хол. сердце</td></tr>
 
 <tr class="story-row"><td colspan="3">Эдемов Сад</td></tr>
 <tr><td>Одиночка</td><td><span class="code-text">1b196faa0f4649e8b3c98f50eace2b90</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">1 сезон, 8 серия на выборе ветки</td></tr>
-<tr><td>Минхёк</td><td><span class="code-text">4f03e11a86304a1fd884dfb12c7d827d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">Амбиции, выс популярность</td></tr>
+<tr><td>Минхёк</td><td><span class="code-text">4f03e11a86304a1fd884dfb12c7d827d</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">амбиции, выс популярность</td></tr>
 <tr><td>Кас</td><td><span class="code-text">f1ad1c34f9ecdf9f19f731e409c0d5dd</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">амбиции, выс. популярность</td></tr>
 <tr><td>Туен</td><td><span class="code-text">a530e07721873d7311e43577509d5056</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt"></td></tr>
 
 <tr class="story-row"><td colspan="3">Я охочусь на тебя</td></tr>
 <tr><td>Сэм</td><td><span class="code-text">ea9c827a062eb5c3bb6fff106c738d85</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">логика</td></tr>
 <tr><td>Александр</td><td><span class="code-text">b0ecb26e5011f2eb4717d15b23d187fa</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">логика</td></tr>
+
 <tr class="story-row"><td colspan="3">Я Охочусь на Тебя 2</td></tr>
 <tr><td>Эзра</td><td><span class="code-text">9e61e9fd7a31c6a938a427b0c934f926</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">логика</td></tr>
-<tr>
-    <td>Александр</td>
-    <td>
-        <span class="code-text">be33eb23b5b85f75b53dafb2ff9e7c21</span>
-        <button class="copy-btn" onclick="copy(this)">Копировать</button>
-    </td>
-    <td class="info-txt">логика, авторитет с финалом</td>
-</tr>
+<tr><td>Александр</td><td><span class="code-text">be33eb23b5b85f75b53dafb2ff9e7c21</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">логика, авторитет с финалом</td></tr>
 
 <tr class="story-row"><td colspan="3">Ярость Титанов</td></tr>
 <tr><td>Мёрфи</td><td><span class="code-text">a6e9c1b40abb0d1f7e7fda9f8d9cb026</span><button class="copy-btn" onclick="copy(this)">Копировать</button></td><td class="info-txt">божественность, влияние</td></tr>
+
 <tr class="story-row"><td colspan="3">modr. x timon.</td></tr>
 
-
+        </tbody>
+        </table>
+    </div>
+</div>
 
 <script>
-  function toggleMenu() {
-    if (window.innerWidth <= 900) {
-        const panel = document.getElementById('mobileMenu');
-        panel.classList.toggle('active');
-        
-        // Авто-скролл к началу инструкции при открытии, чтобы пользователь не потерялся
-        if (panel.classList.contains('active')) {
-            setTimeout(() => {
-                panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 300);
+    /* ══ ПАРАЛЛАКС ══ */
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                const scrolled = window.pageYOffset;
+                document.getElementById('bgText').style.transform =
+                    `translateY(${scrolled * 0.28}px)`;
+                // Скролл-индикатор
+                const docH = document.documentElement.scrollHeight - window.innerHeight;
+                document.getElementById('scrollIndicator').style.width =
+                    `${(scrolled / docH) * 100}%`;
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+
+    /* ══ АККОРДЕОН МОБИЛЬНОГО МЕНЮ ══ */
+    function toggleMenu() {
+        if (window.innerWidth <= 900) {
+            const panel = document.getElementById('mobileMenu');
+            panel.classList.toggle('active');
         }
     }
-}
 
+    /* ══ ПОИСК ══ */
     function filter() {
-        let val = document.getElementById('search').value.toLowerCase();
-        let storyRows = document.querySelectorAll('.story-row');
+        const val = document.getElementById('search').value.toLowerCase().trim();
+        const storyRows = document.querySelectorAll('.story-row');
 
         storyRows.forEach(story => {
-            let hasVisibleSlots = false;
+            let hasVisible = false;
             let sibling = story.nextElementSibling;
-            let slots = [];
+            const slots = [];
 
             while (sibling && !sibling.classList.contains('story-row')) {
                 slots.push(sibling);
                 sibling = sibling.nextElementSibling;
             }
 
-            let storyTitle = story.innerText.toLowerCase();
-            let isStoryMatch = storyTitle.includes(val);
+            const storyTitle = story.innerText.toLowerCase();
+            const isStoryMatch = storyTitle.includes(val);
 
             slots.forEach(row => {
-                let charName = row.cells[0].innerText.toLowerCase();
-                if (charName.includes(val) || isStoryMatch) {
-                    row.style.display = 'flex';
-                    hasVisibleSlots = true;
-                } else {
-                    row.style.display = 'none';
-                }
+                const charName = row.cells[0]?.innerText.toLowerCase() || '';
+                const infoTxt  = row.cells[2]?.innerText.toLowerCase() || '';
+                const matches  = charName.includes(val) || infoTxt.includes(val) || isStoryMatch;
+                row.style.display = matches ? 'flex' : 'none';
+                if (matches) hasVisible = true;
             });
 
-            story.style.display = (hasVisibleSlots || isStoryMatch) ? 'block' : 'none';
-        });
-    }
-  function copy(btn) {
-        const text = btn.previousElementSibling.innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            const t = document.getElementById('toast');
-            if (t) {
-                t.style.display = 'block';
-                setTimeout(() => { t.style.display = 'none'; }, 1500);
+            story.style.display = (hasVisible || (isStoryMatch && val !== '')) ? 'block' : (val === '' ? 'block' : 'none');
+
+            // Показываем все если поиск пустой
+            if (val === '') {
+                slots.forEach(r => r.style.display = 'flex');
+                story.style.display = 'block';
             }
         });
     }
 
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        document.getElementById('bgText').style.transform = `translateY(${scrolled * 0.3}px)`;
-    });
+    /* ══ КОПИРОВАНИЕ ══ */
+    function copy(btn) {
+        const text = btn.previousElementSibling.innerText.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+
+            // Анимация кнопки
+            const orig = btn.textContent;
+            btn.textContent = '✓';
+            btn.style.background = '#ff0000';
+            setTimeout(() => {
+                btn.textContent = orig;
+                btn.style.background = '';
+            }, 1500);
+
+            setTimeout(() => t.classList.remove('show'), 1600);
+        }).catch(() => {
+            // Fallback
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        });
+    }
 </script>
+</body>
+</html>
